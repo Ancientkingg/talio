@@ -16,7 +16,7 @@ Add your own name (do not add the names for others!) to the section below.
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->
 <!-- - Preferably add a recognizable photo, otherwise add your GitLab photo -->
-<!-- - (please make sure the photos have the same size) --> 
+<!-- - (please make sure the photos have the same size (50x50 pixels)) --> 
 
 ## How to run it
 
