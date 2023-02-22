@@ -8,9 +8,10 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Group members
 
-| Profile Picture | Name | Email |
-|---|---|---|
+| Profile Picture                                                   | Name               | Email                             |
+|-------------------------------------------------------------------|--------------------|-----------------------------------|
 | ![](https://avatars.githubusercontent.com/u/13188514?v=4&size=50) | Rafayel Gardishyan | R.V.Gardishyan@student.tudelft.nl |
+| ![](https://avatars.githubusercontent.com/u/67058024?v=4&size=50) | Samuel Bruin       | S.Bruin-1@student.tudelft.nl      |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
