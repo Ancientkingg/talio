@@ -1,18 +1,90 @@
+stages:
+  - build
+  - test
+
 image: gradle:7.3.3-jdk17-alpine
 
 variables:
   # Disable the Gradle daemon to ensure isolated runs of the CI pipeline.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-build:
+buildServer:
+  stage: build
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
   script:
-    - ./gradlew build
+    - ./gradlew :server:compileJava
+  artifacts:
+    untracked: true
+    expire_in: 1 hour
+
+buildCommons:
+  stage: build
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
+  script:
+    - ./gradlew :commons:compileJava
+  artifacts:
+    untracked: true
+    expire_in: 1 hour
+
+buildClient:
+  stage: build
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
+  script:
+    - ./gradlew :client:compileJava
+  artifacts:
+    untracked: true
+    expire_in: 1 hour
+
+testCheckStyleCommons:
+  stage: test
+  script:
+    - ./gradlew :commons:checkStyleMain
+
+testCheckStyleServer:
+  stage: test
+  script:
+    - ./gradlew :server:checkStyleMain
+
+testCheckStyleClient:
+  stage: test
+  script:
+    - ./gradlew :client:checkStyleMain
+
+
+testAndCoverage:
+  stage: test
+  needs:
+    - buildClient
+    - buildServer
+    - buildCommons
+  dependencies:
+    - buildClient
+    - buildServer
+    - buildCommons
+  script:
+    - ./gradlew test -x compileJava -x classes -x processResources -x jar
     - ./gradlew AggregateJacocoReport
     # preserve coverage information in an easy-to-reach folder
     - mv build/reports/jacoco/aggregate/html ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
     - echo `cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total/TestCoverage:/"`
   artifacts:
+    name: "Test reports from $CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG"
+    when: always
     paths:
-      - ./coverage
+      - "*/build/test-results/test/TEST-*.xml"
+      - "./coverage"
+    reports:
+      junit:
+        - "*/build/test-results/test/TEST-*.xml"
   coverage: /TestCoverage:(\d+)%/
+
