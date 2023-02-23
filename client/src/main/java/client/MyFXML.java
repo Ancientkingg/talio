@@ -33,23 +33,34 @@ public class MyFXML {
 
     private Injector injector;
 
-    public MyFXML(Injector injector) {
+    /**
+     *
+     * @param injector
+     */
+    public MyFXML(final Injector injector) {
         this.injector = injector;
     }
 
-    public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
+    /**
+     * Loads a scene controller
+     * @param c The controller to load
+     * @param parts the path where the controller is
+     * @return A pair of the controller and the UI object itself
+     * @param <T>
+     */
+    public <T> Pair<T, Parent> load(final Class<T> c, final String... parts) {
         try {
-            var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
-            Parent parent = loader.load();
-            T ctrl = loader.getController();
+            final FXMLLoader loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
+            final Parent parent = loader.load();
+            final T ctrl = loader.getController();
             return new Pair<>(ctrl, parent);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
+    private URL getLocation(final String... parts) {
+        final String path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);
     }
 
@@ -57,7 +68,7 @@ public class MyFXML {
 
         @Override
         @SuppressWarnings("rawtypes")
-        public Builder<?> getBuilder(Class<?> type) {
+        public Builder<?> getBuilder(final Class<?> type) {
             return new Builder() {
                 @Override
                 public Object build() {
@@ -67,7 +78,7 @@ public class MyFXML {
         }
 
         @Override
-        public Object call(Class<?> type) {
+        public Object call(final Class<?> type) {
             return injector.getInstance(type);
         }
     }

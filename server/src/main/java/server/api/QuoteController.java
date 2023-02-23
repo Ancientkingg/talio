@@ -36,44 +36,73 @@ public class QuoteController {
     private final Random random;
     private final QuoteRepository repo;
 
-    public QuoteController(Random random, QuoteRepository repo) {
+    /**
+     * Constructs a quote controller
+     * @param random the random generator
+     * @param repo the repository that stores the quotes
+     */
+    public QuoteController(final Random random, final QuoteRepository repo) {
         this.random = random;
         this.repo = repo;
     }
 
+    /**
+     * Gets all quotes
+     * @return a list of quotes
+     */
     @GetMapping(path = { "", "/" })
     public List<Quote> getAll() {
         return repo.findAll();
     }
 
+    /**
+     * Gets a quote by id
+     * @param id the id of the quote to search for
+     * @return a response entity around the quote that was searched for
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Quote> getById(@PathVariable("id") long id) {
+    public ResponseEntity<Quote> getById(final @PathVariable("id") long id) {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
+    /**
+     * Adds a quote
+     * @param quote the quote to be added
+     * @return a response entity around the quote that was added
+     */
     @PostMapping(path = { "", "/" })
-    public ResponseEntity<Quote> add(@RequestBody Quote quote) {
+    public ResponseEntity<Quote> add(final @RequestBody Quote quote) {
 
-        if (quote.person == null || isNullOrEmpty(quote.person.firstName) || isNullOrEmpty(quote.person.lastName)
-                || isNullOrEmpty(quote.quote)) {
+        if (quote.getPerson() == null || isNullOrEmpty(quote.getPerson().getFirstName()) || isNullOrEmpty(quote.getPerson().getLastName())
+                || isNullOrEmpty(quote.getQuote()))
+        {
             return ResponseEntity.badRequest().build();
         }
 
-        Quote saved = repo.save(quote);
+        final Quote saved = repo.save(quote);
         return ResponseEntity.ok(saved);
     }
 
-    private static boolean isNullOrEmpty(String s) {
+    /**
+     * Checks whether a string is null or empty
+     * @param s the string to check
+     * @return whether the given string is null or empty
+     */
+    private static boolean isNullOrEmpty(final String s) {
         return s == null || s.isEmpty();
     }
 
+    /**
+     * Gets a random quote
+     * @return a response entity around a random quote that was fetched
+     */
     @GetMapping("rnd")
     public ResponseEntity<Quote> getRandom() {
-        var quotes = repo.findAll();
-        var idx = random.nextInt((int) repo.count());
+        final var quotes = repo.findAll();
+        final var idx = random.nextInt((int) repo.count());
         return ResponseEntity.ok(quotes.get(idx));
     }
 }

@@ -41,24 +41,35 @@ public class AddQuoteCtrl {
     @FXML
     private TextField quote;
 
+    /**
+     * Constructs a scene controller that handles adding quotes
+     * @param server The server interface
+     * @param mainCtrl The main scene controller
+     */
     @Inject
-    public AddQuoteCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public AddQuoteCtrl(final ServerUtils server, final MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
 
     }
 
+    /**
+     * Runs when the user presses the cancel button
+     */
     public void cancel() {
         clearFields();
         mainCtrl.showOverview();
     }
 
+    /**
+     * Runs when the user presses the OK button
+     */
     public void ok() {
         try {
             server.addQuote(getQuote());
         } catch (WebApplicationException e) {
 
-            var alert = new Alert(Alert.AlertType.ERROR);
+            final Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
@@ -69,28 +80,39 @@ public class AddQuoteCtrl {
         mainCtrl.showOverview();
     }
 
+    /**
+     * Gets the quote
+     * @return a copy of the quote of this controller
+     */
     private Quote getQuote() {
-        var p = new Person(firstName.getText(), lastName.getText());
-        var q = quote.getText();
+        final Person p = new Person(firstName.getText(), lastName.getText());
+        final String q = quote.getText();
         return new Quote(p, q);
     }
 
+    /**
+     * Clears the fields in the window
+     */
     private void clearFields() {
         firstName.clear();
         lastName.clear();
         quote.clear();
     }
 
-    public void keyPressed(KeyEvent e) {
+    /**
+     * Controls what to do when certain keys are pressed
+     * @param e the keyEvent that is triggered
+     */
+    public void keyPressed(final KeyEvent e) {
         switch (e.getCode()) {
-        case ENTER:
-            ok();
-            break;
-        case ESCAPE:
-            cancel();
-            break;
-        default:
-            break;
+            case ENTER:
+                ok();
+                break;
+            case ESCAPE:
+                cancel();
+                break;
+            default:
+                break;
         }
     }
 }

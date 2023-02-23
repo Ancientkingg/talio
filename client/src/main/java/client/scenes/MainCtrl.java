@@ -30,8 +30,15 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+    /**
+     * Initializes the main stage
+     * @param primaryStage The primary stage
+     * @param overview Overview of quotes
+     * @param add Scene for adding a quote
+     */
+    public void initialize(final Stage primaryStage, final Pair<QuoteOverviewCtrl, Parent> overview,
+            final Pair<AddQuoteCtrl, Parent> add)
+    {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
@@ -43,12 +50,18 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * Shows the overview of quotes
+     */
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 
+    /**
+     * Shows the UI for adding a quote
+     */
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);

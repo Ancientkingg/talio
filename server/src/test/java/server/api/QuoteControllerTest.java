@@ -56,7 +56,7 @@ public class QuoteControllerTest {
         var actual = sut.getRandom();
 
         assertTrue(random.wasCalled);
-        assertEquals("q2", actual.getBody().quote);
+        assertEquals("q2", actual.getBody().getQuote());
     }
 
     @Test

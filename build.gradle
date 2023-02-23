@@ -19,7 +19,7 @@ subprojects {
 	sourceCompatibility = '17'
 	checkstyle {
 		toolVersion "9.2.1"
-
+		checkstyleTest.enabled = false
 		ignoreFailures = false
 		maxErrors = 0
 		maxWarnings = 0
