@@ -8,11 +8,12 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Group members
 
-| Profile Picture                                                                                    | Name               | Email                              |
-|----------------------------------------------------------------------------------------------------|--------------------|------------------------------------|
-| ![](https://avatars.githubusercontent.com/u/13188514?v=4&size=50)                                  | Rafayel Gardishyan | R.V.Gardishyan@student.tudelft.nl  |
-| ![](https://avatars.githubusercontent.com/u/67058024?v=4&size=50)                                  | Samuel Bruin       | S.Bruin-1@student.tudelft.nl       |
-| ![](https://secure.gravatar.com/avatar/7ad8951e30e97a5d081d4e5ed8a9183c?s=192&d=identicon&size=50) | Tejas Kochar       | T.Kochar@student.tudelft.nl        |
+| Profile Picture                                                                                    | Name               | Email                             |
+|----------------------------------------------------------------------------------------------------|--------------------|-----------------------------------|
+| ![](https://avatars.githubusercontent.com/u/13188514?v=4&size=50)                                  | Rafayel Gardishyan | R.V.Gardishyan@student.tudelft.nl |
+| ![](https://avatars.githubusercontent.com/u/67058024?v=4&size=50)                                  | Samuel Bruin       | S.Bruin-1@student.tudelft.nl      |
+| ![](https://secure.gravatar.com/avatar/7ad8951e30e97a5d081d4e5ed8a9183c?s=192&d=identicon&size=50) | Tejas Kochar       | T.Kochar@student.tudelft.nl       |
+| ![](https://secure.gravatar.com/avatar/7b6b09bd1048ac5c9023afa4530bd063?s=800&d=identicon&size=50) | Jannes Kelso       | J.J.Kelso@student.tudelft.nl      |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
