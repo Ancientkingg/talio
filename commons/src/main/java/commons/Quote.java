@@ -31,36 +31,90 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Entity
 public class Quote {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    private long id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    public Person person;
-    public String quote;
+    private Person person;
+    private String quote;
 
     @SuppressWarnings("unused")
     private Quote() {
         // for object mappers
     }
 
-    public Quote(Person person, String quote) {
+    /**
+     * Constructs a quote
+     * @param person the person that made the quote
+     * @param quote the string that the person quoted
+     */
+    public Quote(final Person person, final String quote) {
         this.person = person;
         this.quote = quote;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() { return id; }
+
+    public void setId(final long id) { this.id = id; }
+
+    /**
+     * Compares two objects
+     * @param obj The object to compare to
+     * @return Whether the Quote and the other obj are equal
+     */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
+    /**
+     * Gets the hashcode of the current quote
+     * @return a hashcode representing the current quote
+     */
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * Converts the quote to a string representation
+     * @return The string representation of a Quote
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    /**
+     * Gets quote
+     * @return the quote string
+     */
+    public String getQuote() {
+        return quote;
+    }
+
+    /**
+     * Sets the quote
+     * @param quote the quote string
+     */
+    public void setQuote(final String quote) {
+        this.quote = quote;
+    }
+
+    /**
+     * Gets the person
+     * @return the person
+     */
+    public Person getPerson() {
+        return person;
+    }
+
+    /**
+     * Sets the person
+     * @param person the person to set
+     */
+    public void setPerson(final Person person) {
+        this.person = person;
     }
 }

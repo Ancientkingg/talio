@@ -29,33 +29,72 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Entity
 public class Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
 
-    public String firstName;
-    public String lastName;
+    private long id;
+
+    private String firstName;
+    private String lastName;
 
     @SuppressWarnings("unused")
     private Person() {
         // for object mapper
     }
 
-    public Person(String firstName, String lastName) {
+    /**
+     * Constructs a person
+     * @param firstName the first name of the person
+     * @param lastName the last name of the person
+     */
+    public Person(final String firstName, final String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() { return id; }
+
+    public void setId(final long id) { this.id = id; }
+
+    /**
+     * Gets the first name
+     * @return the first name
+     */
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    /**
+     * Gets the last name
+     * @return the last name
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Compares two objects
+     * @param obj The object to compare to
+     * @return Whether the Person and the other obj are equal
+     */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
+    /**
+     * Gets the hashcode of the current person
+     * @return a hashcode representing the current person
+     */
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * Converts the person to a string representation
+     * @return The string representation of a Person
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);

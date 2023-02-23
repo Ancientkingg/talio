@@ -25,8 +25,12 @@ import client.scenes.QuoteOverviewCtrl;
 
 public class MyModule implements Module {
 
+    /**
+     * Constructs an injector
+     * @param binder
+     */
     @Override
-    public void configure(Binder binder) {
+    public void configure(final Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);

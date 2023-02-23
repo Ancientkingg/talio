@@ -28,8 +28,8 @@ public class QuoteTest {
 	@Test
 	public void checkConstructor() {
 		var q = new Quote(SOME_PERSON, "q");
-		assertEquals(SOME_PERSON, q.person);
-		assertEquals("q", q.quote);
+		assertEquals(SOME_PERSON, q.getPerson());
+		assertEquals("q", q.getQuote());
 	}
 
 	@Test

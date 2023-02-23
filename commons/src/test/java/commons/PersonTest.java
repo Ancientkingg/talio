@@ -26,8 +26,8 @@ public class PersonTest {
 	@Test
 	public void checkConstructor() {
 		var p = new Person("f", "l");
-		assertEquals("f", p.firstName);
-		assertEquals("l", p.lastName);
+		assertEquals("f", p.getFirstName());
+		assertEquals("l", p.getLastName());
 	}
 
 	@Test

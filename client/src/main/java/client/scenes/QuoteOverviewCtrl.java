@@ -16,6 +16,7 @@
 package client.scenes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
@@ -46,25 +47,46 @@ public class QuoteOverviewCtrl implements Initializable {
     @FXML
     private TableColumn<Quote, String> colQuote;
 
+    /**
+     * Constructs a QuoteOverview controller
+     * @param server The server interface
+     * @param mainCtrl the main scene controller
+     */
     @Inject
-    public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public QuoteOverviewCtrl(final ServerUtils server, final MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * Initializes the quote overview stage
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
-        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+    public void initialize(final URL location, final ResourceBundle resources) {
+        colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getPerson().getFirstName()));
+        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getPerson().getLastName()));
+        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getQuote()));
     }
 
+    /**
+     * Shows UI for adding a quote
+     */
     public void addQuote() {
         mainCtrl.showAdd();
     }
 
+    /**
+     * Refreshes the Quote UI
+     */
     public void refresh() {
-        var quotes = server.getQuotes();
+        final List<Quote> quotes = server.getQuotes();
         data = FXCollections.observableList(quotes);
         table.setItems(data);
     }
