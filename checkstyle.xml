@@ -66,14 +66,30 @@
             <property name="max" value="6"/>
             <property name="tokens" value="LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_CASE, QUESTION"/>
         </module>
+
         <module name="FinalClass"/>
+
         <module name="FinalLocalVariable">
             <property name="validateEnhancedForLoopVariable" value="true"/>
         </module>
+
         <module name="FinalParameters"/>
+
         <module name="Indentation">
             <property name="severity" value="warning"/>
         </module>
+
+        <module name="WhitespaceAround">
+        </module>
+
+        <module name="LeftCurly">
+            <property name="option" value="nlow"/>
+        </module>
+
+        <module name="EmptyLineSeparator">
+            <property name="tokens" value="METHOD_DEF, CTOR_DEF, CLASS_DEF, INTERFACE_DEF, COMPACT_CTOR_DEF, RECORD_DEF"/>
+        </module>
+
         <module name="UnusedImports">
             <property name="severity" value="warning"/>
         </module>
