@@ -33,7 +33,6 @@ public class Quote {
 
     private long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
     private Person person;
     private String quote;
 
@@ -106,6 +105,7 @@ public class Quote {
      * Gets the person
      * @return the person
      */
+    @OneToOne(cascade = CascadeType.PERSIST)
     public Person getPerson() {
         return person;
     }
