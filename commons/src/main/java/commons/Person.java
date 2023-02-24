@@ -65,11 +65,27 @@ public class Person {
     }
 
     /**
+     * Sets the first name
+     * @param firstName the first name
+     */
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
      * Gets the last name
      * @return the last name
      */
     public String getLastName() {
         return lastName;
+    }
+
+    /**
+     * Sets the last name
+     * @param lastName the last name
+     */
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
     }
 
     /**
