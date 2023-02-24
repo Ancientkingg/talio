@@ -26,6 +26,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Entity
 public class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String firstName;
@@ -46,8 +48,6 @@ public class Person {
         this.lastName = lastName;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() { return id; }
 
     public void setId(final long id) { this.id = id; }
