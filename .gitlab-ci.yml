@@ -5,15 +5,18 @@ stages:
 image: gradle:7.3.3-jdk17-alpine
 
 variables:
-  # Disable the Gradle daemon to ensure isolated runs of the CI pipeline.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
 
 buildServer:
   stage: build
-  cache:
-    key: "maven-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .m2/repository
   script:
     - ./gradlew :server:compileJava
   artifacts:
@@ -22,10 +25,6 @@ buildServer:
 
 buildCommons:
   stage: build
-  cache:
-    key: "maven-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .m2/repository
   script:
     - ./gradlew :commons:compileJava
   artifacts:
@@ -34,10 +33,6 @@ buildCommons:
 
 buildClient:
   stage: build
-  cache:
-    key: "maven-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .m2/repository
   script:
     - ./gradlew :client:compileJava
   artifacts:
@@ -46,18 +41,30 @@ buildClient:
 
 testCheckStyleCommons:
   stage: test
+  needs:
+    - buildCommons
+  dependencies:
+    - buildCommons
   script:
-    - ./gradlew :commons:checkStyleMain
+    - ./gradlew :commons:checkStyleMain  -x compileJava -x classes -x processResources -x jar
 
 testCheckStyleServer:
   stage: test
+  needs:
+    - buildServer
+  dependencies:
+    - buildServer
   script:
-    - ./gradlew :server:checkStyleMain
+    - ./gradlew :server:checkStyleMain -x compileJava -x classes -x processResources -x jar
 
 testCheckStyleClient:
   stage: test
+  needs:
+    - buildClient
+  dependencies:
+    - buildClient
   script:
-    - ./gradlew :client:checkStyleMain
+    - ./gradlew :client:checkStyleMain -x compileJava -x classes -x processResources -x jar
 
 
 testAndCoverage:
@@ -72,7 +79,7 @@ testAndCoverage:
     - buildCommons
   script:
     - ./gradlew test -x compileJava -x classes -x processResources -x jar
-    - ./gradlew AggregateJacocoReport
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
     # preserve coverage information in an easy-to-reach folder
     - mv build/reports/jacoco/aggregate/html ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
