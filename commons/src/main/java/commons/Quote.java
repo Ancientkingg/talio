@@ -31,8 +31,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Entity
 public class Quote {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Person person;
     private String quote;
 
@@ -51,8 +53,7 @@ public class Quote {
         this.quote = quote;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     public Long getId() { return id; }
 
     public void setId(final long id) { this.id = id; }
@@ -105,7 +106,7 @@ public class Quote {
      * Gets the person
      * @return the person
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
+
     public Person getPerson() {
         return person;
     }
