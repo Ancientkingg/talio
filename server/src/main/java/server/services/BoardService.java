@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 
 @Service
-public class BoardGetterService {
+public class BoardService {
     private final BoardRepository br;
 
 
     /**
-     * Constructor for the Board Getter Service
+     * Constructor for the Board Service
      * @param br Dependency Injection for the board repository
      */
-    public BoardGetterService(final BoardRepository br) {
+    public BoardService(final BoardRepository br) {
         this.br = br;
     }
 
