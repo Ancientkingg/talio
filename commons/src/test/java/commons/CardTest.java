@@ -68,6 +68,7 @@ class CardTest {
         for (Tag t : t2) {
             assertTrue(card.addTag(t));
             assertTrue(card.getTags().contains(t));
+            assertFalse(card.addTag(t));
         }
     }
 
@@ -78,6 +79,7 @@ class CardTest {
             assertTrue(card.getTags().contains(t));
             assertTrue(card.removeTag(t));
             assertFalse(card.getTags().contains(t));
+            assertFalse(card.removeTag(t));
         }
     }
 

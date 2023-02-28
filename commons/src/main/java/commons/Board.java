@@ -12,7 +12,7 @@ public class Board {
     @Id
     private String joinKey;
     private Timestamp created;
-    private String passwords;
+    private String password;
     @OneToMany
     private Set<CardList> columns;
 
@@ -28,12 +28,12 @@ public class Board {
      * Constructor for the board object
      * Sets the created date to now
      * @param joinKey Key for joining
-     * @param passwords password for the board
+     * @param password password for the board
      * @param columns A set containing the board columns
      */
-    public Board(final String joinKey, final String passwords, final Set<CardList> columns) {
+    public Board(final String joinKey, final String password, final Set<CardList> columns) {
         this.joinKey = joinKey;
-        this.passwords = passwords;
+        this.password = password;
         this.columns = columns;
         this.created = new Timestamp(System.currentTimeMillis());
     }
@@ -58,16 +58,16 @@ public class Board {
      * Getter for the board password
      * @return Board password
      */
-    public String getPasswords() {
-        return passwords;
+    public String getPassword() {
+        return password;
     }
 
     /**
      * Setter for a new password
      * @param passwords password to be set
      */
-    public void setPasswords(final String passwords) {
-        this.passwords = passwords;
+    public void setPassword(final String passwords) {
+        this.password = passwords;
     }
 
     /**
@@ -117,7 +117,7 @@ public class Board {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Board board = (Board) o;
-        return joinKey.equals(board.joinKey) && created.equals(board.created) && passwords.equals(board.passwords) && columns.equals(board.columns);
+        return joinKey.equals(board.joinKey) && created.equals(board.created) && password.equals(board.password) && columns.equals(board.columns);
     }
 
     /**
@@ -126,6 +126,6 @@ public class Board {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(joinKey, created, passwords, columns);
+        return Objects.hash(joinKey, created, password, columns);
     }
 }
