@@ -41,7 +41,7 @@ class CardTest {
     }
 
     @Test
-    void setOrder() {
+    void setIndex() {
         Card card = new Card("Do all my tasks", 0, "1. task 1; 2. task 2", t1);
         card.setPriority(1);
         assertEquals(1, card.getPriority());

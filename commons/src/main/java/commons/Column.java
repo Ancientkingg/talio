@@ -8,7 +8,7 @@ public class Column implements Comparable<Column> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private int order;
+    private int index;
 
     private String heading;
     @OneToMany
@@ -25,12 +25,12 @@ public class Column implements Comparable<Column> {
     /**
      * Constructor for the Column/Column object
      * @param heading Heading for the column
-     * @param order Order of the column in the board
+     * @param index Index of the column in the board
      * @param cards A set of cards contained by the column
      */
-    public Column(final String heading, final int order, final SortedSet<Card> cards) {
+    public Column(final String heading, final int index, final SortedSet<Card> cards) {
         this.heading = heading;
-        this.order = order;
+        this.index = index;
         this.cards = cards;
     }
 
@@ -43,19 +43,19 @@ public class Column implements Comparable<Column> {
     }
 
     /**
-     * Getter for column order
-     * @return column order in the board
+     * Getter for column index
+     * @return column index in the board
      */
-    public int getOrder() {
-        return order;
+    public int getIndex() {
+        return index;
     }
 
     /**
-     * Setter for column order
-     * @param order new order in the board
+     * Setter for column index
+     * @param index new index in the board
      */
-    public void setOrder(final int order) {
-        this.order = order;
+    public void setIndex(final int index) {
+        this.index = index;
     }
 
     /**
@@ -121,7 +121,7 @@ public class Column implements Comparable<Column> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Column column = (Column) o;
-        return id == column.id && order == column.order
+        return id == column.id && index == column.index
                 && heading.equals(column.heading) && cards.equals(column.cards);
     }
 
@@ -131,20 +131,20 @@ public class Column implements Comparable<Column> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, order, heading, cards);
+        return Objects.hash(id, index, heading, cards);
     }
 
     /**
      * Compares two columns on the basis of
-     * their order in the board
+     * their index in the board
      * @param o the object to be compared.
      *
-     * @return 0 if the objects have the same order,
-     * 1 if this object has a higher order,
-     * -1 if the other object has a higher order
+     * @return 0 if the objects have the same index,
+     * 1 if this object has a higher index,
+     * -1 if the other object has a higher index
      */
     @Override
     public int compareTo(final Column o) {
-        return Integer.compare(order, o.order);
+        return Integer.compare(index, o.index);
     }
 }

@@ -15,7 +15,7 @@ public class Board {
     private Timestamp created;
     private String password;
     @OneToMany
-    @OrderBy("order")
+    @OrderBy("index")
     private SortedSet<Column> columns;
 
     /**

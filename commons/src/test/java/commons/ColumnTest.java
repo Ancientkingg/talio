@@ -32,10 +32,10 @@ class ColumnTest {
     }
 
     @Test
-    void setOrder() {
+    void setIndex() {
         Column cl = new Column("To-Do", 0, c1);
-        cl.setOrder(1);
-        assertEquals(1, cl.getOrder());
+        cl.setIndex(1);
+        assertEquals(1, cl.getIndex());
     }
 
     @Test
