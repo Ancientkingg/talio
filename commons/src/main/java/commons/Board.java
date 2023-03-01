@@ -13,6 +13,7 @@ public class Board {
     @Id
     private String joinKey;
     private Timestamp created;
+    private String title;
     private String password;
     @OneToMany
     @OrderBy("index")
@@ -27,18 +28,52 @@ public class Board {
     }
 
     /**
-     * Constructor for the board object
+     * Constructor for a board object with password
      * Sets the created date to now
      *
      * @param joinKey  Key for joining
-     * @param password password for the board
+     * @param title    Title of the board
+     * @param password Password for the board
      * @param columns  A set containing the board columns
      */
-    public Board(final String joinKey, final String password, final SortedSet<Column> columns) {
+    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns) {
         this.joinKey = joinKey;
+        this.title = title;
         this.password = password;
         this.columns = columns;
         this.created = new Timestamp(System.currentTimeMillis());
+    }
+
+    /**
+     * Constructor for a board object without a password
+     * Sets the created date to now
+     *
+     * @param joinKey Key for joining
+     * @param title   Title for the board
+     * @param columns A set containing the board columns
+     */
+    public Board(final String joinKey, final String title, final SortedSet<Column> columns) {
+        this.joinKey = joinKey;
+        this.title = title;
+        this.password = null;
+        this.columns = columns;
+        this.created = new Timestamp(System.currentTimeMillis());
+    }
+
+    /**
+     * Getter for the board title
+     * @return the board title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Setter for the board title
+     * @param title title to be set
+     */
+    public void setTitle(final String title) {
+        this.title = title;
     }
 
     /**
