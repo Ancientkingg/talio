@@ -24,9 +24,6 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import commons.Person;
-import commons.Quote;
-
 public class QuoteControllerTest {
 
     public int nextInt;
