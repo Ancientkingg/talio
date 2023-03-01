@@ -12,12 +12,12 @@ public class Column implements Comparable<Column> {
 
     private String heading;
     @OneToMany
-    private Set<Card> cards;
+    private SortedSet<Card> cards;
 
     /**
      * Empty constructor for the Column
      */
-    private Column() {
+    protected Column() {
 
     }
 
@@ -27,7 +27,7 @@ public class Column implements Comparable<Column> {
      * @param order Order of the column in the board
      * @param cards A set of cards contained by the column
      */
-    public Column(final String heading, final int order, final Set<Card> cards) {
+    public Column(final String heading, final int order, final SortedSet<Card> cards) {
         this.heading = heading;
         this.order = order;
         this.cards = cards;

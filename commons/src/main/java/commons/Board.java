@@ -3,7 +3,7 @@ package commons;
 import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Set;
+import java.util.SortedSet;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -14,13 +14,13 @@ public class Board {
     private Timestamp created;
     private String password;
     @OneToMany
-    private Set<Column> columns;
+    private SortedSet<Column> columns;
 
     /**
      * Constructor for the board object.
      * Sets the created date to now
      */
-    private Board() {
+    protected Board() {
         this.created = new Timestamp(System.currentTimeMillis());
     }
 
@@ -31,7 +31,7 @@ public class Board {
      * @param password password for the board
      * @param columns A set containing the board columns
      */
-    public Board(final String joinKey, final String password, final Set<Column> columns) {
+    public Board(final String joinKey, final String password, final SortedSet<Column> columns) {
         this.joinKey = joinKey;
         this.password = password;
         this.columns = columns;
@@ -74,7 +74,7 @@ public class Board {
      * Getter for the board columns
      * @return Set containing CardLists
      */
-    public Set<Column> getColumns() {
+    public SortedSet<Column> getColumns() {
         return columns;
     }
 
@@ -82,7 +82,7 @@ public class Board {
      * Setter for the board columns
      * @param columns Set containing CardLists
      */
-    public void setColumns(final Set<Column> columns) {
+    public void setColumns(final SortedSet<Column> columns) {
         this.columns = columns;
     }
 

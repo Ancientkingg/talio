@@ -1,5 +1,6 @@
 package commons;
 
+import com.sun.source.tree.Tree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
 
-    HashSet<Column> cl1;
-    HashSet<Column> cl2;
+    TreeSet<Column> cl1;
+    TreeSet<Column> cl2;
 
     @BeforeEach
     void setUp() {
-        cl1 = new HashSet<>();
-        cl2 = new HashSet<>();
+        cl1 = new TreeSet<>();
+        cl2 = new TreeSet<>();
         for (int i = 0; i < 10; i += 2) {
             cl1.add(new Column(String.valueOf(i), 0, new TreeSet<>()));
             cl1.add(new Column(String.valueOf(i + 1), 0, new TreeSet<>()));

@@ -3,6 +3,7 @@ package commons;
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Set;
 
 @Entity
 public class Card implements Comparable<Card> {
@@ -20,7 +21,7 @@ public class Card implements Comparable<Card> {
     /**
      * Empty constructor for the Card object
      */
-    private Card() {
+    protected Card() {
 
     }
 

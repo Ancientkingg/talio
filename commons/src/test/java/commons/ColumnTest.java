@@ -19,8 +19,8 @@ class ColumnTest {
         c1 = new TreeSet<>();
         c2 = new TreeSet<>();
         for (int i = 0; i < 10; i += 2) {
-            c1.add(new Card(String.valueOf(i), i, String.valueOf(i), new HashSet<>()));
-            c2.add(new Card(String.valueOf(i + 1), i+1, String.valueOf(i + 1), new HashSet<>()));
+            c1.add(new Card(String.valueOf(i), i, String.valueOf(i), new TreeSet<>()));
+            c2.add(new Card(String.valueOf(i + 1), i+1, String.valueOf(i + 1), new TreeSet<>()));
         }
     }
 
