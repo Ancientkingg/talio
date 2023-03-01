@@ -29,4 +29,12 @@ public class BoardService {
         return null;
     }
 
+    /**
+     * Saves a board to the database
+     * @param board Board to save
+     */
+    public void saveBoard(final Board board) {
+        br.save(board);
+    }
+
 }
