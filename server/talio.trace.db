@@ -1,0 +1,9 @@
+2023-03-01 13:00:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE COLUMN (ID BIGINT NOT NULL, HEADING VARCHAR(255), ORDER[*] INTEGER NOT NULL, PRIMARY KEY (ID))"; expected "identifier"; SQL statement:
+create table column (id bigint not null, heading varchar(255), order integer not null, primary key (id)) [42001-200]
+2023-03-01 13:00:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COLUMN" not found; SQL statement:
+alter table board_columns add constraint FKi7unpisb9begv9krboc4ugqqx foreign key (columns_id) references column [42102-200]
+2023-03-01 13:00:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COLUMN" not found; SQL statement:
+alter table column_cards add constraint FKgctrf6rdcghg6l0ftcws69y3e foreign key (column_id) references column [42102-200]

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.SortedSet;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Board {
@@ -14,6 +15,7 @@ public class Board {
     private Timestamp created;
     private String password;
     @OneToMany
+    @OrderBy("order")
     private SortedSet<Column> columns;
 
     /**
@@ -27,9 +29,10 @@ public class Board {
     /**
      * Constructor for the board object
      * Sets the created date to now
-     * @param joinKey Key for joining
+     *
+     * @param joinKey  Key for joining
      * @param password password for the board
-     * @param columns A set containing the board columns
+     * @param columns  A set containing the board columns
      */
     public Board(final String joinKey, final String password, final SortedSet<Column> columns) {
         this.joinKey = joinKey;
@@ -40,6 +43,7 @@ public class Board {
 
     /**
      * Getter for the board join key
+     *
      * @return Board join key
      */
     public String getJoinKey() {
@@ -48,6 +52,7 @@ public class Board {
 
     /**
      * Getter for the creation date
+     *
      * @return the date the board was created
      */
     public Timestamp getCreated() {
@@ -56,6 +61,7 @@ public class Board {
 
     /**
      * Getter for the board password
+     *
      * @return Board password
      */
     public String getPassword() {
@@ -64,6 +70,7 @@ public class Board {
 
     /**
      * Setter for a new password
+     *
      * @param passwords password to be set
      */
     public void setPassword(final String passwords) {
@@ -72,6 +79,7 @@ public class Board {
 
     /**
      * Getter for the board columns
+     *
      * @return Set containing CardLists
      */
     public SortedSet<Column> getColumns() {
@@ -80,6 +88,7 @@ public class Board {
 
     /**
      * Setter for the board columns
+     *
      * @param columns Set containing CardLists
      */
     public void setColumns(final SortedSet<Column> columns) {
@@ -88,6 +97,7 @@ public class Board {
 
     /**
      * Add one single list to the board if not already in the board
+     *
      * @param cardList Column object
      *
      * @return success/failure
@@ -98,6 +108,7 @@ public class Board {
 
     /**
      * Remove one list from the board
+     *
      * @param cardList List to remove
      *
      * @return success/failure
@@ -108,6 +119,7 @@ public class Board {
 
     /**
      * Checks for equality between two boards
+     *
      * @param o Other board
      *
      * @return is this board equal to the other board?
@@ -122,6 +134,7 @@ public class Board {
 
     /**
      * Generator for the board hash code
+     *
      * @return Generated hash code
      */
     @Override

@@ -12,6 +12,7 @@ public class Column implements Comparable<Column> {
 
     private String heading;
     @OneToMany
+    @OrderBy("priority")
     private SortedSet<Card> cards;
 
     /**
