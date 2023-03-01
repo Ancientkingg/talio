@@ -10,15 +10,10 @@ variables:
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-cache:
-  paths:
-    - .gradle/wrapper
-    - .gradle/caches
-
 buildServer:
   stage: build
   script:
-    - ./gradlew :server:compileJava
+    - ./gradlew :server:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
   artifacts:
     untracked: true
     expire_in: 1 hour
@@ -34,10 +29,21 @@ buildCommons:
 buildClient:
   stage: build
   script:
-    - ./gradlew :client:compileJava
+    - ./gradlew :client:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
   artifacts:
     untracked: true
     expire_in: 1 hour
+
+testServerRun:
+  stage: test
+  needs:
+    - buildServer
+  dependencies:
+    - buildServer
+  script:
+    - printf 'command="./gradlew bootRun --no-rebuild"\nlog="run.log"\nsuccessMatch="JVM running for"\nerrorMatch="Exception:\|Error:\|Caused By"\n$command > "$log" 2>&1 &\npid=$!\nwhile sleep 3\ndo\nif grep -q "$errorMatch" "$log"\nthen\nkill $pid\nexit 1\nfi\nif grep -F -q "$successMatch" "$log"\nthen\nkill $pid\nexit 0\nfi\ndone\n' > script.sh
+    - chmod +x ./script.sh
+    - ./script.sh
 
 testCheckStyleCommons:
   stage: test
