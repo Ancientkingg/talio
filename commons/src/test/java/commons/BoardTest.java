@@ -5,21 +5,22 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
 
-    HashSet<CardList> cl1;
-    HashSet<CardList> cl2;
+    HashSet<Column> cl1;
+    HashSet<Column> cl2;
 
     @BeforeEach
     void setUp() {
         cl1 = new HashSet<>();
         cl2 = new HashSet<>();
         for (int i = 0; i < 10; i += 2) {
-            cl1.add(new CardList(String.valueOf(i), new HashSet<>()));
-            cl1.add(new CardList(String.valueOf(i + 1), new HashSet<>()));
+            cl1.add(new Column(String.valueOf(i), 0, new TreeSet<>()));
+            cl1.add(new Column(String.valueOf(i + 1), 0, new TreeSet<>()));
         }
     }
 
@@ -51,7 +52,7 @@ class BoardTest {
     @Test
     void addList() {
         Board board = new Board("joinme", "password1", cl1);
-        for (CardList cl : cl2) {
+        for (Column cl : cl2) {
             assertTrue(board.addList(cl));
             assertTrue(board.getColumns().contains(cl));
             assertFalse(board.addList(cl));
@@ -61,7 +62,7 @@ class BoardTest {
     @Test
     void removeList() {
         Board board = new Board("joinme", "password1", cl1);
-        for (CardList cl : new HashSet<>(cl1)) {
+        for (Column cl : new HashSet<>(cl1)) {
             assertTrue(board.getColumns().contains(cl));
             assertTrue(board.removeList(cl));
             assertFalse(board.getColumns().contains(cl));

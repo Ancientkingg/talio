@@ -1,7 +1,7 @@
 package server.database;
 
-import commons.CardList;
+import commons.Column;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CardListRepository extends JpaRepository<CardList, Long> {
+public interface CardListRepository extends JpaRepository<Column, Long> {
 }

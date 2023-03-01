@@ -14,13 +14,13 @@ public class Board {
     private Timestamp created;
     private String password;
     @OneToMany
-    private Set<CardList> columns;
+    private Set<Column> columns;
 
     /**
      * Constructor for the board object.
      * Sets the created date to now
      */
-    public Board() {
+    private Board() {
         this.created = new Timestamp(System.currentTimeMillis());
     }
 
@@ -31,7 +31,7 @@ public class Board {
      * @param password password for the board
      * @param columns A set containing the board columns
      */
-    public Board(final String joinKey, final String password, final Set<CardList> columns) {
+    public Board(final String joinKey, final String password, final Set<Column> columns) {
         this.joinKey = joinKey;
         this.password = password;
         this.columns = columns;
@@ -74,7 +74,7 @@ public class Board {
      * Getter for the board columns
      * @return Set containing CardLists
      */
-    public Set<CardList> getColumns() {
+    public Set<Column> getColumns() {
         return columns;
     }
 
@@ -82,17 +82,17 @@ public class Board {
      * Setter for the board columns
      * @param columns Set containing CardLists
      */
-    public void setColumns(final Set<CardList> columns) {
+    public void setColumns(final Set<Column> columns) {
         this.columns = columns;
     }
 
     /**
      * Add one single list to the board if not already in the board
-     * @param cardList CardList object
+     * @param cardList Column object
      *
      * @return success/failure
      */
-    public boolean addList(final CardList cardList) {
+    public boolean addList(final Column cardList) {
         return this.columns.add(cardList);
     }
 
@@ -102,7 +102,7 @@ public class Board {
      *
      * @return success/failure
      */
-    public boolean removeList(final CardList cardList) {
+    public boolean removeList(final Column cardList) {
         return this.columns.remove(cardList);
     }
 

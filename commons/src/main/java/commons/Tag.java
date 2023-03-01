@@ -14,7 +14,7 @@ public class Tag {
     /**
      * Empty constructor for the Tag object
      */
-    public Tag() {
+    private Tag() {
 
     }
 

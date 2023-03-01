@@ -5,12 +5,13 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Card {
+public class Card implements Comparable<Card> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String title;
+    private int priority;
     private String description;
 
     @ManyToMany
@@ -19,18 +20,20 @@ public class Card {
     /**
      * Empty constructor for the Card object
      */
-    public Card() {
+    private Card() {
 
     }
 
     /**
      * Constructor for the Card object
      * @param title Card title
+     * @param priority Card priority
      * @param description Card description
      * @param tags Tags assigned to the card
      */
-    public Card(final String title, final String description, final Set<Tag> tags) {
+    public Card(final String title, final int priority, final String description, final Set<Tag> tags) {
         this.title = title;
+        this.priority = priority;
         this.description = description;
         this.tags = tags;
     }
@@ -49,6 +52,22 @@ public class Card {
      */
     public String getTitle() {
         return title;
+    }
+
+    /**
+     * Getter for the card priority
+     * @return Card priority
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    /**
+     * Setter for the card priority
+     * @param priority new priority for the card
+     */
+    public void setPriority(final int priority) {
+        this.priority = priority;
     }
 
     /**
@@ -122,8 +141,8 @@ public class Card {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Card card = (Card) o;
-        return id == card.id && title.equals(card.title) && description.equals(card.description)
-                && tags.equals(card.tags);
+        return id == card.id && title.equals(card.title) && priority == card.priority
+                && description.equals(card.description) && tags.equals(card.tags);
     }
 
     /**
@@ -132,6 +151,19 @@ public class Card {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, tags);
+        return Objects.hash(id, title, priority, description, tags);
+    }
+
+    /**
+     * Compares two cards on the basis of their priority
+     * @param o the object to be compared.
+     *
+     * @return 0 if the objects have the same priority,
+     * 1 if this object has a higher priority,
+     * -1 if the other object has a higher priority
+     */
+    @Override
+    public int compareTo(final Card o) {
+        return Integer.compare(this.priority, o.priority);
     }
 }
