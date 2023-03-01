@@ -164,7 +164,7 @@ public class Board {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Board board = (Board) o;
-        return joinKey.equals(board.joinKey) && created.equals(board.created) && password.equals(board.password) && columns.equals(board.columns);
+        return joinKey.equals(board.joinKey) && title.equals(board.title) && created.equals(board.created) && password.equals(board.password) && columns.equals(board.columns);
     }
 
     /**
@@ -174,6 +174,6 @@ public class Board {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(joinKey, created, password, columns);
+        return Objects.hash(joinKey, title, created, password, columns);
     }
 }

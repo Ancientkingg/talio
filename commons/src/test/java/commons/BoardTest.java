@@ -26,33 +26,53 @@ class BoardTest {
     }
 
     @Test
-    void constructorTest() {
-        Board board = new Board("joinme", "password1", cl1);
+    void constructorPasswordTest() {
+        Board board = new Board("joinme", "title", "password1", cl1);
         Timestamp time = new Timestamp(System.currentTimeMillis());
 
         assertEquals("joinme", board.getJoinKey());
+        assertEquals("title", board.getTitle());
         assertEquals("password1", board.getPassword());
         assertEquals(cl1, board.getColumns());
         assertTrue((board.getCreated().getTime() - time.getTime()) < 10);
     }
 
     @Test
+    void constructorNoPasswordTest() {
+        Board board = new Board("joinme", "title", cl1);
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        assertEquals("joinme", board.getJoinKey());
+        assertEquals("title", board.getTitle());
+        assertNull(board.getPassword());
+        assertEquals(cl1, board.getColumns());
+        assertTrue((board.getCreated().getTime() - time.getTime()) < 10);
+    }
+
+    @Test
     void setPassword() {
-        Board board = new Board("joinme", "password1", cl1);
+        Board board = new Board("joinme", "title", "password1", cl1);
         board.setPassword("goodPassword");
         assertEquals("goodPassword", board.getPassword());
     }
 
     @Test
+    void setTitle() {
+        Board board = new Board("joinme", "title", "password1", cl1);
+        board.setTitle("better title");
+        assertEquals("better title", board.getTitle());
+    }
+
+    @Test
     void setColumns() {
-        Board board = new Board("joinme", "password1", cl1);
+        Board board = new Board("joinme", "title", "password1", cl1);
         board.setColumns(cl2);
         assertEquals(cl2, board.getColumns());
     }
 
     @Test
     void addList() {
-        Board board = new Board("joinme", "password1", cl1);
+        Board board = new Board("joinme", "title", "password1", cl1);
         for (Column cl : cl2) {
             assertTrue(board.addList(cl));
             assertTrue(board.getColumns().contains(cl));
@@ -62,7 +82,7 @@ class BoardTest {
 
     @Test
     void removeList() {
-        Board board = new Board("joinme", "password1", cl1);
+        Board board = new Board("joinme", "title", "password1", cl1);
         for (Column cl : new HashSet<>(cl1)) {
             assertTrue(board.getColumns().contains(cl));
             assertTrue(board.removeList(cl));
@@ -73,11 +93,11 @@ class BoardTest {
 
     @Test
     void testEquals() {
-        Board board = new Board("joinme", "password1", cl1);
-        Board board1 = new Board("joinme", "password1", cl1);
-        Board board2 = new Board("joinme", "password1", cl2);
-        Board board3 = new Board("joinme", "password2", cl1);
-        Board board4 = new Board("joinme2", "password1", cl1);
+        Board board = new Board("joinme", "title", "password1", cl1);
+        Board board1 = new Board("joinme", "title", "password1", cl1);
+        Board board2 = new Board("joinme", "title", "password1", cl2);
+        Board board3 = new Board("joinme", "title", "password2", cl1);
+        Board board4 = new Board("joinme", "title2", "password1", cl1);
 
         assertEquals(board, board1);
         assertNotEquals(board, board2);
@@ -87,15 +107,17 @@ class BoardTest {
 
     @Test
     void testHashCode() {
-        Board board = new Board("joinme", "password1", cl1);
-        Board board1 = new Board("joinme", "password1", cl1);
-        Board board2 = new Board("joinme", "password1", cl2);
-        Board board3 = new Board("joinme", "password2", cl1);
-        Board board4 = new Board("joinme2", "password1", cl1);
+        Board board = new Board("joinme", "title", "password1", cl1);
+        Board board1 = new Board("joinme", "title", "password1", cl1);
+        Board board2 = new Board("joinme", "title", "password1", cl2);
+        Board board3 = new Board("joinme", "title", "password2", cl1);
+        Board board4 = new Board("joinme2", "title", "password1", cl1);
+        Board board5 = new Board("joinme", "title2", "password1", cl1);
 
         assertEquals(board.hashCode(), board1.hashCode());
         assertNotEquals(board.hashCode(), board2.hashCode());
         assertNotEquals(board.hashCode(), board3.hashCode());
         assertNotEquals(board.hashCode(), board4.hashCode());
+        assertNotEquals(board.hashCode(), board5.hashCode());
     }
 }
