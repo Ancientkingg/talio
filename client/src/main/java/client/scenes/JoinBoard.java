@@ -13,13 +13,33 @@ public class JoinBoard {
 
     private Stage stage;
     private Scene scene;
-    private Parent root;
 
-    public void joinBoard(ActionEvent e) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/Demo.fxml"));
+    /**
+     * Allows user to join a board upon inputting the board join code
+     * @param e assigned to "join board" button
+     * @throws IOException throws IO exception if FXML file not found
+     */
+    public void joinBoard(final ActionEvent e) throws IOException {
+        final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/Overview.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * Routes user to the "Create Board" stage where they can input a board name
+     * @param e assigned to "Create Board" button
+     * @throws IOException throws IO exception if FXML file not found
+     */
+    public void createBoard(final ActionEvent e) throws IOException {
+        final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/CreateBoard.fxml"));
+        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+
 }

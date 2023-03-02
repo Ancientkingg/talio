@@ -9,6 +9,7 @@
       <ToolBar prefHeight="23.0" prefWidth="600.0">
         <items>
           <Button mnemonicParsing="false" onAction="#openColumnInput" text="Create Column" />
+            <Button mnemonicParsing="false" text="Add Card" />
         </items>
       </ToolBar>
    </children>

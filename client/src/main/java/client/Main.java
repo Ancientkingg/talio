@@ -15,12 +15,8 @@
  */
 package client;
 
-import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-
-import com.google.inject.Injector;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,10 +29,8 @@ public class Main extends Application {
     /**
      * The main method of the client
      * @param args the input parameters to the client
-     * @throws URISyntaxException
-     * @throws IOException
      */
-    public static void main(final String[] args) throws URISyntaxException, IOException {
+    public static void main(final String[] args) {
         launch();
     }
 
@@ -46,19 +40,19 @@ public class Main extends Application {
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
-     * @throws IOException
+     * @throws IOException if FXML file not found
      */
     @Override
     public void start(final Stage primaryStage) throws IOException {
 
         try {
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/JoinBoard.fxml"));
-            Scene scene = new Scene(root);
+            final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/JoinBoard.fxml"));
+            final Scene scene = new Scene(root);
 
             primaryStage.setScene(scene);
             primaryStage.show();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
