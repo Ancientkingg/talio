@@ -40,8 +40,8 @@ public class BoardService {
      */
     public Board getBoardWithKeyAndPassword(final String joinKey, final String password) {
         if (br.existsById(joinKey)) {
-            Board board = br.getById(joinKey);
-            if (board.getPassword().equals(password))
+            final Board board = br.getById(joinKey);
+            if (password == null || board.getPassword().equals(password))
                 return board;
             return null;
         }

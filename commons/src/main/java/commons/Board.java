@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Board {
@@ -19,6 +20,7 @@ public class Board {
     private Timestamp created;
     @NotBlank
     private String title;
+    @Size(min=1) // A password cannot be empty, but it can be null (non-existent).
     private String password;
     @OneToMany
     @OrderBy("index")
