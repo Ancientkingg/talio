@@ -6,3 +6,4 @@ include 'commons'
 
 startParameter.excludedTaskNames << ':client:bootRun'
 startParameter.excludedTaskNames << ':commons:bootRun'
+startParameter.excludedTaskNames << ':commons:build'
