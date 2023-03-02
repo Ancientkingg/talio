@@ -11,7 +11,7 @@ public class Column implements Comparable<Column> {
     private int index;
 
     private String heading;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("priority")
     private SortedSet<Card> cards;
 
