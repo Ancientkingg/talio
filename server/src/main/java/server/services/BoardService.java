@@ -32,8 +32,20 @@ public class BoardService {
         throw new ResourceNotFoundException(Board.class, joinKey);
     }
 
+    /**
+     * Returns a Board object with the given join key and password
+     * @param joinKey Join key of the board
+     * @param password Password of the board
+     * @return The board with the right joinKey and password if exists, otherwise null
+     */
     public Board getBoardWithKeyAndPassword(final String joinKey, final String password) {
-
+        if (br.existsById(joinKey)) {
+            Board board = br.getById(joinKey);
+            if (board.getPassword().equals(password))
+                return board;
+            return null;
+        }
+        throw new ResourceNotFoundException(Board.class, joinKey);
     }
 
     /**

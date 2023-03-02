@@ -3,6 +3,7 @@ package server.api;
 
 
 import commons.Board;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
@@ -26,11 +27,21 @@ public class BoardController {
     /**
      * Returns a Board object with the given join key
      * @param joinKey Join key of the board
-     * @return The board with the right joinKey if the board is complete, otherwise it will return a bad request
+     * @param password Optional password of the board
+     * @return The board with the right joinKey if the board has the correct password provided, otherwise a
      */
-    @GetMapping("/get/{joinKey}")
+    @PostMapping("/get/{joinKey}")
     public ResponseEntity<Board> getBoard(@PathVariable final String joinKey, @RequestBody String password) {
-        final Board board = boardService.getBoardWithKey(joinKey);
+
+        final Board board = password == null ?
+                boardService.getBoardWithKey(joinKey) :
+                boardService.getBoardWithKeyAndPassword(joinKey, password);
+
+        // If the board is null, it means that the password was incorrect
+        // and the user is not authorized to request this board
+        if (board == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         return ResponseEntity.ok(board);
     }
