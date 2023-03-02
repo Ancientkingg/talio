@@ -2,13 +2,10 @@ package commons;
 
 import commons.exceptions.ColumnNotFoundException;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.SortedSet;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -22,7 +19,7 @@ public class Board {
     private String title;
     @Size(min=1) // A password cannot be empty, but it can be null (non-existent).
     private String password;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("index")
     private SortedSet<Column> columns;
 
