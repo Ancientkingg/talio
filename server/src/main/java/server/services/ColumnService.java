@@ -27,15 +27,15 @@ public class ColumnService {
         this.boardService = boardService;
     }
 
-    /**
-     * Returns a Column object with the given id
-     * @param id id of column
-     *
-     * @return The column with the right id if exists, otherwise null
-     */
-    public Column getColumn(final long id) {
-        return cr.existsById(id) ? cr.getById(id) : null;
-    }
+//    /**
+//     * Returns a Column object with the given id
+//     * @param id id of column
+//     *
+//     * @return The column with the right id if exists, otherwise null
+//     */
+//    public Column getColumn(final long id) {
+//        return cr.existsById(id) ? cr.getById(id) : null;
+//    }
 
     /**
      * Saves a board to the database

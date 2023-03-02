@@ -25,15 +25,17 @@ public class ColumnController {
     /**
      * Create a Column
      * @param columnPostBody Column to be created
+     * @param joinKey Key used to identify board
+     * @param password Password to board
      * @return The Column saved in the ColumnRepository
      */
     @PostMapping("/{joinKey}/add/column") // can be changed later
-    public ResponseEntity<Column> addColumn(@RequestBody final Column columnPostBody, @PathVariable final String joinKey, @RequestBody String password) {
+    public ResponseEntity<Column> addColumn(@RequestBody final Column columnPostBody, @PathVariable final String joinKey, @RequestBody final String password) {
 
-        Board board = columnService.getBoardService().getBoardWithKeyAndPassword(joinKey, password);
+        final Board board = columnService.getBoardService().getBoardWithKeyAndPassword(joinKey, password);
 
-        String heading = columnPostBody.getHeading();
-        int index = columnPostBody.getIndex();
+        final String heading = columnPostBody.getHeading();
+        final int index = columnPostBody.getIndex();
         final SortedSet<Card> cards = columnPostBody.getCards();
 
         final Column column = new Column(heading, index, cards);
