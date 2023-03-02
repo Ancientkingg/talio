@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateBoard">
+   <children>
+      <Label layoutX="115.0" layoutY="135.0" text="Board Name" />
+      <TextField layoutX="212.0" layoutY="131.0" prefHeight="26.0" prefWidth="258.0" />
+      <Button layoutX="256.0" layoutY="187.0" mnemonicParsing="false" onAction="#finalizeCreateBoard" text="Create Board" />
+   </children>
+</AnchorPane>
