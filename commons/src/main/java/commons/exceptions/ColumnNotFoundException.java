@@ -1,13 +1,13 @@
 package commons.exceptions;
 
 public class ColumnNotFoundException extends RuntimeException {
-	/**
-	 * Constructs a {@link ColumnNotFoundException}.
-	 * This exception is thrown when a column in a board cannot be found
-	 *
-	 * @param errorMessage the error message that the exception should contain
-	 */
-	public ColumnNotFoundException(String errorMessage) {
-		super(errorMessage);
-	}
+    /**
+     * Constructs a {@link ColumnNotFoundException}.
+     * This exception is thrown when a column in a board cannot be found
+     *
+     * @param errorMessage the error message that the exception should contain
+     */
+    public ColumnNotFoundException(final String errorMessage) {
+        super(errorMessage);
+    }
 }

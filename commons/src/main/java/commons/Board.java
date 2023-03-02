@@ -9,12 +9,15 @@ import java.util.SortedSet;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Board {
     @Id
+    @NotBlank
     private String joinKey;
     private Timestamp created;
+    @NotBlank
     private String title;
     private String password;
     @OneToMany
@@ -131,7 +134,7 @@ public class Board {
     public Column getColumnByName(final String columnName) {
         if (columnName == null) return null;
 
-        for (Column column : columns) {
+        for (final Column column : columns) {
             if (column.getHeading().equals(columnName)) {
                 return column;
             }
