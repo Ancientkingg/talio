@@ -1,12 +1,11 @@
 package server.api;
 
+import commons.Board;
 import commons.Card;
 import commons.Column;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import server.exceptions.ResourceNotFoundException;
 import server.services.ColumnService;
 
 import java.util.SortedSet;
@@ -30,7 +29,9 @@ public class ColumnController {
      * @return The Column saved in the ColumnRepository
      */
     @PostMapping("/add/column") // can be changed later
-    public ResponseEntity<Column> addColumn(@RequestBody final Column columnPostBody) {
+    public ResponseEntity<Column> addColumn(@RequestBody final Column columnPostBody, @PathVariable final String joinKey, @RequestBody String password) {
+
+        Board board = columnService.getBoardService().getBoardWithKeyAndPassword(joinKey, password);
 
         String heading = columnPostBody.getHeading();
         int index = columnPostBody.getIndex();
@@ -39,6 +40,8 @@ public class ColumnController {
         final Column column = new Column(heading, index, cards);
 
         final Column savedColumn = columnService.saveColumn(column);
+        board.addList(savedColumn);
+
         return ResponseEntity.ok(savedColumn);
     }
 }

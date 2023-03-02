@@ -7,13 +7,24 @@ import server.database.ColumnRepository;
 @Service
 public class ColumnService {
     private final ColumnRepository cr;
+    private final BoardService boardService;
 
     /**
-     * Constructor for the Board Service
-     * @param cr Dependency Injection for the column repository
+     * Getter for board service
+     * @return BoardService for board
      */
-    public ColumnService(final ColumnRepository cr) {
+    public BoardService getBoardService() {
+        return boardService;
+    }
+
+    /**
+     * Constructor for the Column Service
+     * @param cr Dependency Injection for the column repository
+     * @param boardService BoardService for board in which ColumnService will make/update columns
+     */
+    public ColumnService(final ColumnRepository cr, final BoardService boardService) {
         this.cr = cr;
+        this.boardService = boardService;
     }
 
     /**
