@@ -30,7 +30,7 @@ public class BoardController {
      * @param password Optional password of the board
      * @return The board with the right joinKey if the board has the correct password provided, otherwise a
      */
-    @PostMapping("/get/{joinKey}")
+    @GetMapping("/get/{joinKey}")
     public ResponseEntity<Board> getBoard(@PathVariable final String joinKey, @RequestBody final String password) {
 
         final Board board = password == null ?
