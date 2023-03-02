@@ -17,7 +17,7 @@ public class Board {
     private Timestamp created;
     @NotBlank
     private String title;
-    @Size(min=1) // A password cannot be empty, but it can be null (non-existent).
+    @Size(min = 1) // A password cannot be empty, but it can be null (non-existent).
     private String password;
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("index")
