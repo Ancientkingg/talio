@@ -1,5 +1,7 @@
 package commons;
 
+import commons.exceptions.ColumnNotFoundException;
+
 import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -119,6 +121,37 @@ public class Board {
      */
     public SortedSet<Column> getColumns() {
         return columns;
+    }
+
+    /**
+     * Finds a column by its heading
+     * @param columnName the heading of the column to look for
+     * @return the {@link Column} with {@code columnName} as {@code heading}
+     */
+    public Column getColumnByName(final String columnName) {
+        if (columnName == null) return null;
+
+        for (Column column : columns) {
+            if (column.getHeading().equals(columnName)) {
+                return column;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Adds a card to the column with the name {@code columnName in the current board
+     * @param card The card to add
+     * @param columnName The column to add the card to
+     * @throws ColumnNotFoundException When the requested column cannot be found in the board
+     */
+    public void addCardToColumn(final Card card, final String columnName) throws ColumnNotFoundException {
+        final Column column = this.getColumnByName(columnName);
+
+        if (column == null) throw new ColumnNotFoundException("The column " + columnName + " cannot be found in the board " + this.title);
+
+        column.addCard(card);
     }
 
     /**

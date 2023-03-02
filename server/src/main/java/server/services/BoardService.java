@@ -3,6 +3,7 @@ package server.services;
 import commons.Board;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
+import server.exceptions.BoardNotFoundException;
 
 @Service
 public class BoardService {
@@ -26,7 +27,7 @@ public class BoardService {
     public Board getBoardWithKey(final String joinKey) {
         if (br.existsById(joinKey))
             return br.getById(joinKey);
-        return null;
+        throw new BoardNotFoundException(joinKey);
     }
 
     /**
