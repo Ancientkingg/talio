@@ -15,8 +15,33 @@
  */
 package client.utils;
 
+<<<<<<< HEAD
+=======
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+>>>>>>> d3b276b006b9b7cf7381e21226d8968e09cde0ef
 public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
+<<<<<<< HEAD
+=======
+    /**
+     * Gets quotes the hard way
+     * @throws IOException
+     */
+    public void getQuotesTheHardWay() throws IOException {
+        final URL url = new URL("http://localhost:8080/api/quotes");
+        final InputStream is = url.openConnection().getInputStream();
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+    }
+>>>>>>> d3b276b006b9b7cf7381e21226d8968e09cde0ef
 }
