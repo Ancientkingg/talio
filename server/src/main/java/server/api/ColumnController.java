@@ -5,7 +5,6 @@ import commons.Card;
 import commons.Column;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.exceptions.ResourceNotFoundException;
 import server.services.ColumnService;
 
 import java.util.SortedSet;
@@ -28,7 +27,7 @@ public class ColumnController {
      * @param columnPostBody Column to be created
      * @return The Column saved in the ColumnRepository
      */
-    @PostMapping("/add/column") // can be changed later
+    @PostMapping("/{joinKey}/add/column") // can be changed later
     public ResponseEntity<Column> addColumn(@RequestBody final Column columnPostBody, @PathVariable final String joinKey, @RequestBody String password) {
 
         Board board = columnService.getBoardService().getBoardWithKeyAndPassword(joinKey, password);
