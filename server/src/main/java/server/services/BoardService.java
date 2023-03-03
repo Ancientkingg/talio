@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.exceptions.ResourceNotFoundException;
+import server.exceptions.UnauthorizedResourceException;
 
 @Service
 public class BoardService {
@@ -43,7 +44,7 @@ public class BoardService {
             final Board board = br.getById(joinKey);
             if (password == null || board.getPassword().equals(password))
                 return board;
-            return null;
+            throw new UnauthorizedResourceException(Board.class, joinKey);
         }
         throw new ResourceNotFoundException(Board.class, joinKey);
     }

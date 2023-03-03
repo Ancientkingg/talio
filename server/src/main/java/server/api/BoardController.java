@@ -37,12 +37,6 @@ public class BoardController {
                 boardService.getBoardWithKey(joinKey) :
                 boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        // If the board is null, it means that the password was incorrect
-        // and the user is not authorized to request this board
-        if (board == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         return ResponseEntity.ok(board);
     }
 

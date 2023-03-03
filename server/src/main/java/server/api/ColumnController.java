@@ -38,9 +38,6 @@ public class ColumnController {
         // One way to do get a board - downside - repeating code already in BoardController
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        if (board == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
 
         final String heading = columnPostBody.getHeading();
         final int index = columnPostBody.getIndex();
