@@ -78,7 +78,7 @@ public class Column implements Comparable<Column> {
      * Getter for the cards in the column
      * @return column cards
      */
-    public Set<Card> getCards() {
+    public SortedSet<Card> getCards() {
         return cards;
     }
 

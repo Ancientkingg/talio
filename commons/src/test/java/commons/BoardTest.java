@@ -1,6 +1,5 @@
 package commons;
 
-import com.sun.source.tree.Tree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -74,9 +73,9 @@ class BoardTest {
     void addList() {
         Board board = new Board("joinme", "title", "password1", cl1);
         for (Column cl : cl2) {
-            assertTrue(board.addList(cl));
+            assertTrue(board.addColumn(cl));
             assertTrue(board.getColumns().contains(cl));
-            assertFalse(board.addList(cl));
+            assertFalse(board.addColumn(cl));
         }
     }
 
@@ -85,9 +84,9 @@ class BoardTest {
         Board board = new Board("joinme", "title", "password1", cl1);
         for (Column cl : new HashSet<>(cl1)) {
             assertTrue(board.getColumns().contains(cl));
-            assertTrue(board.removeList(cl));
+            assertTrue(board.removeColumn(cl));
             assertFalse(board.getColumns().contains(cl));
-            assertFalse(board.removeList(cl));
+            assertFalse(board.removeColumn(cl));
         }
     }
 
