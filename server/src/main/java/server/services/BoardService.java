@@ -7,6 +7,8 @@ import server.database.BoardRepository;
 import server.api.exceptions.ResourceNotFoundException;
 import server.api.exceptions.UnauthorizedResourceException;
 
+import java.util.Objects;
+
 @Service
 public class BoardService {
     private final BoardRepository br;
@@ -42,7 +44,7 @@ public class BoardService {
     public Board getBoardWithKeyAndPassword(final String joinKey, final String password) {
         if (br.existsById(joinKey)) {
             final Board board = br.getById(joinKey);
-            if (password == null || board.getPassword().equals(password))
+            if (Objects.equals(board.getPassword(), password)) // null safe - Board.getPassword could return null
                 return board;
             throw new UnauthorizedResourceException(Board.class, joinKey);
         }

@@ -33,12 +33,10 @@ public class ColumnController {
      * @return The Column saved in the ColumnRepository
      */
     @PostMapping("/{joinKey}/add/column") // can be changed later
-    public ResponseEntity<Column> addColumn(@Valid @RequestBody final Column columnDTO,
-                                            @PathVariable final String joinKey,
+    public ResponseEntity<Column> addColumn(@Valid @RequestBody final Column columnDTO, @PathVariable final String joinKey,
                                             @RequestBody final String password)
-    {
+    { // again weird checkstyle rule
 
-        // One way to do get a board - downside - repeating code already in BoardController
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
 
