@@ -4,10 +4,7 @@ import client.items.Board;
 import client.items.Column;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -29,8 +26,12 @@ public class OverviewCtrl {
     @FXML
     private HBox columnBox;
 
+    /**
+     * Injects mainCtrl instance into controller to allow access to its methods
+     * @param mainCtrl Shared instance of MainCtrl
+     */
     @Inject
-    public OverviewCtrl(MainCtrl mainCtrl) {
+    public OverviewCtrl(final MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.boardList = new LinkedList<>();
     }
@@ -46,22 +47,46 @@ public class OverviewCtrl {
         mainCtrl.showCreateColumn();
     }
 
-    public void refresh(){
+    /**
+     * Refreshes the overview scene columnBox by iterating over each column in the current board
+     * and displaying the corresponding titles. Will also refresh tasks in the future.
+     *
+     * Is this inefficient? Or does one have to reload all FXML objects to refresh?
+     */
+    public void refresh() {
 
-        for (Column col : currentBoard.getColumnList()){
-            VBox taskBox = new VBox();
+        for (final Column col : currentBoard.getColumnList()) {
+            final VBox taskBox = new VBox();
             columnBox.getChildren().add(taskBox);
 
-            Text columnTitle = new Text();
+            final Text columnTitle = new Text();
             columnTitle.setText(col.getTitle());
             taskBox.getChildren().add(columnTitle);
         }
     }
 
-    public void addBoard(Board board) { boardList.add(board); }
+    /**
+     * Adds board to boardList
+     * @param board
+     */
+    public void addBoard(final Board board) { boardList.add(board); }
 
-    public void setCurrentBoard(Board board) { currentBoard = board; }
+    /**
+     * Sets the board displayed in overview stage to parameter and loads that board.
+     * This method doesn't imply that a displayed board must also be in the boardList of
+     * the overviewCtrl, which should always be the case. Depending on implementation later
+     * on this may need to be adjusted.
+     * @param board Board to be displayed
+     */
+    public void setCurrentBoard(final Board board) {
+        currentBoard = board;
+        mainCtrl.refreshOverview();
+    }
 
-    public Board getCurrentBoard(){ return currentBoard; }
+    /**
+     * Gets currently loaded board
+     * @return Currently loaded board as Board
+     */
+    public Board getCurrentBoard() { return currentBoard; }
 
 }

@@ -3,9 +3,6 @@ package client.scenes;
 import client.items.Board;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -22,8 +19,12 @@ public class JoinBoardCtrl {
     @FXML
     private TextField boardName;
 
+    /**
+     * Injects mainCtrl instance into controller to allow access to its methods
+     * @param mainCtrl Shared instance of MainCtrl
+     */
     @Inject
-    public JoinBoardCtrl(MainCtrl mainCtrl) {
+    public JoinBoardCtrl(final MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
 
@@ -33,11 +34,10 @@ public class JoinBoardCtrl {
      * @throws IOException throws IO exception if FXML file not found
      */
     public void joinBoard(final ActionEvent e) throws IOException {
-        Board board = new Board(boardName.getText());
+        final Board board = new Board(boardName.getText());
         mainCtrl.addBoard(board);
         mainCtrl.setCurrentBoard(board);
-        mainCtrl.closePrimaryStage();
-        mainCtrl.showOverview();
+        mainCtrl.closeSecondaryStage();
     }
 
     /**
@@ -46,10 +46,13 @@ public class JoinBoardCtrl {
      * @throws IOException throws IO exception if FXML file not found
      */
     public void createBoard(final ActionEvent e) throws IOException {
-        mainCtrl.closePrimaryStage();
+        mainCtrl.closeSecondaryStage();
         mainCtrl.showCreateBoard();
     }
 
+    /**
+     * Clears fields to avoid accidental repetition of prior arguments
+     */
     public void clearFields() {
         boardName.clear();
     }

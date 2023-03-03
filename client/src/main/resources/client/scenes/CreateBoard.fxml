@@ -9,6 +9,6 @@
    <children>
       <Label layoutX="115.0" layoutY="135.0" text="Board Name" />
       <TextField fx:id="boardName" layoutX="212.0" layoutY="131.0" prefHeight="26.0" prefWidth="258.0" />
-      <Button layoutX="256.0" layoutY="187.0" mnemonicParsing="false" onAction="#finalizeCreateBoard" text="Create Board" />
+      <Button layoutX="256.0" layoutY="187.0" mnemonicParsing="false" onAction="#createBoard" text="Create Board" />
    </children>
 </AnchorPane>

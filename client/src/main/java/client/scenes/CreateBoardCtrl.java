@@ -3,8 +3,6 @@ package client.scenes;
 import client.items.Board;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -23,8 +21,12 @@ public class CreateBoardCtrl {
     @FXML
     private TextField boardName;
 
+    /**
+     * Injects mainCtrl instance into controller to allow access to its methods
+     * @param mainCtrl Shared instance of MainCtrl
+     */
     @Inject
-    public CreateBoardCtrl(MainCtrl mainCtrl) {
+    public CreateBoardCtrl(final MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
 
@@ -34,14 +36,16 @@ public class CreateBoardCtrl {
      * @param e "create board" button on click
      * @throws IOException thrown if method encounters IO exception/ FXML file is not found
      */
-    public void finalizeCreateBoard(final ActionEvent e) throws IOException {
-        Board board = new Board(boardName.getText());
+    public void createBoard(final ActionEvent e) throws IOException {
+        final Board board = new Board(boardName.getText());
         mainCtrl.addBoard(board);
         mainCtrl.setCurrentBoard(board);
         mainCtrl.closeSecondaryStage();
-        mainCtrl.showOverview();
     }
 
+    /**
+     * Clears fields to avoid accidental repetition of prior arguments
+     */
     public void clearFields() {
         boardName.clear();
     }

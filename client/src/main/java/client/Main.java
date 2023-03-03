@@ -50,12 +50,12 @@ public class Main extends Application {
     @Override
     public void start(final Stage primaryStage) throws IOException {
 
-        var overview = FXML.load(OverviewCtrl.class, "client", "scenes", "Overview.fxml");
-        var joinBoard = FXML.load(JoinBoardCtrl.class, "client", "scenes", "JoinBoard.fxml");
-        var createBoard = FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
-        var createColumn = FXML.load(CreateColumnCtrl.class, "client", "scenes", "CreateColumn.fxml");
+        final var overview = FXML.load(OverviewCtrl.class, "client", "scenes", "Overview.fxml");
+        final var joinBoard = FXML.load(JoinBoardCtrl.class, "client", "scenes", "JoinBoard.fxml");
+        final var createBoard = FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
+        final var createColumn = FXML.load(CreateColumnCtrl.class, "client", "scenes", "CreateColumn.fxml");
 
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createColumn);
     }
 }

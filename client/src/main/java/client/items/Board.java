@@ -9,18 +9,35 @@ public class Board {
     private String password;
     private List<Column> columnList;
 
-    public Board(String title){
+    /**
+     * Constructs a new board without a password
+     * @param title String board title
+     */
+    public Board(final String title) {
         this.title = title;
         this.columnList = new LinkedList<Column>();
     }
 
-    public void Board(String title, String password){
+    /**
+     * Constructs new board with a password
+     * @param title String board title
+     * @param password String password
+     */
+    public Board(final String title, final String password) {
         this.title = title;
         this.password = password;
         this.columnList = new LinkedList<Column>();
     }
 
+    /**
+     * Getter for columnList that contains all columns for this board
+     * @return List<Column>
+     */
     public List<Column> getColumnList() { return columnList; }
 
-    public void addColumn(Column col) { columnList.add(col); }
+    /**
+     * Adds columns to columnList
+     * @param col Column to add
+     */
+    public void addColumn(final Column col) { columnList.add(col); }
 }
