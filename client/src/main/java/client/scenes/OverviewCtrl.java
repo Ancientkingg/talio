@@ -6,12 +6,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
-public class Demo {
+public class OverviewCtrl {
+    private final MainCtrl mainCtrl;
+
     private Stage stage; //Variables declared globally for future controllers
     private Scene scene;
 
+    @Inject
+    public OverviewCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
 
     /**
@@ -21,11 +28,7 @@ public class Demo {
      * @throws IOException throws IO exception if FXML file not found or other IO mismatch
      */
     public void openColumnInput(final ActionEvent e) throws IOException {
-        final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/CreateColumn.fxml"));
-        stage = new Stage(); // new stage to create pop-up
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        mainCtrl.showCreateColumn();
     }
 
 

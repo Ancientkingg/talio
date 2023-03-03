@@ -7,13 +7,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
-public class CreateBoard {
+public class CreateBoardCtrl {
+    private final MainCtrl mainCtrl;
 
     private Stage stage; //variables declared with global scope for future controllers
     private Scene scene;
     private Parent root;
+
+    @Inject
+    public CreateBoardCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Routes the user to the overview of the board they just created
@@ -22,10 +29,6 @@ public class CreateBoard {
      * @throws IOException thrown if method encounters IO exception/ FXML file is not found
      */
     public void finalizeCreateBoard(final ActionEvent e) throws IOException {
-        final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/Overview.fxml"));
-        final Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow(); // Window is not changed, so current stage is passed through
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        mainCtrl.showOverview();
     }
 }

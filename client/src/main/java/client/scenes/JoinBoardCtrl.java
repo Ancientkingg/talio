@@ -7,12 +7,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
-public class JoinBoard {
+public class JoinBoardCtrl {
+    private final MainCtrl mainCtrl;
 
     private Stage stage;
     private Scene scene;
+
+    @Inject
+    public JoinBoardCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Allows user to join a board upon inputting the board join code
@@ -20,11 +27,7 @@ public class JoinBoard {
      * @throws IOException throws IO exception if FXML file not found
      */
     public void joinBoard(final ActionEvent e) throws IOException {
-        final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/Overview.fxml"));
-        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        mainCtrl.showOverview();
     }
 
     /**
@@ -33,11 +36,7 @@ public class JoinBoard {
      * @throws IOException throws IO exception if FXML file not found
      */
     public void createBoard(final ActionEvent e) throws IOException {
-        final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/CreateBoard.fxml"));
-        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        mainCtrl.showCreateBoard();
     }
 
 

@@ -15,8 +15,10 @@
  */
 package client;
 
+import client.scenes.*;
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.google.inject.Scopes;
 
 public class MyModule implements Module {
 
@@ -26,5 +28,10 @@ public class MyModule implements Module {
      */
     @Override
     public void configure(final Binder binder) {
+        binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(OverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(JoinBoardCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CreateColumnCtrl.class).in(Scopes.SINGLETON);
     }
 }
