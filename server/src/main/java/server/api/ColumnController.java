@@ -27,21 +27,21 @@ public class ColumnController {
 
     /**
      * Create a Column
-     * @param columnPostBody Column to be created
+     * @param columnDTO Column to be created
      * @param joinKey Key used to identify board
      * @param password Password to board
      * @return The Column saved in the ColumnRepository
      */
     @PostMapping("/{joinKey}/add/column") // can be changed later
-    public ResponseEntity<Column> addColumn(@RequestBody final Column columnPostBody, @PathVariable final String joinKey, @RequestBody final String password) {
+    public ResponseEntity<Column> addColumn(@RequestBody final Column columnDTO, @PathVariable final String joinKey, @RequestBody final String password) {
 
         // One way to do get a board - downside - repeating code already in BoardController
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
 
-        final String heading = columnPostBody.getHeading();
-        final int index = columnPostBody.getIndex();
-        final SortedSet<Card> cards = columnPostBody.getCards();
+        final String heading = columnDTO.getHeading();
+        final int index = columnDTO.getIndex();
+        final SortedSet<Card> cards = columnDTO.getCards();
 
         final Column column = new Column(heading, index, cards);
 

@@ -42,15 +42,15 @@ public class BoardController {
 
     /**
      * Creates a {@link Board}
-     * @param boardPostBody {@link Board} to create
+     * @param boardDTO {@link Board} to create
      * @return The {@link Board} that was saved in the {@code BoardRepository}, so the client can ensure data integrity.
      */
     @PostMapping("/create")
-    public ResponseEntity<Board> createBoard(@Valid @RequestBody final Board boardPostBody) {
+    public ResponseEntity<Board> createBoard(@Valid @RequestBody final Board boardDTO) {
 
         final String boardJoinKey = boardService.generateJoinKey();
 
-        final Board board = new Board(boardJoinKey, boardPostBody.getTitle(), boardPostBody.getPassword(), new TreeSet<>());
+        final Board board = new Board(boardJoinKey, boardDTO.getTitle(), boardDTO.getPassword(), new TreeSet<>());
 
         final Board savedBoard = boardService.saveBoard(board);
         return ResponseEntity.ok(savedBoard);
