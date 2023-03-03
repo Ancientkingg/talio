@@ -60,13 +60,12 @@ public class BoardService {
 
     /**
      * Generates a join key for a board
-     * @param partialJoinKey The partial join key
-     * @return The full join key
+     * @return The join key
      */
-    public String generateJoinKey(final String partialJoinKey) {
-        String joinKey = partialJoinKey + "-" + RandomStringUtils.random(6, "0123456789abcdef");
+    public String generateJoinKey() {
+        String joinKey = RandomStringUtils.random(6, "0123456789abcdef");
         while (br.existsById(joinKey)) {
-            joinKey = partialJoinKey + "-" + RandomStringUtils.random(6, "0123456789abcdef");
+            joinKey = RandomStringUtils.random(6, "0123456789abcdef");
         }
         return joinKey;
     }

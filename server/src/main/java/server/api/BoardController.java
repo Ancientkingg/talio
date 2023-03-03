@@ -48,8 +48,7 @@ public class BoardController {
     @PostMapping("/create")
     public ResponseEntity<Board> createBoard(@Valid @RequestBody final Board boardPostBody) {
 
-        final String boardPartialJoinKey = boardPostBody.getJoinKey();
-        final String boardJoinKey = boardService.generateJoinKey(boardPartialJoinKey);
+        final String boardJoinKey = boardService.generateJoinKey();
 
         final Board board = new Board(boardJoinKey, boardPostBody.getTitle(), boardPostBody.getPassword(), new TreeSet<>());
 
