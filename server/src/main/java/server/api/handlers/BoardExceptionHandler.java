@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import server.exceptions.ResourceNotFoundException;
-import server.exceptions.UnauthorizedResourceException;
+import server.api.exceptions.ResourceNotFoundException;
+import server.api.exceptions.UnauthorizedResourceException;
 
 @RestControllerAdvice
 public class BoardExceptionHandler {

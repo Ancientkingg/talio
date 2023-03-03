@@ -4,8 +4,8 @@ import commons.Board;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
-import server.exceptions.ResourceNotFoundException;
-import server.exceptions.UnauthorizedResourceException;
+import server.api.exceptions.ResourceNotFoundException;
+import server.api.exceptions.UnauthorizedResourceException;
 
 @Service
 public class BoardService {

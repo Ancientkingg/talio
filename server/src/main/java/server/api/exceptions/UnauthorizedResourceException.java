@@ -1,4 +1,4 @@
-package server.exceptions;
+package server.api.exceptions;
 
 public class UnauthorizedResourceException extends RuntimeException {
 
