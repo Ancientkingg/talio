@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
 
+import javax.validation.Valid;
 import java.util.SortedSet;
 
 @RestController
@@ -33,7 +34,7 @@ public class ColumnController {
      * @return The Column saved in the ColumnRepository
      */
     @PostMapping("/{joinKey}/add/column") // can be changed later
-    public ResponseEntity<Column> addColumn(@RequestBody final Column columnDTO, @PathVariable final String joinKey, @RequestBody final String password) {
+    public ResponseEntity<Column> addColumn(@Valid @RequestBody final Column columnDTO, @PathVariable final String joinKey, @RequestBody final String password) {
 
         // One way to do get a board - downside - repeating code already in BoardController
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);

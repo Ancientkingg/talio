@@ -1,15 +1,19 @@
 package commons;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
 public class Column implements Comparable<Column> {
     @Id
+    @NotBlank
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotNull
     private int index;
-
+    @NotBlank
     private String heading;
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("priority")
