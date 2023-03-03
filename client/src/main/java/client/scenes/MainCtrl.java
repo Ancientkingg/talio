@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.items.Board;
+import client.items.Column;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,6 +13,7 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage secondaryStage;
 
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoardScene;
@@ -27,6 +30,7 @@ public class MainCtrl {
     public void initialize(final Stage primaryStage, Pair<OverviewCtrl, Parent> overview, Pair<JoinBoardCtrl, Parent> joinBoard,
                       Pair<CreateBoardCtrl, Parent> createBoard, Pair<CreateColumnCtrl, Parent> createColumn){
         this.primaryStage = primaryStage;
+        this.secondaryStage = new Stage();
 
         this.overviewCtrl = overview.getKey();
         this.overviewScene = new Scene(overview.getValue());
@@ -48,23 +52,47 @@ public class MainCtrl {
     }
 
     public void showJoinBoard() {
+        joinBoardCtrl.clearFields();
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoardScene);
         primaryStage.show();
     }
 
     public void showCreateBoard() {
-        Stage secondaryStage = new Stage();
+        createBoardCtrl.clearFields();
         secondaryStage.setTitle("Talio: Create Board");
         secondaryStage.setScene(createBoardScene);
         secondaryStage.show();
     }
 
     public void showCreateColumn() {
-        Stage secondaryStage = new Stage();
+        createColumnCtrl.clearFields();
         secondaryStage.setTitle("Talio: Create Column");
         secondaryStage.setScene(createColumnScene);
         secondaryStage.show();
     }
 
+    public void closeSecondaryStage() {
+        secondaryStage.close();
+    }
+
+    public void closePrimaryStage() {
+        primaryStage.close();
+    }
+
+    public void addColumn(Column col) {
+        overviewCtrl.getCurrentBoard().addColumn(col);
+    }
+
+    public void refreshOverview() {
+        overviewCtrl.refresh();
+    }
+
+    public void addBoard(Board board) {
+        overviewCtrl.addBoard(board);
+    }
+
+    public void setCurrentBoard(Board board) {
+        overviewCtrl.setCurrentBoard(board);
+    }
 }

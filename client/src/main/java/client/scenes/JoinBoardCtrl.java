@@ -1,10 +1,13 @@
 package client.scenes;
 
+import client.items.Board;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import javax.inject.Inject;
@@ -15,6 +18,9 @@ public class JoinBoardCtrl {
 
     private Stage stage;
     private Scene scene;
+
+    @FXML
+    private TextField boardName;
 
     @Inject
     public JoinBoardCtrl(MainCtrl mainCtrl) {
@@ -27,6 +33,10 @@ public class JoinBoardCtrl {
      * @throws IOException throws IO exception if FXML file not found
      */
     public void joinBoard(final ActionEvent e) throws IOException {
+        Board board = new Board(boardName.getText());
+        mainCtrl.addBoard(board);
+        mainCtrl.setCurrentBoard(board);
+        mainCtrl.closePrimaryStage();
         mainCtrl.showOverview();
     }
 
@@ -36,9 +46,12 @@ public class JoinBoardCtrl {
      * @throws IOException throws IO exception if FXML file not found
      */
     public void createBoard(final ActionEvent e) throws IOException {
+        mainCtrl.closePrimaryStage();
         mainCtrl.showCreateBoard();
     }
 
-
+    public void clearFields() {
+        boardName.clear();
+    }
 
 }

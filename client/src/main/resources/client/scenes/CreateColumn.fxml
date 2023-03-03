@@ -13,7 +13,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="columnName" layoutX="81.0" layoutY="70.0" onAction="#enterColumnName" />
-      <Button layoutX="134.0" layoutY="117.0" mnemonicParsing="false" onAction="#enterColumnName" text="Submit" />
+      <TextField fx:id="columnName" layoutX="81.0" layoutY="70.0" />
+      <Button layoutX="134.0" layoutY="117.0" mnemonicParsing="false" onAction="#createColumn" text="Submit" />
    </children>
 </AnchorPane>
