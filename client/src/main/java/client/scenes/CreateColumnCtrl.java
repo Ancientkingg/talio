@@ -1,12 +1,18 @@
 package client.scenes;
 
-import client.items.Column;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import commons.*;
 
+import java.util.TreeSet;
+
+import javafx.fxml.FXML;
 import javax.inject.Inject;
 
+import javafx.scene.control.TextField;
+
+
 public class CreateColumnCtrl {
+    private int demoIndexCounter = 0;
+
     private final MainCtrl mainCtrl;
 
     @FXML
@@ -25,7 +31,7 @@ public class CreateColumnCtrl {
      * Will be used to create a column when user passes through the column name
      */
     public void createColumn() {
-        final Column column = new Column(columnName.getText());
+        final Column column = new Column(columnName.getText(), demoIndexCounter++, new TreeSet<>());
         mainCtrl.addColumn(column);
         mainCtrl.closeSecondaryStage();
         mainCtrl.showOverview();

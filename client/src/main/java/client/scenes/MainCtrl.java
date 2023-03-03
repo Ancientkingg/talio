@@ -1,27 +1,28 @@
 package client.scenes;
 
-import client.items.Board;
-import client.items.Column;
+import commons.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MainCtrl {
+
+    private List<Board> boardList;
+    private Board currentBoard;
 
     private Stage primaryStage;
     private Stage secondaryStage;
-
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoardScene;
-
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
-
     private CreateColumnCtrl createColumnCtrl;
     private Scene createColumnScene;
-
     private CreateBoardCtrl createBoardCtrl;
     private Scene createBoardScene;
 
@@ -52,6 +53,8 @@ public class MainCtrl {
         this.createBoardScene = new Scene(createBoard.getValue());
         this.createColumnCtrl = createColumn.getKey();
         this.createColumnScene = new Scene(createColumn.getValue());
+
+        this.boardList = new LinkedList<>();
 
         showOverview();
         showJoinBoard();
@@ -115,16 +118,16 @@ public class MainCtrl {
      * @param col Column to be added
      */
     public void addColumn(final Column col) {
-        overviewCtrl.getCurrentBoard().addColumn(col);
+        if (!currentBoard.addList(col)) {
+            throw new RuntimeException("Coudlnt add new col");
+        }
     }
 
     /**
-     * Adds board to overview (does not directly effect which board is displayed)
-     * @param board The board to add
+     * Adds board to boardList
+     * @param board Board to add
      */
-    public void addBoard(final Board board) {
-        overviewCtrl.addBoard(board);
-    }
+    public void addBoard(final Board board) { boardList.add(board); }
 
     /**
      * Sets the board displayed in overview stage to parameter and loads that board.
@@ -134,8 +137,15 @@ public class MainCtrl {
      * @param board Board to be displayed
      */
     public void setCurrentBoard(final Board board) {
-        overviewCtrl.setCurrentBoard(board);
+        currentBoard = board;
+        refreshOverview();
     }
+
+    /**
+     * Gets currently loaded board
+     * @return Currently loaded board as Board
+     */
+    public Board getCurrentBoard() { return currentBoard; }
 
     /**
      * Refreshes overview stage.
