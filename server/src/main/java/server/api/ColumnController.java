@@ -48,7 +48,7 @@ public class ColumnController {
 
         final Column column = new Column(heading, index, cards);
 
-        board.addList(column);
+        board.addColumn(column);
         boardService.saveBoard(board);
 
         return ResponseEntity.ok(column);

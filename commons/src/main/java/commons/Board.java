@@ -172,7 +172,7 @@ public class Board {
      *
      * @return success/failure
      */
-    public boolean addList(final Column cardList) {
+    public boolean addColumn(final Column cardList) {
         return this.columns.add(cardList);
     }
 
@@ -183,7 +183,7 @@ public class Board {
      *
      * @return success/failure
      */
-    public boolean removeList(final Column cardList) {
+    public boolean removeColumn(final Column cardList) {
         return this.columns.remove(cardList);
     }
 
