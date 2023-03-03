@@ -2,6 +2,7 @@ package client.scenes;
 
 import commons.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
@@ -41,10 +42,21 @@ public class OverviewCtrl {
         columnBox.getChildren().clear();
         for (final Column col : mainCtrl.getCurrentBoard().getColumns()) {
             final VBox taskBox = new VBox();
+            taskBox.setStyle(
+                    "-fx-border-style: solid inside;" +
+                    "-fx-border-width: 2;" +
+                    "-fx-border-insets: 5;" +
+                    "-fx-border-radius: 5;" +
+                    "-fx-border-color: black;");
+            taskBox.setPrefHeight(364);
+            taskBox.setPrefWidth(157);
             columnBox.getChildren().add(taskBox);
 
-            final Text columnTitle = new Text();
+            final TextArea columnTitle = new TextArea();
+            columnTitle.setPrefHeight(27);
+            columnTitle.setPrefWidth(153);
             columnTitle.setText(col.getHeading());
+            columnTitle.setFont(new Font("System Bold", 12));
             taskBox.getChildren().add(columnTitle);
         }
     }
