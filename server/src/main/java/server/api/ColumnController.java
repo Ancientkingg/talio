@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
 
-import javax.validation.Valid;
-import java.util.SortedSet;
+import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/columns")
@@ -25,30 +24,50 @@ public class ColumnController {
         this.boardService = boardService;
     }
 
+
     /**
-     * Create a Column
-     * @param columnDTO Column to be created
+     * Add a Column
      * @param joinKey Key used to identify board
+     * @param columnHeading Heading of column to be added
      * @param password Password to board
-     * @return The Column saved in the ColumnRepository
+     * @param index Index of column to be added
+     * @return The Column added to the ColumnRepository
      */
-    @PostMapping("/{joinKey}/add/column") // can be changed later
-    public ResponseEntity<Column> addColumn(@Valid @RequestBody final Column columnDTO, @PathVariable final String joinKey,
-                                            @RequestBody final String password)
-    { // again weird checkstyle rule
+    @PostMapping("/{joinKey}/create/{columnHeading}")
+    public ResponseEntity<Column> addColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
+                                            @RequestBody final String password, @RequestParam final int index)
+    {
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
 
-        final String heading = columnDTO.getHeading();
-        final int index = columnDTO.getIndex();
-        final SortedSet<Card> cards = columnDTO.getCards();
-
-        final Column column = new Column(heading, index, cards);
+        final Column column = new Column(columnHeading, index, new TreeSet<Card>());
 
         board.addColumn(column);
         boardService.saveBoard(board);
 
         return ResponseEntity.ok(column);
+    }
+
+    /**
+     * Remove a Column
+     * @param joinKey Key used to identify board
+     * @param columnHeading Heading of column to be removed
+     * @param password Password to board
+     * @return The Column removed from the ColumnRepository
+     */
+    @PostMapping("/{joinKey}/remove/{columnHeading}")
+    public ResponseEntity<Column> removeColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
+                                               @RequestBody final String password)
+    {
+
+        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+
+        final Column toBeRemoved = board.getColumnByName(columnHeading);
+
+        board.removeColumn(toBeRemoved);
+        boardService.saveBoard(board);
+
+        return ResponseEntity.ok(toBeRemoved);
     }
 }
