@@ -1,4 +1,6 @@
-package commons;
+package commons.DTOs;
+
+import commons.Card;
 
 public class CardDTO {
 
