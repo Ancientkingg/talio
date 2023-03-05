@@ -4,13 +4,11 @@ package server.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Board;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import server.api.exceptions.UnauthorizedResourceException;
 import server.services.BoardService;
 
 import java.sql.Timestamp;
@@ -18,12 +16,8 @@ import java.time.Clock;
 import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
