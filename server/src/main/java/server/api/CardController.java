@@ -3,6 +3,7 @@ package server.api;
 import commons.Board;
 import commons.Card;
 import commons.DTOs.CardDTO;
+import commons.exceptions.ColumnNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
@@ -40,7 +41,11 @@ public class CardController {
 
         final Card card = cardDTO.getCard();
 
-        board.addCardToColumn(card, columnName);
+        try {
+            board.addCardToColumn(card, columnName);
+        } catch (ColumnNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
         boardService.saveBoard(board);
 
         return ResponseEntity.ok(card);
