@@ -4,8 +4,10 @@ import commons.Board;
 import commons.Card;
 import commons.DTOs.CardDTO;
 import commons.exceptions.ColumnNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 
 import javax.validation.Valid;
@@ -44,7 +46,7 @@ public class CardController {
         try {
             board.addCardToColumn(card, columnName);
         } catch (ColumnNotFoundException e) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The column " + columnName + " was not found in the board with join key " + joinKey);
         }
         boardService.saveBoard(board);
 
