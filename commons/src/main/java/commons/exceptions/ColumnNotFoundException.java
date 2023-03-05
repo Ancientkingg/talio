@@ -1,6 +1,6 @@
 package commons.exceptions;
 
-public class ColumnNotFoundException extends RuntimeException {
+public class ColumnNotFoundException extends Exception {
     /**
      * Constructs a {@link ColumnNotFoundException}.
      * This exception is thrown when a column in a board cannot be found
