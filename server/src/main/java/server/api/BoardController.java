@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.TreeSet;
 
 @RestController
@@ -14,12 +17,15 @@ import java.util.TreeSet;
 public class BoardController {
     private final BoardService boardService;
 
+    private final Clock clock;
+
     /**
      * Constructor for the Board Controller
      * @param boardService Dependency Injection for the board service
      */
-    public BoardController(final BoardService boardService) {
+    public BoardController(final BoardService boardService, final Clock clock) {
         this.boardService = boardService;
+        this.clock = clock;
     }
 
     /**
@@ -48,7 +54,7 @@ public class BoardController {
 
         final String boardJoinKey = boardService.generateJoinKey();
 
-        final Board board = new Board(boardJoinKey, boardDTO.getTitle(), boardDTO.getPassword(), new TreeSet<>());
+        final Board board = new Board(boardJoinKey, boardDTO.getTitle(), boardDTO.getPassword(), new TreeSet<>(), Timestamp.from(Instant.now(clock)));
 
         final Board savedBoard = boardService.saveBoard(board);
         return ResponseEntity.ok(savedBoard);

@@ -15,6 +15,7 @@
  */
 package server;
 
+import java.time.Clock;
 import java.util.Random;
 
 import org.springframework.context.annotation.Bean;
@@ -30,5 +31,10 @@ public class Config {
     @Bean
     public Random getRandom() {
         return new Random();
+    }
+
+    @Bean
+    public Clock getClock() {
+        return Clock.systemDefaultZone();
     }
 }

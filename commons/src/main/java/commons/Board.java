@@ -49,6 +49,22 @@ public class Board {
     }
 
     /**
+     * Constructor for a board object with password
+     * @param joinKey Key for joining
+     * @param title Title of the board
+     * @param password Password for the board
+     * @param columns A set containing the board columns
+     * @param timestamp Timestamp for the board creation
+     */
+    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns, Timestamp timestamp) {
+        this.joinKey = joinKey;
+        this.title = title;
+        this.password = password;
+        this.columns = columns;
+        this.created = timestamp;
+    }
+
+    /**
      * Constructor for a board object without a password
      * Sets the created date to now
      *
@@ -202,8 +218,8 @@ public class Board {
         return joinKey.equals(board.joinKey) &&
                 title.equals(board.title) &&
                 created.equals(board.created) &&
-                password.equals(board.password) &&
-                columns.equals(board.columns);
+                Objects.equals(password, board.password) &&
+                Objects.equals(columns, board.columns);
     }
 
     /**
