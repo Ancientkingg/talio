@@ -56,7 +56,7 @@ public class Board {
      * @param columns A set containing the board columns
      * @param timestamp Timestamp for the board creation
      */
-    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns, Timestamp timestamp) {
+    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns, final Timestamp timestamp) {
         this.joinKey = joinKey;
         this.title = title;
         this.password = password;

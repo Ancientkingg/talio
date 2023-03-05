@@ -33,6 +33,10 @@ public class Config {
         return new Random();
     }
 
+    /**
+     * Gets the clock
+     * @return the clock
+     */
     @Bean
     public Clock getClock() {
         return Clock.systemDefaultZone();

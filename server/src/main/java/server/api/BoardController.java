@@ -22,6 +22,7 @@ public class BoardController {
     /**
      * Constructor for the Board Controller
      * @param boardService Dependency Injection for the board service
+     * @param clock Dependency Injection for the clock
      */
     public BoardController(final BoardService boardService, final Clock clock) {
         this.boardService = boardService;
