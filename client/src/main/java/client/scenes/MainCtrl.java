@@ -111,11 +111,11 @@ public class MainCtrl {
      * Shows createColumn stage in secondaryStage
      */
     public void showCreateTask() {
-        createTaskCtrl.clearFields();
-        createTaskCtrl.loadMenuItems();
-        secondaryStage.setTitle("Talio: Create Task");
-        secondaryStage.setScene(createTaskScene);
-        secondaryStage.show();
+//        createTaskCtrl.clearFields();
+//        createTaskCtrl.loadMenuItems();
+//        secondaryStage.setTitle("Talio: Create Task");
+//        secondaryStage.setScene(createTaskScene);
+//        secondaryStage.show();
     }
 
     /**

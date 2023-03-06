@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.exceptions.BoardChangeException;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -24,12 +25,14 @@ public class CreateBoardCtrl {
 
     /**
      * Routes the user to the overview of the board they just created
-     * upon action event e (create board button press)
      */
-    public void createBoard() {
+    public void createBoard() throws BoardChangeException {
         final Board board = new Board("", boardName.getText(), new TreeSet<>());
         mainCtrl.addBoard(board);
         mainCtrl.setCurrentBoard(board);
+        final Column col = new Column("Default Header", 0, new TreeSet<>());
+        mainCtrl.addColumn(col);
+        mainCtrl.refreshOverview();
         mainCtrl.closeSecondaryStage();
     }
 
