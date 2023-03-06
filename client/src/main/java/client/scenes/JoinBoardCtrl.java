@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.exceptions.BoardChangeException;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -25,7 +26,7 @@ public class JoinBoardCtrl {
     /**
      * Allows user to join a board upon inputting the board join code
      */
-    public void joinBoard() {
+    public void joinBoard() throws BoardChangeException {
         final Board board = new Board(boardName.getText(), "title", new TreeSet<>());
         mainCtrl.addBoard(board);
         mainCtrl.setCurrentBoard(board);

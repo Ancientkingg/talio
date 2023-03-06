@@ -28,8 +28,16 @@ public class OverviewCtrl {
      * Redirects user to "createColumn" FXML file on button press
      * where they can input a custom name for a new column to be created.
      */
-    public void openColumnInput() {
+    public void showCreateColumn() {
         mainCtrl.showCreateColumn();
+    }
+
+    /**
+     * Redirects user to "createTask" FXML file on button press
+     * where they can create a task.
+     */
+    public void showCreateTask() {
+        mainCtrl.showCreateTask();
     }
 
     /**

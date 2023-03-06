@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.exceptions.BoardChangeException;
 import commons.*;
 
 import java.util.TreeSet;
@@ -11,12 +12,13 @@ import javafx.scene.control.TextField;
 
 
 public class CreateColumnCtrl {
-    private int demoIndexCounter = 0;
 
     private final MainCtrl mainCtrl;
 
     @FXML
     private TextField columnName;
+    private int demoIndexCounter; //This is just a temporary fix to give columns different indexes
+
 
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
@@ -24,13 +26,14 @@ public class CreateColumnCtrl {
      */
     @Inject
     public CreateColumnCtrl(final MainCtrl mainCtrl) {
+        this.demoIndexCounter = 1;
         this.mainCtrl = mainCtrl;
     }
 
     /**
      * Will be used to create a column when user passes through the column name
      */
-    public void createColumn() {
+    public void createColumn() throws BoardChangeException {
         final Column column = new Column(columnName.getText(), demoIndexCounter++, new TreeSet<>());
         mainCtrl.addColumn(column);
         mainCtrl.closeSecondaryStage();

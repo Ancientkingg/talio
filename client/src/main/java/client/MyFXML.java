@@ -48,7 +48,7 @@ public class MyFXML {
      * @return Pair of loaded controller and scene
      * @param <T> Type
      */
-    public <T> Pair<T, Parent> load(final Class<T> c, final String... parts) {
+    public <T> Pair<T, Parent> load(final Class<T> c, final String... parts) throws IOException {
         try {
             final var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
             final Parent parent = loader.load();

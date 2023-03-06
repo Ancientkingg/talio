@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.exceptions.BoardChangeException;
 import commons.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +26,8 @@ public class MainCtrl {
     private Scene createColumnScene;
     private CreateBoardCtrl createBoardCtrl;
     private Scene createBoardScene;
+    private CreateTaskCtrl createTaskCtrl;
+    private Scene createTaskScene;
 
     /**
      * Sets the primary stage upon launch and initializes each controller
@@ -37,9 +40,12 @@ public class MainCtrl {
      *                    a new board which is loaded into the overview
      * @param createColumn The create column page is an option to add a column to a board
      *                     in the overview
+     * @param createTask The create task page is an option to add a task to a column
+     *                     in the overview
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
-                           final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn)
+                           final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn,
+                           final Pair<CreateTaskCtrl, Parent> createTask)
     {
         this.primaryStage = primaryStage;
         this.secondaryStage = new Stage();
@@ -53,6 +59,8 @@ public class MainCtrl {
         this.createBoardScene = new Scene(createBoard.getValue());
         this.createColumnCtrl = createColumn.getKey();
         this.createColumnScene = new Scene(createColumn.getValue());
+        this.createTaskCtrl = createTask.getKey();
+        this.createTaskScene = new Scene(createTask.getValue());
 
         this.boardList = new LinkedList<>();
 
@@ -100,6 +108,17 @@ public class MainCtrl {
     }
 
     /**
+     * Shows createColumn stage in secondaryStage
+     */
+    public void showCreateTask() {
+        createTaskCtrl.clearFields();
+        createTaskCtrl.loadMenuItems();
+        secondaryStage.setTitle("Talio: Create Task");
+        secondaryStage.setScene(createTaskScene);
+        secondaryStage.show();
+    }
+
+    /**
      * Closes secondaryStage regardless of what it is set to
      */
     public void closeSecondaryStage() {
@@ -114,12 +133,23 @@ public class MainCtrl {
     }
 
     /**
+     * Adds task to column
+     * @param task Card to be added to column
+     * @param col Column to be added to
+     */
+    public void addTask(final Card task, final Column col) throws BoardChangeException {
+        if (!col.addCard(task)) {
+            throw new BoardChangeException("Failed to add task : " + task);
+        }
+    }
+
+    /**
      * Adds column to board in overview
      * @param col Column to be added
      */
-    public void addColumn(final Column col) {
+    public void addColumn(final Column col) throws BoardChangeException {
         if (!currentBoard.addList(col)) {
-            throw new RuntimeException("Coudlnt add new col");
+            throw new BoardChangeException("Failed to add column : " + col);
         }
     }
 
@@ -127,7 +157,11 @@ public class MainCtrl {
      * Adds board to boardList
      * @param board Board to add
      */
-    public void addBoard(final Board board) { boardList.add(board); }
+    public void addBoard(final Board board) throws BoardChangeException {
+        if (!boardList.add(board)) {
+            throw new BoardChangeException("Failed to add board : " + board);
+        }
+    }
 
     /**
      * Sets the board displayed in overview stage to parameter and loads that board.

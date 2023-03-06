@@ -49,13 +49,19 @@ public class Main extends Application {
      */
     @Override
     public void start(final Stage primaryStage) throws IOException {
+        try {
+            final var overview = FXML.load(OverviewCtrl.class, "client", "scenes", "Overview.fxml");
+            final var joinBoard = FXML.load(JoinBoardCtrl.class, "client", "scenes", "JoinBoard.fxml");
+            final var createBoard = FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
+            final var createColumn = FXML.load(CreateColumnCtrl.class, "client", "scenes", "CreateColumn.fxml");
+            final var createTask = FXML.load(CreateTaskCtrl.class, "client", "scenes", "CreateTask.fxml");
 
-        final var overview = FXML.load(OverviewCtrl.class, "client", "scenes", "Overview.fxml");
-        final var joinBoard = FXML.load(JoinBoardCtrl.class, "client", "scenes", "JoinBoard.fxml");
-        final var createBoard = FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
-        final var createColumn = FXML.load(CreateColumnCtrl.class, "client", "scenes", "CreateColumn.fxml");
+            final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createColumn, createTask);
+        }
+        catch (IOException e) {
+            throw new IOException(e);
+        }
 
-        final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createColumn);
     }
 }
