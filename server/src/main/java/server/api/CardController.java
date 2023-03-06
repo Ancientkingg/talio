@@ -14,7 +14,7 @@ import server.services.BoardService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("cards")
+@RequestMapping("/cards")
 public class CardController {
 
     private final BoardService boardService;
@@ -34,7 +34,7 @@ public class CardController {
      * @param columnName Used to identify column to which card is to be added
      * @return The card added to column in board
      */
-    @PostMapping("cards/add/{joinKey}/{columnName}")
+    @PostMapping("/add/{joinKey}/{columnName}")
     public ResponseEntity<Card> addCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
                                         @PathVariable final String columnName)
     { // checkstyle complained if I kept this bracket on the line above. Why ??
@@ -61,7 +61,7 @@ public class CardController {
      * @param columnName Name of column from which card is to be deleted
      * @return The card deleted from CardRepository
      */
-    @PostMapping("cards/remove/{joinKey}/{columnName}")
+    @PostMapping("/remove/{joinKey}/{columnName}")
     public ResponseEntity<Card> removeCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
                                            @PathVariable final String columnName)
     {
