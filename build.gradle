@@ -1,5 +1,7 @@
 plugins {
     id 'org.kordamp.gradle.jacoco' version '0.49.0'
+	id "org.openapi.generator" version "6.3.0"
+	id"io.freefair.lombok" version "6.6.3"
 }
 
 allprojects {
@@ -12,6 +14,8 @@ subprojects {
 	apply plugin: 'java'
 	apply plugin: 'checkstyle'
 	apply plugin: 'jacoco'
+	apply plugin: 'io.freefair.lombok'
+	apply plugin: 'org.openapi.generator'
 	
 	
 	group = 'oopp'

@@ -1,5 +1,8 @@
 package commons;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
@@ -7,8 +10,10 @@ import java.util.Objects;
 @Entity
 public class Tag {
     @Id
+    @Getter @Setter
     private String title;
 
+    @Getter @Setter
     private String hexColor;
 
     /**
@@ -25,38 +30,6 @@ public class Tag {
      */
     public Tag(final String title, final String hexColor) {
         this.title = title;
-        this.hexColor = hexColor;
-    }
-
-    /**
-     * Getter for title
-     * @return title of the Tag
-     */
-    public String getTitle() {
-        return this.title;
-    }
-
-    /**
-     * Getter for the hexColor
-     * @return the color of the tag in hexFormat
-     */
-    public String getHexColor() {
-        return this.hexColor;
-    }
-
-    /**
-     * Setter for the title
-     * @param title title to be set
-     */
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    /**
-     * Setter for HexColor
-     * @param hexColor the color to be set
-     */
-    public void setHexColor(final String hexColor) {
         this.hexColor = hexColor;
     }
 

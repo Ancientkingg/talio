@@ -1,5 +1,8 @@
 package commons;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -11,12 +14,17 @@ import javax.persistence.OrderBy;
 @Entity
 public class Board {
     @Id
+    @Getter
     private String joinKey;
+    @Getter
     private Timestamp created;
+    @Getter @Setter
     private String title;
+    @Getter @Setter
     private String password;
     @OneToMany
     @OrderBy("index")
+    @Getter @Setter
     private SortedSet<Column> columns;
 
     /**
@@ -58,76 +66,6 @@ public class Board {
         this.password = null;
         this.columns = columns;
         this.created = new Timestamp(System.currentTimeMillis());
-    }
-
-    /**
-     * Getter for the board title
-     * @return the board title
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Setter for the board title
-     * @param title title to be set
-     */
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    /**
-     * Getter for the board join key
-     *
-     * @return Board join key
-     */
-    public String getJoinKey() {
-        return joinKey;
-    }
-
-    /**
-     * Getter for the creation date
-     *
-     * @return the date the board was created
-     */
-    public Timestamp getCreated() {
-        return created;
-    }
-
-    /**
-     * Getter for the board password
-     *
-     * @return Board password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Setter for a new password
-     *
-     * @param passwords password to be set
-     */
-    public void setPassword(final String passwords) {
-        this.password = passwords;
-    }
-
-    /**
-     * Getter for the board columns
-     *
-     * @return Set containing CardLists
-     */
-    public SortedSet<Column> getColumns() {
-        return columns;
-    }
-
-    /**
-     * Setter for the board columns
-     *
-     * @param columns Set containing CardLists
-     */
-    public void setColumns(final SortedSet<Column> columns) {
-        this.columns = columns;
     }
 
     /**
