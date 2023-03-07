@@ -1,21 +1,28 @@
 package commons;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 import java.util.Set;
 
 @Entity
 public class Card implements Comparable<Card> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private long id;
 
+    @Getter @Setter
     private String title;
+    @Getter @Setter
     private int priority;
+    @Getter @Setter
     private String description;
 
     @ManyToMany
+    @Getter @Setter
     private Set<Tag> tags;
 
     /**
@@ -36,78 +43,6 @@ public class Card implements Comparable<Card> {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.tags = tags;
-    }
-
-    /**
-     * Getter for the ID
-     * @return card ID
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Getter for the card title
-     * @return Card title
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Getter for the card priority
-     * @return Card priority
-     */
-    public int getPriority() {
-        return priority;
-    }
-
-    /**
-     * Setter for the card priority
-     * @param priority new priority for the card
-     */
-    public void setPriority(final int priority) {
-        this.priority = priority;
-    }
-
-    /**
-     * Setter for card title
-     * @param title title to be set to the card
-     */
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    /**
-     * Getter for card description
-     * @return description of the card
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Setter for card description
-     * @param description description for the card to be set
-     */
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    /**
-     * Getter for the card tags
-     * @return Set containing tags assigned to the card
-     */
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    /**
-     * Setter for the tag set
-     * @param tags A set containing the tags assigned to the card
-     */
-    public void setTags(final Set<Tag> tags) {
         this.tags = tags;
     }
 
