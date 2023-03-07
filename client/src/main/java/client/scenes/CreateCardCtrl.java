@@ -9,18 +9,18 @@ import javafx.util.StringConverter;
 import javax.inject.Inject;
 import java.util.TreeSet;
 
-public class CreateTaskCtrl {
+public class CreateCardCtrl {
 
     private final MainCtrl mainCtrl;
 
     @FXML
     private ChoiceBox columnMenu;
     @FXML
-    private TextField taskTitle;
+    private TextField cardTitle;
     @FXML
-    private TextArea taskDescription;
+    private TextArea cardDescription;
     @FXML
-    private TextField taskPriority;
+    private TextField cardPriority;
 
     final private StringConverter<Column> stringConverter;
 
@@ -30,7 +30,7 @@ public class CreateTaskCtrl {
      * @param mainCtrl Shared instance of MainCtrl
      */
     @Inject
-    public CreateTaskCtrl(final MainCtrl mainCtrl) {
+    public CreateCardCtrl(final MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
 
         stringConverter = new StringConverter<Column>() {
@@ -47,11 +47,11 @@ public class CreateTaskCtrl {
     }
 
     /**
-     * Routes the user to the overview of the task they just created
+     * Routes the user to the overview of the card they just created
      */
-    public void createTask() throws BoardChangeException {
-        final Card task = new Card(taskTitle.getText(), Integer.parseInt(taskPriority.getText()), taskDescription.getText(), new TreeSet<Tag>());
-        mainCtrl.addTask(task, (Column) columnMenu.getValue());
+    public void createCard() throws BoardChangeException {
+        final Card card = new Card(cardTitle.getText(), Integer.parseInt(cardPriority.getText()), cardDescription.getText(), new TreeSet<Tag>());
+        mainCtrl.addCard(card, (Column) columnMenu.getValue());
     }
 
     /**
@@ -69,8 +69,8 @@ public class CreateTaskCtrl {
      */
     public void clearFields() {
         columnMenu.getItems().clear();
-        taskTitle.clear();
-        taskDescription.clear();
-        taskPriority.clear();
+        cardTitle.clear();
+        cardDescription.clear();
+        cardPriority.clear();
     }
 }

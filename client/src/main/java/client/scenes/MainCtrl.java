@@ -26,8 +26,8 @@ public class MainCtrl {
     private Scene createColumnScene;
     private CreateBoardCtrl createBoardCtrl;
     private Scene createBoardScene;
-    private CreateTaskCtrl createTaskCtrl;
-    private Scene createTaskScene;
+    private CreateCardCtrl createCardCtrl;
+    private Scene createCardScene;
 
     /**
      * Sets the primary stage upon launch and initializes each controller
@@ -40,12 +40,12 @@ public class MainCtrl {
      *                    a new board which is loaded into the overview
      * @param createColumn The create column page is an option to add a column to a board
      *                     in the overview
-     * @param createTask The create task page is an option to add a task to a column
+     * @param createCard The create card page is an option to add a card to a column
      *                     in the overview
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
                            final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn,
-                           final Pair<CreateTaskCtrl, Parent> createTask)
+                           final Pair<CreateCardCtrl, Parent> createCard)
     {
         this.primaryStage = primaryStage;
         this.secondaryStage = new Stage();
@@ -59,8 +59,8 @@ public class MainCtrl {
         this.createBoardScene = new Scene(createBoard.getValue());
         this.createColumnCtrl = createColumn.getKey();
         this.createColumnScene = new Scene(createColumn.getValue());
-        this.createTaskCtrl = createTask.getKey();
-        this.createTaskScene = new Scene(createTask.getValue());
+        this.createCardCtrl = createCard.getKey();
+        this.createCardScene = new Scene(createCard.getValue());
 
         this.boardList = new LinkedList<>();
 
@@ -110,11 +110,11 @@ public class MainCtrl {
     /**
      * Shows createColumn stage in secondaryStage
      */
-    public void showCreateTask() {
-//        createTaskCtrl.clearFields();
-//        createTaskCtrl.loadMenuItems();
-//        secondaryStage.setTitle("Talio: Create Task");
-//        secondaryStage.setScene(createTaskScene);
+    public void showCreateCard() {
+//        createCardCtrl.clearFields();
+//        createCardCtrl.loadMenuItems();
+//        secondaryStage.setTitle("Talio: Create Card");
+//        secondaryStage.setScene(createCardScene);
 //        secondaryStage.show();
     }
 
@@ -133,13 +133,13 @@ public class MainCtrl {
     }
 
     /**
-     * Adds task to column
-     * @param task Card to be added to column
+     * Adds card to column
+     * @param card Card to be added to column
      * @param col Column to be added to
      */
-    public void addTask(final Card task, final Column col) throws BoardChangeException {
-        if (!col.addCard(task)) {
-            throw new BoardChangeException("Failed to add task : " + task);
+    public void addCard(final Card card, final Column col) throws BoardChangeException {
+        if (!col.addCard(card)) {
+            throw new BoardChangeException("Failed to add card : " + card);
         }
     }
 

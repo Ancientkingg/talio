@@ -10,7 +10,7 @@
       <ToolBar prefHeight="23.0" prefWidth="600.0">
         <items>
           <Button mnemonicParsing="false" onAction="#showCreateColumn" text="Create Column" />
-            <Button mnemonicParsing="false" onAction="#showCreateTask" text="Add Card" />
+            <Button mnemonicParsing="false" onAction="#showCreateCard" text="Add Card" />
         </items>
       </ToolBar>
       <HBox fx:id="columnBox" layoutY="35.0" prefHeight="367.0" prefWidth="600.0" />

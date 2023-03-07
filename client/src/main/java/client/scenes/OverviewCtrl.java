@@ -33,39 +33,39 @@ public class OverviewCtrl {
     }
 
     /**
-     * Redirects user to "createTask" FXML file on button press
-     * where they can create a task.
+     * Redirects user to "createCard" FXML file on button press
+     * where they can create a card.
      */
-    public void showCreateTask() {
-        mainCtrl.showCreateTask();
+    public void showCreateCard() {
+        mainCtrl.showCreateCard();
     }
 
     /**
      * Refreshes the overview scene columnBox by iterating over each column in the current board
-     * and displaying the corresponding titles. Will also refresh tasks in the future.
+     * and displaying the corresponding titles. Will also refresh cards in the future.
      *
      * Is this inefficient? Or does one have to reload all FXML objects to refresh?
      */
     public void refresh() {
         columnBox.getChildren().clear();
         for (final Column col : mainCtrl.getCurrentBoard().getColumns()) {
-            final VBox taskBox = new VBox();
-            taskBox.setStyle(
+            final VBox cardBox = new VBox();
+            cardBox.setStyle(
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 2;" +
                     "-fx-border-insets: 5;" +
                     "-fx-border-radius: 5;" +
                     "-fx-border-color: black;");
-            taskBox.setPrefHeight(364);
-            taskBox.setPrefWidth(157);
-            columnBox.getChildren().add(taskBox);
+            cardBox.setPrefHeight(364);
+            cardBox.setPrefWidth(157);
+            columnBox.getChildren().add(cardBox);
 
             final TextArea columnTitle = new TextArea();
             columnTitle.setPrefHeight(27);
             columnTitle.setPrefWidth(153);
             columnTitle.setText(col.getHeading());
             columnTitle.setFont(new Font("System Bold", 12));
-            taskBox.getChildren().add(columnTitle);
+            cardBox.getChildren().add(columnTitle);
         }
     }
 }
