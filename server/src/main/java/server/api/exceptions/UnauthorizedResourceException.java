@@ -8,7 +8,7 @@ public class UnauthorizedResourceException extends RuntimeException {
      * @param id the id of the unauthorized resource
      */
     public UnauthorizedResourceException(final Class resource, final String id) {
-        super("Unauthorized to access resource " +
+        super("403 - Unauthorized to access resource " +
             resource.getSimpleName() +
             " with id " +
             id
