@@ -2,6 +2,9 @@ plugins {
 	id 'org.kordamp.gradle.jacoco' version '0.49.0'
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.kordamp.gradle.jacoco' version '0.49.0'
+	id "org.openapi.generator" version "6.3.0"
+	id"io.freefair.lombok" version "6.6.3"
 }
 
 allprojects {
@@ -14,9 +17,11 @@ subprojects {
 	apply plugin: 'java'
 	apply plugin: 'checkstyle'
 	apply plugin: 'jacoco'
+	apply plugin: 'io.freefair.lombok'
+	apply plugin: 'org.openapi.generator'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
-	
+
 	
 	group = 'oopp'
 	version = '0.0.1-SNAPSHOT'
@@ -45,7 +50,7 @@ subprojects {
 	dependencies {
 		implementation 'org.apache.commons:commons-lang3:3.12.0'
 		implementation 'org.springframework.boot:spring-boot-starter-validation'
-		
+
 		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
 		testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 	}

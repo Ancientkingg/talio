@@ -1,5 +1,8 @@
 package commons;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,13 +13,18 @@ public class Column implements Comparable<Column> {
     @Id
     @NotBlank
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private long id;
+    @Getter @Setter
     @NotNull
     private int index;
+
+    @Getter @Setter
     @NotBlank
     private String heading;
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("priority")
+    @Getter @Setter
     private SortedSet<Card> cards;
 
     /**
@@ -35,62 +43,6 @@ public class Column implements Comparable<Column> {
     public Column(final String heading, final int index, final SortedSet<Card> cards) {
         this.heading = heading;
         this.index = index;
-        this.cards = cards;
-    }
-
-    /**
-     * Getter for ID
-     * @return column ID
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Getter for column index
-     * @return column index in the board
-     */
-    public int getIndex() {
-        return index;
-    }
-
-    /**
-     * Setter for column index
-     * @param index new index in the board
-     */
-    public void setIndex(final int index) {
-        this.index = index;
-    }
-
-    /**
-     * Getter for the heading
-     * @return column heading
-     */
-    public String getHeading() {
-        return heading;
-    }
-
-    /**
-     * Setter for the column heading
-     * @param heading Heading to be set
-     */
-    public void setHeading(final String heading) {
-        this.heading = heading;
-    }
-
-    /**
-     * Getter for the cards in the column
-     * @return column cards
-     */
-    public SortedSet<Card> getCards() {
-        return cards;
-    }
-
-    /**
-     * Setter for the column cards
-     * @param cards A set containing the cards to be set in the column
-     */
-    public void setCards(final SortedSet<Card> cards) {
         this.cards = cards;
     }
 
