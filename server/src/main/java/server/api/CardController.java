@@ -37,7 +37,7 @@ public class CardController {
     @PostMapping("/add/{joinKey}/{columnName}")
     public ResponseEntity<Card> addCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
                                         @PathVariable final String columnName)
-    { // checkstyle complained if I kept this bracket on the line above. Why ??
+    {
         final String password = cardDTO.getPassword();
 
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
