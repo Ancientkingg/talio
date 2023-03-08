@@ -8,7 +8,7 @@ public class ResourceNotFoundException extends RuntimeException {
      * @param id the id of the resource that was not found
      */
     public ResourceNotFoundException(final Class resource, final String id) {
-        super("Could not find resource " +
+        super("404 - Could not find resource " +
                 resource.getSimpleName() +
                 " with id " +
                 id
