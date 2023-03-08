@@ -20,7 +20,7 @@ public class Board {
     @Getter
     private String joinKey;
     @Getter
-    private Timestamp created;
+    private final Timestamp created;
     @NotBlank
     @Getter @Setter
     private String title;
@@ -82,11 +82,33 @@ public class Board {
      * @param columns A set containing the board columns
      */
     public Board(final String joinKey, final String title, final SortedSet<Column> columns) {
-        this.joinKey = joinKey;
-        this.title = title;
-        this.password = null;
-        this.columns = columns;
-        this.created = new Timestamp(System.currentTimeMillis());
+        this(joinKey, title, null, columns, new Timestamp(System.currentTimeMillis()));
+    }
+
+    public Column getColumnByName(final String columnName) {
+        if (columnName == null) return null;
+
+        for (final Column column : this.columns) {
+            if (Objects.equals(column.getHeading(), columnName)) {
+                return column;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Adds a card to the column with the name {@code columnName} in the current board
+     * @param card The card to add
+     * @param columnName The column to add the card to
+     * @throws ColumnNotFoundException When the requested column cannot be found in the board
+     */
+    public void addCardToColumn(final Card card, final String columnName) throws ColumnNotFoundException {
+        final Column column = this.getColumnByName(columnName);
+
+        if (column == null) throw new ColumnNotFoundException("The column " + columnName + " cannot be found in the board" + this.title);
+
+        column.addCard(card);
     }
 
     /**
