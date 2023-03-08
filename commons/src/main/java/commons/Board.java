@@ -85,6 +85,11 @@ public class Board {
         this(joinKey, title, null, columns, new Timestamp(System.currentTimeMillis()));
     }
 
+    /**
+     * Get a column of a board by name
+     * @param columnName The name of the column to get
+     * @return The column with the name {@code columnName} or null if not found
+     */
     public Column getColumnByName(final String columnName) {
         if (columnName == null) return null;
 
