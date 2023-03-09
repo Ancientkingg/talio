@@ -1,11 +1,14 @@
 package commons.DTOs;
 
 import commons.Card;
+import lombok.Getter;
 
 public class CardDTO {
 
+    @Getter
     private final Card card;
 
+    @Getter
     private final String password;
 
     /**
@@ -16,21 +19,5 @@ public class CardDTO {
     public CardDTO(final Card card, final String password) {
         this.card = card;
         this.password = password;
-    }
-
-    /**
-     * Getter for card
-     * @return Card object
-     */
-    public Card getCard() {
-        return card;
-    }
-
-    /**
-     * Getter for password
-     * @return password of board
-     */
-    public String getPassword() {
-        return password;
     }
 }
