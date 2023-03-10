@@ -4,20 +4,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
 public class Column implements Comparable<Column> {
     @Id
+    @NotBlank
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     private long id;
     @Getter @Setter
+    @NotNull
     private int index;
 
     @Getter @Setter
+    @NotBlank
     private String heading;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("priority")
     @Getter @Setter
     private SortedSet<Card> cards;

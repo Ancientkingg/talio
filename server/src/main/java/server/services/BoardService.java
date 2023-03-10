@@ -1,8 +1,13 @@
 package server.services;
 
 import commons.Board;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
+import server.api.exceptions.ResourceNotFoundException;
+import server.api.exceptions.UnauthorizedResourceException;
+
+import java.util.Objects;
 
 @Service
 public class BoardService {
@@ -22,19 +27,49 @@ public class BoardService {
      * @param joinKey Join key of the board
      *
      * @return The board with the right joinKey if exists, otherwise null
+     * @throws ResourceNotFoundException if the board does not exist
      */
     public Board getBoardWithKey(final String joinKey) {
         if (br.existsById(joinKey))
             return br.getById(joinKey);
-        return null;
+        throw new ResourceNotFoundException(Board.class, joinKey);
+    }
+
+    /**
+     * Returns a Board object with the given join key and password
+     * @param joinKey Join key of the board
+     * @param password Password of the board
+     * @return The board with the right joinKey and password if exists, otherwise null
+     */
+    public Board getBoardWithKeyAndPassword(final String joinKey, final String password) {
+        if (br.existsById(joinKey)) {
+            final Board board = br.getById(joinKey);
+            if (Objects.equals(board.getPassword(), password)) // null safe - Board.getPassword could return null
+                return board;
+            throw new UnauthorizedResourceException(Board.class, joinKey);
+        }
+        throw new ResourceNotFoundException(Board.class, joinKey);
     }
 
     /**
      * Saves a board to the database
      * @param board Board to save
+     * @return The saved board
      */
-    public void saveBoard(final Board board) {
-        br.save(board);
+    public Board saveBoard(final Board board) {
+        return br.save(board);
+    }
+
+    /**
+     * Generates a join key for a board
+     * @return The join key
+     */
+    public String generateJoinKey() {
+        String joinKey = RandomStringUtils.random(6, "0123456789abcdef");
+        while (br.existsById(joinKey)) {
+            joinKey = RandomStringUtils.random(6, "0123456789abcdef");
+        }
+        return joinKey;
     }
 
 }

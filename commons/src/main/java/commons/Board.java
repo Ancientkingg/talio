@@ -1,5 +1,8 @@
 package commons;
 
+import commons.exceptions.ColumnNotFoundException;
+
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,22 +10,24 @@ import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.SortedSet;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Board {
     @Id
+    @NotBlank
     @Getter
     private String joinKey;
     @Getter
-    private Timestamp created;
+    private final Timestamp created;
+    @NotBlank
     @Getter @Setter
     private String title;
     @Getter @Setter
+    @Size(min = 1) // A password cannot be empty, but it can be null (non-existent).
     private String password;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("index")
     @Getter @Setter
     private SortedSet<Column> columns;
@@ -53,6 +58,22 @@ public class Board {
     }
 
     /**
+     * Constructor for a board object with password
+     * @param joinKey Key for joining
+     * @param title Title of the board
+     * @param password Password for the board
+     * @param columns A set containing the board columns
+     * @param timestamp Timestamp for the board creation
+     */
+    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns, final Timestamp timestamp) {
+        this.joinKey = joinKey;
+        this.title = title;
+        this.password = password;
+        this.columns = columns;
+        this.created = timestamp;
+    }
+
+    /**
      * Constructor for a board object without a password
      * Sets the created date to now
      *
@@ -61,11 +82,38 @@ public class Board {
      * @param columns A set containing the board columns
      */
     public Board(final String joinKey, final String title, final SortedSet<Column> columns) {
-        this.joinKey = joinKey;
-        this.title = title;
-        this.password = null;
-        this.columns = columns;
-        this.created = new Timestamp(System.currentTimeMillis());
+        this(joinKey, title, null, columns, new Timestamp(System.currentTimeMillis()));
+    }
+
+    /**
+     * Get a column of a board by name
+     * @param columnName The name of the column to get
+     * @return The column with the name {@code columnName} or null if not found
+     */
+    public Column getColumnByName(final String columnName) {
+        if (columnName == null) return null;
+
+        for (final Column column : this.columns) {
+            if (Objects.equals(column.getHeading(), columnName)) {
+                return column;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Adds a card to the column with the name {@code columnName} in the current board
+     * @param card The card to add
+     * @param columnName The column to add the card to
+     * @throws ColumnNotFoundException When the requested column cannot be found in the board
+     */
+    public void addCardToColumn(final Card card, final String columnName) throws ColumnNotFoundException {
+        final Column column = this.getColumnByName(columnName);
+
+        if (column == null) throw new ColumnNotFoundException("The column " + columnName + " cannot be found in the board" + this.title);
+
+        column.addCard(card);
     }
 
     /**
@@ -75,7 +123,7 @@ public class Board {
      *
      * @return success/failure
      */
-    public boolean addList(final Column cardList) {
+    public boolean addColumn(final Column cardList) {
         return this.columns.add(cardList);
     }
 
@@ -86,7 +134,7 @@ public class Board {
      *
      * @return success/failure
      */
-    public boolean removeList(final Column cardList) {
+    public boolean removeColumn(final Column cardList) {
         return this.columns.remove(cardList);
     }
 
@@ -105,8 +153,8 @@ public class Board {
         return joinKey.equals(board.joinKey) &&
                 title.equals(board.title) &&
                 created.equals(board.created) &&
-                password.equals(board.password) &&
-                columns.equals(board.columns);
+                Objects.equals(password, board.password) &&
+                Objects.equals(columns, board.columns);
     }
 
     /**
