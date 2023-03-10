@@ -148,7 +148,7 @@ public class MainCtrl {
      * @param col Column to be added
      */
     public void addColumn(final Column col) throws BoardChangeException {
-        if (!currentBoard.addList(col)) {
+        if (!currentBoard.addColumn(col)) {
             throw new BoardChangeException("Failed to add column : " + col);
         }
     }
