@@ -18,13 +18,18 @@ package client;
 
 import java.io.IOException;
 
+import client.scenes.*;
+
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import com.google.inject.Injector;
+import static com.google.inject.Guice.createInjector;
+
 public class Main extends Application {
+
+    private static final Injector INJECTOR = createInjector(new MyModule());
+    private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     /**
      * The main method of the client
@@ -44,16 +49,18 @@ public class Main extends Application {
      */
     @Override
     public void start(final Stage primaryStage) throws IOException {
-
         try {
-            final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("client/scenes/JoinBoard.fxml"));
-            final Scene scene = new Scene(root);
+            final var overview = FXML.load(OverviewCtrl.class, "client", "scenes", "Overview.fxml");
+            final var joinBoard = FXML.load(JoinBoardCtrl.class, "client", "scenes", "JoinBoard.fxml");
+            final var createBoard = FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
+            final var createColumn = FXML.load(CreateColumnCtrl.class, "client", "scenes", "CreateColumn.fxml");
+            final var createCard = FXML.load(CreateCardCtrl.class, "client", "scenes", "CreateCard.fxml");
 
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createColumn, createCard);
+        }
+        catch (IOException e) {
+            throw new IOException(e);
         }
 
     }

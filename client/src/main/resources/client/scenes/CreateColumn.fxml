@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="190.0" prefWidth="323.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateColumn">
+<AnchorPane prefHeight="190.0" prefWidth="323.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateColumnCtrl">
    <children>
       <Label layoutX="98.0" layoutY="26.0" text="Enter Column Name">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="inputColumnName" layoutX="81.0" layoutY="70.0" onAction="#enterColumnName" />
-      <Button layoutX="134.0" layoutY="117.0" mnemonicParsing="false" onAction="#enterColumnName" text="Submit" />
+      <TextField fx:id="columnName" layoutX="81.0" layoutY="70.0" />
+      <Button layoutX="134.0" layoutY="117.0" mnemonicParsing="false" onAction="#createColumn" text="Submit" />
    </children>
 </AnchorPane>
