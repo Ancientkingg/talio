@@ -78,4 +78,32 @@ public class CardController {
 
         return ResponseEntity.ok(card);
     }
+
+    /**
+     * Change the order of two cards in the same column
+     * @param cardDTO1 First card to be swapped
+     * @param cardDTO2 Second card to be swapped
+     * @param joinKey Key of board containing cards
+     * @param columnName Name of column containing cards
+     * (Note: cards must be in the same column)
+     * @return Column containing swapped cards
+     */
+    @PostMapping("/swap/{joinKey}/{columnName}")
+    public ResponseEntity<Column> swapCards (@Valid @RequestBody final CardDTO cardDTO1,
+                                             @Valid @RequestBody final CardDTO cardDTO2,
+                                             @PathVariable final String joinKey, @PathVariable final String columnName)
+    {
+        final String password = cardDTO1.getPassword();
+
+        final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
+
+        final Card card = cardDTO1.getCard();
+        final Column column = board.getColumnByName(columnName);
+
+        column.swapCards(card, cardDTO2.getCard());
+
+        boardService.saveBoard(board);
+
+        return ResponseEntity.ok(column);
+    }
 }

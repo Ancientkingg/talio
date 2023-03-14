@@ -1,0 +1,95 @@
+[1mdiff --git a/commons/src/main/java/commons/Card.java b/commons/src/main/java/commons/Card.java[m
+[1mindex 0ac4369..96c00ad 100644[m
+[1m--- a/commons/src/main/java/commons/Card.java[m
+[1m+++ b/commons/src/main/java/commons/Card.java[m
+[36m@@ -102,4 +102,15 @@[m [mpublic class Card implements Comparable<Card> {[m
+     public int compareTo(final Card o) {[m
+         return Integer.compare(this.priority, o.priority);[m
+     }[m
+[32m+[m[41m[m
+[32m+[m[32m    /**[m[41m[m
+[32m+[m[32m     * Updates the card with the values from another card[m[41m[m
+[32m+[m[32m     * @param card Card to copy from[m[41m[m
+[32m+[m[32m     */[m[41m[m
+[32m+[m[32m    public void update(final Card card) {[m[41m[m
+[32m+[m[32m        this.title = card.title;[m[41m[m
+[32m+[m[32m        this.priority = card.priority;[m[41m[m
+[32m+[m[32m        this.description = card.description;[m[41m[m
+[32m+[m[32m        this.tags = card.tags;[m[41m[m
+[32m+[m[32m    }[m[41m[m
+ }[m
+[1mdiff --git a/commons/src/main/java/commons/Column.java b/commons/src/main/java/commons/Column.java[m
+[1mindex 911e4e2..17d346f 100644[m
+[1m--- a/commons/src/main/java/commons/Column.java[m
+[1m+++ b/commons/src/main/java/commons/Column.java[m
+[36m@@ -103,4 +103,15 @@[m [mpublic class Column implements Comparable<Column> {[m
+     public int compareTo(final Column o) {[m
+         return Integer.compare(index, o.index);[m
+     }[m
+[32m+[m[41m[m
+[32m+[m[32m    /**[m[41m[m
+[32m+[m[32m     * Updates the card in the column with the values from the given card with the same id[m[41m[m
+[32m+[m[32m     * @param card card with new values but same id[m[41m[m
+[32m+[m[32m     */[m[41m[m
+[32m+[m[32m    public void updateCard(final Card card) {[m[41m[m
+[32m+[m[32m        for (final Card c : cards) {[m[41m[m
+[32m+[m[32m            if (c.getId() == card.getId())[m[41m[m
+[32m+[m[32m                c.update(card);[m[41m[m
+[32m+[m[32m        }[m[41m[m
+[32m+[m[32m    }[m[41m[m
+ }[m
+[1mdiff --git a/commons/src/main/java/commons/Tag.java b/commons/src/main/java/commons/Tag.java[m
+[1mindex 086e8d6..dd34c51 100644[m
+[1m--- a/commons/src/main/java/commons/Tag.java[m
+[1m+++ b/commons/src/main/java/commons/Tag.java[m
+[36m@@ -35,7 +35,7 @@[m [mpublic class Tag {[m
+ [m
+     /**[m
+      * Checks for equality between Tags[m
+[31m-     * @param o An other Tag object[m
+[32m+[m[32m     * @param o Another Tag object[m[41m[m
+      *[m
+      * @return Equality of this Tag and the other tag[m
+      */[m
+[36m@@ -47,6 +47,7 @@[m [mpublic class Tag {[m
+         return title.equals(tag.title) && hexColor.equals(tag.hexColor);[m
+     }[m
+ [m
+[32m+[m[41m[m
+     /**[m
+      * Generates a hash code[m
+      * @return Returns a hash code of the tag object[m
+[1mdiff --git a/server/src/main/java/server/api/CardController.java b/server/src/main/java/server/api/CardController.java[m
+[1mindex 130503b..b65a01e 100644[m
+[1m--- a/server/src/main/java/server/api/CardController.java[m
+[1m+++ b/server/src/main/java/server/api/CardController.java[m
+[36m@@ -78,4 +78,29 @@[m [mpublic class CardController {[m
+ [m
+         return ResponseEntity.ok(card);[m
+     }[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Update a card[m
+[32m+[m[32m     * @param cardDTO Containing card to be updated and password to board for authentication[m
+[32m+[m[32m     * @param joinKey Key of board from which card is to be updated[m
+[32m+[m[32m     * @param columnName Name of column from which card is to be updated[m
+[32m+[m[32m     * @return The card updated in CardRepository[m
+[32m+[m[32m     */[m
+[32m+[m[32m    @PostMapping("/update/{joinKey}/{columnName}")[m
+[32m+[m[32m    public ResponseEntity<Card> updateCard(@Valid @RequestBody final CardDTO cardDTO,[m
+[32m+[m[32m                                           @PathVariable final String joinKey, @PathVariable final String columnName)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        final String password = cardDTO.getPassword();[m
+[32m+[m
+[32m+[m[32m        final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);[m
+[32m+[m
+[32m+[m[32m        final Card card = cardDTO.getCard();[m
+[32m+[m[32m        final Column column = board.getColumnByName(columnName);[m
+[32m+[m
+[32m+[m[32m        column.updateCard(card);[m
+[32m+[m
+[32m+[m[32m        boardService.saveBoard(board);[m
+[32m+[m
+[32m+[m[32m        return ResponseEntity.ok(card);[m
+[32m+[m[32m    }[m
+ }[m

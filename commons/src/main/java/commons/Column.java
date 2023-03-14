@@ -103,4 +103,15 @@ public class Column implements Comparable<Column> {
     public int compareTo(final Column o) {
         return Integer.compare(index, o.index);
     }
+
+    /**
+     * Swap the priority of two cards
+     * @param card1 card to be swapped
+     * @param card2 card to be swapped
+     */
+    public void swapCards(final Card card1, final Card card2) {
+        final int index1 = card1.getPriority();
+        card1.setPriority(card2.getPriority());
+        card2.setPriority(index1);
+    }
 }
