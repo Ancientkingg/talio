@@ -48,6 +48,7 @@ Feedback:
 >> ### Checklist
 >> - [x] create functionality for displaying the pop-up
 >> - [x] wire the pop-up to every screen in the game
+
 > Moreover, here is a tutorial on how to integrate these issue/MR descriptions as a template (so you don't have to write them every time): https://docs.gitlab.com/ee/user/project/description_templates.html.
 
 
