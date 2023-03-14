@@ -19,7 +19,7 @@ public class Tag {
     /**
      * Empty constructor for the Tag object
      */
-    private Tag() {
+    protected Tag() {
 
     }
 
@@ -35,7 +35,7 @@ public class Tag {
 
     /**
      * Checks for equality between Tags
-     * @param o An other Tag object
+     * @param o Another Tag object
      *
      * @return Equality of this Tag and the other tag
      */
@@ -46,6 +46,7 @@ public class Tag {
         final Tag tag = (Tag) o;
         return title.equals(tag.title) && hexColor.equals(tag.hexColor);
     }
+
 
     /**
      * Generates a hash code

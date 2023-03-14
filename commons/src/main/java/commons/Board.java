@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -69,7 +70,7 @@ public class Board {
         this.joinKey = joinKey;
         this.title = title;
         this.password = password;
-        this.columns = columns;
+        this.columns = columns == null ? new TreeSet<>() : columns;
         this.created = timestamp;
     }
 
