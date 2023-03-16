@@ -3,7 +3,7 @@ package commons.DTOs;
 import commons.Card;
 import lombok.Getter;
 
-public record CardDTO(@Getter Card cards, @Getter String password) {
+public record CardDTO(@Getter Card card, @Getter String password) {
 
     /**
      * Constructor for CardDTO

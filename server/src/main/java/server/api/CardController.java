@@ -70,7 +70,7 @@ public class CardController {
 
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = cardDTO.card();
+        final Card card = cardDTO.getCard();
         final Column column = board.getColumnByName(columnName);
 
         column.removeCard(card);
