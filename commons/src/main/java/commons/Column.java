@@ -103,4 +103,15 @@ public class Column implements Comparable<Column> {
     public int compareTo(final Column o) {
         return Integer.compare(index, o.index);
     }
+
+    /**
+     * Updates the card in the column with the values from the given card with the same id
+     * @param card card with new values but same id
+     */
+    public void updateCard(final Card card) {
+        for (final Card c : cards) {
+            if (c.getId() == card.getId())
+                c.update(card);
+        }
+    }
 }
