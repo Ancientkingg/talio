@@ -45,7 +45,11 @@ public class Config {
         return Clock.systemDefaultZone();
     }
 
-    // for testing
+
+    /**
+     * Gets a board for testing
+     * @return instnace of Board
+     */
     @Bean
     public Board getBoard() {
         return new Board("joinkey", "test", "",  new TreeSet<>(), new Timestamp(12345L));
