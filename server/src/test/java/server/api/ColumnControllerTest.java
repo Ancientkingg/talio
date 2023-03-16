@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import server.services.BoardService;
 
 import java.sql.Timestamp;
-//import java.time.Clock;
+import java.time.Clock;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -31,19 +31,18 @@ public class ColumnControllerTest {
     @Autowired
     private ColumnController columnController;
     @MockBean
+    private BoardController boardController;
+    @MockBean
     private BoardService boardService;
 
     @MockBean
-    private BoardController boardController;
-
-//    @MockBean
-//    private Board actualBoard;
+    private Board board;
 //
 //    @MockBean
 //    private Board expectedBoard;
 
-//    @MockBean
-//    private Clock clock;
+    @MockBean
+    private Clock clock;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -66,6 +65,9 @@ public class ColumnControllerTest {
     * What needs to be done -
     *
     */
+
+    // This ones a mess I'll clean it up later
+    // Move to the tests below
     @Test
     public void addColumnToBoardWithPasswordTest() throws Exception {
 
@@ -95,18 +97,29 @@ public class ColumnControllerTest {
 
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 1")
+        this.mockMvc.perform(post("/columns/joinkey/create/Column 1").param("index", "1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString("password"))
-                        .param("index", "1"))
+                .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(addedColumn1)));
 
         assertEquals(expectedBoard, actualBoard);
     }
 
-//    @Test
-//    public void addColumnToBoardWithoutPasswordTest() throws Exception {}
+    @Test
+    public void addColumnToBoardWithoutPasswordTest() throws Exception {
+
+        when(boardService.getBoardWithKeyAndPassword("joinkey", "password")).thenReturn(board);
+        when(boardService.saveBoard(board)).thenReturn(board);
+
+        Column columnClientOutput = new Column("Colunn1", 1, new TreeSet<>());
+
+        this.mockMvc.perform(post("/columns/joinkey/create/Column1").param("index", "1")
+                .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString("password")))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(columnClientOutput)));
+
+    }
 //
 //    @Test
 //    public void removeColumnFromBoardWithPasswordTest() throws Exception {}
