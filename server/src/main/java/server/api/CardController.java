@@ -105,7 +105,7 @@ public class CardController {
         return ResponseEntity.ok(column);
     }
 
-        /**
+    /**
      * Update a card
      * @param cardDTO Containing card to be updated and password to board for authentication
      * @param joinKey Key of board from which card is to be updated
