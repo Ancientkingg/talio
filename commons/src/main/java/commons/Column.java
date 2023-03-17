@@ -104,7 +104,6 @@ public class Column implements Comparable<Column> {
         return Integer.compare(index, o.index);
     }
 
-
     /**
      * Updates the position of the card in the column according to the new position.
      * @param card card to be updated
@@ -121,5 +120,16 @@ public class Column implements Comparable<Column> {
             }
         }
         this.cards.add(card);
+    }
+
+    /**
+     * Updates the card in the column with the values from the given card with the same id
+     * @param card card with new values but same id
+     */
+    public void updateCard(final Card card) {
+        for (final Card c : cards) {
+            if (c.getId() == card.getId())
+                c.update(card);
+        }
     }
 }
