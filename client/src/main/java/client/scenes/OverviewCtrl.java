@@ -2,11 +2,14 @@ package client.scenes;
 
 import commons.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
 import javax.inject.Inject;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class OverviewCtrl {
     private final MainCtrl mainCtrl;
@@ -66,6 +69,19 @@ public class OverviewCtrl {
             columnTitle.setText(col.getHeading());
             columnTitle.setFont(new Font("System Bold", 12));
             cardBox.getChildren().add(columnTitle);
+
+            final Button deleteColumn = new Button("Delete column");
+            deleteColumn.setDefaultButton(true);
+            deleteColumn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    mainCtrl.getCurrentBoard().removeColumn(col);
+                    mainCtrl.refreshOverview();
+                }
+            });
+            deleteColumn.setPrefHeight(15);
+            deleteColumn.setPrefWidth(153);
+            cardBox.getChildren().add(deleteColumn);
         }
     }
 }
