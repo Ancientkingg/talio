@@ -154,6 +154,17 @@ public class MainCtrl {
     }
 
     /**
+     * Deletes column from board
+     * @param column Column to be removed
+     * @throws BoardChangeException if Column is not deleted
+     */
+    public void removeColumn(final Column column) throws BoardChangeException {
+        if (!currentBoard.removeColumn(column)) {
+            throw new BoardChangeException("Failed to delete column : " + column);
+        }
+    }
+
+    /**
      * Adds board to boardList
      * @param board Board to add
      */
