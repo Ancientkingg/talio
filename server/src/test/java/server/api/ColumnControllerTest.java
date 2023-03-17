@@ -4,23 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Board;
 import commons.Column;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import server.Config;
 import server.TestConfig;
 import server.services.BoardService;
 
 import java.sql.Timestamp;
-import java.time.Clock;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -41,8 +34,8 @@ public class ColumnControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ColumnController columnController;
-    @MockBean
-    private BoardController boardController;
+//    @MockBean
+//    private BoardController boardController;
     @MockBean
     private BoardService boardService;
 
@@ -52,8 +45,8 @@ public class ColumnControllerTest {
 //    @MockBean
 //    private Board expectedBoard;
 
-    @MockBean
-    private Clock clock;
+//    @MockBean
+//    private Clock clock;
 
     @Autowired
     private ObjectMapper objectMapper;
