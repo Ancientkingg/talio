@@ -97,7 +97,7 @@ public class ServerUtils {
      * @param card the column to be added/ created
      * @return the card that was added
      */
-    public Card addColumn(final Card card) {
+    public Card addCard(final Card card) {
         try (Client client = ClientBuilder.newClient()) {
             return client.target(SERVER)
                     .path("/cards") //
