@@ -104,14 +104,22 @@ public class Column implements Comparable<Column> {
         return Integer.compare(index, o.index);
     }
 
+
     /**
-     * Swap the priority of two cards
-     * @param card1 card to be swapped
-     * @param card2 card to be swapped
+     * Updates the position of the card in the column according to the new position.
+     * @param card card to be updated
+     * @param newPosition new position of the card
      */
-    public void swapCards(final Card card1, final Card card2) {
-        final int index1 = card1.getPriority();
-        card1.setPriority(card2.getPriority());
-        card2.setPriority(index1);
+    public void updateCardPosition(final Card card, final int newPosition) {
+        this.cards.remove(card);
+        card.setPriority(newPosition);
+        for (final Card c:
+             this.cards)
+        {
+            switch (Integer.compare(c.getPriority(), newPosition)) {
+                case 0, 1 -> c.setPriority(c.getPriority() + 1);
+            }
+        }
+        this.cards.add(card);
     }
 }
