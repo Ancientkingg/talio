@@ -4,11 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Board;
 import commons.Column;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import server.Config;
+import server.TestConfig;
 import server.services.BoardService;
 
 import java.sql.Timestamp;
@@ -23,7 +31,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+
 @WebMvcTest(ColumnController.class)
+@ContextConfiguration(classes = {TestConfig.class})
 public class ColumnControllerTest {
 
     @Autowired
@@ -35,7 +46,7 @@ public class ColumnControllerTest {
     @MockBean
     private BoardService boardService;
 
-    @MockBean
+    @MockBean(name = "testBoard")
     private Board board;
 //
 //    @MockBean
@@ -76,16 +87,20 @@ public class ColumnControllerTest {
         SortedSet<Column> columns = new TreeSet<>();
         columns.add(addedColumn1);
 
-        Board board = new Board("joinkey", "title", "password", new TreeSet<>(), new Timestamp(12345L));
+//        Board board = new Board("joinkey", "title", "password", new TreeSet<>(), new Timestamp(12345L));
 
-        Board actualBoard = boardController.createBoard(board).getBody();
+//        when(boardController.createBoard(board)).thenReturn(ResponseEntity.ok(board));
+//
+//        Board actualBoard = boardController.createBoard(board).getBody();
         Board expectedBoard = new Board("joinkey", "title", "password", columns, new Timestamp(12345L));
 
         // Mock the boardService
 
         // board to which column will be added
-        when(boardService.getBoardWithKeyAndPassword("joinkey", "password")).thenReturn(actualBoard);
+        when(boardService.getBoardWithKeyAndPassword("joinkey", "password")).thenReturn(board);
         when(boardService.saveBoard(expectedBoard)).thenReturn(expectedBoard); // after performing the addColumn request
+
+
 
 //        when(boardService.saveBoard(board)).thenReturn(board); // when creating the board initiallly
 //        when(boardService.generateJoinKey()).thenReturn("joinkey");
@@ -103,7 +118,7 @@ public class ColumnControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(addedColumn1)));
 
-        assertEquals(expectedBoard, actualBoard);
+        assertEquals(expectedBoard, board);
     }
 
     @Test

@@ -50,7 +50,7 @@ public class Config {
      * Gets a board for testing
      * @return instnace of Board
      */
-    @Bean
+    @Bean(name = "testBoard")
     public Board getBoard() {
         return new Board("joinkey", "test", "",  new TreeSet<>(), new Timestamp(12345L));
     }
