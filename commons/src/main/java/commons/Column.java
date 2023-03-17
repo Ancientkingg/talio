@@ -103,4 +103,23 @@ public class Column implements Comparable<Column> {
     public int compareTo(final Column o) {
         return Integer.compare(index, o.index);
     }
+
+
+    /**
+     * Updates the position of the card in the column according to the new position.
+     * @param card card to be updated
+     * @param newPosition new position of the card
+     */
+    public void updateCardPosition(final Card card, final int newPosition) {
+        this.cards.remove(card);
+        card.setPriority(newPosition);
+        for (final Card c:
+             this.cards)
+        {
+            switch (Integer.compare(c.getPriority(), newPosition)) {
+                case 0, 1 -> c.setPriority(c.getPriority() + 1);
+            }
+        }
+        this.cards.add(card);
+    }
 }
