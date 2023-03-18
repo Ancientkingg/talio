@@ -1,15 +1,14 @@
 package client.scenes;
 
-import commons.*;
+import commons.Column;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import javax.inject.Inject;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 public class OverviewCtrl {
     private final MainCtrl mainCtrl;
@@ -72,15 +71,12 @@ public class OverviewCtrl {
 
             final Button deleteColumn = new Button("Delete column");
             deleteColumn.setDefaultButton(true);
-            deleteColumn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    mainCtrl.getCurrentBoard().removeColumn(col);
-                    mainCtrl.refreshOverview();
-                }
-            });
-            deleteColumn.setPrefHeight(15);
-            deleteColumn.setPrefWidth(153);
+            deleteColumn.setOnAction(e -> {
+                mainCtrl.getCurrentBoard().removeColumn(col);
+                mainCtrl.refreshOverview();
+            }); // Performed when button to delete a column is pressed
+            deleteColumn.setPrefHeight(12);
+            deleteColumn.setPrefWidth(149);
             cardBox.getChildren().add(deleteColumn);
         }
     }
