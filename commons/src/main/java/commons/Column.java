@@ -105,6 +105,31 @@ public class Column implements Comparable<Column> {
     }
 
     /**
+     * Updates the position of the card in the column according to the new position.
+     * @param card card to be updated
+     * @param newPosition new position of the card
+     */
+    public void updateCardPosition(final Card card, final int newPosition) {
+        this.cards.remove(card);
+        card.setPriority(newPosition);
+        final List<Card> newOrder = new ArrayList<>();
+
+        for (final Card c:
+             this.cards)
+        {
+            if (c.getPriority() == newPosition)
+                newOrder.add(card);
+            newOrder.add(c);
+        }
+
+        for (int i = 0; i < newOrder.size(); i++) {
+            newOrder.get(i).setPriority(i);
+        }
+
+        this.cards.add(card);
+    }
+
+    /**
      * Updates the card in the column with the values from the given card with the same id
      * @param card card with new values but same id
      */
