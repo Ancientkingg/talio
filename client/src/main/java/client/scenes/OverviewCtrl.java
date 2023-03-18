@@ -1,10 +1,12 @@
 package client.scenes;
 
-import commons.*;
+import commons.Column;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import javax.inject.Inject;
 
@@ -43,7 +45,7 @@ public class OverviewCtrl {
     /**
      * Refreshes the overview scene columnBox by iterating over each column in the current board
      * and displaying the corresponding titles. Will also refresh cards in the future.
-     *
+     * -
      * Is this inefficient? Or does one have to reload all FXML objects to refresh?
      */
     public void refresh() {
@@ -66,6 +68,16 @@ public class OverviewCtrl {
             columnTitle.setText(col.getHeading());
             columnTitle.setFont(new Font("System Bold", 12));
             cardBox.getChildren().add(columnTitle);
+
+            final Button deleteColumn = new Button("Delete column");
+            deleteColumn.setDefaultButton(true);
+            deleteColumn.setOnAction(e -> {
+                mainCtrl.getCurrentBoard().removeColumn(col);
+                mainCtrl.refreshOverview();
+            }); // Performed when button to delete a column is pressed
+            deleteColumn.setPrefHeight(12);
+            deleteColumn.setPrefWidth(149);
+            cardBox.getChildren().add(deleteColumn);
         }
     }
 }
