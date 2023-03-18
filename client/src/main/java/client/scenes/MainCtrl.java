@@ -17,7 +17,6 @@ public class MainCtrl {
     private Board currentBoard;
 
     private Stage primaryStage;
-    private Stage secondaryStage;
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoardScene;
     private OverviewCtrl overviewCtrl;
@@ -48,8 +47,6 @@ public class MainCtrl {
                            final Pair<CreateCardCtrl, Parent> createCard)
     {
         this.primaryStage = primaryStage;
-        this.secondaryStage = new Stage();
-        secondaryStage.initModality(Modality.APPLICATION_MODAL);
 
         this.overviewCtrl = overview.getKey();
         this.overviewScene = new Scene(overview.getValue());
@@ -78,52 +75,46 @@ public class MainCtrl {
     }
 
     /**
-     * Shows joinBoard stage in secondaryStage
+     * Shows joinBoard stage in primaryStage
      */
     public void showJoinBoard() {
         joinBoardCtrl.clearFields();
-        secondaryStage.setTitle("Talio: Join Board");
-        secondaryStage.setScene(joinBoardScene);
-        secondaryStage.show();
+        primaryStage.setTitle("Talio: Join Board");
+        primaryStage.setScene(joinBoardScene);
+        primaryStage.show();
     }
 
     /**
-     * Shows createBoard stage in secondaryStage
+     * Shows createBoard stage in primaryStage
      */
     public void showCreateBoard() {
         createBoardCtrl.clearFields();
-        secondaryStage.setTitle("Talio: Create Board");
-        secondaryStage.setScene(createBoardScene);
-        secondaryStage.show();
+        primaryStage.setTitle("Talio: Create Board");
+        primaryStage.setScene(createBoardScene);
+        primaryStage.show();
     }
 
     /**
-     * Shows createColumn stage in secondaryStage
+     * Shows createColumn stage in primaryStage
      */
     public void showCreateColumn() {
         createColumnCtrl.clearFields();
-        secondaryStage.setTitle("Talio: Create Column");
-        secondaryStage.setScene(createColumnScene);
-        secondaryStage.show();
+        primaryStage.setTitle("Talio: Create Column");
+        primaryStage.setScene(createColumnScene);
+        primaryStage.show();
     }
 
     /**
-     * Shows createColumn stage in secondaryStage
+     * Shows createColumn stage in primaryStage
      */
     public void showCreateCard() {
 //        createCardCtrl.clearFields();
 //        createCardCtrl.loadMenuItems();
-//        secondaryStage.setTitle("Talio: Create Card");
-//        secondaryStage.setScene(createCardScene);
-//        secondaryStage.show();
+//        primaryStage.setTitle("Talio: Create Card");
+//        primaryStage.setScene(createCardScene);
+//        primaryStage.show();
     }
 
-    /**
-     * Closes secondaryStage regardless of what it is set to
-     */
-    public void closeSecondaryStage() {
-        secondaryStage.close();
-    }
 
     /**
      * Closes primaryStage, which should only happen on termination
