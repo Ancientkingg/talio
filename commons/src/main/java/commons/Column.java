@@ -112,13 +112,20 @@ public class Column implements Comparable<Column> {
     public void updateCardPosition(final Card card, final int newPosition) {
         this.cards.remove(card);
         card.setPriority(newPosition);
+        final List<Card> newOrder = new ArrayList<>();
+
         for (final Card c:
              this.cards)
         {
-            switch (Integer.compare(c.getPriority(), newPosition)) {
-                case 0, 1 -> c.setPriority(c.getPriority() + 1);
-            }
+            if (c.getPriority() == newPosition)
+                newOrder.add(card);
+            newOrder.add(c);
         }
+
+        for (int i = 0; i < newOrder.size(); i++) {
+            newOrder.get(i).setPriority(i);
+        }
+
         this.cards.add(card);
     }
 

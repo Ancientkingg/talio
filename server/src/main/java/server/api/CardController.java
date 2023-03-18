@@ -98,7 +98,11 @@ public class CardController {
         final Card card = cardDTO.getCard();
         final Column column = board.getColumnByName(columnName);
 
-        column.updateCardPosition(card, newPosition);
+        if (newPosition < 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
+
+        if (newPosition != card.getPriority())
+            column.updateCardPosition(card, newPosition);
 
         boardService.saveBoard(board);
 
