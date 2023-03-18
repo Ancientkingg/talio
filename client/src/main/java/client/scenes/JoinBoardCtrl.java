@@ -30,14 +30,12 @@ public class JoinBoardCtrl {
         final Board board = new Board(boardName.getText(), "title", new TreeSet<>());
         mainCtrl.addBoard(board);
         mainCtrl.setCurrentBoard(board);
-        mainCtrl.closeSecondaryStage();
     }
 
     /**
      * Routes user to the "Create Board" stage where they can input a board name
      */
     public void createBoard() {
-        mainCtrl.closeSecondaryStage();
         mainCtrl.showCreateBoard();
     }
 

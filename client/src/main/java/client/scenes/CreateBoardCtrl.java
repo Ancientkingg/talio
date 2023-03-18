@@ -33,7 +33,6 @@ public class CreateBoardCtrl {
         final Column col = new Column("Default Header", 0, new TreeSet<>());
         mainCtrl.addColumn(col);
         mainCtrl.refreshOverview();
-        mainCtrl.closeSecondaryStage();
     }
 
     /**

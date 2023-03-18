@@ -36,7 +36,6 @@ public class CreateColumnCtrl {
     public void createColumn() throws BoardChangeException {
         final Column column = new Column(columnName.getText(), demoIndexCounter++, new TreeSet<>());
         mainCtrl.addColumn(column);
-        mainCtrl.closeSecondaryStage();
         mainCtrl.showOverview();
         mainCtrl.refreshOverview();
     }
