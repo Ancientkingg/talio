@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.models.BoardModel;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,6 +13,7 @@ import java.util.TreeSet;
 public class CreateCardCtrl {
 
     private final MainCtrl mainCtrl;
+    private final BoardModel boardModel;
 
     @FXML
     private ChoiceBox columnMenu;
@@ -28,9 +30,11 @@ public class CreateCardCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
+     * @param boardModel Shared instance of BoardModel
      */
     @Inject
-    public CreateCardCtrl(final MainCtrl mainCtrl) {
+    public CreateCardCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
+        this.boardModel = boardModel;
         this.mainCtrl = mainCtrl;
 
         stringConverter = new StringConverter<Column>() {
@@ -51,15 +55,15 @@ public class CreateCardCtrl {
      */
     public void createCard() throws BoardChangeException {
         final Card card = new Card(cardTitle.getText(), Integer.parseInt(cardPriority.getText()), cardDescription.getText(), new TreeSet<Tag>());
-        mainCtrl.addCard(card, (Column) columnMenu.getValue());
+        boardModel.addCard(card, (Column) columnMenu.getValue());
     }
 
     /**
-     *
+     * Loads the menu items for the column menu
      */
     public void loadMenuItems() {
         columnMenu.setConverter(stringConverter);
-        for (final Column col : mainCtrl.getCurrentBoard().getColumns()) {
+        for (final Column col : boardModel.getCurrentBoard().getColumns()) {
             columnMenu.getItems().add(col);
         }
     }
