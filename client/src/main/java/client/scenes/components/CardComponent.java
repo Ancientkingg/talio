@@ -46,6 +46,14 @@ public class CardComponent extends GridPane {
 
         cardText.setText(card.getTitle());
 
+        deleteCardButton.setOnAction(e -> {
+            try {
+                this.delete();
+                columnParent.deleteCard(this);
+            } catch (BoardChangeException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 
     /**
