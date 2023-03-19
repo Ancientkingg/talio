@@ -59,7 +59,7 @@ public class CreateCardCtrl {
     }
 
     /**
-     *
+     * Loads the menu items for the column menu
      */
     public void loadMenuItems() {
         columnMenu.setConverter(stringConverter);

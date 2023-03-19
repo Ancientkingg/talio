@@ -8,8 +8,10 @@ import commons.Column;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -23,6 +25,12 @@ public class ColumnComponent extends GridPane {
 
     @FXML
     private Button deleteColumnButton;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private VBox innerCardList;
 
     /**
      * Constructor for ColumnComponent
@@ -44,8 +52,7 @@ public class ColumnComponent extends GridPane {
             throw new RuntimeException(e);
         }
 
-        columnHeading.setText("COLUMN");
-
+        // Set the delete action for the delete column button
         deleteColumnButton.setOnAction(e -> {
             try {
                 this.delete();
@@ -54,6 +61,9 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
+
+        // Make the column unable to scroll horizontally
+        scrollPane.setFitToWidth(true);
     }
 
     /**
