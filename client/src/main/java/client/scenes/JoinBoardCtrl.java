@@ -34,14 +34,12 @@ public class JoinBoardCtrl {
         boardModel.addBoard(board);
         boardModel.setCurrentBoard(board);
         mainCtrl.showOverview();
-        mainCtrl.closeSecondaryStage();
     }
 
     /**
      * Routes user to the "Create Board" stage where they can input a board name
      */
     public void createBoard() {
-        mainCtrl.closeSecondaryStage();
         mainCtrl.showCreateBoard();
     }
 
