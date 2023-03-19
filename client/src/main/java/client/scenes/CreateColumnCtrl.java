@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.models.BoardModel;
 import commons.*;
 
 import java.util.TreeSet;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 public class CreateColumnCtrl {
 
     private final MainCtrl mainCtrl;
+    private final BoardModel boardModel;
 
     @FXML
     private TextField columnName;
@@ -25,9 +27,10 @@ public class CreateColumnCtrl {
      * @param mainCtrl Shared instance of MainCtrl
      */
     @Inject
-    public CreateColumnCtrl(final MainCtrl mainCtrl) {
+    public CreateColumnCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
         this.demoIndexCounter = 1;
         this.mainCtrl = mainCtrl;
+        this.boardModel = boardModel;
     }
 
     /**
@@ -35,7 +38,7 @@ public class CreateColumnCtrl {
      */
     public void createColumn() throws BoardChangeException {
         final Column column = new Column(columnName.getText(), demoIndexCounter++, new TreeSet<>());
-        mainCtrl.addColumn(column);
+        boardModel.addColumn(column);
         mainCtrl.closeSecondaryStage();
         mainCtrl.showOverview();
         mainCtrl.refreshOverview();

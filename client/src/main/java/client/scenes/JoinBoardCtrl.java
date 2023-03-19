@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.models.BoardModel;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -10,6 +11,7 @@ import java.util.TreeSet;
 
 public class JoinBoardCtrl {
     private final MainCtrl mainCtrl;
+    private final BoardModel boardModel;
 
     @FXML
     private TextField boardName;
@@ -19,8 +21,9 @@ public class JoinBoardCtrl {
      * @param mainCtrl Shared instance of MainCtrl
      */
     @Inject
-    public JoinBoardCtrl(final MainCtrl mainCtrl) {
+    public JoinBoardCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
         this.mainCtrl = mainCtrl;
+        this.boardModel = boardModel;
     }
 
     /**
@@ -28,8 +31,9 @@ public class JoinBoardCtrl {
      */
     public void joinBoard() throws BoardChangeException {
         final Board board = new Board(boardName.getText(), "title", new TreeSet<>());
-        mainCtrl.addBoard(board);
-        mainCtrl.setCurrentBoard(board);
+        boardModel.addBoard(board);
+        boardModel.setCurrentBoard(board);
+        mainCtrl.showOverview();
         mainCtrl.closeSecondaryStage();
     }
 
