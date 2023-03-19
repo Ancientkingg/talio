@@ -24,6 +24,10 @@ public class MainCtrl {
     private CreateCardCtrl createCardCtrl;
     private Scene createCardScene;
 
+    /**
+     * Injects boardModel instance into controller to allow access to its methods
+     * @param boardModel Shared instance of BoardModel
+     */
     @Inject
     public MainCtrl(final BoardModel boardModel) {
         this.boardModel = boardModel;

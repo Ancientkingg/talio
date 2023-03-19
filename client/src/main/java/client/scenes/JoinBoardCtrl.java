@@ -19,6 +19,7 @@ public class JoinBoardCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
+     * @param boardModel Shared instance of BoardModel
      */
     @Inject
     public JoinBoardCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {

@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 public class ColumnComponent extends GridPane {
@@ -25,7 +24,13 @@ public class ColumnComponent extends GridPane {
     @FXML
     private Button deleteColumnButton;
 
-    public ColumnComponent(BoardModel boardModel, Column column, OverviewCtrl overviewCtrl) {
+    /**
+     * Constructor for ColumnComponent
+     * @param boardModel BoardModel instance
+     * @param column Column instance
+     * @param overviewCtrl OverviewCtrl instance
+     */
+    public ColumnComponent(final BoardModel boardModel, final Column column, final OverviewCtrl overviewCtrl) {
         this.boardModel = boardModel;
         this.column = column;
 
@@ -51,10 +56,18 @@ public class ColumnComponent extends GridPane {
         });
     }
 
+    /**
+     * Sets the heading of the column
+     * @param heading String to set the heading to
+     */
     public void setHeading(final String heading) {
         columnHeading.setText(heading);
     }
 
+    /**
+     * Deletes the column
+     * @throws BoardChangeException If the board cannot be changed
+     */
     public void delete() throws BoardChangeException {
         boardModel.removeColumn(column);
     }

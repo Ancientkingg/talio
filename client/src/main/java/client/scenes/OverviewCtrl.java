@@ -18,6 +18,7 @@ public class OverviewCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
+     * @param boardModel Shared instance of BoardModel
      */
     @Inject
     public OverviewCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
@@ -51,7 +52,7 @@ public class OverviewCtrl {
     public void refresh() {
         columnBox.getChildren().clear();
         for (final Column col : boardModel.getCurrentBoard().getColumns()) {
-            ColumnComponent columnComponent = new ColumnComponent(boardModel, col, this);
+            final ColumnComponent columnComponent = new ColumnComponent(boardModel, col, this);
 
             columnComponent.setHeading(col.getHeading());
 

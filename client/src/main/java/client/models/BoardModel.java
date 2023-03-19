@@ -14,6 +14,10 @@ public class BoardModel {
     private final List<Board> boardList;
     private Board currentBoard;
 
+
+    /**
+     * Constructor for BoardModel
+     */
     public BoardModel() {
         this.boardList = new LinkedList<>();
         this.currentBoard = null;
@@ -26,7 +30,7 @@ public class BoardModel {
      * on this may need to be adjusted.
      * @param board Board to be displayed
      */
-    public void setCurrentBoard(Board board) {
+    public void setCurrentBoard(final Board board) {
         currentBoard = board;
     }
 

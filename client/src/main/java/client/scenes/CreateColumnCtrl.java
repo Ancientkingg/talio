@@ -25,6 +25,7 @@ public class CreateColumnCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
+     * @param boardModel Shared instance of BoardModel
      */
     @Inject
     public CreateColumnCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
