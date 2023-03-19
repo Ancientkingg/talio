@@ -48,6 +48,19 @@ public class Card implements Comparable<Card> {
     }
 
     /**
+     * Constructor for the Card object with specified id
+     * @param id Card id
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
+     * @param tags Tags assigned to the card
+     */
+    public Card(final long id, final String title, final int priority, final String description, final Set<Tag> tags) {
+        this(title, priority, description, tags);
+        this.id = id;
+    }
+
+    /**
      * Assign one single tag to the card if not already assigned
      * @param tag tag to assign
      *

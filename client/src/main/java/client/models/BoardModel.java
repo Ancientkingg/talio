@@ -54,6 +54,18 @@ public class BoardModel {
     }
 
     /**
+     * Removes card from column
+     * @param card Card to be removed from column
+     * @param col Column to be removed from
+     * @throws BoardChangeException if card is not removed
+     */
+    public void removeCard(final Card card, final Column col) throws BoardChangeException {
+        if (!col.removeCard(card)) {
+            throw new BoardChangeException("Failed to remove card : " + card);
+        }
+    }
+
+    /**
      * Adds column to board in overview
      * @param col Column to be added
      */
