@@ -23,7 +23,13 @@ public class CardComponent extends GridPane {
     @FXML
     private Button deleteCardButton;
 
-    public CardComponent(BoardModel boardModel, Card card, ColumnComponent columnParent) {
+    /**
+     * Constructor for CardComponent
+     * @param boardModel BoardModel instance
+     * @param card Card instance
+     * @param columnParent ColumnComponent instance
+     */
+    public CardComponent(final BoardModel boardModel, final Card card, final ColumnComponent columnParent) {
         this.boardModel = boardModel;
         this.card = card;
         this.columnParent = columnParent;
@@ -42,6 +48,10 @@ public class CardComponent extends GridPane {
 
     }
 
+    /**
+     * Deletes the card
+     * @throws BoardChangeException If the card could not be deleted
+     */
     public void delete() throws BoardChangeException {
         boardModel.removeCard(card, columnParent.getColumn());
     }

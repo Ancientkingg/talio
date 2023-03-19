@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.SortedSet;
 
 public class ColumnComponent extends GridPane {
@@ -87,7 +86,7 @@ public class ColumnComponent extends GridPane {
         // Make the column unable to scroll horizontally
         scrollPane.setFitToWidth(true);
 
-        for (Card card : column.getCards()) {
+        for (final Card card : column.getCards()) {
             innerCardList.getChildren().add(new CardComponent(boardModel, card, this));
         }
     }
@@ -108,7 +107,11 @@ public class ColumnComponent extends GridPane {
         boardModel.removeColumn(column);
     }
 
-    public void deleteCard(CardComponent card) {
+    /**
+     * Deletes a card from the column
+     * @param card CardComponent instance
+     */
+    public void deleteCard(final CardComponent card) {
         innerCardList.getChildren().remove(card);
     }
 
