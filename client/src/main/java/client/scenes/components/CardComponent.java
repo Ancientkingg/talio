@@ -29,8 +29,9 @@ public class CardComponent extends GridPane {
 
     /**
      * Constructor for CardComponent
-     * @param boardModel BoardModel instance
-     * @param card Card instance
+     *
+     * @param boardModel   BoardModel instance
+     * @param card         Card instance
      * @param columnParent ColumnComponent instance
      */
     public CardComponent(final BoardModel boardModel, final Card card, final ColumnComponent columnParent) {
@@ -59,6 +60,20 @@ public class CardComponent extends GridPane {
                 boardModel.updateCard(card);
             }
         });
+
+        focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                card.setTitle(cardText.getText());
+                boardModel.updateCard(card);
+                cardText.setDisable(true);
+            }
+        });
+
+        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
+            card.setTitle(cardText.getText());
+            boardModel.updateCard(card);
+        });
+
 
         cardText.setDisable(true); // Disable editing of card text by default
 
@@ -95,6 +110,7 @@ public class CardComponent extends GridPane {
 
     /**
      * Deletes the card
+     *
      * @throws BoardChangeException If the card could not be deleted
      */
     public void delete() throws BoardChangeException {
