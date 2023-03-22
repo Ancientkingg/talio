@@ -41,8 +41,9 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Constructor for ColumnComponent
-     * @param boardModel BoardModel instance
-     * @param column Column instance
+     *
+     * @param boardModel   BoardModel instance
+     * @param column       Column instance
      * @param overviewCtrl OverviewCtrl instance
      */
     public ColumnComponent(final BoardModel boardModel, final Column column, final OverviewCtrl overviewCtrl) {
@@ -67,6 +68,11 @@ public class ColumnComponent extends GridPane {
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
             }
+        });
+
+        columnHeading.textProperty().addListener((observable, oldValue, newValue) -> {
+            column.setHeading(newValue);
+            boardModel.updateColumn(column);
         });
 
         // Set the add action for the add card button
@@ -128,6 +134,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Sets the heading of the column
+     *
      * @param heading String to set the heading to
      */
     public void setHeading(final String heading) {
@@ -136,6 +143,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Deletes the column
+     *
      * @throws BoardChangeException If the board cannot be changed
      */
     public void delete() throws BoardChangeException {
@@ -144,6 +152,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Deletes a card from the column
+     *
      * @param card CardComponent instance
      */
     public void deleteCard(final CardComponent card) {
@@ -152,6 +161,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Returns the column
+     *
      * @return Column
      */
     public Column getColumn() {

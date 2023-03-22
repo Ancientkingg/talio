@@ -143,4 +143,14 @@ public class BoardModel {
             oldCard.setDescription(card.getDescription());
         }
     }
+
+    public void updateColumn(final Column column) {
+        final Column oldColumn = currentBoard.getColumn(column.getId());
+
+        if (oldColumn != null) {
+            oldColumn.setHeading(column.getHeading());
+            oldColumn.setIndex(column.getIndex());
+            oldColumn.setCards(column.getCards());
+        }
+    }
 }
