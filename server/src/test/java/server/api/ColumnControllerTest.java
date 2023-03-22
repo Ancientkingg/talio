@@ -49,15 +49,10 @@ public class ColumnControllerTest {
 
     /*
     * Problem I was running into - Board is null
-    * Tried to ways of creating boards - directly and using createBoard method in BoardController
-    * Input that will come to controller from client - Request to add column with
-    * Board joinKey as path variable
-    * new Column's heading as path variable
-    * password to board in request body
-    * index of new Column as request parameter
+    *
     *
     * What needs to be done -
-    *
+    * getBoardWithKeyAndPassword of BoardService is called by addColumn of ColumnController.
     */
 
     // This ones a mess I'll clean it up later
@@ -67,6 +62,12 @@ public class ColumnControllerTest {
 
         Column addedColumn = new Column("Column 1", 1, new TreeSet<>());
 
+        Board initialBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
+        Board finalBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
+        finalBoard.addColumn(addedColumn);
+
+        when(boardService.getBoardWithKeyAndPassword("joinkey", "password")).thenReturn(initialBoard);
+        when(boardService.saveBoard(finalBoard)).thenReturn(finalBoard);
 
         // Perform the request
         this.mockMvc.perform(post("/columns/joinkey/create/Column 1").param("index", "1")
