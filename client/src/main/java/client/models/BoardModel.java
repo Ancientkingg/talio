@@ -95,4 +95,52 @@ public class BoardModel {
             throw new BoardChangeException("Failed to add board : " + board);
         }
     }
+
+    /**
+     * Moves card from one column to another (IMPORTANT: This method is temporary
+     * and will be replaced by a method that sends the move to the server and then
+     * updates the board accordingly.)
+     * @param cardId ID of card to be moved
+     * @param columnIdx Index of column to be moved from
+     * @param newColumnIdx Index of column to be moved to
+     * @param priority Priority of card in new column
+     */
+    public void moveCard(final long cardId, final long columnIdx, final long newColumnIdx, final int priority) {
+        // This method is temporary. It will be replaced by a method that sends the move to the server
+        // and then updates the board accordingly.
+        final Card card = currentBoard.getCard(cardId);
+        final Column column = currentBoard.getColumn(columnIdx);
+        final Column newColumn = currentBoard.getColumn(newColumnIdx);
+
+
+        if (card != null && column != null && newColumn != null) {
+            column.removeCard(card);
+
+            card.setPriority(priority);
+
+            for (final Card c : newColumn.getCards()) {
+                if (c.getPriority() >= card.getPriority())
+                    c.setPriority(c.getPriority() + 1);
+            }
+
+            newColumn.addCard(card);
+        }
+    }
+
+    /**
+     * Updates card in place (IMPORTANT: This method is temporary
+     * and will be replaced by a method that sends the update to
+     * the server and then updates the board accordingly.)
+     * @param card Card to be updated
+     */
+    public void updateCard(final Card card) {
+        // This method is temporary. It will be replaced by a method that sends the update to the server
+        // and then updates the board accordingly.
+        final Card oldCard = currentBoard.getCard(card.getId());
+
+        if (oldCard != null) {
+            oldCard.setTitle(card.getTitle());
+            oldCard.setDescription(card.getDescription());
+        }
+    }
 }

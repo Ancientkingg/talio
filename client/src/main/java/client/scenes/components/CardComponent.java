@@ -8,20 +8,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import lombok.Getter;
 
 import java.io.IOException;
 
 public class CardComponent extends GridPane {
     private final BoardModel boardModel;
+    @Getter
     private final Card card;
+    @Getter
     private final ColumnComponent columnParent;
 
     @FXML
     private TextArea cardText;
 
     @FXML
-    private Button deleteCardButton;
+    private Button editCardButton;
 
     /**
      * Constructor for CardComponent
@@ -46,13 +50,46 @@ public class CardComponent extends GridPane {
 
         cardText.setText(card.getTitle());
 
-        deleteCardButton.setOnAction(e -> {
-            try {
-                this.delete();
-                columnParent.deleteCard(this);
-            } catch (BoardChangeException ex) {
-                throw new RuntimeException(ex);
+        editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
+
+        cardText.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
+            if (e.getCode() == KeyCode.ENTER) {
+                cardText.setDisable(true);
+                card.setTitle(cardText.getText());
+                boardModel.updateCard(card);
             }
+        });
+
+        cardText.setDisable(true); // Disable editing of card text by default
+
+        setUpDragAndDrop();
+
+    }
+
+    private void setUpDragAndDrop() {
+        setOnDragDetected(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                // Start drag-and-drop gesture
+                startFullDrag();
+                final Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(
+                        String.format("%s:%s", card.getId(), columnParent.getColumn().getIndex()));
+                dragboard.setContent(content);
+                event.consume();
+            }
+        });
+
+        setOnDragEntered(event -> {
+            // Check if the dragged element is being dragged over the top half of the target element
+            if (event.getY() < this.getHeight()) {
+                this.setStyle("-fx-border-color: transparent; -fx-border-width: 25px 0 0 0;");
+            }
+        });
+
+        setOnDragExited(event -> {
+            // Remove the top margin from the target element
+            this.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
         });
     }
 
@@ -63,6 +100,4 @@ public class CardComponent extends GridPane {
     public void delete() throws BoardChangeException {
         boardModel.removeCard(card, columnParent.getColumn());
     }
-
-
 }

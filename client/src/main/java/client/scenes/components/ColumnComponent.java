@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -83,12 +85,45 @@ public class ColumnComponent extends GridPane {
             }
         });
 
+        setUpDragAndDrop(overviewCtrl);
+
         // Make the column unable to scroll horizontally
         scrollPane.setFitToWidth(true);
 
         for (final Card card : column.getCards()) {
-            innerCardList.getChildren().add(new CardComponent(boardModel, card, this));
+            final CardComponent cc = new CardComponent(boardModel, card, this);
+            innerCardList.getChildren().add(cc);
         }
+    }
+
+    private void setUpDragAndDrop(final OverviewCtrl overviewCtrl) {
+        setOnDragOver(event -> {
+            if (event.getGestureSource() != this && event.getDragboard().hasString()) {
+                // Allow dropping of cards
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        setOnDragDropped(event -> {
+            final Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                final String[] split = db.getString().split(":");
+
+                if (split.length == 2) {
+                    final long cardId = Long.parseLong(split[0]);
+                    final long columnIdx = Long.parseLong(split[1]);
+
+                    final int priority = event.getPickResult().getIntersectedNode().getClass() == CardComponent.class ?
+                            ((CardComponent) event.getPickResult().
+                                    getIntersectedNode()).getCard().getPriority() : column.getCards().size();
+
+                    System.out.println(priority);
+                    boardModel.moveCard(cardId, columnIdx, column.getIndex(), priority);
+                    overviewCtrl.refresh();
+                }
+            }
+        });
     }
 
     /**
