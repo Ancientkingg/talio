@@ -69,12 +69,7 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
-
-        columnHeading.textProperty().addListener((observable, oldValue, newValue) -> {
-            column.setHeading(newValue);
-            boardModel.updateColumn(column);
-        });
-
+        addTextChangeListener(boardModel, column);
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
@@ -100,6 +95,13 @@ public class ColumnComponent extends GridPane {
             final CardComponent cc = new CardComponent(boardModel, card, this);
             innerCardList.getChildren().add(cc);
         }
+    }
+
+    private void addTextChangeListener(final BoardModel boardModel, final Column column) {
+        columnHeading.textProperty().addListener((observable, oldValue, newValue) -> { // Save the heading of the column
+            column.setHeading(newValue);
+            boardModel.updateColumn(column);
+        });
     }
 
     private void setUpDragAndDrop(final OverviewCtrl overviewCtrl) {

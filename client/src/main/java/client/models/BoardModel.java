@@ -144,6 +144,12 @@ public class BoardModel {
         }
     }
 
+    /**
+     * Updates column in place (IMPORTANT: This method is temporary
+     * and will be replaced by a method that sends the update to
+     * the server and then updates the board accordingly.)
+     * @param column Column to be updated
+     */
     public void updateColumn(final Column column) {
         final Column oldColumn = currentBoard.getColumn(column.getId());
 
