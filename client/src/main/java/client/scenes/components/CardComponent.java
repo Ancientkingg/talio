@@ -45,6 +45,7 @@ public class CardComponent extends GridPane {
         }
 
         cardText.setText(card.getTitle());
+        cardText.setWrapText(true);
 
         deleteCardButton.setOnAction(e -> {
             try {

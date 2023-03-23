@@ -85,6 +85,8 @@ public class ColumnComponent extends GridPane {
 
         // Make the column unable to scroll horizontally
         scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         for (final Card card : column.getCards()) {
             innerCardList.getChildren().add(new CardComponent(boardModel, card, this));

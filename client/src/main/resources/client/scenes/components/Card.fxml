@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="174.0" type="GridPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="174.0" styleClass="card" stylesheets="@../../css/Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
@@ -15,7 +15,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextArea fx:id="cardText" prefHeight="200.0" prefWidth="400.0" text="Test12l1j3klj12kasdasldjaks&#10;&#10;" />
-      <Button fx:id="deleteCardButton" ellipsisString="" mnemonicParsing="false" styleClass="delete-column-button" stylesheets="@../../css/main.css" text="❌" textOverrun="CLIP" GridPane.columnIndex="1" />
+      <TextArea fx:id="cardText" prefHeight="96.0" prefWidth="227.0" styleClass="cardTextArea" stylesheets="@../../css/Style.css" text="test&#10;&#10;" />
+      <Button fx:id="deleteCardButton" ellipsisString="" mnemonicParsing="false" styleClass="delete-column-button" stylesheets="@../../css/Style.css" text="❌" textOverrun="CLIP" GridPane.columnIndex="1" />
    </children>
 </fx:root>
