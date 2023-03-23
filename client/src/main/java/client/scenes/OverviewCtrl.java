@@ -1,15 +1,16 @@
 package client.scenes;
 
-import commons.*;
+import client.models.BoardModel;
+import client.scenes.components.ColumnComponent;
+import commons.Column;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
+import javafx.scene.layout.HBox;
 
 import javax.inject.Inject;
 
 public class OverviewCtrl {
     private final MainCtrl mainCtrl;
+    private final BoardModel boardModel;
 
     @FXML
     private HBox columnBox;
@@ -17,10 +18,12 @@ public class OverviewCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
+     * @param boardModel Shared instance of BoardModel
      */
     @Inject
-    public OverviewCtrl(final MainCtrl mainCtrl) {
+    public OverviewCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
         this.mainCtrl = mainCtrl;
+        this.boardModel = boardModel;
     }
 
 
@@ -43,29 +46,17 @@ public class OverviewCtrl {
     /**
      * Refreshes the overview scene columnBox by iterating over each column in the current board
      * and displaying the corresponding titles. Will also refresh cards in the future.
-     *
+     * -
      * Is this inefficient? Or does one have to reload all FXML objects to refresh?
      */
     public void refresh() {
         columnBox.getChildren().clear();
-        for (final Column col : mainCtrl.getCurrentBoard().getColumns()) {
-            final VBox cardBox = new VBox();
-            cardBox.setStyle(
-                    "-fx-border-style: solid inside;" +
-                    "-fx-border-width: 2;" +
-                    "-fx-border-insets: 5;" +
-                    "-fx-border-radius: 5;" +
-                    "-fx-border-color: black;");
-            cardBox.setPrefHeight(364);
-            cardBox.setPrefWidth(157);
-            columnBox.getChildren().add(cardBox);
+        for (final Column col : boardModel.getCurrentBoard().getColumns()) {
+            final ColumnComponent columnComponent = new ColumnComponent(boardModel, col, this);
 
-            final TextArea columnTitle = new TextArea();
-            columnTitle.setPrefHeight(27);
-            columnTitle.setPrefWidth(153);
-            columnTitle.setText(col.getHeading());
-            columnTitle.setFont(new Font("System Bold", 12));
-            cardBox.getChildren().add(columnTitle);
+            columnComponent.setHeading(col.getHeading());
+
+            columnBox.getChildren().add(columnComponent);
         }
     }
 }

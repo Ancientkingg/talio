@@ -1,15 +1,19 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.models.BoardModel;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.TreeSet;
 
+@Component
 public class CreateBoardCtrl {
     private final MainCtrl mainCtrl;
+    private final BoardModel boardModel;
 
     @FXML
     private TextField boardName;
@@ -17,10 +21,12 @@ public class CreateBoardCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
+     * @param boardModel Shared instance of BoardModel
      */
     @Inject
-    public CreateBoardCtrl(final MainCtrl mainCtrl) {
+    public CreateBoardCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
         this.mainCtrl = mainCtrl;
+        this.boardModel = boardModel;
     }
 
     /**
@@ -28,12 +34,10 @@ public class CreateBoardCtrl {
      */
     public void createBoard() throws BoardChangeException {
         final Board board = new Board("", boardName.getText(), new TreeSet<>());
-        mainCtrl.addBoard(board);
-        mainCtrl.setCurrentBoard(board);
-        final Column col = new Column("Default Header", 0, new TreeSet<>());
-        mainCtrl.addColumn(col);
+        boardModel.addBoard(board);
+        boardModel.setCurrentBoard(board);
         mainCtrl.refreshOverview();
-        mainCtrl.closeSecondaryStage();
+        mainCtrl.showJoinBoard();
     }
 
     /**

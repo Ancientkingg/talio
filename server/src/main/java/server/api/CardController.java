@@ -98,11 +98,40 @@ public class CardController {
         final Card card = cardDTO.getCard();
         final Column column = board.getColumnByName(columnName);
 
-        column.updateCardPosition(card, newPosition);
+        if (newPosition < 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
+
+        if (newPosition != card.getPriority())
+            column.updateCardPosition(card, newPosition);
 
         boardService.saveBoard(board);
 
         return ResponseEntity.ok(column);
+    }
+
+    /**
+     * Update a card
+     * @param cardDTO Containing card to be updated and password to board for authentication
+     * @param joinKey Key of board from which card is to be updated
+     * @param columnName Name of column from which card is to be updated
+     * @return The card updated in CardRepository
+     */
+    @PostMapping("/update/{joinKey}/{columnName}")
+    public ResponseEntity<Card> updateCard(@Valid @RequestBody final CardDTO cardDTO,
+                                           @PathVariable final String joinKey, @PathVariable final String columnName)
+    {
+        final String password = cardDTO.getPassword();
+
+        final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
+
+        final Card card = cardDTO.getCard();
+        final Column column = board.getColumnByName(columnName);
+
+        column.updateCard(card);
+
+        boardService.saveBoard(board);
+
+        return ResponseEntity.ok(card);
     }
 
 }

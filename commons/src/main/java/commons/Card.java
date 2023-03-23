@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -43,7 +44,20 @@ public class Card implements Comparable<Card> {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.tags = tags;
+        this.tags = tags == null ? new HashSet<>(0) : tags;
+    }
+
+    /**
+     * Constructor for the Card object with specified id
+     * @param id Card id
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
+     * @param tags Tags assigned to the card
+     */
+    public Card(final long id, final String title, final int priority, final String description, final Set<Tag> tags) {
+        this(title, priority, description, tags);
+        this.id = id;
     }
 
     /**
@@ -101,5 +115,16 @@ public class Card implements Comparable<Card> {
     @Override
     public int compareTo(final Card o) {
         return Integer.compare(this.priority, o.priority);
+    }
+
+    /**
+     * Updates the card with the values from another card
+     * @param card Card to copy from
+     */
+    public void update(final Card card) {
+        this.title = card.title;
+        this.priority = card.priority;
+        this.description = card.description;
+        this.tags = card.tags;
     }
 }
