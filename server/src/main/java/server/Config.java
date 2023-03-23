@@ -15,14 +15,11 @@
  */
 package server;
 
-import java.sql.Timestamp;
-import java.time.Clock;
-import java.util.Random;
-import java.util.TreeSet;
-
-import commons.Board;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.Clock;
+import java.util.Random;
 
 @Configuration
 public class Config {
@@ -43,15 +40,5 @@ public class Config {
     @Bean
     public Clock getClock() {
         return Clock.systemDefaultZone();
-    }
-
-
-    /**
-     * Gets a board for testing
-     * @return instnace of Board
-     */
-    @Bean(name = "testBoard")
-    public Board getBoard() {
-        return new Board("joinkey", "test", "",  new TreeSet<>(), new Timestamp(12345L));
     }
 }
