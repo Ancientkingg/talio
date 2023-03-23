@@ -1,6 +1,5 @@
 package server.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Board;
 import commons.Column;
@@ -140,8 +139,6 @@ public class ColumnControllerTest {
      */
     @Test
     public void removeColumnFromEmptyBoardTest() throws Exception {
-
-        Column toBeRemovedColumn = new Column("Column 1", 1, new TreeSet<>());
 
         Board initialBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         Board finalBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
