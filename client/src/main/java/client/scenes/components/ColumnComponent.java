@@ -124,9 +124,11 @@ public class ColumnComponent extends GridPane {
 
                     final int priority = event.getPickResult().getIntersectedNode().getClass() == CardComponent.class ?
                             ((CardComponent) event.getPickResult().
-                                    getIntersectedNode()).getCard().getPriority() : column.getCards().size();
+                                    getIntersectedNode()).getCard().getPriority() : column.getCards().size() + 1;
 
-                    System.out.println(priority);
+
+
+
                     boardModel.moveCard(cardId, columnIdx, column.getIndex(), priority);
                     overviewCtrl.refresh();
                 }

@@ -115,15 +115,9 @@ public class BoardModel {
 
         if (card != null && column != null && newColumn != null) {
             column.removeCard(card);
-
-            card.setPriority(priority);
-
-            for (final Card c : newColumn.getCards()) {
-                if (c.getPriority() >= card.getPriority())
-                    c.setPriority(c.getPriority() + 1);
-            }
-
+            card.setPriority(Integer.MAX_VALUE);
             newColumn.addCard(card);
+            newColumn.updateCardPosition(card, priority);
         }
     }
 
