@@ -167,4 +167,38 @@ public class Board {
     public int hashCode() {
         return Objects.hash(joinKey, title, created, password, columns);
     }
+
+    /**
+     * Get a card by its id
+     * @param cardId The id of the card to get
+     *
+     * @return The card with the id {@code cardId} or null if not found
+     */
+    public Card getCard(final long cardId) {
+        for (final Column column : this.columns) {
+            for (final Card card : column.getCards()) {
+                if (card.getId() == cardId) {
+                    return card;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get a column by its index
+     * @param columnIdx The index of the column to get
+     *
+     * @return The column with the index {@code columnIdx} or null if not found
+     */
+    public Column getColumn(final long columnIdx) {
+        for (final Column column : this.columns) {
+            if (column.getIndex() == columnIdx) {
+                return column;
+            }
+        }
+
+        return null;
+    }
 }

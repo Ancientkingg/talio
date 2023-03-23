@@ -19,7 +19,7 @@ public class CreateColumnCtrl {
 
     @FXML
     private TextField columnName;
-    private int demoIndexCounter; //This is just a temporary fix to give columns different indexes
+    private static int demoIndexCounter; //This is just a temporary fix to give columns different indexes
 
 
     /**
@@ -29,7 +29,7 @@ public class CreateColumnCtrl {
      */
     @Inject
     public CreateColumnCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
-        this.demoIndexCounter = 1;
+        demoIndexCounter = 1;
         this.mainCtrl = mainCtrl;
         this.boardModel = boardModel;
     }

@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -39,8 +41,9 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Constructor for ColumnComponent
-     * @param boardModel BoardModel instance
-     * @param column Column instance
+     *
+     * @param boardModel   BoardModel instance
+     * @param column       Column instance
      * @param overviewCtrl OverviewCtrl instance
      */
     public ColumnComponent(final BoardModel boardModel, final Column column, final OverviewCtrl overviewCtrl) {
@@ -66,7 +69,7 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
-
+        addTextChangeListener(boardModel, column);
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
@@ -83,16 +86,59 @@ public class ColumnComponent extends GridPane {
             }
         });
 
+        setUpDragAndDrop(overviewCtrl);
+
         // Make the column unable to scroll horizontally
         scrollPane.setFitToWidth(true);
 
         for (final Card card : column.getCards()) {
-            innerCardList.getChildren().add(new CardComponent(boardModel, card, this));
+            final CardComponent cc = new CardComponent(boardModel, card, this);
+            innerCardList.getChildren().add(cc);
         }
+    }
+
+    private void addTextChangeListener(final BoardModel boardModel, final Column column) {
+        columnHeading.textProperty().addListener((observable, oldValue, newValue) -> { // Save the heading of the column
+            column.setHeading(newValue);
+            boardModel.updateColumn(column);
+        });
+    }
+
+    private void setUpDragAndDrop(final OverviewCtrl overviewCtrl) {
+        setOnDragOver(event -> {
+            if (event.getGestureSource() != this && event.getDragboard().hasString()) {
+                // Allow dropping of cards
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        setOnDragDropped(event -> {
+            final Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                final String[] split = db.getString().split(":");
+
+                if (split.length == 2) {
+                    final long cardId = Long.parseLong(split[0]);
+                    final long columnIdx = Long.parseLong(split[1]);
+
+                    final int priority = event.getPickResult().getIntersectedNode().getClass() == CardComponent.class ?
+                            ((CardComponent) event.getPickResult().
+                                    getIntersectedNode()).getCard().getPriority() : column.getCards().size() + 1;
+
+
+
+
+                    boardModel.moveCard(cardId, columnIdx, column.getIndex(), priority);
+                    overviewCtrl.refresh();
+                }
+            }
+        });
     }
 
     /**
      * Sets the heading of the column
+     *
      * @param heading String to set the heading to
      */
     public void setHeading(final String heading) {
@@ -101,6 +147,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Deletes the column
+     *
      * @throws BoardChangeException If the board cannot be changed
      */
     public void delete() throws BoardChangeException {
@@ -109,6 +156,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Deletes a card from the column
+     *
      * @param card CardComponent instance
      */
     public void deleteCard(final CardComponent card) {
@@ -117,6 +165,7 @@ public class ColumnComponent extends GridPane {
 
     /**
      * Returns the column
+     *
      * @return Column
      */
     public Column getColumn() {
