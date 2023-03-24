@@ -57,21 +57,21 @@ public class CardComponent extends GridPane {
             if (e.getCode() == KeyCode.ENTER) {
                 cardText.setDisable(true);
                 card.setTitle(cardText.getText());
-                boardModel.updateCard(card);
+                refresh();
             }
         });
 
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 card.setTitle(cardText.getText());
-                boardModel.updateCard(card);
+                refresh();
                 cardText.setDisable(true);
             }
         });
 
         cardText.textProperty().addListener((observable, oldValue, newValue) -> {
             card.setTitle(cardText.getText());
-            boardModel.updateCard(card);
+            refresh();
         });
 
 
@@ -115,5 +115,12 @@ public class CardComponent extends GridPane {
      */
     public void delete() throws BoardChangeException {
         boardModel.removeCard(card, columnParent.getColumn());
+    }
+
+    /**
+     * Refreshes the card - to be called when updating the interface
+     */
+    public void refresh() {
+        cardText.setText(card.getTitle());
     }
 }

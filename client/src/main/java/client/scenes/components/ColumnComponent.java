@@ -64,7 +64,7 @@ public class ColumnComponent extends GridPane {
         deleteColumnButton.setOnAction(e -> {
             try {
                 this.delete();
-                overviewCtrl.refresh();
+                overviewCtrl.refreshColumn();
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
             }
@@ -80,7 +80,7 @@ public class ColumnComponent extends GridPane {
                 final int priority = cards.size() == 0 ? 0 : cards.last().getPriority() + 1;
 
                 boardModel.addCard(new Card(id, "", priority, "", null), column);
-                overviewCtrl.refresh();
+                overviewCtrl.refreshColumn(this.column.getIndex());
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
             }
@@ -130,7 +130,9 @@ public class ColumnComponent extends GridPane {
 
 
                     boardModel.moveCard(cardId, columnIdx, column.getIndex(), priority);
-                    overviewCtrl.refresh();
+
+                    overviewCtrl.refreshColumn(column.getIndex());
+                    overviewCtrl.refreshColumn(columnIdx);
                 }
             }
         });
@@ -170,5 +172,17 @@ public class ColumnComponent extends GridPane {
      */
     public Column getColumn() {
         return column;
+    }
+
+    /**
+     * Refreshes this component
+     */
+    public void refresh() {
+        innerCardList.getChildren().clear();
+        for (final Card card : column.getCards()) {
+            final CardComponent cc = new CardComponent(boardModel, card, this);
+            innerCardList.getChildren().add(cc);
+        }
+        columnHeading.setText(column.getHeading());
     }
 }
