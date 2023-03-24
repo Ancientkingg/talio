@@ -1,42 +1,30 @@
-\section{Results}
+\section{Report}
 
 Brief intro and overview of criticisms.
 
 \subsection{Initial Join Server}
 
-    One issue that a tester reported was the potential confusion a user might feel when first faced with the "Server Connection" screen. This could be remedied by writing a brief description of what is expected of the user, namely that they input the address of a server hosting talio. Additionally one could briefly mention the option of hosting one's own server, although that would be a little more challenging than simply connecting. One piece of advice given by several reviewers, which would be a very intuitive way of improving the quality of life, is to have a default server address already in the text box, which would simply connect the user to a default talio hosted server by simply clicking "connect".
+    One issue that a tester reported was the potential confusion a user might feel when first faced with the "Server Connection" screen. 
 
-    Another piece of feedback, was that we need to rigorously error check and throw matching error messages on the "Server Connection" screen. This was not properly displayed in the prototype, but we were and are indeed planning to check and throw for the following:
-\begin{enumerate}
-    \item Empty Address
-    \item Invalid Address
-    \item Server Not Responding
-\end{enumerate}
+    Another piece of feedback, was that we need to rigorously error check and throw corresponding error messages on the "Server Connection" screen. 
 
 \subsection{Home}
 
     A very general issue raised by a reviewer was the concern that users may be disoriented when first arriving on the Home page if they haven't used the app before. A proposed way of fixing this is to add a "Workspace" or "Dashboard" label to the page. Changing the header of the page to read "Talio: Dashboard" could certainly help some users understand exactly what they are looking at and make sense of the various buttons and boards.
 
-    One piece of functionality that we forgot to display in the prototype is the ability to disconnect from the current server and reconnect to a different one. The current prototype would not allow for any such change: after connecting to a server once, it would not reopen the "Server Connection" screen as it does the first time that one launches the app. This was simply an oversight in prototype design and we will make sure to have an option for this on the home page, which reopens the "Server Connection" screen with an additional "Cancel" option.
+    One piece of functionality that we forgot to display in the prototype is the ability to disconnect from the current server and reconnect to a different one. The current prototype would not allow for any such change: after connecting to a server once, it would not reopen the "Server Connection" screen as it does the first time that one launches the app. This was simply an oversight in prototype design and we will make sure to have an option for this on the home page, which reopens the "Server Connection" screen with an additional "Cancel" option, as planned.
 
 \subsection{Board Overview}
 
-    An issue users may face on the Board Overview page is finding the Board settings. The prototype allows access to this by clicking on the board name at the top of the screen, which also displays a pencil icon, indicating editing, when hovering over it. A speculation as to why this may not feel so intuitive, by a reviewer, was that the board name is very large and feels more like a static title than a functional element. Potentially this could be remedied by displaying the pencil (editing) icon even when the user doesn't hover over the title.
+    An issue users may face on the Board Overview page is finding the Board settings. The prototype allows access to this by clicking on the board name at the top of the screen, which also displays a pencil icon, indicating editing, when hovering over it. A reviewers speculation as to why this may not feel so intuitive, was that the board name is very large and feels more like a static title than a functional element.
 
-    A similar issue was raised about how copying the board code feels a bit unintuitive. The code can be found both under the board settings modal as well and copied by clicking the paperclip icon at the top right. One could make this more obvious changing the paperclip icon to a button that reads "Copy Code". Additionally it makes more sense design wise to move that into the black upper bar, above the list area. The board code being present on the board settings page seems very sensible though and should stay that way.
+    A similar issue was raised about how copying the board code feels a bit unintuitive. The code can be found both under the board settings modal as well as copied by clicking the paperclip icon at the top right.
 
-    A reviewer noted that (if we wish to complete the advanced features) cards should have both a title and a description.
+    A reviewer noted that (if we wish to complete the advanced features) cards should have both a title and a description. They will have these features, they were just not clearly communicated in the prototype.
 
-    One reviewer noted that the edit list and edit tags modals are not implemented in the prototype. This is true for the tags, however the lists can be renamed by clicking on their title. The prototype has pens to indicate editing, but those will be replaced by X's that delete the board along with its cards when clicked (after asking the user if they are sure that they want to delete the list, along with the cards). The edit tags modal has indeed not been implemented yet in the prototype, but will follow a similar minimal style as the rest of the app and have the following features:
-\begin{enumerate}
-    \item OK (finalize changes and leave modal)
-    \item Add tag with name
-    \item Remove tag
-    \item Rename tag
-    \item Change tag color
-\end{enumerate}
+    One reviewer noted that the edit list and edit tags modals are not implemented in the prototype. 
 
-    Another reviewer expressed concerns that some of the mock cards don't have tags, don't have titles, or don't have descriptions, and that this may confuse users. The prototype is not fully fleshed out and therefore not all the cards are entirely prepared. In the final application the user will only be presented with a single empty list upon creating a board so there is no need to worry about the users impression of the specific mock cards in the prototype. They can add tags as they wish and cards will require a title.
+    Another reviewer expressed concerns that some of the mock cards don't have tags, don't have titles, or don't have descriptions, and that this may confuse users. The prototype is not fully fleshed out and therefore not all the cards are entirely prepared. Only some of the cards had all the features implemented to briefly demonstrated what that will look like. In the final application the user will only be presented with a single empty list upon creating a board so there is no need to worry about the users impression of the specific mock cards in the prototype. They can add tags as they wish and cards will require a title.
 
 \subsection{Client Settings}
 
