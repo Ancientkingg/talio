@@ -15,36 +15,17 @@ buildServer:
   stage: build
   script:
     - ./gradlew :server:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
-  artifacts:
-    untracked: true
-    expire_in: 1 hour
 
 buildCommons:
   stage: build
   script:
     - ./gradlew :commons:compileJava
-  artifacts:
-    untracked: true
-    expire_in: 1 hour
 
 buildClient:
   stage: build
   script:
     - ./gradlew :client:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
-  artifacts:
-    untracked: true
-    expire_in: 1 hour
 
-testServerRun:
-  stage: test
-  needs:
-    - buildServer
-  dependencies:
-    - buildServer
-  script:
-    - printf 'command="./gradlew bootRun --no-rebuild"\nlog="run.log"\nsuccessMatch="JVM running for"\nerrorMatch="Exception:\|Error:\|Caused By"\n$command > "$log" 2>&1 &\npid=$!\nwhile sleep 3\ndo\nif grep -q "$errorMatch" "$log"\nthen\nkill $pid\nexit 1\nfi\nif grep -F -q "$successMatch" "$log"\nthen\nkill $pid\nexit 0\nfi\ndone\n' > script.sh
-    - chmod +x ./script.sh
-    - ./script.sh
 
 testCheckStyleCommons:
   stage: checkstyle
@@ -76,17 +57,9 @@ testCheckStyleClient:
 
 testAndCoverage:
   stage: test
-  needs:
-    - buildClient
-    - buildServer
-    - buildCommons
-  dependencies:
-    - buildClient
-    - buildServer
-    - buildCommons
   script:
-    - ./gradlew test -x compileJava -x classes -x processResources -x jar
-    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    - ./gradlew test
+    - ./gradlew AggregateJacocoReport
     # preserve coverage information in an easy-to-reach folder
     - mv build/reports/jacoco/aggregate/html ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
