@@ -1,7 +1,7 @@
 package client.scenes;
 
-import client.models.BoardModel;
 import client.scenes.components.ColumnComponent;
+import client.services.BoardService;
 import commons.Column;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 public class OverviewCtrl {
     private final MainCtrl mainCtrl;
-    private final BoardModel boardModel;
+    private final BoardService boardService;
 
     @FXML
     private HBox columnBox;
@@ -21,9 +21,9 @@ public class OverviewCtrl {
      * @param boardModel Shared instance of BoardModel
      */
     @Inject
-    public OverviewCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
+    public OverviewCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
-        this.boardModel = boardModel;
+        this.boardService = boardService;
     }
 
 
@@ -51,8 +51,8 @@ public class OverviewCtrl {
      */
     public void refresh() {
         columnBox.getChildren().clear();
-        for (final Column col : boardModel.getCurrentBoard().getColumns()) {
-            final ColumnComponent columnComponent = new ColumnComponent(boardModel, col, this);
+        for (final Column col : boardService.getCurrentBoard().getColumns()) {
+            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
 
             columnComponent.setHeading(col.getHeading());
 
