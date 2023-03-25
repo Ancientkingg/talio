@@ -44,11 +44,28 @@ public class BoardService {
     }
 
     /**
+     * Fetches a board by join-key
+     * @param joinKey the join-key used to identify the board
+     * @return the board that was retrieved
+     */
+    public Board fetchBoard(final String joinKey) {
+        return serverService.getBoard(joinKey);
+    }
+
+    /**
      * Sets the current board
      * @param board the board to set as current
      */
     public void setCurrentBoard(final Board board) {
         boardModel.setCurrentBoard(board);
+    }
+
+    /**
+     * Gets the current board
+     * @return the current board
+     */
+    public Board getCurrentBoard() {
+        return boardModel.getCurrentBoard();
     }
 
     /**
@@ -95,5 +112,32 @@ public class BoardService {
     public Card removeCardFromColumn(final Card card, final Column column) throws BoardChangeException {
         boardModel.removeCard(card, column);
         return serverService.removeCard(this.boardModel.getCurrentBoard(), column, card);
+    }
+
+    /**
+     * Moves a card from one column to another
+     * @param cardIdx the index of the card to move
+     * @param columnFromIdx the index of the column to move the card from
+     * @param columnToIdx the index of the column to move the card to
+     * @param priority the priority of the card in the new column
+     */
+    public void moveCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
+        boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
+    }
+
+    /**
+     * Updates a card
+     * @param card the card to update
+     */
+    public void updateCard(final Card card) {
+        boardModel.updateCard(card);
+    }
+
+    /**
+     * Updates a column
+     * @param column the column to update
+     */
+    public void updateColumn(final Column column) {
+        boardModel.updateColumn(column);
     }
 }

@@ -2,7 +2,7 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
-import client.models.BoardModel;
+import client.services.BoardService;
 import commons.Card;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,7 @@ import lombok.Getter;
 import java.io.IOException;
 
 public class CardComponent extends GridPane {
-    private final BoardModel boardModel;
+    private final BoardService boardService;
     @Getter
     private final Card card;
     @Getter
@@ -30,12 +30,12 @@ public class CardComponent extends GridPane {
     /**
      * Constructor for CardComponent
      *
-     * @param boardModel   BoardModel instance
+     * @param boardService   BoardService instance
      * @param card         Card instance
      * @param columnParent ColumnComponent instance
      */
-    public CardComponent(final BoardModel boardModel, final Card card, final ColumnComponent columnParent) {
-        this.boardModel = boardModel;
+    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent) {
+        this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
 
@@ -57,21 +57,21 @@ public class CardComponent extends GridPane {
             if (e.getCode() == KeyCode.ENTER) {
                 cardText.setDisable(true);
                 card.setTitle(cardText.getText());
-                boardModel.updateCard(card);
+                boardService.updateCard(card);
             }
         });
 
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 card.setTitle(cardText.getText());
-                boardModel.updateCard(card);
+                boardService.updateCard(card);
                 cardText.setDisable(true);
             }
         });
 
         cardText.textProperty().addListener((observable, oldValue, newValue) -> {
             card.setTitle(cardText.getText());
-            boardModel.updateCard(card);
+            boardService.updateCard(card);
         });
 
 
@@ -114,6 +114,6 @@ public class CardComponent extends GridPane {
      * @throws BoardChangeException If the card could not be deleted
      */
     public void delete() throws BoardChangeException {
-        boardModel.removeCard(card, columnParent.getColumn());
+        boardService.removeCardFromColumn(card, columnParent.getColumn());
     }
 }
