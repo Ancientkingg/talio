@@ -152,7 +152,7 @@ public class CardControllerTest {
         Card expectedCard4 = new Card("Card 4", 3, "Description", new HashSet<>());
 
         CardDTO cardDTO1 = new CardDTO(actualCard1, "password");
-//        CardDTO cardDTO4 = new CardDTO(actualCard4, "password");
+        CardDTO cardDTO4 = new CardDTO(actualCard4, "password");
 
         Board actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         Board expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
@@ -180,6 +180,40 @@ public class CardControllerTest {
 
         // weird thing about Column.updateCardPostion - passing position 4 as new index results in card being placed at 4th position
         this.mockMvc.perform(post("/cards/updatePosition/joinkey/Column 1/4")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(cardDTO1)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(actualColumn)));
+
+        assertEquals(expectedBoard, actualBoard);
+
+        int[] expectedPriorities = {0, 2, 3, 1};
+
+        int i = 0;
+
+        for(Card c : expectedColumn.getCards()) {
+            c.setPriority(expectedPriorities[i ++]);
+        }
+
+        // 2, 3, 1, 4 -> 2, 4, 3, 1
+        this.mockMvc.perform(post("/cards/updatePosition/joinkey/Column 1/3")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(cardDTO4)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(actualColumn)));
+
+        assertEquals(expectedBoard, actualBoard);
+
+        expectedPriorities =  new int[] {1, 3, 0, 2};
+
+        i = 0;
+
+        for(Card c : expectedColumn.getCards()) {
+            c.setPriority(expectedPriorities[i ++]);
+        }
+
+        // 2, 3, 1, 4 -> 1, 2, 4, 3
+        this.mockMvc.perform(post("/cards/updatePosition/joinkey/Column 1/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cardDTO1)))
                 .andExpect(status().isOk())
