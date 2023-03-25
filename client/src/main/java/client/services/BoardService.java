@@ -1,0 +1,88 @@
+package client.services;
+
+import client.exceptions.BoardChangeException;
+import client.models.BoardModel;
+import commons.Board;
+import commons.Card;
+import commons.Column;
+
+public class BoardService {
+    private final BoardModel boardModel;
+    private final ServerService serverService;
+
+    /**
+     * Constructs a board service
+     * @param boardModel the injected board model
+     * @param serverService the injected server service
+     */
+    public BoardService(final BoardModel boardModel, final ServerService serverService) {
+        this.boardModel = boardModel;
+        this.serverService = serverService;
+    }
+
+    /**
+     * Sets the IP of the server to interact with
+     * @param ip the ip of the server
+     */
+    public void setServerIP(final String ip) {
+        serverService.setServerIP(ip);
+    }
+
+    /**
+     * Adds a new board
+     * @param board the board to add
+     * @return the board returned by the server
+     * @throws BoardChangeException if the board cannot be added
+     */
+    public Board addBoard(final Board board) throws BoardChangeException {
+        boardModel.addBoard(board);
+        boardModel.setCurrentBoard(board);
+        return serverService.addBoard(board);
+    }
+
+    /**
+     * Adds a column to the currently selected board
+     * @param column the column to add
+     * @return the column returned by the server
+     * @throws BoardChangeException if the column cannot be added
+     */
+    public Column addColumnToCurrentBoard(final Column column) throws BoardChangeException {
+        boardModel.addColumn(column);
+        return serverService.addColumn(this.boardModel.getCurrentBoard(), column);
+    }
+
+    /**
+     * Removes a column from the currently selected board
+     * @param column the column to remove
+     * @return the removed column returned by the server
+     * @throws BoardChangeException if the column cannot be removed
+     */
+    public Column removeColumnFromCurrentBoard(final Column column) throws BoardChangeException {
+        boardModel.removeColumn(column);
+        return serverService.removeColumn(this.boardModel.getCurrentBoard(), column);
+    }
+
+    /**
+     * Adds a card to the specified column of the currently selected board
+     * @param card the card to add
+     * @param column the column to add the card to
+     * @return the card returned by the server
+     * @throws BoardChangeException if the card could not be added
+     */
+    public Card addCardToColumn(final Card card, final Column column) throws BoardChangeException {
+        boardModel.addCard(card, column);
+        return serverService.addCard(this.boardModel.getCurrentBoard(), column, card);
+    }
+
+    /**
+     * Removes a card from the specified column of the currently selected board
+     * @param card the card to remove
+     * @param column the column to remove the card from
+     * @return the removed card returned by the server
+     * @throws BoardChangeException if the card could not be removed
+     */
+    public Card removeCardFromColumn(final Card card, final Column column) throws BoardChangeException {
+        boardModel.removeCard(card, column);
+        return serverService.removeCard(this.boardModel.getCurrentBoard(), column, card);
+    }
+}
