@@ -48,8 +48,6 @@ public class OverviewCtrl {
     /**
      * Refreshes the overview scene columnBox by iterating over each column in the current board
      * and displaying the corresponding titles. Will also refresh cards in the future.
-     * -
-     * Is this inefficient? Or does one have to reload all FXML objects to refresh?
      */
     public void refreshColumn() {
         columnBox.getChildren().clear();
