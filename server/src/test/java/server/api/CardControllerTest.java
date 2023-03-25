@@ -176,6 +176,9 @@ public class CardControllerTest {
         when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
         when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
 
+        // 1, 2, 3, 4 -> 2, 3, 1, 4
+
+        // weird thing about Column.updateCardPostion - passing position 4 as new index results in card being placed at 4th position
         this.mockMvc.perform(post("/cards/updatePosition/joinkey/Column 1/4")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cardDTO1)))
