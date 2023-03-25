@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class Board {
     @Id
-    @NotBlank
     @Getter
     private String joinKey;
     @Getter
