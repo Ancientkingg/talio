@@ -18,7 +18,7 @@ public class OverviewCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
-     * @param boardModel Shared instance of BoardModel
+     * @param boardService Shared instance of BoardService
      */
     @Inject
     public OverviewCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
