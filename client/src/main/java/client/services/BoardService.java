@@ -6,6 +6,8 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 
+import javax.inject.Inject;
+
 public class BoardService {
     private final BoardModel boardModel;
     private final ServerService serverService;
@@ -15,9 +17,11 @@ public class BoardService {
      * @param boardModel the injected board model
      * @param serverService the injected server service
      */
+    @Inject
     public BoardService(final BoardModel boardModel, final ServerService serverService) {
         this.boardModel = boardModel;
         this.serverService = serverService;
+        this.setServerIP("http://localhost:8080");
     }
 
     /**
@@ -36,8 +40,15 @@ public class BoardService {
      */
     public Board addBoard(final Board board) throws BoardChangeException {
         boardModel.addBoard(board);
-        boardModel.setCurrentBoard(board);
         return serverService.addBoard(board);
+    }
+
+    /**
+     * Sets the current board
+     * @param board the board to set as current
+     */
+    public void setCurrentBoard(final Board board) {
+        boardModel.setCurrentBoard(board);
     }
 
     /**
