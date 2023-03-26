@@ -11,7 +11,6 @@ import java.util.*;
 @Entity
 public class Column implements Comparable<Column> {
     @Id
-    @NotBlank
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     private long id;
@@ -22,7 +21,7 @@ public class Column implements Comparable<Column> {
     @Getter @Setter
     @NotBlank
     private String heading;
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("priority")
     @Getter @Setter
     private SortedSet<Card> cards;

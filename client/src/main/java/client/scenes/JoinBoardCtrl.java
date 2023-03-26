@@ -1,17 +1,16 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
-import client.models.BoardModel;
+import client.services.BoardService;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
-import java.util.TreeSet;
 
 public class JoinBoardCtrl {
     private final MainCtrl mainCtrl;
-    private final BoardModel boardModel;
+    private final BoardService boardService;
 
     @FXML
     private TextField boardName;
@@ -19,21 +18,20 @@ public class JoinBoardCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
-     * @param boardModel Shared instance of BoardModel
+     * @param boardService Shared instance of BoardService
      */
     @Inject
-    public JoinBoardCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
+    public JoinBoardCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
-        this.boardModel = boardModel;
+        this.boardService = boardService;
     }
 
     /**
      * Allows user to join a board upon inputting the board join code
      */
     public void joinBoard() throws BoardChangeException {
-        final Board board = new Board(boardName.getText(), "title", new TreeSet<>());
-        boardModel.addBoard(board);
-        boardModel.setCurrentBoard(board);
+        final Board serverBoard = boardService.fetchBoard(boardName.getText());
+        boardService.setCurrentBoard(serverBoard);
         mainCtrl.showOverview();
     }
 

@@ -35,7 +35,7 @@ public class ColumnController {
      */
     @PostMapping("/{joinKey}/create/{columnHeading}")
     public ResponseEntity<Column> addColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
-                                            @RequestBody final String password, @RequestParam final int index)
+                                            @RequestBody(required = false) final String password, @RequestParam final int index)
     {
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
@@ -58,7 +58,7 @@ public class ColumnController {
      */
     @PostMapping("/{joinKey}/remove/{columnHeading}")
     public ResponseEntity<Column> removeColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
-                                               @RequestBody final String password)
+                                               @RequestBody(required = false) final String password)
     {
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);

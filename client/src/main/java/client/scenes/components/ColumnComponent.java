@@ -2,8 +2,8 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
-import client.models.BoardModel;
 import client.scenes.OverviewCtrl;
+import client.services.BoardService;
 import commons.Card;
 import commons.Column;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ import java.util.SortedSet;
 
 public class ColumnComponent extends GridPane {
 
-    private final BoardModel boardModel;
+    private final BoardService boardService;
     private final Column column;
 
     @FXML
@@ -43,12 +43,12 @@ public class ColumnComponent extends GridPane {
     /**
      * Constructor for ColumnComponent
      *
-     * @param boardModel   BoardModel instance
+     * @param boardService   BoardService instance
      * @param column       Column instance
      * @param overviewCtrl OverviewCtrl instance
      */
-    public ColumnComponent(final BoardModel boardModel, final Column column, final OverviewCtrl overviewCtrl) {
-        this.boardModel = boardModel;
+    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl) {
+        this.boardService = boardService;
         this.column = column;
 
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/client/scenes/components/Column.fxml"));
@@ -70,7 +70,7 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
-        addTextChangeListener(boardModel, column);
+        addTextChangeListener(boardService, column);
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
@@ -80,7 +80,7 @@ public class ColumnComponent extends GridPane {
 
                 final int priority = cards.size() == 0 ? 0 : cards.last().getPriority() + 1;
 
-                boardModel.addCard(new Card(id, "", priority, "", null), column);
+                boardService.addCardToColumn(new Card(id, "", priority, "", null), column);
                 overviewCtrl.refreshColumn(this.column.getIndex());
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
@@ -93,15 +93,15 @@ public class ColumnComponent extends GridPane {
         scrollPane.setFitToWidth(true);
 
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardModel, card, this);
+            final CardComponent cc = new CardComponent(boardService, card, this);
             innerCardList.getChildren().add(cc);
         }
     }
 
-    private void addTextChangeListener(final BoardModel boardModel, final Column column) {
+    private void addTextChangeListener(final BoardService boardService, final Column column) {
         columnHeading.textProperty().addListener((observable, oldValue, newValue) -> { // Save the heading of the column
             column.setHeading(newValue);
-            boardModel.updateColumn(column);
+            boardService.updateColumn(column);
         });
     }
 
@@ -130,7 +130,7 @@ public class ColumnComponent extends GridPane {
 
 
 
-                    boardModel.moveCard(cardId, columnIdx, column.getIndex(), priority);
+                    boardService.moveCard(cardId, columnIdx, column.getIndex(), priority);
 
                     overviewCtrl.refreshColumn(column.getIndex());
                     overviewCtrl.refreshColumn(columnIdx);
@@ -154,7 +154,7 @@ public class ColumnComponent extends GridPane {
      * @throws BoardChangeException If the board cannot be changed
      */
     public void delete() throws BoardChangeException {
-        boardModel.removeColumn(column);
+        boardService.removeColumnFromCurrentBoard(column);
     }
 
     /**
@@ -181,7 +181,7 @@ public class ColumnComponent extends GridPane {
     public void refresh() {
         innerCardList.getChildren().clear();
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardModel, card, this);
+            final CardComponent cc = new CardComponent(boardService, card, this);
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());
