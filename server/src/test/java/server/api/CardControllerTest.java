@@ -110,7 +110,7 @@ public class CardControllerTest {
     public void updateCardTest() throws Exception {
 
         Card initialCard = new Card("Card 1", 1, "Description", new HashSet<>());
-        Card finalCard = new Card("Card 1", 1, "Description", new HashSet<>());
+        Card finalCard = new Card("Card 1", 1, "Changed Description", new HashSet<>());
 
         CardDTO cardDTO = new CardDTO(finalCard, "password");
 
