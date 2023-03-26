@@ -131,7 +131,7 @@ public class MainCtrl {
      * Is this terribly inefficient or just what it means to refresh by definition?
      */
     public void refreshOverview() {
-        overviewCtrl.refresh();
+        overviewCtrl.refreshColumn();
     }
 
 }
