@@ -118,25 +118,28 @@ public class Board {
     }
 
     /**
-     * Add one single list to the board if not already in the board
+     * Add one single column to the board if not already in the board
+     * Null columns are not added
      *
-     * @param cardList Column object
+     * @param column Column object
      *
      * @return success/failure
      */
-    public boolean addColumn(final Column cardList) {
-        return this.columns.add(cardList);
+    public boolean addColumn(final Column column) {
+        return column != null && this.columns.add(column);
     }
 
     /**
      * Remove one list from the board
+     * If column to be removed is null method returns directly since board cannot contain null columns
+     * This is done to prevent a NullPointerException from being thrown by TreeSet.remove
      *
-     * @param cardList List to remove
+     * @param column List to remove
      *
      * @return success/failure
      */
-    public boolean removeColumn(final Column cardList) {
-        return this.columns.remove(cardList);
+    public boolean removeColumn(final Column column) {
+        return column != null && this.columns.remove(column);
     }
 
     /**
