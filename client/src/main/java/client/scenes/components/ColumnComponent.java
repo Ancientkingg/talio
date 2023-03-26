@@ -181,7 +181,7 @@ public class ColumnComponent extends GridPane {
     public void refresh() {
         innerCardList.getChildren().clear();
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardModel, card, this);
+            final CardComponent cc = new CardComponent(boardService, card, this);
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());

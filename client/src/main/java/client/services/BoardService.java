@@ -125,13 +125,6 @@ public class BoardService {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
     }
 
-    /**
-     * Updates a card
-     * @param card the card to update
-     */
-    public void updateCard(final Card card) {
-        boardModel.updateCard(card);
-    }
 
     /**
      * Updates a column

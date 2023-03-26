@@ -57,7 +57,6 @@ public class CardComponent extends GridPane {
             if (e.getCode() == KeyCode.ENTER) {
                 cardText.setDisable(true);
                 card.setTitle(cardText.getText());
-                boardService.updateCard(card);
                 refresh();
             }
         });
@@ -65,7 +64,6 @@ public class CardComponent extends GridPane {
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 card.setTitle(cardText.getText());
-                boardService.updateCard(card);
                 refresh();
                 cardText.setDisable(true);
             }
@@ -73,7 +71,6 @@ public class CardComponent extends GridPane {
 
         cardText.textProperty().addListener((observable, oldValue, newValue) -> {
             card.setTitle(cardText.getText());
-            boardService.updateCard(card);
             refresh();
         });
 
