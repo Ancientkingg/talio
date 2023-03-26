@@ -5,6 +5,7 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,6 +41,23 @@ public class CardControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    private Board actualBoard;
+    private Board expectedBoard;
+    private Column actualColumn;
+    private Column expectedColumn;
+
+    @BeforeEach
+    public void setup() { // exectued before each test
+
+        actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
+        expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
+
+        actualColumn = new Column("Column 1", 1, new TreeSet<>());
+        expectedColumn = new Column("Column 1", 1, new TreeSet<>());
+
+        when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
+        when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
+    }
 
     @Test
     public void contextLoads() {
@@ -53,17 +71,8 @@ public class CardControllerTest {
 
         CardDTO cardDTO = new CardDTO(cardToBeAdded, "password");
 
-        Board actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-        Board expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-
-        Column actualColumn = new Column("Column 1", 1, new TreeSet<>());
-        Column expectedColumn = new Column("Column 1", 1, new TreeSet<>());
-
         actualBoard.addColumn(actualColumn);
         expectedBoard.addColumn(expectedColumn);
-
-        when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
-        when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
 
         expectedColumn.addCard(cardToBeAdded);
 
@@ -83,19 +92,10 @@ public class CardControllerTest {
 
         CardDTO cardDTO = new CardDTO(cardToBeRemoved, "password");
 
-        Board actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-        Board expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-
-        Column actualColumn = new Column("Column 1", 1, new TreeSet<>());
-        Column expectedColumn = new Column("Column 1", 1, new TreeSet<>());
-
         actualColumn.addCard(cardToBeRemoved);
 
         actualBoard.addColumn(actualColumn);
         expectedBoard.addColumn(expectedColumn);
-
-        when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
-        when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
 
         this.mockMvc.perform(post("/cards/remove/joinkey/Column 1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,20 +114,11 @@ public class CardControllerTest {
 
         CardDTO cardDTO = new CardDTO(finalCard, "password");
 
-        Board actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-        Board expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-
-        Column actualColumn = new Column("Column 1", 1, new TreeSet<>());
-        Column expectedColumn = new Column("Column 1", 1, new TreeSet<>());
-
         actualColumn.addCard(initialCard);
         expectedColumn.addCard(finalCard);
 
         actualBoard.addColumn(actualColumn);
         expectedBoard.addColumn(expectedColumn);
-
-        when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
-        when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
 
         this.mockMvc.perform(post("/cards/update/joinkey/Column 1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,12 +145,6 @@ public class CardControllerTest {
         CardDTO cardDTO1 = new CardDTO(actualCard1, "password");
         CardDTO cardDTO4 = new CardDTO(actualCard4, "password");
 
-        Board actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-        Board expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
-
-        Column actualColumn = new Column("Column 1", 1, new TreeSet<>());
-        Column expectedColumn = new Column("Column 1", 1, new TreeSet<>());
-
         actualColumn.addCard(actualCard1);
         actualColumn.addCard(actualCard2);
         actualColumn.addCard(actualCard3);
@@ -172,9 +157,6 @@ public class CardControllerTest {
 
         actualBoard.addColumn(actualColumn);
         expectedBoard.addColumn(expectedColumn);
-
-        when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
-        when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
 
         // 1, 2, 3, 4 -> 2, 3, 1, 4
 
