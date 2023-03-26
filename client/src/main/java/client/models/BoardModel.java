@@ -121,22 +121,6 @@ public class BoardModel {
         }
     }
 
-    /**
-     * Updates card in place (IMPORTANT: This method is temporary
-     * and will be replaced by a method that sends the update to
-     * the server and then updates the board accordingly.)
-     * @param card Card to be updated
-     */
-    public void updateCard(final Card card) {
-        // This method is temporary. It will be replaced by a method that sends the update to the server
-        // and then updates the board accordingly.
-        final Card oldCard = currentBoard.getCard(card.getId());
-
-        if (oldCard != null) {
-            oldCard.setTitle(card.getTitle());
-            oldCard.setDescription(card.getDescription());
-        }
-    }
 
     /**
      * Updates column in place (IMPORTANT: This method is temporary

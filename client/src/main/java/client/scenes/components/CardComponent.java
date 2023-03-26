@@ -58,6 +58,7 @@ public class CardComponent extends GridPane {
                 cardText.setDisable(true);
                 card.setTitle(cardText.getText());
                 boardService.updateCard(card);
+                refresh();
             }
         });
 
@@ -65,6 +66,7 @@ public class CardComponent extends GridPane {
             if (!newValue) {
                 card.setTitle(cardText.getText());
                 boardService.updateCard(card);
+                refresh();
                 cardText.setDisable(true);
             }
         });
@@ -72,6 +74,7 @@ public class CardComponent extends GridPane {
         cardText.textProperty().addListener((observable, oldValue, newValue) -> {
             card.setTitle(cardText.getText());
             boardService.updateCard(card);
+            refresh();
         });
 
 
@@ -115,5 +118,12 @@ public class CardComponent extends GridPane {
      */
     public void delete() throws BoardChangeException {
         boardService.removeCardFromColumn(card, columnParent.getColumn());
+    }
+
+    /**
+     * Refreshes the card - to be called when updating the interface
+     */
+    public void refresh() {
+        cardText.setText(card.getTitle());
     }
 }
