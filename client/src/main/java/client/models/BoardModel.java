@@ -129,7 +129,7 @@ public class BoardModel {
      * @param column Column to be updated
      */
     public void updateColumn(final Column column) {
-        final Column oldColumn = currentBoard.getColumn(column.getId());
+        final Column oldColumn = currentBoard.getColumn(column.getIndex());
 
         if (oldColumn != null) {
             oldColumn.setHeading(column.getHeading());
