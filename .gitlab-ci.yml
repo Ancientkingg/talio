@@ -57,6 +57,10 @@ testCheckStyleClient:
 
 testAndCoverage:
   stage: test
+  needs:
+    - buildCommons
+  dependencies:
+    - buildCommons
   script:
     - ./gradlew test
     - ./gradlew AggregateJacocoReport
