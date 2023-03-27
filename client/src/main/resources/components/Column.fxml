@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="400.0" maxWidth="200.0" prefHeight="189.0" prefWidth="200.0" styleClass="column" stylesheets="@../../css/Style.css" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="400.0" maxWidth="200.0" prefHeight="189.0" prefWidth="200.0" styleClass="column" stylesheets="@../Style.css" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -21,7 +21,7 @@
         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TextField fx:id="columnHeading" styleClass="card-heading" stylesheets="@../../css/Style.css" text="COLUMN HEADING" GridPane.valignment="CENTER">
+        <TextField fx:id="columnHeading" styleClass="card-heading" stylesheets="@../Style.css" text="COLUMN HEADING" GridPane.valignment="CENTER">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>
@@ -29,20 +29,20 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </GridPane.margin>
         </TextField>
-        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minWidth="174.0" prefHeight="400.0" prefWidth="174.0" styleClass="edge-to-edge" stylesheets="@../../css/Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minWidth="174.0" prefHeight="400.0" prefWidth="174.0" styleClass="edge-to-edge" stylesheets="@../Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1">
             <content>
-                <VBox fx:id="innerCardList" alignment="TOP_CENTER" prefHeight="113.0" prefWidth="175.0" styleClass="scroll-pane" stylesheets="@../../css/Style.css" />
+                <VBox fx:id="innerCardList" alignment="TOP_CENTER" prefHeight="113.0" prefWidth="175.0" styleClass="scroll-pane" stylesheets="@../Style.css" />
             </content>
             <GridPane.margin>
                 <Insets left="10.0" right="10.0" />
             </GridPane.margin>
         </ScrollPane>
-        <Button fx:id="deleteColumnButton" mnemonicParsing="false" styleClass="delete-column-button" stylesheets="@../../css/Style.css" text="❌" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+        <Button fx:id="deleteColumnButton" mnemonicParsing="false" styleClass="delete-column-button" stylesheets="@../Style.css" text="❌" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
             <GridPane.margin>
                 <Insets right="9.0" />
             </GridPane.margin>
         </Button>
-            <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" styleClass="add-card-button" stylesheets="@../../css/Style.css" text="+ add card" textAlignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" styleClass="add-card-button" stylesheets="@../Style.css" text="+ add card" textAlignment="CENTER" GridPane.rowIndex="2">
                 <font>
                     <Font name="Segoe UI" size="14.0" />
                 </font>
