@@ -20,9 +20,9 @@
         <RowConstraints maxHeight="493.33334732055664" minHeight="10.0" prefHeight="493.33334732055664" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <ToolBar prefHeight="23.0" prefWidth="600.0" styleClass="overviewToolbar" stylesheets="@../css/Style.css">
+        <ToolBar prefHeight="23.0" prefWidth="600.0" styleClass="overviewToolbar" stylesheets="@client/css/Style.css">
             <items>
-                <Button mnemonicParsing="false" onAction="#showCreateColumn" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" stylesheets="@../css/Style.css" text="Create Column" textFill="WHITE" />
+                <Button mnemonicParsing="false" onAction="#showCreateColumn" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" stylesheets="@client/css/Style.css" text="Create Column" textFill="WHITE" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Talio.">
                     <font>
