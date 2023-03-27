@@ -197,7 +197,7 @@ public class CardController {
      */
     public void updateCardRemoved(final String joinKey, final String columnName, final Card card) {
         logger.info("Propagating card removed for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/remove/" + columnName, card);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/remove", new Pair<String, Card>(columnName, card));
     }
 
 }
