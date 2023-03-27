@@ -186,7 +186,7 @@ public class ColumnComponent extends GridPane {
         }
         columnHeading.setText(column.getHeading());
 
-        for (final Node n : getChildren()) {
+        for (final Node n : innerCardList.getChildren()) {
             ((CardComponent) n).refresh();
         }
     }
