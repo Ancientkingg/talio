@@ -9,24 +9,10 @@ import commons.DTOs.CardDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.UriBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSession.Subscription;
-import org.springframework.messaging.simp.stomp.StompSessionHandler;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
-import org.springframework.web.util.UriBuilderFactory;
 
-import java.lang.reflect.Type;
 import java.net.URI;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.ExecutionException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -38,12 +24,20 @@ public class ServerService {
 
     private SessionHandler sessionHandler;
 
+    /**
+     * Initializes client socket in a thread at the given serverIP
+     */
     public void startSocket() {
         final SocketThread socketThread = new SocketThread(this, serverIP);
         final Thread thread = new Thread(socketThread);
         thread.start();
     }
 
+    /**
+     * The handler passes itself to the serverService in order to subscribe client socket to boards
+     * upon getBoard() and addBoard()
+     * @param sessionHandler SessionHandler access to session
+     */
     public void setHandler(final SessionHandler sessionHandler) {
         this.sessionHandler = sessionHandler;
     }
@@ -70,7 +64,7 @@ public class ServerService {
                     .path(joinKey)
                     .request(APPLICATION_JSON)
                     .get(Board.class);
-            sessionHandler.subscribeToBoard(joinKey);
+//            sessionHandler.subscribeToBoard(joinKey);
             return board;
         }
     }
@@ -87,7 +81,7 @@ public class ServerService {
                     .path("/create")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
-            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
+//            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
             return addedBoard;
         }
     }
