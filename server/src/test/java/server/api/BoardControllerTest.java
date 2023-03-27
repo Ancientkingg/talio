@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import server.services.BoardService;
 
@@ -33,6 +34,9 @@ public class BoardControllerTest {
 
     @MockBean
     private Clock clock;
+
+    @MockBean
+    private SimpMessageSendingOperations messagingTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
