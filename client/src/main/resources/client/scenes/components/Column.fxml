@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -30,14 +31,7 @@
         </TextField>
         <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minWidth="174.0" prefHeight="400.0" prefWidth="174.0" styleClass="edge-to-edge" stylesheets="@../../css/Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1">
             <content>
-                <VBox fx:id="innerCardList" alignment="TOP_CENTER" prefHeight="113.0" prefWidth="175.0" styleClass="scroll-pane" stylesheets="@../../css/Style.css">
-                    <children>
-                        <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" styleClass="add-card-button" stylesheets="@../../css/Style.css" text="+ add card" textAlignment="CENTER">
-                            <font>
-                                <Font name="Segoe UI" size="14.0" />
-                            </font>
-                        </Button>
-               </children></VBox>
+                <VBox fx:id="innerCardList" alignment="TOP_CENTER" prefHeight="113.0" prefWidth="175.0" styleClass="scroll-pane" stylesheets="@../../css/Style.css" />
             </content>
             <GridPane.margin>
                 <Insets left="10.0" right="10.0" />
@@ -48,5 +42,10 @@
                 <Insets right="9.0" />
             </GridPane.margin>
         </Button>
+            <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" styleClass="add-card-button" stylesheets="@../../css/Style.css" text="+ add card" textAlignment="CENTER" GridPane.rowIndex="2">
+                <font>
+                    <Font name="Segoe UI" size="14.0" />
+                </font>
+            </Button>
     </children>
 </fx:root>
