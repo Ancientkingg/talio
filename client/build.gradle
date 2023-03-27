@@ -16,20 +16,34 @@ javafx {
 dependencies {
 	implementation project(":commons")
 
-	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.3'
-	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.3'
-	implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.0.3'
-	implementation group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '3.0.3'
-	implementation 'org.glassfish.jersey.ext:jersey-entity-filtering:3.0.3'
+	implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.1.1'
+	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.1.1'
+	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.1.1'
+
+	implementation 'org.glassfish.jersey.core:jersey-common:3.1.1'
+	implementation 'org.glassfish.jersey.media:jersey-media-moxy:3.1.1'
+	implementation 'org.glassfish.jersey.ext:jersey-entity-filtering:3.1.1'
+
+	implementation 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.14.2'
+
+	implementation 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.0'
+
+	implementation 'org.jboss.resteasy:resteasy-client:6.2.3.Final'
 
 	implementation group: 'jakarta.activation', name: 'jakarta.activation-api', version: '2.0.1'
-	implementation group: 'jakarta.ws.rs', name: 'jakarta.ws.rs-api', version: '3.1.0'
-	implementation group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: '2.1.0'
+	implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
+	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.0'
+
+	implementation("javax.ws.rs:javax.ws.rs-api:2.1.1")
 
 	implementation 'com.google.inject:guice:5.0.1'
 
+	implementation 'org.springframework.boot:spring-boot-starter-websocket:2.7.8'
+	implementation 'org.springframework:spring-websocket:5.3.24'
+	implementation 'org.springframework:spring-messaging:5.3.24'
 
-
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
 
 	implementation 'org.openjfx:javafx-controls:17.0.2'
 	implementation 'org.openjfx:javafx-fxml:17.0.2'

@@ -1,5 +1,7 @@
 package client.services;
 
+import client.utils.SessionHandler;
+import client.utils.SocketThread;
 import commons.Board;
 import commons.Card;
 import commons.Column;
@@ -7,9 +9,15 @@ import commons.DTOs.CardDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-
+import jakarta.ws.rs.core.UriBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandler;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -17,6 +25,27 @@ public class ServerService {
 
     private URI serverIP;
 
+    private StompSession session;
+
+    @Autowired
+    private WebSocketStompClient stompClient;
+
+    public ServerService() {
+        startSocket();
+    }
+
+    private void startSocket() {
+        final Thread socketThread = new Thread(() -> {
+            final StompSessionHandler sessionHandler = new SessionHandler();
+            try {
+                session = stompClient.connect(serverIP.toString() + "/greeting", sessionHandler).get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
     /**
      * Sets the IP of the server to interact with
