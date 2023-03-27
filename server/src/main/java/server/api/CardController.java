@@ -5,6 +5,8 @@ import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
 import commons.exceptions.ColumnNotFoundException;
+import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -162,7 +164,7 @@ public class CardController {
      */
     public void updateCardRepositioned(final String joinKey, final String columnName, final Card card, final int newPosition) {
         logger.info("Propagating card repositioned for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition/" + columnName + "/" + newPosition, card);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new ImmutableTriple<String, Integer, Card>(columnName, newPosition, card));
     }
 
     /**
@@ -173,7 +175,7 @@ public class CardController {
      */
     public void updateCardEdited(final String joinKey, final String columnName, final Card card) {
         logger.info("Propagating card edited for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/edit/" + columnName, card);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/edit/", new Pair<String, Card>(columnName, card));
     }
 
     /**
@@ -184,7 +186,7 @@ public class CardController {
      */
     public void updateCardAdded(final String joinKey, final String columnName, final Card card) {
         logger.info("Propagating card added for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/add/" + columnName, card);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/add", new Pair<String, Card>(columnName, card));
     }
 
     /**
