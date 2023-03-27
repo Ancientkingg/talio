@@ -10,13 +10,22 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.UriBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSession.Subscription;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.util.UriBuilderFactory;
 
+import java.lang.reflect.Type;
 import java.net.URI;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -25,7 +34,9 @@ public class ServerService {
 
     private URI serverIP;
 
-    private StompSession session;
+    private Logger logger = LogManager.getLogger(ServerService.class);
+
+    private SessionHandler sessionHandler;
 
     public void startSocket() {
         final SocketThread socketThread = new SocketThread(this, serverIP);
@@ -33,8 +44,8 @@ public class ServerService {
         thread.start();
     }
 
-    public void setSession(final StompSession session) {
-        this.session = session;
+    public void setHandler(final SessionHandler sessionHandler) {
+        this.sessionHandler = sessionHandler;
     }
 
     /**
@@ -53,12 +64,14 @@ public class ServerService {
      */
     public Board getBoard(final String joinKey) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Board board = client.target(serverIP)
                     .path("/boards")
                     .path("/get")
                     .path(joinKey)
                     .request(APPLICATION_JSON)
                     .get(Board.class);
+            sessionHandler.subscribeToBoard(joinKey);
+            return board;
         }
     }
 
@@ -69,11 +82,13 @@ public class ServerService {
      */
     public Board addBoard(final Board board) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Board addedBoard =  client.target(serverIP)
                     .path("/boards")
                     .path("/create")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
+            return addedBoard;
         }
     }
 
@@ -151,6 +166,5 @@ public class ServerService {
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
         }
     }
-
 
 }

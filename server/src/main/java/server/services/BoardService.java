@@ -31,7 +31,7 @@ public class BoardService {
      */
     public Board getBoardWithKey(final String joinKey) {
         if (br.existsById(joinKey))
-            return br.findById(joinKey).get();
+            return br.getById(joinKey);
         throw new ResourceNotFoundException(Board.class, joinKey);
     }
 
