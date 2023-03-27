@@ -1,17 +1,12 @@
 package client.utils;
 
-import client.models.BoardModel;
-import client.scenes.MainCtrl;
 import client.services.ServerService;
-import commons.Board;
 import commons.Card;
 import commons.Column;
-import jakarta.ws.rs.core.GenericType;
 import javafx.util.Pair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -19,12 +14,9 @@ import org.springframework.messaging.simp.stomp.StompSession.Subscription;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Component
 public class SessionHandler extends StompSessionHandlerAdapter {
@@ -35,6 +27,10 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     private ServerService serverService;
     private List<Subscription> subscriptions;
 
+    /**
+     * Constructor to pass serverService in. This allows the handler to pass itself to the serverService after it is connected
+     * @param serverService ServerService to manage sessionHandler
+     */
     public SessionHandler(final ServerService serverService) {
         this.serverService = serverService;
         this.subscriptions = new ArrayList<>();
@@ -61,6 +57,16 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         // Unsubscribes from previous board, so that unnecessary traffic is avoided
         subscriptions.clear();
 
+        subscribeToBoardUpdates(joinKey);
+
+        subscribeToColumnUpdates(joinKey);
+
+        subscribeToCardUpdates(joinKey);
+
+        logger.info("Subscribed to board: " + joinKey);
+    }
+
+    private void subscribeToBoardUpdates(final String joinKey) {
         final Subscription boardRenameSub = session.subscribe(
             "/topic/boards/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
                 public Type getPayloadType(final StompHeaders headers) {  return String.class; }
@@ -70,38 +76,9 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 }
             });
         subscriptions.add(boardRenameSub);
+    }
 
-        final Subscription columnAddedSub = session.subscribe(
-            "/topic/columns/" + joinKey + "/add", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) {  return Column.class; }
-
-                public void handleFrame(final StompHeaders headers, final Object payload) {
-                    logger.info("Column added: " + payload.toString());
-                }
-            });
-        subscriptions.add(columnAddedSub);
-
-        final Subscription columnRenamedSub = session.subscribe(
-            "/topic/columns/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
-                // I am unsure how to get the generic class type so I do this
-                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, String>(null, null)).getClass(); }
-
-                public void handleFrame(final StompHeaders headers, final Object payload) {
-                    logger.info("Column renamed: " + payload.toString());
-                }
-            });
-        subscriptions.add(columnRenamedSub);
-
-        final Subscription columnRemovedSub = session.subscribe(
-            "/topic/columns/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return Card.class; }
-
-                public void handleFrame(final StompHeaders headers, final Object payload) {
-                    logger.info("Column removed: " + payload.toString());
-                }
-            });
-        subscriptions.add(columnRemovedSub);
-
+    private void subscribeToCardUpdates(final String joinKey) {
         final Subscription cardRepositionedSub = session.subscribe(
             "/topic/cards" + joinKey + "/reposition", new StompSessionHandlerAdapter() {
                 public Type getPayloadType(final StompHeaders headers) { return (new ImmutableTriple<String, Integer, Card>(null, null, null).getClass()); }
@@ -133,16 +110,47 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscriptions.add(cardAddedSub);
 
         final Subscription cardRemovedSub = session.subscribe(
-            "/topic/cards" + joinKey + "/add", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return Card.class; }
+            "/topic/cards" + joinKey + "/remove", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, Card>(null, null)).getClass(); }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     logger.info("Card removed: " + payload.toString());
                 }
             });
         subscriptions.add(cardRemovedSub);
+    }
 
-        logger.info("Subscribed to board: " + joinKey);
+    private void subscribeToColumnUpdates(final String joinKey) {
+        final Subscription columnAddedSub = session.subscribe(
+            "/topic/columns/" + joinKey + "/add", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) {  return Column.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    logger.info("Column added: " + payload.toString());
+                }
+            });
+        subscriptions.add(columnAddedSub);
+
+        final Subscription columnRenamedSub = session.subscribe(
+            "/topic/columns/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
+                // I am unsure how to get the generic class type so I do this
+                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, String>(null, null)).getClass(); }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    logger.info("Column renamed: " + payload.toString());
+                }
+            });
+        subscriptions.add(columnRenamedSub);
+
+        final Subscription columnRemovedSub = session.subscribe(
+            "/topic/columns/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return Card.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    logger.info("Column removed: " + payload.toString());
+                }
+            });
+        subscriptions.add(columnRemovedSub);
     }
 
 }
