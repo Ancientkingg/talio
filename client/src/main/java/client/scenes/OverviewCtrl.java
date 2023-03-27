@@ -1,16 +1,18 @@
 package client.scenes;
 
-import client.models.BoardModel;
+import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
+import client.services.BoardService;
 import commons.Column;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
 import javax.inject.Inject;
 
 public class OverviewCtrl {
     private final MainCtrl mainCtrl;
-    private final BoardModel boardModel;
+    private final BoardService boardService;
 
     @FXML
     private HBox columnBox;
@@ -18,12 +20,12 @@ public class OverviewCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
-     * @param boardModel Shared instance of BoardModel
+     * @param boardService Shared instance of BoardService
      */
     @Inject
-    public OverviewCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
+    public OverviewCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
-        this.boardModel = boardModel;
+        this.boardService = boardService;
     }
 
 
@@ -46,17 +48,46 @@ public class OverviewCtrl {
     /**
      * Refreshes the overview scene columnBox by iterating over each column in the current board
      * and displaying the corresponding titles. Will also refresh cards in the future.
-     * -
-     * Is this inefficient? Or does one have to reload all FXML objects to refresh?
      */
-    public void refresh() {
+    public void refreshColumn() {
         columnBox.getChildren().clear();
-        for (final Column col : boardModel.getCurrentBoard().getColumns()) {
-            final ColumnComponent columnComponent = new ColumnComponent(boardModel, col, this);
+        for (final Column col : boardService.getCurrentBoard().getColumns()) {
+            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
 
             columnComponent.setHeading(col.getHeading());
 
             columnBox.getChildren().add(columnComponent);
+        }
+    }
+
+    /**
+     * Refreshes the component containing the given column
+     * @param columnIdx index of the column to be found
+     */
+    public void refreshColumn(final long columnIdx) {
+        for (final Node n : columnBox.getChildren()) {
+            final ColumnComponent cc = (ColumnComponent) n;
+            if (cc.getColumn().getIndex() == columnIdx) {
+                cc.refresh();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Refreshes the card with the given id
+     * @param cardId id of the card to be found
+     */
+    public void refreshCard(final long cardId) {
+        for (final Node n : columnBox.getChildren()) {
+            final ColumnComponent cc = (ColumnComponent) n;
+            for (final Node c : cc.getChildren()) {
+                final CardComponent cac = (CardComponent) c;
+                if (cac.getCard().getId() == cardId) {
+                    cac.refresh();
+                    break;
+                }
+            }
         }
     }
 }
