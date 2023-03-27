@@ -15,7 +15,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-       <TextArea fx:id="cardText" prefHeight="200.0" prefWidth="400.0" styleClass="cardTextArea" stylesheets="@../../css/Style.css" text="Test12l1j3klj12kasdasldjaks&#10;&#10;" />
-       <Button fx:id="editCardButton" ellipsisString="" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" styleClass="delete-column-button" stylesheets="@../../css/Style.css" text="Edit" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" />
+       <TextArea fx:id="cardText" prefHeight="96.0" prefWidth="227.0" styleClass="cardTextArea" stylesheets="@../../css/Style.css" text="test&#10;&#10;" />
+       <Button fx:id="deleteCardButton" ellipsisString="" mnemonicParsing="false" styleClass="delete-column-button" stylesheets="@../../css/Style.css" text="❌" textOverrun="CLIP" GridPane.columnIndex="1" />
    </children>
 </fx:root>

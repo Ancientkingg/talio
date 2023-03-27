@@ -66,7 +66,6 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
-
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
