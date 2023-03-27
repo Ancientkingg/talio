@@ -69,7 +69,7 @@ Overview
     -fx-background-color: #181818;
 }
 
-.createColumnButton {  /* Temporary: will be moved to be alongside the columns */
+.toolbarButton {  /* Temporary: will be moved to be alongside the columns */
     -fx-background-color: transparent;
 }
 

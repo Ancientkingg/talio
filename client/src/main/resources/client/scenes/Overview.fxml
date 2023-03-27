@@ -6,7 +6,10 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="445.0" prefWidth="694.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OverviewCtrl">
     <columnConstraints>
@@ -18,9 +21,18 @@
     </rowConstraints>
     <children>
         <ToolBar prefHeight="23.0" prefWidth="600.0" styleClass="overviewToolbar" stylesheets="@../css/Style.css">
-         <items>
-                <Button mnemonicParsing="false" onAction="#showCreateColumn" styleClass="createColumnButton" stylesheets="@../css/Style.css" text="Create Column" textFill="WHITE" />
-         </items></ToolBar>
+            <items>
+                <Button mnemonicParsing="false" onAction="#showCreateColumn" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" stylesheets="@../css/Style.css" text="Create Column" textFill="WHITE" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Talio.">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Text>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" text="Settings" textAlignment="RIGHT" textFill="WHITE" />
+            </items>
+        </ToolBar>
         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="edge-to-edge" vbarPolicy="NEVER" GridPane.rowIndex="1">
             <content>
                 <HBox fx:id="columnBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
