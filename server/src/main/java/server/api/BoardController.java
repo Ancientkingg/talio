@@ -2,7 +2,13 @@ package server.api;
 
 
 import commons.Board;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
 
@@ -12,20 +18,26 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.TreeSet;
 
-@RestController
+@Controller
 @RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
+
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final Logger logger = LogManager.getLogger(CardController.class);
 
     private final Clock clock;
 
     /**
      * Constructor for the Board Controller
-     * @param boardService Dependency Injection for the board service
-     * @param clock Dependency Injection for the clock
+     *
+     * @param boardService      Dependency Injection for the board service
+     * @param messagingTemplate Template to send updates over socket
+     * @param clock             Dependency Injection for the clock
      */
-    public BoardController(final BoardService boardService, final Clock clock) {
+    public BoardController(final BoardService boardService, final SimpMessageSendingOperations messagingTemplate, final Clock clock) {
         this.boardService = boardService;
+        this.messagingTemplate = messagingTemplate;
         this.clock = clock;
     }
 
@@ -59,6 +71,37 @@ public class BoardController {
 
         final Board savedBoard = boardService.saveBoard(board);
         return ResponseEntity.ok(savedBoard);
+    }
+
+    /**
+     * Renames board in repo and sends update to subscribed clients
+     * @param joinKey String for board
+     * @param newHeading  String for new name of board
+     * @param password String password for board
+     * @return Board the renamed board
+     */
+    @MessageMapping("/rename/{joinKey}/{newHeading}")
+    public Board renameBoard(final String password, @DestinationVariable final String joinKey,
+                             @DestinationVariable final String newHeading)
+    {
+        final Board toBeRenamed = boardService.getBoardWithKeyAndPassword(joinKey, password);
+
+        toBeRenamed.setTitle(newHeading);
+        boardService.saveBoard(toBeRenamed);
+
+        updateBoardRenamed(joinKey, newHeading);
+
+        return toBeRenamed;
+    }
+
+    /**
+     * Sends the old and new heading of the board to all subscribed clients
+     * @param joinKey String for board
+     * @param newHeading  String for new name of board
+     */
+    public void updateBoardRenamed(final String joinKey, final String newHeading) {
+        logger.info("Propagating column renamed for: " + joinKey);
+        messagingTemplate.convertAndSend("/topic/boards/" + joinKey + "/rename", newHeading);
     }
 
 }
