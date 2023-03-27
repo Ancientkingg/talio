@@ -50,7 +50,6 @@ public class ColumnComponent extends GridPane {
     public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl) {
         this.boardService = boardService;
         this.column = column;
-
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/client/scenes/components/Column.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -60,7 +59,6 @@ public class ColumnComponent extends GridPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         // Set the delete action for the delete column button
         deleteColumnButton.setOnAction(e -> {
             try {
