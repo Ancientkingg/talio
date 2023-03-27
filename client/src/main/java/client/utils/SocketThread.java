@@ -2,12 +2,9 @@
 package client.utils;
 
 
-import client.models.BoardModel;
-import client.scenes.MainCtrl;
 import client.services.ServerService;
 import lombok.Getter;
 
-import lombok.Setter;
 
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.web.socket.client.WebSocketClient;
@@ -24,6 +21,11 @@ public class SocketThread implements  Runnable {
     @Getter
     private SessionHandler sessionHandler;
 
+    /**
+     * Sets up socket parameters to connect to server
+     * @param serverService ServerService is passed on to the sessionHandler
+     * @param serverIP String the ip is changed to the right format
+     */
     public SocketThread(final ServerService serverService, final URI serverIP) {
         sessionHandler = new SessionHandler(serverService);
         server = "ws://" + serverIP.getHost() + ":" + serverIP.getPort() + "/greeting";
