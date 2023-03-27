@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
-import client.models.BoardModel;
+import client.services.BoardService;
 import commons.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -13,7 +13,7 @@ import java.util.TreeSet;
 @Component
 public class CreateBoardCtrl {
     private final MainCtrl mainCtrl;
-    private final BoardModel boardModel;
+    private final BoardService boardService;
 
     @FXML
     private TextField boardName;
@@ -21,23 +21,22 @@ public class CreateBoardCtrl {
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
-     * @param boardModel Shared instance of BoardModel
+     * @param boardService Shared instance of BoardService
      */
     @Inject
-    public CreateBoardCtrl(final MainCtrl mainCtrl, final BoardModel boardModel) {
+    public CreateBoardCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
-        this.boardModel = boardModel;
+        this.boardService = boardService;
     }
 
     /**
      * Routes the user to the overview of the board they just created
      */
     public void createBoard() throws BoardChangeException {
-        final Board board = new Board("", boardName.getText(), new TreeSet<>());
-        boardModel.addBoard(board);
-        boardModel.setCurrentBoard(board);
-        mainCtrl.refreshOverview();
-        mainCtrl.showJoinBoard();
+        final Board board = new Board(null, boardName.getText(), new TreeSet<>());
+        final Board serverBoard = boardService.addBoard(board);
+        boardService.setCurrentBoard(serverBoard);
+        mainCtrl.showOverview();
     }
 
     /**

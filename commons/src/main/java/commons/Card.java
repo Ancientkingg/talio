@@ -17,6 +17,8 @@ public class Card implements Comparable<Card> {
 
     @Getter @Setter
     private String title;
+
+    // priorities start from 0
     @Getter @Setter
     private int priority;
     @Getter @Setter

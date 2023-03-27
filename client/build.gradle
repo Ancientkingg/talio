@@ -15,19 +15,22 @@ javafx {
 
 dependencies {
 	implementation project(":commons")
-	
+
 	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.3'
-	implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.1.1'
-	
+	implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.0.3'
+	implementation group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '3.0.3'
+	implementation 'org.glassfish.jersey.ext:jersey-entity-filtering:3.0.3'
+
 	implementation group: 'jakarta.activation', name: 'jakarta.activation-api', version: '2.0.1'
-	implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
-	
+	implementation group: 'jakarta.ws.rs', name: 'jakarta.ws.rs-api', version: '3.1.0'
+	implementation group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: '2.1.0'
+
 	implementation 'com.google.inject:guice:5.0.1'
-	
-	
-	
+
+
+
+
 	implementation 'org.openjfx:javafx-controls:17.0.2'
 	implementation 'org.openjfx:javafx-fxml:17.0.2'
-	
 }

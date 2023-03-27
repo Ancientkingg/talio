@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class Board {
     @Id
-    @NotBlank
     @Getter
     private String joinKey;
     @Getter
@@ -28,7 +27,7 @@ public class Board {
     @Getter @Setter
     @Size(min = 1) // A password cannot be empty, but it can be null (non-existent).
     private String password;
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("index")
     @Getter @Setter
     private SortedSet<Column> columns;
@@ -118,25 +117,28 @@ public class Board {
     }
 
     /**
-     * Add one single list to the board if not already in the board
+     * Add one single column to the board if not already in the board
+     * Null columns are not added
      *
-     * @param cardList Column object
+     * @param column Column object
      *
      * @return success/failure
      */
-    public boolean addColumn(final Column cardList) {
-        return this.columns.add(cardList);
+    public boolean addColumn(final Column column) {
+        return column != null && this.columns.add(column);
     }
 
     /**
      * Remove one list from the board
+     * If column to be removed is null method returns directly since board cannot contain null columns
+     * This is done to prevent a NullPointerException from being thrown by TreeSet.remove
      *
-     * @param cardList List to remove
+     * @param column List to remove
      *
      * @return success/failure
      */
-    public boolean removeColumn(final Column cardList) {
-        return this.columns.remove(cardList);
+    public boolean removeColumn(final Column column) {
+        return column != null && this.columns.remove(column);
     }
 
     /**
@@ -166,5 +168,39 @@ public class Board {
     @Override
     public int hashCode() {
         return Objects.hash(joinKey, title, created, password, columns);
+    }
+
+    /**
+     * Get a card by its id
+     * @param cardId The id of the card to get
+     *
+     * @return The card with the id {@code cardId} or null if not found
+     */
+    public Card getCard(final long cardId) {
+        for (final Column column : this.columns) {
+            for (final Card card : column.getCards()) {
+                if (card.getId() == cardId) {
+                    return card;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get a column by its index
+     * @param columnIdx The index of the column to get
+     *
+     * @return The column with the index {@code columnIdx} or null if not found
+     */
+    public Column getColumn(final long columnIdx) {
+        for (final Column column : this.columns) {
+            if (column.getIndex() == columnIdx) {
+                return column;
+            }
+        }
+
+        return null;
     }
 }

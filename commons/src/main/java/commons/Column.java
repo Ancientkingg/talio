@@ -11,7 +11,6 @@ import java.util.*;
 @Entity
 public class Column implements Comparable<Column> {
     @Id
-    @NotBlank
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     private long id;
@@ -22,7 +21,7 @@ public class Column implements Comparable<Column> {
     @Getter @Setter
     @NotBlank
     private String heading;
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("priority")
     @Getter @Setter
     private SortedSet<Card> cards;
@@ -47,23 +46,24 @@ public class Column implements Comparable<Column> {
     }
 
     /**
-     * Add one single card to the column if not already in the column
+     * Add one single card to the column if not already in the column and not null
      * @param card Card to be added
      *
      * @return success/failure
      */
     public boolean addCard(final Card card) {
-        return this.cards.add(card);
+        return card != null && this.cards.add(card);
     }
 
     /**
      * Remove one card from the column
+     * Returns directly if card to be removed is null as TreeSet does not support storing null elements and throws NullPointerException
      * @param card card to remove
-
+     *
      * @return success/failure
      */
     public boolean removeCard(final Card card) {
-        return this.cards.remove(card);
+        return card != null && this.cards.remove(card);
     }
 
     /**
