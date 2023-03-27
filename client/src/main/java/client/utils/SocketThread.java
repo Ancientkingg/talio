@@ -4,6 +4,7 @@ package client.utils;
 
 import client.models.BoardModel;
 import client.scenes.MainCtrl;
+import client.services.ServerService;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -13,21 +14,19 @@ import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import java.net.URI;
 import java.util.*;
 
 public class SocketThread implements  Runnable {
 
-    @Getter @Setter
-    private static String server = "ws://localhost:8080";
+    private String server = "ws://localhost:8080";
 
     @Getter
     private SessionHandler sessionHandler;
 
-    /**
-     * Constructor that instantiates the session handler the socket will use
-     */
-    public SocketThread() {
-        sessionHandler = new SessionHandler();
+    public SocketThread(final ServerService serverService, final URI serverIP) {
+        sessionHandler = new SessionHandler(serverService);
+        server = "ws://" + serverIP.getHost() + ":" + serverIP.getPort() + "/greeting";
     }
 
     /**
@@ -41,7 +40,7 @@ public class SocketThread implements  Runnable {
 
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
-        stompClient.connect(server + "/greeting", sessionHandler);
+        stompClient.connect(server, sessionHandler);
 
         new Scanner(System.in).nextLine(); // Don't close immediately.
     }

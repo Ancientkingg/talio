@@ -2,6 +2,7 @@ package client.utils;
 
 import client.models.BoardModel;
 import client.scenes.MainCtrl;
+import client.services.ServerService;
 import commons.Card;
 import commons.Column;
 import org.apache.logging.log4j.LogManager;
@@ -23,8 +24,14 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     private Logger logger = LogManager.getLogger(SessionHandler.class);
 
     private StompSession session;
+    private ServerService serverService;
+
     private Subscription cardSubscription;
     private Subscription columnSubscription;
+
+    public SessionHandler(final ServerService serverService) {
+        this.serverService = serverService;
+    }
 
     /**
      * After the socket connects with the server the session is saved
@@ -35,6 +42,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     @Override
     public void afterConnected(@Nullable final StompSession session, @Nullable final StompHeaders headers) {
         this.session = session;
+        serverService.setSession(session);
     }
 
     /**

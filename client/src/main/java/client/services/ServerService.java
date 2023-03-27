@@ -27,24 +27,14 @@ public class ServerService {
 
     private StompSession session;
 
-    @Autowired
-    private WebSocketStompClient stompClient;
-
-    public ServerService() {
-        startSocket();
+    public void startSocket() {
+        final SocketThread socketThread = new SocketThread(this, serverIP);
+        final Thread thread = new Thread(socketThread);
+        thread.start();
     }
 
-    private void startSocket() {
-        final Thread socketThread = new Thread(() -> {
-            final StompSessionHandler sessionHandler = new SessionHandler();
-            try {
-                session = stompClient.connect(serverIP.toString() + "/greeting", sessionHandler).get();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    public void setSession(final StompSession session) {
+        this.session = session;
     }
 
     /**
@@ -161,5 +151,6 @@ public class ServerService {
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
         }
     }
+
 
 }

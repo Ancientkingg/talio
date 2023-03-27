@@ -22,6 +22,11 @@ public class BoardService {
         this.boardModel = boardModel;
         this.serverService = serverService;
         this.setServerIP("http://localhost:8080");
+        this.startSocket();
+    }
+
+    private void startSocket() {
+        serverService.startSocket();
     }
 
     /**
