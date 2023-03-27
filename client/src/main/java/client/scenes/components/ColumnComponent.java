@@ -70,10 +70,7 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
-<<<<<<< HEAD
-=======
         addTextChangeListener(boardService, column);
->>>>>>> c481db91066c572f15c40a1bcb8da7343c91f0b9
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
