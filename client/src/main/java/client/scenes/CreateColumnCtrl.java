@@ -38,7 +38,8 @@ public class CreateColumnCtrl {
      * Will be used to create a column when user passes through the column name
      */
     public void createColumn() throws BoardChangeException {
-        final Column column = new Column(columnName.getText().isEmpty() ? columnName.getPromptText() : columnName.getText(), demoIndexCounter++, new TreeSet<>());
+        final Column column = new Column(columnName.getText().isEmpty() ?
+                columnName.getPromptText() : columnName.getText(), demoIndexCounter++, new TreeSet<>());
         boardService.addColumnToCurrentBoard(column);
         mainCtrl.showOverview();
         mainCtrl.refreshOverview();
