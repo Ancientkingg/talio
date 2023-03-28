@@ -44,12 +44,12 @@ public class CardController {
      *
      * @param cardDTO Card to be created
      * @param joinKey Key used to identify board to which card is to be added
-     * @param columnName Used to identify column to which card is to be added
+     * @param columnId Used to identify column to which card is to be added
      * @return The card added to column in board
      */
-    @PostMapping("/add/{joinKey}/{columnName}")
+    @PostMapping("/add/{joinKey}/{columnId}")
     public ResponseEntity<Card> addCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
-                                        @PathVariable final String columnName)
+                                        @PathVariable final long columnId)
     {
         final String password = cardDTO.password();
 
@@ -58,39 +58,40 @@ public class CardController {
         final Card card = cardDTO.card();
 
         try {
-            board.addCardToColumn(card, columnName);
+            board.addCardToColumn(card, columnId);
         } catch (ColumnNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The column " + columnName + " was not found in the board with join key " + joinKey);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The column " + columnId + " was not found in the board with join key " + joinKey);
         }
         boardService.saveBoard(board);
 
-        updateCardAdded(joinKey, columnName, card);
+        updateCardAdded(joinKey, columnId, card);
 
         return ResponseEntity.ok(card);
     }
 
     /**
      * Remove a card
-     * @param cardDTO Containing card to be removed and password to board for authentication
-     * @param joinKey Key of board from which card is to be removed
-     * @param columnName Name of column from which card is to be removed
+     *
+     * @param cardDTO  Containing card to be removed and password to board for authentication
+     * @param joinKey  Key of board from which card is to be removed
+     * @param columnId Name of column from which card is to be removed
      * @return The card removed from CardRepository
      */
-    @PostMapping("/remove/{joinKey}/{columnName}")
+    @PostMapping("/remove/{joinKey}/{columnId}")
     public ResponseEntity<Card> removeCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
-                                           @PathVariable final String columnName)
+                                           @PathVariable final long columnId)
     {
         final String password = cardDTO.password();
 
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card card = cardDTO.getCard();
-        final Column column = board.getColumnByName(columnName);
+        final Column column = board.getColumnById(columnId);
 
         column.removeCard(card);
         boardService.saveBoard(board);
 
-        updateCardRemoved(joinKey, columnName, card);
+        updateCardRemoved(joinKey, columnId, card);
 
         return ResponseEntity.ok(card);
     }
@@ -99,21 +100,21 @@ public class CardController {
      * Update the position of a card in a column according to the new position
      * @param cardDTO Card to be updated and password to board for authentication
      * @param joinKey Key of board to which card belongs
-     * @param columnName Name of column to which card belongs
+     * @param columnId Name of column to which card belongs
      * @param newPosition New position of card in column
      *
      * @return The column in which the card was updated
      */
-    @MessageMapping("/reposition/{joinKey}/{columnName}/{newPosition}")
+    @MessageMapping("/reposition/{joinKey}/{columnId}/{newPosition}")
     public Column repositionCard(final CardDTO cardDTO, @DestinationVariable final String joinKey,
-                                 @DestinationVariable final String columnName, @DestinationVariable final int newPosition)
+                                 @DestinationVariable final long columnId, @DestinationVariable final int newPosition)
     {
         final String password = cardDTO.password();
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card card = cardDTO.getCard();
-        final Column column = board.getColumnByName(columnName);
+        final Column column = board.getColumnById(columnId);
 
         if (newPosition < 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
@@ -123,81 +124,86 @@ public class CardController {
 
         boardService.saveBoard(board);
 
-        updateCardRepositioned(joinKey, columnName, card, newPosition);
+        updateCardRepositioned(joinKey, columnId, card, newPosition);
 
         return column;
     }
 
     /**
      * Change the title, description, or tags of a card
-     * @param cardDTO Containing card to be updated and password to board for authentication
-     * @param joinKey Key of board from which card is to be updated
-     * @param columnName Name of column from which card is to be updated
+     *
+     * @param cardDTO  Containing card to be updated and password to board for authentication
+     * @param joinKey  Key of board from which card is to be updated
+     * @param columnId Name of column from which card is to be updated
      * @return The card updated in CardRepository
      */
-    @MessageMapping("/edit/{joinKey}/{columnName}")
+    @MessageMapping("/edit/{joinKey}/{columnId}")
     public ResponseEntity<Card> editCard(final CardDTO cardDTO, @DestinationVariable final String joinKey,
-                                         @DestinationVariable final String columnName)
+                                         @DestinationVariable final long columnId)
     {
         final String password = cardDTO.getPassword();
 
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card card = cardDTO.getCard();
-        final Column column = board.getColumnByName(columnName);
+        final Column column = board.getColumnById(columnId);
 
         column.updateCard(card);
 
         boardService.saveBoard(board);
 
-        updateCardEdited(joinKey, columnName, card);
+        updateCardEdited(joinKey, columnId, card);
 
         return ResponseEntity.ok(card);
     }
 
     /**
      * Notifies all subscribed clients to alter the position of the card
-     * @param joinKey String of board
-     * @param columnName String of column card is in
-     * @param card Card to be repositioned
+     *
+     * @param joinKey     String of board
+     * @param columnId    String of column card is in
+     * @param card        Card to be repositioned
      * @param newPosition int the index to move to
      */
-    public void updateCardRepositioned(final String joinKey, final String columnName, final Card card, final int newPosition) {
+    public void updateCardRepositioned(final String joinKey, final long columnId, final Card card, final int newPosition) {
         logger.info("Propagating card repositioned for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new ImmutableTriple<String, Integer, Card>(columnName, newPosition, card));
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new ImmutableTriple<>(columnId, newPosition, card));
     }
 
     /**
      * Notifies all subscribed client to alter contents of card
-     * @param joinKey String of board
-     * @param columnName String column card is in
-     * @param card Card to be edited
+     *
+     * @param joinKey  String of board
+     * @param columnId String column card is in
+     * @param card     Card to be edited
      */
-    public void updateCardEdited(final String joinKey, final String columnName, final Card card) {
+    public void updateCardEdited(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card edited for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/edit/", new Pair<String, Card>(columnName, card));
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/edit/", new Pair<>(columnId, card));
     }
 
     /**
      * Sends the Card that was added to all clients subscribed to that board
-     * @param joinKey String of the board
-     * @param columnName String the name of column
-     * @param card Card that was added
+     *
+     * @param joinKey  String of the board
+     * @param columnId String the name of column
+     * @param card     Card that was added
      */
-    public void updateCardAdded(final String joinKey, final String columnName, final Card card) {
+    public void updateCardAdded(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card added for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/add", new Pair<String, Card>(columnName, card));
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/add", new Pair<>(columnId, card));
     }
 
     /**
      * Sends the Card that was removed to all clients subscribed to that board
-     * @param joinKey String of the board
-     * @param columnName String the name of column
-     * @param card Card that was removed
+     *
+     * @param joinKey  String of the board
+     * @param columnId String the name of column
+     * @param card     Card that was removed
      */
-    public void updateCardRemoved(final String joinKey, final String columnName, final Card card) {
+    public void updateCardRemoved(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card removed for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/remove", new Pair<String, Card>(columnName, card));
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/remove", new Pair<>(columnId, card));
     }
 
 }
