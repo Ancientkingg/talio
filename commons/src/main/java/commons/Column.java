@@ -45,6 +45,13 @@ public class Column implements Comparable<Column> {
         this.cards = cards;
     }
 
+    public Column(final long id, final int index, final String heading, final SortedSet<Card> cards) {
+        this.id = id;
+        this.index = index;
+        this.heading = heading;
+        this.cards = cards;
+    }
+
     /**
      * Add one single card to the column if not already in the column and not null
      * @param card Card to be added
