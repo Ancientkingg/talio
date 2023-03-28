@@ -127,9 +127,13 @@ public class BoardService {
      * @param columnFromIdx the index of the column to move the card from
      * @param columnToIdx the index of the column to move the card to
      * @param priority the priority of the card in the new column
+     * @return Card moved to new position
      */
-    public void moveCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
+    public Card moveCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
+        final Card card = serverService.removeCard(this.boardModel.getCurrentBoard(), this.boardModel.getCurrentBoard().getColumn(columnFromIdx),
+                this.boardModel.getCurrentBoard().getCard(cardIdx));
+        return serverService.addCard(this.boardModel.getCurrentBoard(), this.boardModel.getCurrentBoard().getColumn(columnToIdx), card);
     }
 
 
