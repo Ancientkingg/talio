@@ -49,6 +49,7 @@ public class ServerService {
      */
     public void setServerIP(final String ip) throws IllegalArgumentException {
         this.serverIP = URI.create(ip);
+        logger.info("Set IP to: " + serverIP);
     }
 
     /**
@@ -64,6 +65,7 @@ public class ServerService {
                     .path(joinKey)
                     .request(APPLICATION_JSON)
                     .get(Board.class);
+            logger.info("Board request sent to server: " + joinKey);
             sessionHandler.subscribeToBoard(joinKey);
             return board;
         }
@@ -81,6 +83,7 @@ public class ServerService {
                     .path("/create")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+            logger.info("Created board sent to server: " + board.getJoinKey());
             sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
             return addedBoard;
         }
@@ -94,7 +97,7 @@ public class ServerService {
      */
     public Column addColumn(final Board board, final Column column) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Column addedColumn = client.target(serverIP)
                     .path("/columns")
                     .path("/create")
                     .path(board.getJoinKey())
@@ -102,6 +105,8 @@ public class ServerService {
                     .queryParam("index", column.getIndex())
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board.getPassword(), APPLICATION_JSON), Column.class);
+            logger.info("Added column sent to server: " + column.getHeading());
+            return addedColumn;
         }
     }
 
@@ -113,13 +118,15 @@ public class ServerService {
      */
     public Column removeColumn(final Board board, final Column column) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Column removedColumn = client.target(serverIP)
                     .path("/columns")
                     .path("/remove")
                     .path(board.getJoinKey())
                     .path(column.getHeading())
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board.getPassword(), APPLICATION_JSON), Column.class);
+            logger.info("Removed column sent to server: " + column.getHeading());
+            return removedColumn;
         }
     }
 
@@ -132,13 +139,15 @@ public class ServerService {
      */
     public Card addCard(final Board board, final Column column, final Card card) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Card addedCard = client.target(serverIP)
                     .path("/cards")
                     .path("/add")
                     .path(board.getJoinKey())
                     .path(column.getHeading())
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
+            logger.info("Added card sent to server");
+            return addedCard;
         }
     }
 
@@ -151,13 +160,15 @@ public class ServerService {
      */
     public Card removeCard(final Board board, final Column column, final Card card) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Card removedCard = client.target(serverIP)
                     .path("/cards")
                     .path("/remove")
                     .path(board.getJoinKey())
                     .path(column.getHeading())
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
+            logger.info("Removed card sent to server");
+            return removedCard;
         }
     }
 

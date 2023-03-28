@@ -2,6 +2,7 @@ package client.services;
 
 import client.exceptions.BoardChangeException;
 import client.models.BoardModel;
+import client.scenes.MainCtrl;
 import commons.Board;
 import commons.Card;
 import commons.Column;
@@ -13,16 +14,20 @@ import javax.inject.Singleton;
 public class BoardService {
     private final BoardModel boardModel;
     private final ServerService serverService;
+    private final MainCtrl mainCtrl;
 
     /**
      * Constructs a board service
-     * @param boardModel the injected board model
+     *
+     * @param boardModel    the injected board model
      * @param serverService the injected server service
+     * @param mainCtrl
      */
     @Inject
-    public BoardService(final BoardModel boardModel, final ServerService serverService) {
+    public BoardService(final BoardModel boardModel, final ServerService serverService, MainCtrl mainCtrl) {
         this.boardModel = boardModel;
         this.serverService = serverService;
+        this.mainCtrl = mainCtrl;
         this.setServerIP("http://localhost:8080");
         this.startSocket();
     }
@@ -65,6 +70,7 @@ public class BoardService {
      */
     public void setCurrentBoard(final Board board) {
         boardModel.setCurrentBoard(board);
+
     }
 
     /**
@@ -84,6 +90,11 @@ public class BoardService {
     public Column addColumnToCurrentBoard(final Column column) throws BoardChangeException {
         boardModel.addColumn(column);
         return serverService.addColumn(this.boardModel.getCurrentBoard(), column);
+    }
+
+    public void updateAddColumn(final Column column) throws BoardChangeException {
+        boardModel.addColumn(column);
+        mainCtrl.refreshOverview();
     }
 
     /**
@@ -139,5 +150,9 @@ public class BoardService {
      */
     public void updateColumn(final Column column) {
         boardModel.updateColumn(column);
+    }
+
+    public void renameBoard(final String newName) {
+        boardModel.renameBoard(newName);
     }
 }

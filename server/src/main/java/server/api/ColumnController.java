@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,8 @@ import java.util.TreeSet;
 public class ColumnController {
 
     private final BoardService boardService;
-
     private final SimpMessageSendingOperations messagingTemplate;
-    private final Logger logger = LogManager.getLogger(ColumnController.class);
+    private final Logger logger;
 
     /**
      * Constructor for the Column Controller
@@ -33,6 +33,7 @@ public class ColumnController {
     public ColumnController(final BoardService boardService, final SimpMessageSendingOperations messagingTemplate) {
         this.boardService = boardService;
         this.messagingTemplate = messagingTemplate;
+        logger = LogManager.getLogger(ColumnController.class);
     }
 
 
@@ -119,7 +120,8 @@ public class ColumnController {
      */
     public void updateColumnAdded(final String joinKey, final Column column) {
         logger.info("Propagating column added for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/add", column);
+//        messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/add", column);
+        messagingTemplate.convertAndSend("/topic/test", column);
     }
 
     /**

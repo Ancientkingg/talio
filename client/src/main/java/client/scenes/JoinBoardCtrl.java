@@ -29,10 +29,11 @@ public class JoinBoardCtrl {
     /**
      * Allows user to join a board upon inputting the board join code
      */
-    public void joinBoard() throws BoardChangeException {
+    public void joinBoard() {
         final Board serverBoard = boardService.fetchBoard(boardName.getText());
         boardService.setCurrentBoard(serverBoard);
         mainCtrl.showOverview();
+        mainCtrl.refreshOverview();
     }
 
     /**

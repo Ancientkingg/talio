@@ -137,4 +137,8 @@ public class BoardModel {
             oldColumn.setCards(column.getCards());
         }
     }
+
+    public void renameBoard(final String newName) {
+        currentBoard.setTitle(newName);
+    }
 }

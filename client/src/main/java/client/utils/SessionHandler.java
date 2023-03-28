@@ -1,5 +1,7 @@
 package client.utils;
 
+import client.exceptions.BoardChangeException;
+import client.services.BoardService;
 import client.services.ServerService;
 import commons.Card;
 import commons.Column;
@@ -14,6 +16,7 @@ import org.springframework.messaging.simp.stomp.StompSession.Subscription;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +27,15 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     private Logger logger = LogManager.getLogger(SessionHandler.class);
 
     private StompSession session;
-    private ServerService serverService;
     private List<Subscription> subscriptions;
+
+    private ServerService serverService;
+    private BoardService boardService;
+
+    @Inject
+    public SessionHandler(final BoardService boardService) {
+        this.boardService = boardService;
+    }
 
     /**
      * Constructor to pass serverService in. This allows the handler to pass itself to the serverService after it is connected
@@ -55,7 +65,18 @@ public class SessionHandler extends StompSessionHandlerAdapter {
      */
     public void subscribeToBoard(final String joinKey) {
         // Unsubscribes from previous board, so that unnecessary traffic is avoided
+        for (final Subscription subscription : subscriptions) subscription.unsubscribe();
         subscriptions.clear();
+
+        final Subscription testSub = session.subscribe(
+                "/topic/test", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) {  return String.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        logger.info("Test col: " + payload.toString());
+                    }
+                });
+        subscriptions.add(testSub);
 
         subscribeToBoardUpdates(joinKey);
 
@@ -72,6 +93,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public Type getPayloadType(final StompHeaders headers) {  return String.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
+                    boardService.renameBoard((String) payload);
                     logger.info("Board renamed: " + payload.toString());
                 }
             });
@@ -122,11 +144,16 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
     private void subscribeToColumnUpdates(final String joinKey) {
         final Subscription columnAddedSub = session.subscribe(
-            "/topic/columns/" + joinKey + "/add", new StompSessionHandlerAdapter() {
+            "/topic/columns/" + joinKey + "/add", new StompSessionHandlerAdapter()  {
                 public Type getPayloadType(final StompHeaders headers) {  return Column.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
-                    logger.info("Column added: " + payload.toString());
+                    try {
+                        boardService.updateAddColumn((Column) payload);
+                        logger.info("Column added: " + payload.toString());
+                    } catch (BoardChangeException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
         subscriptions.add(columnAddedSub);

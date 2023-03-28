@@ -44,6 +44,6 @@ public class SocketThread implements  Runnable {
 
         stompClient.connect(server, sessionHandler);
 
-        new Scanner(System.in).nextLine(); // Don't close immediately.
+        while (true) { }
     }
 }
