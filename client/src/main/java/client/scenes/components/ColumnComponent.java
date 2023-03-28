@@ -79,7 +79,7 @@ public class ColumnComponent extends GridPane {
                 final int priority = cards.size() == 0 ? 0 : cards.last().getPriority() + 1;
 
                 boardService.addCardToColumn(new Card(id, "", priority, "", null), column);
-                overviewCtrl.refreshColumn(this.column.getIndex());
+                this.refresh();
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
             }
@@ -185,9 +185,6 @@ public class ColumnComponent extends GridPane {
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());
-
-        for (final Node n : innerCardList.getChildren()) {
-            ((CardComponent) n).refresh();
-        }
+        innerCardList.getChildren().add(this.addCardButton);
     }
 }
