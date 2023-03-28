@@ -92,10 +92,7 @@ public class ColumnComponent extends GridPane {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardService, card, this);
-            innerCardList.getChildren().add(cc);
-        }
+        refresh();
     }
 
     private void addTextChangeListener(final BoardService boardService, final Column column) {

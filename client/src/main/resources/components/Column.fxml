@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" style="-fx-border-color: blue;" styleClass="column" stylesheets="@../Style.css" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" styleClass="column" stylesheets="@../Style.css" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -24,9 +24,9 @@
             <Button fx:id="deleteColumnButton" mnemonicParsing="false" styleClass="delete-column-button" stylesheets="@../Style.css" text="❌" />
         </children>
     </HBox>
-    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minWidth="174.0" prefWidth="174.0" style="-fx-border-color: red;" styleClass="edge-to-edge" stylesheets="@../Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
+    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minWidth="174.0" prefWidth="174.0" styleClass="edge-to-edge" stylesheets="@../Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
         <content>
-            <VBox fx:id="innerCardList" alignment="TOP_CENTER" prefWidth="175.0" style="-fx-border-color: green;" styleClass="scroll-pane" stylesheets="@../Style.css">
+            <VBox fx:id="innerCardList" alignment="TOP_CENTER" prefWidth="175.0" styleClass="scroll-pane" stylesheets="@../Style.css">
                 <children>
                     <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="53.0" styleClass="add-card-button" stylesheets="@../Style.css" text="+ add card" textAlignment="CENTER">
                         <font>
