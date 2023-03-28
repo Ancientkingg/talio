@@ -1,8 +1,5 @@
 ## Week 7 Agenda (Team 73)
 
-This is a template agenda. It gives an overview of what could be in your weekly agenda.
-In the 'Points of action' part you will also find some topics to cover in/after your first meeting.
-
 ---
 
 Date:           28/3/2023\
