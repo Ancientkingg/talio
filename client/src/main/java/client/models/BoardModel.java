@@ -4,14 +4,12 @@ import client.exceptions.BoardChangeException;
 import commons.Board;
 import commons.Card;
 import commons.Column;
-import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import java.util.LinkedList;
 import java.util.List;
 
 @Singleton
-@Component
 public class BoardModel {
     private final List<Board> boardList;
     private Board currentBoard;

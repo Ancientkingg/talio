@@ -16,7 +16,7 @@ import java.util.*;
 
 public class SocketThread implements  Runnable {
 
-    private String server = "ws://localhost:8080";
+    private String server;
 
     @Getter
     private SessionHandler sessionHandler;
