@@ -24,8 +24,6 @@ public class MainCtrl {
     private CreateCardCtrl createCardCtrl;
     private Scene createCardScene;
 
-    public MainCtrl() {
-    }
 
 
     /**
@@ -86,6 +84,9 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * Shows joinServer stage in primaryStage
+     */
     public void showJoinServer() {
         primaryStage.setTitle("Talio: Join Server");
         primaryStage.setScene(joinServerScene);
