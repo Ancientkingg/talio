@@ -1,5 +1,11 @@
-/*
-Column
+/**
+All of the project colors:
+
+Background color: #EBEBEB
+Toolbar & Button color: #181818
+Text color: #FFFFFF
+Talio text color: #F3F3F3
+
  */
 
 
@@ -67,6 +73,8 @@ Overview
 
 .overviewToolbar {
     -fx-background-color: #181818;
+    -fx-border-radius: 0 0 7px 7px;
+    -fx-background-radius: 0 0 7px 7px;
 }
 
 .toolbarButton {  /* Temporary: will be moved to be alongside the columns */

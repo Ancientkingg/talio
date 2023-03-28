@@ -6,9 +6,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="659.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.JoinServerCtrl">
    <columnConstraints>
@@ -17,9 +19,9 @@
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fillHeight="false" maxHeight="56.0" minHeight="0.0" prefHeight="27.0" valignment="TOP" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="114.0" minHeight="10.0" percentHeight="15.0" prefHeight="49.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="226.0" minHeight="5.0" prefHeight="226.0" vgrow="SOMETIMES" />
+      <RowConstraints fillHeight="false" maxHeight="56.0" minHeight="0.0" prefHeight="15.371578216552734" valignment="TOP" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="114.0" minHeight="10.0" percentHeight="15.0" prefHeight="97.12842178344727" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="250.8683853149414" minHeight="5.0" prefHeight="177.2540054321289" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="222.0" minHeight="10.0" prefHeight="86.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
@@ -50,5 +52,14 @@
          </GridPane.margin>
       </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <HBox prefHeight="100.0" prefWidth="200.0" styleClass="overviewToolbar" stylesheets="@Style.css" GridPane.columnSpan="3" alignment="CENTER">
+         <children>
+            <Text fill="#f3f3f3" strokeType="OUTSIDE" strokeWidth="0.0" text="talio.">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
    </children>
 </GridPane>
