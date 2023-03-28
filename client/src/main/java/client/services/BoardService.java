@@ -7,7 +7,9 @@ import commons.Card;
 import commons.Column;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class BoardService {
     private final BoardModel boardModel;
     private final ServerService serverService;

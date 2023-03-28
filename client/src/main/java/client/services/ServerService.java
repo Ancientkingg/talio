@@ -64,7 +64,7 @@ public class ServerService {
                     .path(joinKey)
                     .request(APPLICATION_JSON)
                     .get(Board.class);
-//            sessionHandler.subscribeToBoard(joinKey);
+            sessionHandler.subscribeToBoard(joinKey);
             return board;
         }
     }
@@ -81,7 +81,7 @@ public class ServerService {
                     .path("/create")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
-//            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
+            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
             return addedBoard;
         }
     }
