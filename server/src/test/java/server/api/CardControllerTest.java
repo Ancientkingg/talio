@@ -56,8 +56,8 @@ public class CardControllerTest {
         actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
 
-        actualColumn = new Column("Column 1", 1, new TreeSet<>());
-        expectedColumn = new Column("Column 1", 1, new TreeSet<>());
+        actualColumn = new Column(1, 1, "Column 1", new TreeSet<>());
+        expectedColumn = new Column(1, 1, "Column 1", new TreeSet<>());
 
         when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
         when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);
@@ -80,7 +80,7 @@ public class CardControllerTest {
 
         expectedColumn.addCard(cardToBeAdded);
 
-        this.mockMvc.perform(post("/cards/add/joinkey/Column 1")
+        this.mockMvc.perform(post("/cards/add/joinkey/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cardDTO)))
                 .andExpect(status().isOk())

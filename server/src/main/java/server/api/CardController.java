@@ -60,7 +60,7 @@ public class CardController {
         try {
             board.addCardToColumn(card, columnId);
         } catch (ColumnNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The column " + columnId + " was not found in the board with join key " + joinKey);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The column with id" + columnId + " was not found in the board with join key " + joinKey);
         }
         boardService.saveBoard(board);
 
