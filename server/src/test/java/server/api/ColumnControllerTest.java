@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import server.services.BoardService;
 
@@ -35,6 +36,9 @@ public class ColumnControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private SimpMessageSendingOperations messagingTemplate;
+
     @Test
     public void contextLoads() {
         assertNotNull(columnController);
@@ -53,7 +57,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 1").param("index", "1")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 1").param("index", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -76,7 +80,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 1").param("index", "1")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 1").param("index", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isOk())
@@ -99,7 +103,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/joinkey/remove/Column 1")
+        this.mockMvc.perform(post("/columns/remove/joinkey/Column 1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -122,7 +126,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/joinkey/remove/Column 1")
+        this.mockMvc.perform(post("/columns/remove/joinkey/Column 1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isOk())
@@ -147,7 +151,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/joinkey/remove/Column 1")
+        this.mockMvc.perform(post("/columns/remove/joinkey/Column 1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk());
@@ -176,7 +180,7 @@ public class ColumnControllerTest {
         // add first column
         expectedBoard.addColumn(column3); // [3]
 
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 3").param("index", "3")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 3").param("index", "3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -189,7 +193,7 @@ public class ColumnControllerTest {
         // add another column (to the beginning)
         expectedBoard.addColumn(column1); // [1, 3]
 
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 1").param("index", "1")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 1").param("index", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -201,7 +205,7 @@ public class ColumnControllerTest {
         // add Column 2 (in the middle)
         expectedBoard.addColumn(column2); // [1, 2, 3]
 
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 2").param("index", "2")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 2").param("index", "2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -216,7 +220,7 @@ public class ColumnControllerTest {
         // remove Column 2 (from the middle)
         expectedBoard.removeColumn(column2); // [1, 3]
 
-        this.mockMvc.perform(post("/columns/joinkey/remove/Column 2")
+        this.mockMvc.perform(post("/columns/remove/joinkey/Column 2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -231,7 +235,7 @@ public class ColumnControllerTest {
         expectedBoard.addColumn(column4); // [1, 3, 4]
 
         // add Column 4 (to the end)
-        this.mockMvc.perform(post("/columns/joinkey/create/Column 4").param("index", "4")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 4").param("index", "4")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -245,7 +249,7 @@ public class ColumnControllerTest {
         // remove Column 1 (first column)
         expectedBoard.removeColumn(column1); // [3, 4]
 
-        this.mockMvc.perform(post("/columns/joinkey/remove/Column 1")
+        this.mockMvc.perform(post("/columns/remove/joinkey/Column 1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
@@ -260,7 +264,7 @@ public class ColumnControllerTest {
         // remove Column 4 (last column)
         expectedBoard.removeColumn(column4); // [3]
 
-        this.mockMvc.perform(post("/columns/joinkey/remove/Column 4")
+        this.mockMvc.perform(post("/columns/remove/joinkey/Column 4")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk())
