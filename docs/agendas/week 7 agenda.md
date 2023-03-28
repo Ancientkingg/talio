@@ -106,6 +106,11 @@ Does anyone want something added to today's agenda?
 # Any other business
 *If anybody has something that should be discussed but came up with that after the agenda was finalized (in point 2), he/she should bring that up now.*
 
+
+# Questions for the TA
+How are we supposed to present the mock-up we have made in the HUE report?
+
+
 # Question round
 *If there are any questions, now is the time to ask them.*
 
