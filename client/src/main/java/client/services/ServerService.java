@@ -1,5 +1,7 @@
 package client.services;
 
+import client.utils.SessionHandler;
+import client.utils.SocketThread;
 import commons.Board;
 import commons.Card;
 import commons.Column;
@@ -7,7 +9,8 @@ import commons.DTOs.CardDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 
@@ -17,6 +20,27 @@ public class ServerService {
 
     private URI serverIP;
 
+    private Logger logger = LogManager.getLogger(ServerService.class);
+
+    private SessionHandler sessionHandler;
+
+    /**
+     * Initializes client socket in a thread at the given serverIP
+     */
+    public void startSocket() {
+        final SocketThread socketThread = new SocketThread(this, serverIP);
+        final Thread thread = new Thread(socketThread);
+        thread.start();
+    }
+
+    /**
+     * The handler passes itself to the serverService in order to subscribe client socket to boards
+     * upon getBoard() and addBoard()
+     * @param sessionHandler SessionHandler access to session
+     */
+    public void setHandler(final SessionHandler sessionHandler) {
+        this.sessionHandler = sessionHandler;
+    }
 
     /**
      * Sets the IP of the server to interact with
@@ -34,12 +58,14 @@ public class ServerService {
      */
     public Board getBoard(final String joinKey) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Board board = client.target(serverIP)
                     .path("/boards")
                     .path("/get")
                     .path(joinKey)
                     .request(APPLICATION_JSON)
                     .get(Board.class);
+            sessionHandler.subscribeToBoard(joinKey);
+            return board;
         }
     }
 
@@ -50,11 +76,13 @@ public class ServerService {
      */
     public Board addBoard(final Board board) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final Board addedBoard =  client.target(serverIP)
                     .path("/boards")
                     .path("/create")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
+            return addedBoard;
         }
     }
 

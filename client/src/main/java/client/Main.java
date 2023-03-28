@@ -24,8 +24,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import com.google.inject.Injector;
+import org.springframework.context.annotation.ComponentScan;
+
 import static com.google.inject.Guice.createInjector;
 
+@ComponentScan
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
