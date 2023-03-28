@@ -101,7 +101,7 @@ public class CardControllerTest {
         actualBoard.addColumn(actualColumn);
         expectedBoard.addColumn(expectedColumn);
 
-        this.mockMvc.perform(post("/cards/remove/joinkey/Column 1")
+        this.mockMvc.perform(post("/cards/remove/joinkey/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cardDTO)))
                 .andExpect(status().isOk())
