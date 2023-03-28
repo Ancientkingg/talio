@@ -1,0 +1,97 @@
+/*
+Column
+ */
+
+
+.column {
+    -fx-background-color: transparent;
+    -fx-border-width: 2;
+    -fx-border-insets: 5;
+    -fx-border-radius: 5;
+    -fx-border-color:  #4e4e4e;
+}
+
+
+
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+}
+
+.scroll-pane .corner {
+    -fx-background-insets: 0;
+}
+.card-heading {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 1;
+    -fx-border-color: #a2a2a2;
+}
+/*
+Card
+ */
+.card {
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius:10 10 10 10;
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+}
+.cardTextArea {
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+}
+
+.cardTextArea:focused{
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-background-insets: 0, 0, 1, 2;
+}
+
+.cardTextArea .content{
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-background-color: transparent;
+    -fx-border-color: #4e4e4e;
+    -fx-border-width: 0.5;
+}
+
+
+
+/*
+Overview
+ */
+
+.overviewToolbar {
+    -fx-background-color: #181818;
+}
+
+.toolbarButton {  /* Temporary: will be moved to be alongside the columns */
+    -fx-background-color: transparent;
+}
+
+
+.add-card-button {
+    -fx-text-fill: #6b778c;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-border-radius: 5px;
+}
+
+.add-card-button:hover {
+    -fx-text-fill: #091e42;
+    -fx-background-color: #091e4214;
+}
+
+.delete-column-button {
+    -fx-text-fill: #6b778c;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-border-radius: 10px;
+}
+
+.delete-column-button:hover {
+    -fx-text-fill: #ff0000;
+    -fx-background-color: rgba(66, 9, 9, 0.08);
+}

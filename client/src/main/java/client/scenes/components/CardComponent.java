@@ -50,6 +50,7 @@ public class CardComponent extends GridPane {
         }
 
         cardText.setText(card.getTitle());
+        cardText.setWrapText(true);
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
 
