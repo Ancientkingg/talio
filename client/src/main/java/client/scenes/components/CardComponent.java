@@ -39,7 +39,7 @@ public class CardComponent extends GridPane {
         this.card = card;
         this.columnParent = columnParent;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/client/scenes/components/Card.fxml"));
+        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Card.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 
