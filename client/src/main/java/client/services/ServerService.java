@@ -68,8 +68,8 @@ public class ServerService {
         try (Client client = ClientBuilder.newClient()) {
             return client.target(serverIP)
                     .path("/columns")
-                    .path(board.getJoinKey())
                     .path("/create")
+                    .path(board.getJoinKey())
                     .path(column.getHeading())
                     .queryParam("index", column.getIndex())
                     .request(APPLICATION_JSON)
@@ -87,8 +87,8 @@ public class ServerService {
         try (Client client = ClientBuilder.newClient()) {
             return client.target(serverIP)
                     .path("/columns")
-                    .path(board.getJoinKey())
                     .path("/remove")
+                    .path(board.getJoinKey())
                     .path(column.getHeading())
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board.getPassword(), APPLICATION_JSON), Column.class);
