@@ -5,6 +5,10 @@ import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
 import commons.exceptions.ColumnNotFoundException;
+import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -132,6 +136,51 @@ public class CardController {
         boardService.saveBoard(board);
 
         return ResponseEntity.ok(card);
+    }
+
+    /**
+     * Notifies all subscribed clients to alter the position of the card
+     * @param joinKey String of board
+     * @param columnName String of column card is in
+     * @param card Card to be repositioned
+     * @param newPosition int the index to move to
+     */
+    public void updateCardRepositioned(final String joinKey, final String columnName, final Card card, final int newPosition) {
+        logger.info("Propagating card repositioned for: " + joinKey);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new ImmutableTriple<String, Integer, Card>(columnName, newPosition, card));
+    }
+
+    /**
+     * Notifies all subscribed client to alter contents of card
+     * @param joinKey String of board
+     * @param columnName String column card is in
+     * @param card Card to be edited
+     */
+    public void updateCardEdited(final String joinKey, final String columnName, final Card card) {
+        logger.info("Propagating card edited for: " + joinKey);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/edit/", new Pair<String, Card>(columnName, card));
+    }
+
+    /**
+     * Sends the Card that was added to all clients subscribed to that board
+     * @param joinKey String of the board
+     * @param columnName String the name of column
+     * @param card Card that was added
+     */
+    public void updateCardAdded(final String joinKey, final String columnName, final Card card) {
+        logger.info("Propagating card added for: " + joinKey);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/add", new Pair<String, Card>(columnName, card));
+    }
+
+    /**
+     * Sends the Card that was removed to all clients subscribed to that board
+     * @param joinKey String of the board
+     * @param columnName String the name of column
+     * @param card Card that was removed
+     */
+    public void updateCardRemoved(final String joinKey, final String columnName, final Card card) {
+        logger.info("Propagating card removed for: " + joinKey);
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/remove", new Pair<String, Card>(columnName, card));
     }
 
 }
