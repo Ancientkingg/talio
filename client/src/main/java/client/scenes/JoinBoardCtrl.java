@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import commons.*;
 import javafx.fxml.FXML;
