@@ -36,16 +36,17 @@ public class MainCtrl {
      *                  exists by the time one arrives at the overview
      * @param createBoard Create board page is an option from the join board page and creates
      *                    a new board which is loaded into the overview
-     * @param createColumn The create column page is an option to add a column to a board
-     *                     in the overview
      * @param createCard The create card page is an option to add a card to a column
      *                     in the overview
      *
      * @param joinServer The join server page
+     *
+     * @param homePage The home page
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
                            final Pair<CreateBoardCtrl, Parent> createBoard,
-                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer, final Pair<HomePageCtrl, Parent> homePage)
+                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer,
+                           final Pair<HomePageCtrl, Parent> homePage)
     {
         this.primaryStage = primaryStage;
         this.joinServerCtrl = joinServer.getKey();
