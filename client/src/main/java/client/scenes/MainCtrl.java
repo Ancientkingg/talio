@@ -17,7 +17,6 @@ public class MainCtrl {
     private Scene joinServerScene;
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
-    private CreateColumnCtrl createColumnCtrl;
     private Scene createColumnScene;
     private CreateBoardCtrl createBoardCtrl;
     private Scene createBoardScene;
@@ -59,8 +58,6 @@ public class MainCtrl {
         this.joinBoardScene = new Scene(joinBoard.getValue());
         this.createBoardCtrl = createBoard.getKey();
         this.createBoardScene = new Scene(createBoard.getValue());
-        this.createColumnCtrl = createColumn.getKey();
-        this.createColumnScene = new Scene(createColumn.getValue());
         this.createCardCtrl = createCard.getKey();
         this.createCardScene = new Scene(createCard.getValue());
         this.homePageCtrl = homePage.getKey();
