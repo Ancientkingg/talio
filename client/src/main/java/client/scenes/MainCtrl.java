@@ -13,7 +13,6 @@ public class MainCtrl {
     private Scene joinBoardScene;
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
-    private CreateColumnCtrl createColumnCtrl;
     private Scene createColumnScene;
     private CreateBoardCtrl createBoardCtrl;
     private Scene createBoardScene;
@@ -30,13 +29,11 @@ public class MainCtrl {
      *                  exists by the time one arrives at the overview
      * @param createBoard Create board page is an option from the join board page and creates
      *                    a new board which is loaded into the overview
-     * @param createColumn The create column page is an option to add a column to a board
-     *                     in the overview
      * @param createCard The create card page is an option to add a card to a column
      *                     in the overview
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
-                           final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn,
+                           final Pair<CreateBoardCtrl, Parent> createBoard,
                            final Pair<CreateCardCtrl, Parent> createCard)
     {
         this.primaryStage = primaryStage;
@@ -47,8 +44,6 @@ public class MainCtrl {
         this.joinBoardScene = new Scene(joinBoard.getValue());
         this.createBoardCtrl = createBoard.getKey();
         this.createBoardScene = new Scene(createBoard.getValue());
-        this.createColumnCtrl = createColumn.getKey();
-        this.createColumnScene = new Scene(createColumn.getValue());
         this.createCardCtrl = createCard.getKey();
         this.createCardScene = new Scene(createCard.getValue());
 
@@ -81,16 +76,6 @@ public class MainCtrl {
         createBoardCtrl.clearFields();
         primaryStage.setTitle("Talio: Create Board");
         primaryStage.setScene(createBoardScene);
-        primaryStage.show();
-    }
-
-    /**
-     * Shows createColumn stage in primaryStage
-     */
-    public void showCreateColumn() {
-        createColumnCtrl.clearFields();
-        primaryStage.setTitle("Talio: Create Column");
-        primaryStage.setScene(createColumnScene);
         primaryStage.show();
     }
 
