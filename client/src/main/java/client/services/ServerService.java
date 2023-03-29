@@ -136,7 +136,7 @@ public class ServerService {
                     .path("/cards")
                     .path("/add")
                     .path(board.getJoinKey())
-                    .path(column.getHeading())
+                    .path(String.valueOf(column.getId()))
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
         }
