@@ -162,21 +162,24 @@ public class ServerService {
     }
 
     /**
-     * Updates the position of a card
-     * @param board current board in which card is being moved
-     * @param column column containing the card
-     * @param card card to be moved
-     * @param newPosition new index of the card
+     * Updates the position of a card by posting a request to repositionCard endpoint
+     *
+     * @param board             current board in which card is being moved
+     * @param column            column containing the card
+     * @param destinationColumn column to which card is being moved
+     * @param card              card to be moved
+     * @param newPosition       new index of the card
      * @return Card being moved ?? the method in the server returns the column containing the card which has been updated
      * but compiler was complaining when I made return type of this method Column.
      */
-    public Card updatePosition(final Board board, final Column column, final Card card, final int newPosition) {
+    public Card updatePosition(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
         try (Client client = ClientBuilder.newClient()) {
             return client.target(serverIP)
                     .path("/cards")
                     .path("/updatePosition")
                     .path(board.getJoinKey())
-                    .path(column.getHeading())
+                    .path(String.valueOf(column.getId()))
+                    .path(String.valueOf(destinationColumn.getId()))
                     .path(String.valueOf(newPosition))
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
@@ -184,7 +187,7 @@ public class ServerService {
     }
 
     /**
-     * Updates the contents of a card
+     * Updates the contents of a card by posting a request to editCard endpoint on server
      * @param board current board containing the card
      * @param column column containing the card
      * @param card card to be updated
@@ -196,7 +199,7 @@ public class ServerService {
                     .path("/cards")
                     .path("/update")
                     .path(board.getJoinKey())
-                    .path(column.getHeading())
+                    .path(String.valueOf(column.getId()))
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
         }

@@ -131,9 +131,10 @@ public class BoardService {
      */
     public Card moveCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
-        final Card card = serverService.removeCard(this.boardModel.getCurrentBoard(), this.boardModel.getCurrentBoard().getColumn(columnFromIdx),
-                this.boardModel.getCurrentBoard().getCard(cardIdx));
-        return serverService.addCard(this.boardModel.getCurrentBoard(), this.boardModel.getCurrentBoard().getColumn(columnToIdx), card);
+
+        final Board board = this.boardModel.getCurrentBoard();
+
+        return serverService.updatePosition(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
     }
 
 
