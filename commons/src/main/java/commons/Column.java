@@ -46,6 +46,20 @@ public class Column implements Comparable<Column> {
     }
 
     /**
+     * Constructor for Column (mainly for testing as id is also provided in this)
+     * @param id Id of column
+     * @param index index of the column
+     * @param heading heading of the column
+     * @param cards cards contained by the column
+     */
+    public Column(final long id, final int index, final String heading, final SortedSet<Card> cards) {
+        this.id = id;
+        this.index = index;
+        this.heading = heading;
+        this.cards = cards;
+    }
+
+    /**
      * Add one single card to the column if not already in the column and not null
      * @param card Card to be added
      *
