@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HomePageCtrl">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="600.0" minHeight="-Infinity" prefHeight="64.0" valignment="TOP" vgrow="NEVER" />
+        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+      <GridPane style="-fx-background-color: #181818;">
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="220.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="220.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Cabin; -fx-fill: #f3f3f3;" text="talio." textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <Button fx:id="joinBoardButton" blendMode="SRC_ATOP" mnemonicParsing="false" styleClass="join-board-button" stylesheets="@Style.css" text="Join a board" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="settingsButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="settings-button" stylesheets="@Style.css" GridPane.columnIndex="2">
+               <graphic>
+                  <SVGPath content="m388 976-20-126q-19-7-40-19t-37-25l-118 54-93-164 108-79q-2-9-2.5-20.5T185 576q0-9 .5-20.5T188 535L80 456l93-164 118 54q16-13 37-25t40-18l20-127h184l20 126q19 7 40.5 18.5T669 346l118-54 93 164-108 77q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l108 78-93 164-118-54q-16 13-36.5 25.5T592 850l-20 126H388Zm92-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z" scaleX="0.045" scaleY="0.045" scaleZ="0.0" styleClass="settings-icon" />
+               </graphic>
+               <GridPane.margin>
+                  <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="disconnectButton" blendMode="SRC_ATOP" mnemonicParsing="false" styleClass="join-board-button" stylesheets="@Style.css" text="Disconnect" GridPane.halignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="-40.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <content>
+            <FlowPane fx:id="innerBoardCardList" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWrapLength="768.0" vgap="60.0">
+               <padding>
+                  <Insets left="30.0" right="30.0" top="60.0" />
+               </padding>
+            </FlowPane>
+         </content>
+        </ScrollPane>
+    </children>
+</GridPane>

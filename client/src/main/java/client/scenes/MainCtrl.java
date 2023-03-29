@@ -19,6 +19,8 @@ public class MainCtrl {
     private Scene createBoardScene;
     private CreateCardCtrl createCardCtrl;
     private Scene createCardScene;
+    private HomePageCtrl homePageCtrl;
+    private Scene homePageScene;
 
 
     /**
@@ -34,10 +36,11 @@ public class MainCtrl {
      *                     in the overview
      * @param createCard The create card page is an option to add a card to a column
      *                     in the overview
+     * @param homePage The home page is the home page of the application
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
                            final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn,
-                           final Pair<CreateCardCtrl, Parent> createCard)
+                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<HomePageCtrl, Parent> homePage)
     {
         this.primaryStage = primaryStage;
 
@@ -51,8 +54,19 @@ public class MainCtrl {
         this.createColumnScene = new Scene(createColumn.getValue());
         this.createCardCtrl = createCard.getKey();
         this.createCardScene = new Scene(createCard.getValue());
+        this.homePageCtrl = homePage.getKey();
+        this.homePageScene = new Scene(homePage.getValue());
 
-        showJoinBoard();
+        showHomePage();
+    }
+
+    /**
+     * Shows homePage stage in primaryStage
+     */
+    public void showHomePage() {
+        primaryStage.setTitle("Talio: Home Page");
+        primaryStage.setScene(homePageScene);
+        primaryStage.show();
     }
 
     /**
