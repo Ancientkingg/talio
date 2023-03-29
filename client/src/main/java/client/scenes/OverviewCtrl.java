@@ -123,6 +123,10 @@ public class OverviewCtrl {
                 + " " + animalNames[(int) (Math.random() * animalNames.length)];
     }
 
+    /**
+     * Refreshes indices of columns in an overview so that there are no gaps
+     * @param removedIndex index of removed column
+     */
     public void refreshIndices (final int removedIndex) {
         int indexCount = 0;
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
