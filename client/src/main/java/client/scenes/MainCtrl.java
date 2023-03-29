@@ -40,7 +40,7 @@ public class MainCtrl {
      * @param joinServer The join server page
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
-                           final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn,
+                           final Pair<CreateBoardCtrl, Parent> createBoard, 
                            final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer)
     {
         this.primaryStage = primaryStage;
