@@ -58,9 +58,10 @@ public class Main extends Application {
             final var joinBoard = FXML.load(JoinBoardCtrl.class, "JoinBoard.fxml");
             final var createBoard = FXML.load(CreateBoardCtrl.class, "CreateBoard.fxml");
             final var createCard = FXML.load(CreateCardCtrl.class, "CreateCard.fxml");
+            final var homePage = FXML.load(HomePageCtrl.class, "HomePage.fxml");
 
             final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createCard, joinServer);
+            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createCard, joinServer, homePage);
         }
         catch (IOException e) {
             throw new IOException(e);

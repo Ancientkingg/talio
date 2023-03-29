@@ -22,6 +22,8 @@ public class MainCtrl {
     private Scene createBoardScene;
     private CreateCardCtrl createCardCtrl;
     private Scene createCardScene;
+    private HomePageCtrl homePageCtrl;
+    private Scene homePageScene;
 
 
 
@@ -38,10 +40,13 @@ public class MainCtrl {
      *                     in the overview
      *
      * @param joinServer The join server page
+     *
+     * @param homePage The home page
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
-                           final Pair<CreateBoardCtrl, Parent> createBoard, 
-                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer)
+                           final Pair<CreateBoardCtrl, Parent> createBoard,
+                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer,
+                           final Pair<HomePageCtrl, Parent> homePage)
     {
         this.primaryStage = primaryStage;
         this.joinServerCtrl = joinServer.getKey();
@@ -56,8 +61,19 @@ public class MainCtrl {
         this.createBoardScene = new Scene(createBoard.getValue());
         this.createCardCtrl = createCard.getKey();
         this.createCardScene = new Scene(createCard.getValue());
+        this.homePageCtrl = homePage.getKey();
+        this.homePageScene = new Scene(homePage.getValue());
 
         showJoinServer();
+    }
+
+    /**
+     * Shows homePage stage in primaryStage
+     */
+    public void showHomePage() {
+        primaryStage.setTitle("Talio: Home Page");
+        primaryStage.setScene(homePageScene);
+        primaryStage.show();
     }
 
     /**

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<fx:root prefHeight="157.0" prefWidth="290.0" styleClass="board-card" stylesheets="@../Style.css" type="Pane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fx:id="boardTitle" layoutX="44.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="board-name" text="Board title" wrappingWidth="195.4700412750244" />
+   </children>
+</fx:root>
