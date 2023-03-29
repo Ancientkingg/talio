@@ -1,5 +1,11 @@
-/*
-Column
+/**
+All of the project colors:
+
+Background color: #EBEBEB
+Toolbar & Button color: #181818
+Text color: #FFFFFF
+Talio text color: #F3F3F3
+
  */
 
 
@@ -66,6 +72,8 @@ Overview
 
 .overviewToolbar {
     -fx-background-color: #181818;
+    -fx-border-radius: 0 0 7px 7px;
+    -fx-background-radius: 0 0 7px 7px;
 }
 
 .toolbarButton {  /* Temporary: will be moved to be alongside the columns */
@@ -93,4 +101,21 @@ Overview
 .delete-column-button:hover {
     -fx-text-fill: #ff0000;
     -fx-background-color: rgba(66, 9, 9, 0.08);
+}
+
+.menuButton {
+    -fx-background-color: #181818;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 7px;
+}
+
+.serverText-field {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+}
+
+.background {
+    -fx-background-color: #EBEBEB;
 }

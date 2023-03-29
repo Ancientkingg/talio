@@ -11,6 +11,10 @@ public class MainCtrl {
     private Stage primaryStage;
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoardScene;
+
+    private JoinServerCtrl joinServerCtrl;
+
+    private Scene joinServerScene;
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
     private Scene createColumnScene;
@@ -18,6 +22,7 @@ public class MainCtrl {
     private Scene createBoardScene;
     private CreateCardCtrl createCardCtrl;
     private Scene createCardScene;
+
 
 
     /**
@@ -31,12 +36,17 @@ public class MainCtrl {
      *                    a new board which is loaded into the overview
      * @param createCard The create card page is an option to add a card to a column
      *                     in the overview
+     *
+     * @param joinServer The join server page
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
-                           final Pair<CreateBoardCtrl, Parent> createBoard,
-                           final Pair<CreateCardCtrl, Parent> createCard)
+                           final Pair<CreateBoardCtrl, Parent> createBoard, 
+                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer)
     {
         this.primaryStage = primaryStage;
+        this.joinServerCtrl = joinServer.getKey();
+        this.joinServerScene = new Scene(joinServer.getValue());
+
 
         this.overviewCtrl = overview.getKey();
         this.overviewScene = new Scene(overview.getValue());
@@ -47,7 +57,7 @@ public class MainCtrl {
         this.createCardCtrl = createCard.getKey();
         this.createCardScene = new Scene(createCard.getValue());
 
-        showJoinBoard();
+        showJoinServer();
     }
 
     /**
@@ -66,6 +76,15 @@ public class MainCtrl {
         joinBoardCtrl.clearFields();
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoardScene);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows joinServer stage in primaryStage
+     */
+    public void showJoinServer() {
+        primaryStage.setTitle("Talio: Join Server");
+        primaryStage.setScene(joinServerScene);
         primaryStage.show();
     }
 
