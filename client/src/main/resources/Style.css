@@ -11,10 +11,9 @@ Talio text color: #F3F3F3
 
 .column {
     -fx-background-color: transparent;
-    -fx-border-width: 2;
+    -fx-border-width: 0 1 0 0;
     -fx-border-insets: 5;
-    -fx-border-radius: 5;
-    -fx-border-color:  #4e4e4e;
+    -fx-border-color: #727272;
 }
 
 

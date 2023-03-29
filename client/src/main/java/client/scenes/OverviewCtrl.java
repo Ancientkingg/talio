@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.exceptions.BoardChangeException;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.services.BoardService;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
 import javax.inject.Inject;
+import java.util.TreeSet;
 
 public class OverviewCtrl {
     private final MainCtrl mainCtrl;
@@ -16,6 +18,8 @@ public class OverviewCtrl {
 
     @FXML
     private HBox columnBox;
+    private static int demoIndexCounter = 0; //This is just a temporary fix to give columns different indexes
+
 
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
@@ -28,14 +32,6 @@ public class OverviewCtrl {
         this.boardService = boardService;
     }
 
-
-    /**
-     * Redirects user to "createColumn" FXML file on button press
-     * where they can input a custom name for a new column to be created.
-     */
-    public void showCreateColumn() {
-        mainCtrl.showCreateColumn();
-    }
 
     /**
      * Redirects user to "createCard" FXML file on button press
@@ -89,5 +85,41 @@ public class OverviewCtrl {
                 }
             }
         }
+    }
+
+    /**
+     * Will be used to create a column when user passes through the column name
+     */
+    public void createColumn() throws BoardChangeException {
+        final Column column = new Column(getFunColumnName(), demoIndexCounter++, new TreeSet<>());
+        boardService.addColumnToCurrentBoard(column);
+        mainCtrl.showOverview();
+        mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Generates a random column name
+     * @return a fun column name
+     */
+    private String getFunColumnName() {
+        final String[] adjectives = { "fun", "cool", "awesome", "great", "amazing", "wonderful", "fantastic",
+                                        "incredible", "magnificent", "marvelous", "spectacular", "superb",
+                                        "super", "fabulous", "fab", "excellent", "excellent", "terrific", "terrific",
+                                        "wicked", "wicked"};
+
+        final String[] animalNames = {"dog", "cat", "fish", "bird", "hamster", "rabbit", "turtle", "snake", "lizard",
+                                      "frog", "toad", "salamander", "chameleon", "gecko", "iguana", "alligator",
+                                      "crocodile", "lizard", "snake", "turtle", "tortoise", "shark", "whale",
+                                      "dolphin", "seal", "otter", "bear", "panda", "monkey", "gorilla", "ape",
+                                      "chimpanzee", "orangutan", "gibbon", "lemur", "squirrel", "chipmunk",
+                                      "mouse", "rat", "rabbit", "hare", "deer", "elk", "moose", "buffalo", "cow",
+                                      "bull", "horse", "pony", "zebra", "giraffe", "rhinoceros", "hippopotamus",
+                                      "elephant", "camel", "llama", "alpaca", "sheep", "goat", "pig", "boar",
+                                      "wolf", "fox", "coyote", "dog", "cat", "lion", "tiger", "leopard", "cheetah",
+                                      "jaguar", "panther", "hyena", "bear", "panda", "koala", "kangaroo", "wallaby",
+                                      "wombat", "opossum", "platypus", "kookaburra", "emu"};
+
+        return adjectives[(int) (Math.random() * adjectives.length)]
+                + " " + animalNames[(int) (Math.random() * animalNames.length)];
     }
 }

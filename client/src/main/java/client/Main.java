@@ -57,7 +57,6 @@ public class Main extends Application {
             final var overview = FXML.load(OverviewCtrl.class, "Overview.fxml");
             final var joinBoard = FXML.load(JoinBoardCtrl.class, "JoinBoard.fxml");
             final var createBoard = FXML.load(CreateBoardCtrl.class, "CreateBoard.fxml");
-            final var createColumn = FXML.load(CreateColumnCtrl.class, "CreateColumn.fxml");
             final var createCard = FXML.load(CreateCardCtrl.class, "CreateCard.fxml");
 
             final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);

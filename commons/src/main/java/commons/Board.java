@@ -86,15 +86,14 @@ public class Board {
     }
 
     /**
-     * Get a column of a board by name
-     * @param columnName The name of the column to get
-     * @return The column with the name {@code columnName} or null if not found
+     * Get a column of a board by id
+     * @param columnId The id of the column to get
+     * @return The column with the id {@code columnId}
      */
-    public Column getColumnByName(final String columnName) {
-        if (columnName == null) return null;
+    public Column getColumnById(final long columnId) {
 
         for (final Column column : this.columns) {
-            if (Objects.equals(column.getHeading(), columnName)) {
+            if (column.getId() == columnId) {
                 return column;
             }
         }
@@ -105,13 +104,13 @@ public class Board {
     /**
      * Adds a card to the column with the name {@code columnName} in the current board
      * @param card The card to add
-     * @param columnName The column to add the card to
+     * @param columnId The column to add the card to
      * @throws ColumnNotFoundException When the requested column cannot be found in the board
      */
-    public void addCardToColumn(final Card card, final String columnName) throws ColumnNotFoundException {
-        final Column column = this.getColumnByName(columnName);
+    public void addCardToColumn(final Card card, final long columnId) throws ColumnNotFoundException {
+        final Column column = this.getColumnById(columnId);
 
-        if (column == null) throw new ColumnNotFoundException("The column " + columnName + " cannot be found in the board" + this.title);
+        if (column == null) throw new ColumnNotFoundException("The column " + columnId + " cannot be found in the board" + this.title);
 
         column.addCard(card);
     }
