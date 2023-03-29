@@ -6,9 +6,9 @@ import commons.Column;
 import commons.DTOs.CardDTO;
 import commons.exceptions.ColumnNotFoundException;
 import javafx.util.Pair;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.javatuples.Quartet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -134,7 +134,7 @@ public class CardController {
 
         boardService.saveBoard(board);
 
-        updateCardRepositioned(joinKey, sourceColumnId, card, newPosition);
+        updateCardRepositioned(joinKey, sourceColumnId, destinationColumnId, card, newPosition);
 
         return sourceColumn;
     }
@@ -170,14 +170,15 @@ public class CardController {
     /**
      * Notifies all subscribed clients to alter the position of the card
      *
-     * @param joinKey     String of board
-     * @param columnId    String of column card is in
-     * @param card        Card to be repositioned
-     * @param newPosition int the index to move to
+     * @param joinKey             String of board
+     * @param columnId            ID of column card is in
+     * @param destinationColumnId ID of column to which card is to be moved
+     * @param card                Card to be repositioned
+     * @param newPosition         int the index to move to
      */
-    public void updateCardRepositioned(final String joinKey, final long columnId, final Card card, final int newPosition) {
+    public void updateCardRepositioned(final String joinKey, final long columnId, final long destinationColumnId, final Card card, final int newPosition) {
         logger.info("Propagating card repositioned for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new ImmutableTriple<>(columnId, newPosition, card));
+        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new Quartet<>(columnId, destinationColumnId, newPosition, card));
     }
 
     /**
