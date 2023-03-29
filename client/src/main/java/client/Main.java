@@ -60,7 +60,7 @@ public class Main extends Application {
             final var createCard = FXML.load(CreateCardCtrl.class, "CreateCard.fxml");
 
             final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createColumn, createCard, joinServer);
+            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createCard, joinServer);
         }
         catch (IOException e) {
             throw new IOException(e);
