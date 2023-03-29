@@ -53,15 +53,15 @@ public class Main extends Application {
     @Override
     public void start(final Stage primaryStage) throws IOException {
         try {
+            final var joinServer = FXML.load(JoinServerCtrl.class, "JoinServer.fxml");
             final var overview = FXML.load(OverviewCtrl.class, "Overview.fxml");
             final var joinBoard = FXML.load(JoinBoardCtrl.class, "JoinBoard.fxml");
             final var createBoard = FXML.load(CreateBoardCtrl.class, "CreateBoard.fxml");
-            final var createColumn = FXML.load(CreateColumnCtrl.class, "CreateColumn.fxml");
             final var createCard = FXML.load(CreateCardCtrl.class, "CreateCard.fxml");
             final var homePage = FXML.load(HomePageCtrl.class, "HomePage.fxml");
 
             final var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createColumn, createCard, homePage);
+            mainCtrl.initialize(primaryStage, overview, joinBoard, createBoard, createCard, joinServer, homePage);
         }
         catch (IOException e) {
             throw new IOException(e);

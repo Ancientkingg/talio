@@ -15,7 +15,7 @@
     <children>
         <ToolBar prefHeight="23.0" prefWidth="600.0" styleClass="overviewToolbar" stylesheets="@Style.css">
             <items>
-                <Button mnemonicParsing="false" onAction="#showCreateColumn" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" stylesheets="@Style.css" text="Create Column" textFill="WHITE" />
+                <Button mnemonicParsing="false" onAction="#createColumn" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" stylesheets="@Style.css" text="Create Column" textFill="WHITE" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Talio.">
                     <font>

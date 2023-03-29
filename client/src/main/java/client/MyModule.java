@@ -32,6 +32,5 @@ public class MyModule implements Module {
         binder.bind(OverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(JoinBoardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(CreateColumnCtrl.class).in(Scopes.SINGLETON);
     }
 }

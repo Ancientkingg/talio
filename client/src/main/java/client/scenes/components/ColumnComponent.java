@@ -82,6 +82,7 @@ public class ColumnComponent extends GridPane {
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
             }
+
         });
 
         setUpDragAndDrop(overviewCtrl);

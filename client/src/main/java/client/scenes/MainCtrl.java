@@ -11,6 +11,10 @@ public class MainCtrl {
     private Stage primaryStage;
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoardScene;
+
+    private JoinServerCtrl joinServerCtrl;
+
+    private Scene joinServerScene;
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
     private CreateColumnCtrl createColumnCtrl;
@@ -21,6 +25,7 @@ public class MainCtrl {
     private Scene createCardScene;
     private HomePageCtrl homePageCtrl;
     private Scene homePageScene;
+
 
 
     /**
@@ -36,13 +41,17 @@ public class MainCtrl {
      *                     in the overview
      * @param createCard The create card page is an option to add a card to a column
      *                     in the overview
-     * @param homePage The home page is the home page of the application
+     *
+     * @param joinServer The join server page
      */
     public void initialize(final Stage primaryStage, final Pair<OverviewCtrl, Parent> overview, final Pair<JoinBoardCtrl, Parent> joinBoard,
-                           final Pair<CreateBoardCtrl, Parent> createBoard, final Pair<CreateColumnCtrl, Parent> createColumn,
-                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<HomePageCtrl, Parent> homePage)
+                           final Pair<CreateBoardCtrl, Parent> createBoard,
+                           final Pair<CreateCardCtrl, Parent> createCard, final Pair<JoinServerCtrl, Parent> joinServer, final Pair<HomePageCtrl, Parent> homePage)
     {
         this.primaryStage = primaryStage;
+        this.joinServerCtrl = joinServer.getKey();
+        this.joinServerScene = new Scene(joinServer.getValue());
+
 
         this.overviewCtrl = overview.getKey();
         this.overviewScene = new Scene(overview.getValue());
@@ -57,7 +66,7 @@ public class MainCtrl {
         this.homePageCtrl = homePage.getKey();
         this.homePageScene = new Scene(homePage.getValue());
 
-        showHomePage();
+        showJoinServer();
     }
 
     /**
@@ -89,22 +98,21 @@ public class MainCtrl {
     }
 
     /**
+     * Shows joinServer stage in primaryStage
+     */
+    public void showJoinServer() {
+        primaryStage.setTitle("Talio: Join Server");
+        primaryStage.setScene(joinServerScene);
+        primaryStage.show();
+    }
+
+    /**
      * Shows createBoard stage in primaryStage
      */
     public void showCreateBoard() {
         createBoardCtrl.clearFields();
         primaryStage.setTitle("Talio: Create Board");
         primaryStage.setScene(createBoardScene);
-        primaryStage.show();
-    }
-
-    /**
-     * Shows createColumn stage in primaryStage
-     */
-    public void showCreateColumn() {
-        createColumnCtrl.clearFields();
-        primaryStage.setTitle("Talio: Create Column");
-        primaryStage.setScene(createColumnScene);
         primaryStage.show();
     }
 
