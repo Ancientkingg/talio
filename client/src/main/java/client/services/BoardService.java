@@ -82,7 +82,7 @@ public class BoardService {
      * @throws BoardChangeException if the column cannot be added
      */
     public Column addColumnToCurrentBoard(final Column column) throws BoardChangeException {
-        Column serverColumn = serverService.addColumn(this.boardModel.getCurrentBoard(), column);
+        final Column serverColumn = serverService.addColumn(this.boardModel.getCurrentBoard(), column);
         boardModel.addColumn(serverColumn);
         return serverColumn;
     }
@@ -94,7 +94,7 @@ public class BoardService {
      * @throws BoardChangeException if the column cannot be removed
      */
     public Column removeColumnFromCurrentBoard(final Column column) throws BoardChangeException {
-        Column serverColumn = serverService.removeColumn(this.boardModel.getCurrentBoard(), column);
+        final Column serverColumn = serverService.removeColumn(this.boardModel.getCurrentBoard(), column);
         boardModel.removeColumn(serverColumn);
         return serverColumn;
     }
