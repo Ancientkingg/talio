@@ -100,33 +100,43 @@ public class CardController {
      * Update the position of a card in a column according to the new position
      * @param cardDTO Card to be updated and password to board for authentication
      * @param joinKey Key of board to which card belongs
-     * @param columnId Name of column to which card belongs
+     * @param sourceColumnId ID of column to which card belongs
+     * @param destinationColumnId ID of column to which card is to be moved
      * @param newPosition New position of card in column
      *
      * @return The column in which the card was updated
      */
-    @MessageMapping("/reposition/{joinKey}/{columnId}/{newPosition}")
-    public Column repositionCard(final CardDTO cardDTO, @DestinationVariable final String joinKey,
-                                 @DestinationVariable final long columnId, @DestinationVariable final int newPosition)
+    @MessageMapping("/reposition/{joinKey}/{sourceColumnId}/{destinationColumnId}/{newPosition}")
+    public Column repositionCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
+                                 @DestinationVariable final long sourceColumnId, @DestinationVariable final int newPosition,
+                                 @PathVariable @DestinationVariable final long destinationColumnId)
     {
         final String password = cardDTO.password();
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card card = cardDTO.getCard();
-        final Column column = board.getColumnById(columnId);
+        final Column sourceColumn = board.getColumnById(sourceColumnId);
+        final Column destinationColumn = board.getColumnById(destinationColumnId);
 
-        if (newPosition < 0)
+        if (newPosition < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
+        }
 
-        if (newPosition != card.getPriority())
-            column.updateCardPosition(card, newPosition);
+        if (sourceColumnId == destinationColumnId && newPosition != card.getPriority()) {
+            sourceColumn.updateCardPosition(card, newPosition);
+        }
+        else {
+            sourceColumn.getCards().remove(card);
+            card.setPriority(newPosition);
+            destinationColumn.addCard(card);
+        }
 
         boardService.saveBoard(board);
 
-        updateCardRepositioned(joinKey, columnId, card, newPosition);
+        updateCardRepositioned(joinKey, sourceColumnId, card, newPosition);
 
-        return column;
+        return sourceColumn;
     }
 
     /**
@@ -138,7 +148,7 @@ public class CardController {
      * @return The card updated in CardRepository
      */
     @MessageMapping("/edit/{joinKey}/{columnId}")
-    public ResponseEntity<Card> editCard(final CardDTO cardDTO, @DestinationVariable final String joinKey,
+    public ResponseEntity<Card> editCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                          @DestinationVariable final long columnId)
     {
         final String password = cardDTO.getPassword();
