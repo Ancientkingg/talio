@@ -26,9 +26,10 @@ public class ServerService {
 
     /**
      * Initializes client socket in a thread at the given serverIP
+     * @param boardService BoardService that is passed on to SessionHandler through Socket
      */
-    public void startSocket() {
-        final SocketThread socketThread = new SocketThread(this, serverIP);
+    public void startSocket(final BoardService boardService) {
+        final SocketThread socketThread = new SocketThread(this, serverIP, boardService);
         final Thread thread = new Thread(socketThread);
         thread.start();
     }

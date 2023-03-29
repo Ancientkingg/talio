@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -120,8 +119,7 @@ public class ColumnController {
      */
     public void updateColumnAdded(final String joinKey, final Column column) {
         logger.info("Propagating column added for: " + joinKey);
-//        messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/add", column);
-        messagingTemplate.convertAndSend("/topic/test", column);
+        messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/add", column);
     }
 
     /**
