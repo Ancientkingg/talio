@@ -9,16 +9,21 @@ import commons.DTOs.CardDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import lombok.Getter;
+import jakarta.ws.rs.core.GenericType;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.messaging.simp.stomp.StompSession;
 
 import java.net.URI;
+import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerService {
 
+    @Getter
     private URI serverIP;
 
     private Logger logger = LogManager.getLogger(ServerService.class);
@@ -26,14 +31,23 @@ public class ServerService {
     private SessionHandler sessionHandler;
     private StompSession session;
 
+    private SocketThread socketThread;
+
     /**
      * Initializes client socket in a thread at the given serverIP
      * @param boardService BoardService that is passed on to SessionHandler through Socket
      */
     public void startSocket(final BoardService boardService) {
-        final SocketThread socketThread = new SocketThread(this, serverIP, boardService);
+        this.socketThread = new SocketThread(this, serverIP, boardService);
         final Thread thread = new Thread(socketThread);
         thread.start();
+    }
+
+    /**
+     * Stops the client socket
+     */
+    public void stopSocket() {
+        this.socketThread.stop();
     }
 
     /**
@@ -73,6 +87,23 @@ public class ServerService {
             logger.info("Board request sent to server: " + joinKey);
             sessionHandler.subscribeToBoard(joinKey);
             return board;
+        }
+    }
+
+    /**
+     * Gets multiple boards by join-keys
+     * @param joinKeys the join-keys used to identify the boards
+     * @return the boards that were retrieved
+     */
+    public List<Board> getAllBoards(final List<String> joinKeys) {
+        try (Client client = ClientBuilder.newClient()) {
+            final List<Board> boards = client.target(serverIP)
+                    .path("/boards")
+                    .path("/getAll")
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(joinKeys, APPLICATION_JSON), new GenericType<>() { });
+            logger.info("Board request sent to server: " + joinKeys);
+            return boards;
         }
     }
 

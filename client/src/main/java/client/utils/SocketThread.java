@@ -17,13 +17,19 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SocketThread implements  Runnable {
 
     private String server;
 
+    private final AtomicBoolean runningFlag;
+
+
     @Getter
     private SessionHandler sessionHandler;
+
+    private WebSocketStompClient stompClient;
 
     /**
      * Sets up socket parameters to connect to server
@@ -34,6 +40,15 @@ public class SocketThread implements  Runnable {
     public SocketThread(final ServerService serverService, final URI serverIP, final BoardService boardService) {
         sessionHandler = new SessionHandler(serverService, boardService);
         server = "ws://" + serverIP.getHost() + ":" + serverIP.getPort() + "/greeting";
+        runningFlag = new AtomicBoolean(false);
+    }
+
+    /**
+     * Stops the websocket client
+     */
+    public void stop() {
+        runningFlag.set(false);
+        this.stompClient.stop();
     }
 
     /**
@@ -43,7 +58,7 @@ public class SocketThread implements  Runnable {
     @Override public void run() {
 
         final WebSocketClient webSocketClient = new StandardWebSocketClient();
-        final WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
+        this.stompClient = new WebSocketStompClient(webSocketClient);
 
         final List<MessageConverter> converters = new ArrayList<MessageConverter>();
         converters.add(new MappingJackson2MessageConverter()); // used to handle json messages
@@ -53,6 +68,6 @@ public class SocketThread implements  Runnable {
 
         stompClient.connect(server, sessionHandler);
 
-        while (true) { }
+        while (runningFlag.get()) { }
     }
 }
