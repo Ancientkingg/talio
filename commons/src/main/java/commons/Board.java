@@ -253,7 +253,7 @@ public class Board {
      * @param tag the tag to be added to the board
      * @return success/failure
      */
-    public boolean createTag(final Tag tag) {
+    public boolean addTag(final Tag tag) {
         return tag != null && tags.add(tag);
     }
 
@@ -272,5 +272,42 @@ public class Board {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Updates the tag in the board.
+     * @param tag the tag to be updated
+     */
+    public void updateTag(final Tag tag) {
+        for (final Tag t : tags)
+            if (t.getTitle().equals(tag.getTitle())) {
+                tags.remove(t);
+                tags.add(t);
+                break;
+            }
+    }
+
+    /**
+     * Adds a tag to a card
+     * @param cardId The id of the card to add the tag to
+     * @param tag The tag to add to the card
+     */
+    public void addTagToCard(final long cardId, final Tag tag) {
+        final Card card = this.getCard(cardId);
+        if (card != null) {
+            card.addTag(tag);
+        }
+    }
+
+    /**
+     * Removes a tag from a card
+     * @param cardId The id of the card to remove the tag from
+     * @param tag The tag to remove from the card
+     */
+    public void removeTagFromCard(final long cardId, final Tag tag) {
+        final Card card = this.getCard(cardId);
+        if (card != null) {
+            card.removeTag(tag);
+        }
     }
 }
