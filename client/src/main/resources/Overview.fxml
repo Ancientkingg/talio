@@ -1,34 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="694.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OverviewCtrl">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OverviewCtrl">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="395.33331298828125" minHeight="-Infinity" prefHeight="34.66665267944336" valignment="TOP" vgrow="NEVER" />
+        <RowConstraints maxHeight="600.0" minHeight="-Infinity" prefHeight="64.0" valignment="TOP" vgrow="NEVER" />
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="493.33334732055664" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-        <ToolBar prefHeight="23.0" prefWidth="600.0" styleClass="overviewToolbar" stylesheets="@Style.css">
-            <items>
-                <Button mnemonicParsing="false" onAction="#createColumn" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" stylesheets="@Style.css" text="Create Column" textFill="WHITE" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Talio.">
-                    <font>
-                        <Font name="System Bold" size="20.0" />
-                    </font>
-                </Text>
-                <Region HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" styleClass="toolbarButton" text="Settings" textAlignment="RIGHT" textFill="WHITE" />
-            </items>
-        </ToolBar>
+      <GridPane styleClass="toolbar" stylesheets="@Style.css">
+         <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="220.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="220.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="600.0" minHeight="-Infinity" prefHeight="64.0" valignment="CENTER" vgrow="NEVER" />
+         </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Cabin; -fx-fill: #f3f3f3;" text="talio." textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <Button fx:id="settingsButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="48.0" prefWidth="48.0" styleClass="settings-button" stylesheets="@Style.css" GridPane.columnIndex="2">
+               <graphic>
+                  <SVGPath content="m388 976-20-126q-19-7-40-19t-37-25l-118 54-93-164 108-79q-2-9-2.5-20.5T185 576q0-9 .5-20.5T188 535L80 456l93-164 118 54q16-13 37-25t40-18l20-127h184l20 126q19 7 40.5 18.5T669 346l118-54 93 164-108 77q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l108 78-93 164-118-54q-16 13-36.5 25.5T592 850l-20 126H388Zm92-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z" scaleX="0.045" scaleY="0.045" scaleZ="0.0" styleClass="settings-icon" />
+               </graphic>
+               <GridPane.margin>
+                  <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="tagsButton" alignment="BOTTOM_CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#onTagsButtonClick" styleClass="tags-button" stylesheets="@Style.css" text="TAGS" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="4.0" left="13.0" right="13.0" top="6.0" />
+               </padding>
+            </Button>
+            <Button fx:id="settingsButton1" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="48.0" prefWidth="48.0" styleClass="settings-button" stylesheets="@Style.css">
+               <graphic>
+                  <SVGPath content="M400 976 0 576l400-400 56 57-343 343 343 343-56 57Z" scaleX="0.045" scaleY="0.045" scaleZ="0.0" styleClass="settings-icon" />
+               </graphic>
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="edge-to-edge" vbarPolicy="NEVER" GridPane.rowIndex="1">
             <content>
-                <HBox fx:id="columnBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                <HBox fx:id="columnBox" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #ebebeb;">
+               <children>
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createColumn" prefHeight="35.0" prefWidth="230.0" styleClass="add-column-button" stylesheets="@Style.css" HBox.hgrow="NEVER">
+                     <graphic>
+                        <SVGPath content="M453 776h60V610h167v-60H513V376h-60v174H280v60h173v166Zm27.266 200q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80 658.319 80 575.5q0-82.819 31.5-155.659Q143 347 197.5 293t127.341-85.5Q397.681 176 480.5 176q82.819 0 155.659 31.5Q709 239 763 293t85.5 127Q880 493 880 575.734q0 82.734-31.5 155.5T763 858.316q-54 54.316-127 86Q563 976 480.266 976Zm.234-60Q622 916 721 816.5t99-241Q820 434 721.188 335 622.375 236 480 236q-141 0-240.5 98.812Q140 433.625 140 576q0 141 99.5 240.5t241 99.5Zm-.5-340Z" scaleX="0.02" scaleY="0.02" styleClass="add-column-button-icon" />
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="37.0" right="37.0" top="26.0" />
+               </padding></HBox>
             </content>
         </ScrollPane>
     </children>

@@ -9,8 +9,13 @@ Talio text color: #F3F3F3
  */
 
 @font-face {
+    font-family: 'Cabin-Bold';
+    src: url('fonts/Cabin-Bold.ttf');
+}
+
+@font-face {
     font-family: 'Cabin';
-    src: url('fonts/Cabin-Regular.ttf');
+    src: url('fonts/Cabin-VariableFont.ttf');
 }
 
 /*
@@ -19,10 +24,10 @@ Column
 
 
 .column {
-    -fx-background-color: transparent;
-    -fx-border-width: 0 1 0 0;
-    -fx-border-insets: 5;
-    -fx-border-color: #727272;
+    -fx-background-color: #f2f2f2;
+    -fx-effect: dropshadow(gaussian, rgba(30, 30, 30, 0.3), 10, 0, 0, 0);
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
 }
 
 
@@ -30,6 +35,7 @@ Column
 .scroll-pane {
     -fx-background-insets: 0;
     -fx-padding: 0;
+    -fx-background-color: blue;
 }
 
 .scroll-pane:focused {
@@ -41,9 +47,8 @@ Column
 }
 .card-heading {
     -fx-background-color: rgba(0, 0, 0, 0);
-    -fx-border-style: hidden hidden solid hidden;
-    -fx-border-width: 1;
-    -fx-border-color: #a2a2a2;
+    -fx-font-family: Cabin;
+    -fx-font-size: 17px;
 }
 /*
 Card
@@ -79,7 +84,7 @@ Card
 Overview
  */
 
-.overviewToolbar {
+.toolbar {
     -fx-background-color: #181818;
     -fx-border-radius: 0 0 7px 7px;
     -fx-background-radius: 0 0 7px 7px;
@@ -89,11 +94,32 @@ Overview
     -fx-background-color: transparent;
 }
 
+.add-column-button {
+    -fx-background-color: #f2f2f2;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(30, 30, 30, 0.3), 10, 0, 0, 0);
+}
+
+.add-column-button-icon {
+    -fx-fill: #7c7c7c;
+    -fx-font-smoothing-type: gray;
+    -fx-smooth: true;
+}
+
+.add-column-button:hover {
+    -fx-background-color: #c3c3c3;
+}
+
+.add-column-button:hover .add-column-button-icon {
+    -fx-fill: #f2f2f2;
+}
 
 .add-card-button {
     -fx-text-fill: #6b778c;
-    -fx-background-color: rgba(0, 0, 0, 0);
-    -fx-border-radius: 5px;
+    -fx-background-color: red;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
 }
 
 .add-card-button:hover {
@@ -114,15 +140,30 @@ Overview
 
 .menuButton {
     -fx-background-color: #181818;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-padding: 7px;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+    -fx-font-family: Cabin;
+    -fx-font-size: 23;
+    -fx-text-fill: #f8f8f8;
+    -fx-font-smoothing-type: gray;
+}
+
+.menuButton:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-text-fill: #181818;
+    -fx-border-width: 1px;
+    -fx-border-color: #181818;
 }
 
 .serverText-field {
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-padding: 10px;
+    -fx-border-radius: 24px;
+    -fx-background-radius: 24px;
+    -fx-padding: 5px 5px 5px 25px;
+    -fx-font-family: Cabin;
+    -fx-border-width: 1px;
+    -fx-border-color: #181818;
+    -fx-font-smoothing-type: gray;
+    -fx-font-size: 22px;
 }
 
 .background {
@@ -183,6 +224,23 @@ Overview
 
 .settings-icon {
     -fx-fill: #f8f8f8;
+}
+
+.tags-button {
+    -fx-background-color: #181818;
+    -fx-text-fill: #f8f8f8;
+    -fx-font-family: Cabin-Bold;
+    -fx-font-size: 18;
+    -fx-font-weight: bolder;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #f8f8f8;
+    -fx-border-width: 1;
+}
+
+.tags-button:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-text-fill: #181818;
 }
 
 .join-board-button {

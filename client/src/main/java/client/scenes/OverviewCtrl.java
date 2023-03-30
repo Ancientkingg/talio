@@ -46,13 +46,13 @@ public class OverviewCtrl {
      * and displaying the corresponding titles. Will also refresh cards in the future.
      */
     public void refreshColumn() {
-        columnBox.getChildren().clear();
+        columnBox.getChildren().stream().filter(c -> !(c instanceof ColumnComponent));
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
             final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
 
             columnComponent.setHeading(col.getHeading());
 
-            columnBox.getChildren().add(columnComponent);
+            columnBox.getChildren().add(columnBox.getChildren().size()-1,columnComponent);
         }
     }
 
@@ -93,8 +93,31 @@ public class OverviewCtrl {
     public void createColumn() throws BoardChangeException {
         final Column column = new Column(getFunColumnName(), highestIndex++, new TreeSet<>());
         boardService.addColumnToCurrentBoard(column);
-        mainCtrl.showOverview();
         mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Handles the tags button click
+     */
+    @FXML
+    public void onTagsButtonClick() {
+
+    }
+
+    /**
+     * Handles the back button click
+     */
+    @FXML
+    public void onBackButtonClick() {
+
+    }
+
+    /**
+     * Handles the settings button click
+     */
+    @FXML
+    public void onSettingsButtonClick() {
+
     }
 
     /**
