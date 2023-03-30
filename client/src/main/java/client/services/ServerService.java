@@ -226,11 +226,11 @@ public class ServerService {
     }
 
     public void renameColumn(final Board board, final Column column) {
-        session.send("/app/cards/edit/" +
+        session.send("/app/columns/rename/" +
                 board.getJoinKey() + "/" +
                 column.getId() + "/" +
-                column.getId(),
-            new CardDTO(card, board.getPassword()));
-        logger.info("Edited card sent to server");
+                column.getHeading(),
+                board.getPassword());
+        logger.info("Renamed column sent to server");
     }
 }

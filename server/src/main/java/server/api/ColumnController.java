@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Board;
 import commons.Column;
+import commons.DTOs.ColumnDTO;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +17,6 @@ import server.services.BoardService;
 import java.util.TreeSet;
 
 @Controller
-@RequestMapping("/columns")
 public class ColumnController {
 
     private final BoardService boardService;
@@ -44,7 +44,7 @@ public class ColumnController {
      * @param index Index of column to be added
      * @return The Column added to the ColumnRepository
      */
-    @PostMapping("/create/{joinKey}/{columnHeading}")
+    @PostMapping("/columns/create/{joinKey}/{columnHeading}")
     public ResponseEntity<Column> addColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
                                             @RequestBody(required = false) final String password, @RequestParam final int index)
     {
@@ -71,7 +71,7 @@ public class ColumnController {
      * @param password Password to board
      * @return The Column removed from the ColumnRepository
      */
-    @PostMapping("/remove/{joinKey}/{columnId}")
+    @PostMapping("/columns/remove/{joinKey}/{columnId}")
     public ResponseEntity<Column> removeColumn(@PathVariable final String joinKey, @PathVariable final long columnId,
                                                @RequestBody(required = false) final String password)
     {
@@ -98,9 +98,9 @@ public class ColumnController {
      * @param newHeading String for new name of column
      * @return Column the renamed column
      */
-    @MessageMapping("/rename/{joinKey}/{columnId}/{oldHeading}/{newHeading}")
+    @MessageMapping("/columns/rename/{joinKey}/{columnId}/{newHeading}")
     public Column renameColumn(final String password, @DestinationVariable final String joinKey, @DestinationVariable final long columnId,
-                               @DestinationVariable final String oldHeading, @DestinationVariable final String newHeading)
+                               @DestinationVariable final String newHeading)
     {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final Column toBeRenamed = board.getColumnById(columnId);
@@ -108,7 +108,7 @@ public class ColumnController {
         toBeRenamed.setHeading(newHeading);
         boardService.saveBoard(board);
 
-        updateColumnRenamed(joinKey, oldHeading, newHeading);
+        updateColumnRenamed(joinKey, columnId, newHeading);
 
         return toBeRenamed;
     }
@@ -126,12 +126,12 @@ public class ColumnController {
     /**
      * Sends the old and new heading of the column to all subscribed clients
      * @param joinKey String for board
-     * @param oldHeading String for old name of column
+     * @param columnId Long ID of column
      * @param newHeading  String for new name of column
      */
-    public void updateColumnRenamed(final String joinKey, final String oldHeading, final String newHeading) {
+    public void updateColumnRenamed(final String joinKey, final Long columnId, final String newHeading) {
         logger.info("Propagating column renamed for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/rename", new Pair<>(oldHeading, newHeading));
+        messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/rename", new ColumnDTO(columnId, newHeading));
     }
 
     /**

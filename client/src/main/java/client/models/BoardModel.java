@@ -146,7 +146,7 @@ public class BoardModel {
         currentBoard.setTitle(newName);
     }
 
-    public void renameColumn(final Column column) {
+    public void renameColumn(final Column column, final String newName) {
         final Column oldColumn = currentBoard.getColumn(column.getIndex());
         if (oldColumn != null) oldColumn.setHeading(column.getHeading());
     }

@@ -7,6 +7,7 @@ import com.fasterxml.classmate.GenericType;
 import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
+import commons.DTOs.ColumnDTO;
 import javafx.application.Platform;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -168,15 +169,18 @@ public class SessionHandler extends StompSessionHandlerAdapter {
             });
         subscriptions.add(columnAddedSub);
 
-//        final Subscription columnRenamedSub = session.subscribe(
-//            "/topic/columns/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, String>(null, null)).getClass(); }
-//
-//                public void handleFrame(final StompHeaders headers, final Object payload) {
-//                    logger.info("Column renamed: " + payload.toString());
-//                }
-//            });
-//        subscriptions.add(columnRenamedSub);
+        final Subscription columnRenamedSub = session.subscribe(
+            "/topic/columns/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return ColumnDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    final ColumnDTO columnDTO = (ColumnDTO) payload;
+                    final Column column = boardService.getCurrentBoard().getColumnById(columnDTO.getColumnId());
+                    boardService.updateRenameColumn(column, columnDTO.getNewHeading());
+                    logger.info("Column renamed: " + columnDTO.getNewHeading());
+                }
+            });
+        subscriptions.add(columnRenamedSub);
 
         final Subscription columnRemovedSub = session.subscribe(
             "/topic/columns/" + joinKey + "/remove", new StompSessionHandlerAdapter() {

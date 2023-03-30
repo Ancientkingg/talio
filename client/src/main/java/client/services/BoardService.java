@@ -208,13 +208,13 @@ public class BoardService {
         boardModel.updateColumn(column);
     }
 
-    public void renameColumn(final Column column) {
-        boardModel.renameColumn(column);
+    public void renameColumn(final Column column, final String newName) {
+        boardModel.renameColumn(column, newName);
         serverService.renameColumn(getCurrentBoard(), column);
     }
 
-    public void updateRenameColumn(final Column column) {
-        boardModel.renameColumn(column);
+    public void updateRenameColumn(final Column column, final String newName) {
+        boardModel.renameColumn(column, newName);
     }
 
     /**
