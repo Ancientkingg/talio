@@ -29,6 +29,8 @@ public class SocketThread implements  Runnable {
     @Getter
     private SessionHandler sessionHandler;
 
+    private WebSocketStompClient stompClient;
+
     /**
      * Sets up socket parameters to connect to server
      * @param serverService ServerService is passed on to the sessionHandler
@@ -42,10 +44,11 @@ public class SocketThread implements  Runnable {
     }
 
     /**
-     * Stops the thread
+     * Stops the websocket client
      */
     public void stop() {
         runningFlag.set(false);
+        this.stompClient.stop();
     }
 
     /**
@@ -55,7 +58,7 @@ public class SocketThread implements  Runnable {
     @Override public void run() {
 
         final WebSocketClient webSocketClient = new StandardWebSocketClient();
-        final WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
+        this.stompClient = new WebSocketStompClient(webSocketClient);
 
         final List<MessageConverter> converters = new ArrayList<MessageConverter>();
         converters.add(new MappingJackson2MessageConverter()); // used to handle json messages
@@ -65,6 +68,6 @@ public class SocketThread implements  Runnable {
 
         stompClient.connect(server, sessionHandler);
 
-        while (true) { }
+        while (runningFlag.get()) { }
     }
 }
