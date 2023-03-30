@@ -100,13 +100,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
                         final CardDTO cardDTO = (CardDTO) payload;
-                        try {
-                            boardService.updateRepositionCard(cardDTO.getCard().getId(),
-                                cardDTO.getColumnFromId(),
-                                cardDTO.getColumnToId(), cardDTO.getNewPosition());
-                            logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
-                        }
-                        catch (BoardChangeException e) { logger.info("Couldn't reposition card : " + cardDTO.getCard().getTitle()); }
+//                        try {
+                        boardService.updateRepositionCard(cardDTO.getCard().getId(),
+                            cardDTO.getColumnFromId(),
+                            cardDTO.getColumnToId(), cardDTO.getNewPosition());
+                        logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
+//                        }
+//                        catch (BoardChangeException e) { logger.info("Couldn't reposition card : " + cardDTO.getCard().getTitle()); }
                     }); }
             });
         subscriptions.add(cardRepositionedSub);
@@ -118,11 +118,11 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     final CardDTO cardDTO = (CardDTO) payload;
                     final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
-                    try {
-                        boardService.updateEditCard(cardDTO.getCard(), column);
-                        logger.info("Card edited: " + cardDTO.getCard().getTitle());
-                    }
-                    catch (BoardChangeException e) { logger.info("Couldn't edit card : " + cardDTO.getCard().getTitle()); }
+//                    try {
+                    boardService.updateEditCard(cardDTO.getCard(), column);
+                    logger.info("Card edited: " + cardDTO.getCard().getTitle());
+//                    }
+//                    catch (BoardChangeException e) { logger.info("Couldn't edit card : " + cardDTO.getCard().getTitle()); }
                 }
             });
         subscriptions.add(cardEditedSub);
