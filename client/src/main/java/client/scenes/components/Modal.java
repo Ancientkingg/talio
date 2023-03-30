@@ -15,6 +15,13 @@ public class Modal extends GridPane {
     private final Scene currentScene;
 
 
+    /**
+     * Default constructor for modal
+     * @param boardService boardService instance
+     * @param title title of modal
+     * @param description description of modal
+     * @param currentScene scene behind modal
+     */
     public Modal(final BoardService boardService, final String title, final String description, final Scene currentScene) {
         this.boardService = boardService;
         this.title = title;

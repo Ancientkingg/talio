@@ -23,6 +23,13 @@ public class InfoModal extends Modal {
     @FXML
     private Button okButton;
 
+    /**
+     * Constructor for InfoModal
+     * @param boardService boardService instance
+     * @param title title of infomodal
+     * @param description description of infomodal
+     * @param currentScene current scene (displayed under modal)
+     */
     public InfoModal(final BoardService boardService, final String title, final String description, final Scene currentScene) {
         super(boardService, title, description, currentScene);
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/InfoModal.fxml"));

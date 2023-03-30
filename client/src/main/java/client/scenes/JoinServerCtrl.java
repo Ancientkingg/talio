@@ -1,14 +1,10 @@
 package client.scenes;
 
-import client.scenes.components.InfoModal;
 import client.services.BoardService;
-import jakarta.ws.rs.ProcessingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
-import java.nio.channels.UnresolvedAddressException;
 
 public class JoinServerCtrl {
 
