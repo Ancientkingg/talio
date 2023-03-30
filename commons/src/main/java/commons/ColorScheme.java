@@ -12,10 +12,10 @@ import java.util.Objects;
 public class ColorScheme {
 
     @Id @Getter @Setter
-    Color textColor;
+    private Color textColor;
 
     @Id @Getter @Setter
-    Color backgroundColor;
+    private Color backgroundColor;
 
     /**
      * Constructor for ColorScheme
