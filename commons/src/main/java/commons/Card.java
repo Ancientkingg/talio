@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +25,10 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private String description;
 
+    @OneToMany
+    @Getter @Setter
+    private List<SubTask> subtasks;
+
     @ManyToMany
     @Getter @Setter
     private Set<Tag> tags;
@@ -40,12 +45,14 @@ public class Card implements Comparable<Card> {
      * @param title Card title
      * @param priority Card priority
      * @param description Card description
+     * @param subTasks List of subtasks for the card
      * @param tags Tags assigned to the card
      */
-    public Card(final String title, final int priority, final String description, final Set<Tag> tags) {
+    public Card(final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
         this.title = title;
         this.priority = priority;
         this.description = description;
+        this.subtasks = subTasks;
         this.tags = tags == null ? new HashSet<>(0) : tags;
     }
 
@@ -55,10 +62,11 @@ public class Card implements Comparable<Card> {
      * @param title Card title
      * @param priority Card priority
      * @param description Card description
+     * @param subTasks List of subtasks for the card
      * @param tags Tags assigned to the card
      */
-    public Card(final long id, final String title, final int priority, final String description, final Set<Tag> tags) {
-        this(title, priority, description, tags);
+    public Card(final long id, final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+        this(title, priority, description, subTasks, tags);
         this.id = id;
     }
 
@@ -83,6 +91,26 @@ public class Card implements Comparable<Card> {
     }
 
     /**
+     * Add one task to the card
+     * @param subtask sub-task to be added
+     *
+     * @return success/failure
+     */
+    public boolean addSubTask(final SubTask subtask) {
+        return subtasks.add(subtask);
+    }
+
+    /**
+     * Remove one sub-task from the card if the sub-task is a part of the card
+     * @param subtask tag to be removed
+     *
+     * @return success/failure
+     */
+    public boolean removeSubTask(final SubTask subtask) {
+        return subtasks.remove(subtask);
+    }
+
+    /**
      * Checks for equality of two card objects
      * @param o Other card
      *
@@ -94,7 +122,7 @@ public class Card implements Comparable<Card> {
         if (o == null || getClass() != o.getClass()) return false;
         final Card card = (Card) o;
         return id == card.id && title.equals(card.title) && priority == card.priority
-                && description.equals(card.description) && tags.equals(card.tags);
+                && description.equals(card.description) && subtasks.equals(card.subtasks) && tags.equals(card.tags);
     }
 
     /**
@@ -127,6 +155,7 @@ public class Card implements Comparable<Card> {
         this.title = card.title;
         this.priority = card.priority;
         this.description = card.description;
+        this.subtasks = card.subtasks;
         this.tags = card.tags;
     }
 }

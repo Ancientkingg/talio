@@ -3,20 +3,30 @@ package commons;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class SubTask {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private long id;
 
     @Getter @Setter
     private String description;
 
     @Getter @Setter
-    private boolean done;
+    private boolean isDone;
 
     /**
-     * equals method for SubTask
-     * @param o object to compare this with
-     * @return o == this ?
+     * equals method for subtask
+     * @param o SubTask to compare this with
+     * @return this == o ?
      */
     @Override
     public boolean equals(final Object o) {
@@ -25,18 +35,21 @@ public class SubTask {
 
         final SubTask subTask = (SubTask) o;
 
-        if (done != subTask.done) return false;
+        if (id != subTask.id) return false;
+        if (isDone != subTask.isDone) return false;
         return Objects.equals(description, subTask.description);
     }
 
+
     /**
-     * hash code for SubTask
+     * hashcode for SubTask
      * @return hashcode
      */
     @Override
     public int hashCode() {
-        int result = description != null ? description.hashCode() : 0;
-        result = 31 * result + (done ? 1 : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (isDone ? 1 : 0);
         return result;
     }
 }
