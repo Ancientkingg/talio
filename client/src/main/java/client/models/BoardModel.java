@@ -146,7 +146,8 @@ public class BoardModel {
         currentBoard.setTitle(newName);
     }
 
-    public void editCard(final Card card) {
-
+    public void renameColumn(final Column column) {
+        final Column oldColumn = currentBoard.getColumn(column.getIndex());
+        if (oldColumn != null) oldColumn.setHeading(column.getHeading());
     }
 }

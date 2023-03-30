@@ -208,6 +208,15 @@ public class BoardService {
         boardModel.updateColumn(column);
     }
 
+    public void renameColumn(final Column column) {
+        boardModel.renameColumn(column);
+        serverService.renameColumn(getCurrentBoard(), column);
+    }
+
+    public void updateRenameColumn(final Column column) {
+        boardModel.renameColumn(column);
+    }
+
     /**
      * Rename board function for local changes
      * @param newName String new board name
@@ -217,10 +226,6 @@ public class BoardService {
         // needs to call server service to forward change to server
     }
 
-    public void editCard(final Card card) {
-        boardModel.editCard(card);
-    }
-
     /**
      * Rename board function for server changes
      * @param newName String new board name
@@ -228,5 +233,14 @@ public class BoardService {
     public void updateRenameBoard(final String newName) {
         boardModel.renameBoard(newName);
         mainCtrl.refreshOverview();
+    }
+
+    public void editCard(final Card card, final Column column) {
+//        boardModel.editCard(card, column);
+        serverService.editCard(getCurrentBoard(), card, column);
+    }
+
+    public void updateEditCard(final Card card, final Column column) {
+//        boardModel.editCard(card, column);
     }
 }

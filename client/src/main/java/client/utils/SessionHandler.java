@@ -109,15 +109,19 @@ public class SessionHandler extends StompSessionHandlerAdapter {
             });
         subscriptions.add(cardRepositionedSub);
 
-//        final Subscription cardEditedSub = session.subscribe(
-//            "/topic/cards/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
-//
-//                public void handleFrame(final StompHeaders headers, final Object payload) {
-//                    logger.info("Card edited: " + payload.toString());
-//                }
-//            });
-//        subscriptions.add(cardEditedSub);
+        final Subscription cardEditedSub = session.subscribe(
+            "/topic/cards/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    final CardDTO cardDTO = (CardDTO) payload;
+                    final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                    boardService.updateEditCard(cardDTO.getCard(), column);
+                    logger.info("Card edited: " + cardDTO.getCard().getTitle());
+                }
+            });
+        subscriptions.add(cardEditedSub);
+
         final Subscription cardAddedSub = session.subscribe(
             "/topic/cards/" + joinKey + "/add", new StompSessionHandlerAdapter() {
                 public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }

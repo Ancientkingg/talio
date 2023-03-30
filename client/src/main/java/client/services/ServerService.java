@@ -195,17 +195,6 @@ public class ServerService {
             newPosition,
             new CardDTO(card, board.getPassword()));
         logger.info("Repositioned card sent to server");
-//        try (Client client = ClientBuilder.newClient()) {
-//            return client.target(serverIP)
-//                    .path("/cards")
-//                    .path("/updatePosition")
-//                    .path(board.getJoinKey())
-//                    .path(String.valueOf(column.getId()))
-//                    .path(String.valueOf(destinationColumn.getId()))
-//                    .path(String.valueOf(newPosition))
-//                    .request(APPLICATION_JSON)
-//                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
-//        }
     }
 
     /**
@@ -225,5 +214,23 @@ public class ServerService {
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
         }
+    }
+
+    public void editCard(final Board board, final Card card, final Column column) {
+        session.send("/app/cards/edit/" +
+            board.getJoinKey() + "/" +
+            column.getId() + "/" +
+            column.getId(),
+            new CardDTO(card, board.getPassword()));
+        logger.info("Edited card sent to server");
+    }
+
+    public void renameColumn(final Board board, final Column column) {
+        session.send("/app/cards/edit/" +
+                board.getJoinKey() + "/" +
+                column.getId() + "/" +
+                column.getId(),
+            new CardDTO(card, board.getPassword()));
+        logger.info("Edited card sent to server");
     }
 }
