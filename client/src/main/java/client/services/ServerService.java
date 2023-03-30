@@ -9,29 +9,44 @@ import commons.DTOs.CardDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import lombok.Getter;
+import jakarta.ws.rs.core.GenericType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.messaging.simp.stomp.StompSession;
 
 import java.net.URI;
+import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerService {
 
+    @Getter
     private URI serverIP;
 
     private Logger logger = LogManager.getLogger(ServerService.class);
 
     private SessionHandler sessionHandler;
+    private StompSession session;
+
+    private SocketThread socketThread;
 
     /**
      * Initializes client socket in a thread at the given serverIP
      * @param boardService BoardService that is passed on to SessionHandler through Socket
      */
     public void startSocket(final BoardService boardService) {
-        final SocketThread socketThread = new SocketThread(this, serverIP, boardService);
+        this.socketThread = new SocketThread(this, serverIP, boardService);
         final Thread thread = new Thread(socketThread);
         thread.start();
+    }
+
+    /**
+     * Stops the client socket
+     */
+    public void stopSocket() {
+        this.socketThread.stop();
     }
 
     /**
@@ -42,6 +57,8 @@ public class ServerService {
     public void setHandler(final SessionHandler sessionHandler) {
         this.sessionHandler = sessionHandler;
     }
+
+    public void setSession(final StompSession session) { this.session = session; }
 
     /**
      * Sets the IP of the server to interact with
@@ -69,6 +86,23 @@ public class ServerService {
             logger.info("Board request sent to server: " + joinKey);
             sessionHandler.subscribeToBoard(joinKey);
             return board;
+        }
+    }
+
+    /**
+     * Gets multiple boards by join-keys
+     * @param joinKeys the join-keys used to identify the boards
+     * @return the boards that were retrieved
+     */
+    public List<Board> getAllBoards(final List<String> joinKeys) {
+        try (Client client = ClientBuilder.newClient()) {
+            final List<Board> boards = client.target(serverIP)
+                    .path("/boards")
+                    .path("/getAll")
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(joinKeys, APPLICATION_JSON), new GenericType<>() { });
+            logger.info("Board request sent to server: " + joinKeys);
+            return boards;
         }
     }
 
@@ -181,39 +215,44 @@ public class ServerService {
      * @param destinationColumn column to which card is being moved
      * @param card              card to be moved
      * @param newPosition       new index of the card
-     * @return Card being moved ?? the method in the server returns the column containing the card which has been updated
      * but compiler was complaining when I made return type of this method Column.
      */
-    public Card updatePosition(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
-        try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
-                    .path("/cards")
-                    .path("/updatePosition")
-                    .path(board.getJoinKey())
-                    .path(String.valueOf(column.getId()))
-                    .path(String.valueOf(destinationColumn.getId()))
-                    .path(String.valueOf(newPosition))
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
-        }
+    public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
+        session.send("/app/cards/reposition/" +
+            board.getJoinKey() + "/" +
+            column.getId() + "/" +
+            destinationColumn.getId() + "/" +
+            newPosition,
+            new CardDTO(card, board.getPassword()));
+        logger.info("Repositioned card sent to server");
     }
 
     /**
-     * Updates the contents of a card by posting a request to editCard endpoint on server
-     * @param board current board containing the card
-     * @param column column containing the card
-     * @param card card to be updated
-     * @return Updated card
-     * */
-    public Card update(final Board board, final Column column, final Card card) {
-        try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
-                    .path("/cards")
-                    .path("/update")
-                    .path(board.getJoinKey())
-                    .path(String.valueOf(column.getId()))
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
-        }
+     * Edits the contents of a card by posting a request to editCard endpoint on server
+     * @param board Board for joinKey
+     * @param card Card to edit
+     * @param column Column card is in
+     */
+    public void editCard(final Board board, final Card card, final Column column) {
+        session.send("/app/cards/edit/" +
+            board.getJoinKey() + "/" +
+            column.getId() + "/" +
+            column.getId(),
+            new CardDTO(card, board.getPassword()));
+        logger.info("Edited card sent to server");
+    }
+
+    /**
+     * Renames column by posting a request to renameColumn endpoint on server
+     * @param board Board for join key
+     * @param column Column to rename
+     */
+    public void renameColumn(final Board board, final Column column) {
+        session.send("/app/columns/rename/" +
+                board.getJoinKey() + "/" +
+                column.getId() + "/" +
+                column.getHeading(),
+                board.getPassword());
+        logger.info("Renamed column sent to server");
     }
 }

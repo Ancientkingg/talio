@@ -3,10 +3,10 @@ package client.utils;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import client.services.ServerService;
-import commons.Card;
 import commons.Column;
+import commons.DTOs.CardDTO;
+import commons.DTOs.ColumnDTO;
 import javafx.application.Platform;
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.lang.Nullable;
@@ -55,6 +55,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     public void afterConnected(@Nullable final StompSession session, @Nullable final StompHeaders headers) {
         this.session = session;
         serverService.setHandler(this);
+        serverService.setSession(session);
     }
 
     /**
@@ -71,7 +72,8 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
         subscribeToColumnUpdates(joinKey);
 
-        subscribeToCardUpdates(joinKey);
+        subscribeToCardChangeUpdates(joinKey);
+        subscribeToCardExistenceUpdates(joinKey);
 
         logger.info("Subscribed to board: " + joinKey);
     }
@@ -90,35 +92,49 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscriptions.add(boardRenameSub);
     }
 
-    private void subscribeToCardUpdates(final String joinKey) {
-//        final Subscription cardRepositionedSub = session.subscribe(
-//            "/topic/cards" + joinKey + "/reposition", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return (new ImmutableTriple<String, Integer, Card>(null, null, null).getClass()); }
-//
-//                public void handleFrame(final StompHeaders headers, final Object payload) { Platform.runLater( () -> {
-//                    logger.info("Card repositioned: " + payload.toString());
-//                }); }
-//            });
-//        subscriptions.add(cardRepositionedSub);
-
-//        final Subscription cardEditedSub = session.subscribe(
-//            "/topic/cards" + joinKey + "/edit", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, Card>(null, null)).getClass(); }
-//
-//                public void handleFrame(final StompHeaders headers, final Object payload) {
-//                    logger.info("Card edited: " + payload.toString());
-//                }
-//            });
-//        subscriptions.add(cardEditedSub);
-        final Subscription cardAddedSub = session.subscribe(
-            "/topic/cards" + joinKey + "/add", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return Pair.class; }
+    private void subscribeToCardChangeUpdates(final String joinKey) {
+        final Subscription cardRepositionedSub = session.subscribe(
+            "/topic/cards/" + joinKey + "/reposition", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
-                        final Pair<Long, Card> pair = (Pair) payload;
-                        final Column column = boardService.getCurrentBoard().getColumnById(pair.getKey());
-                        try { boardService.updateAddCardToColumn(pair.getValue(), column); }
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        boardService.updateRepositionCard(cardDTO.getCard().getId(), cardDTO.getColumnFromId(),
+                            cardDTO.getColumnToId(), cardDTO.getNewPosition());
+                        logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
+                    }); }
+            });
+        subscriptions.add(cardRepositionedSub);
+
+        final Subscription cardEditedSub = session.subscribe(
+            "/topic/cards/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    final CardDTO cardDTO = (CardDTO) payload;
+                    final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                    boardService.updateEditCard(cardDTO.getCard(), column);
+                    logger.info("Card edited: " + cardDTO.getCard().getTitle());
+                }
+            });
+        subscriptions.add(cardEditedSub);
+    }
+
+    /**
+     * Session receives notifications regarding card addition and deletion
+     * @param joinKey String for board
+     */
+    public void subscribeToCardExistenceUpdates(final String joinKey) {
+        final Subscription cardAddedSub = session.subscribe(
+            "/topic/cards/" + joinKey + "/add", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    Platform.runLater( () -> {
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                        try { boardService.updateAddCardToColumn(cardDTO.getCard(), column); }
                         catch (BoardChangeException e) { throw new RuntimeException(e); }
                         logger.info("Card added: " + payload);
                     }); }
@@ -126,14 +142,14 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscriptions.add(cardAddedSub);
 
         final Subscription cardRemovedSub = session.subscribe(
-            "/topic/cards" + joinKey + "/remove", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return Pair.class; }
+            "/topic/cards/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
-                        final Pair<Long, Card> pair = (Pair) payload;
-                        final Column column = boardService.getCurrentBoard().getColumnById(pair.getKey());
-                        try { boardService.updateRemoveCardFromColumn(pair.getValue(), column); }
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                        try { boardService.updateRemoveCardFromColumn(cardDTO.getCard(), column); }
                         catch (BoardChangeException e) { throw new RuntimeException(e); }
                         logger.info("Card added: " + payload.toString());
                     }); }
@@ -156,15 +172,18 @@ public class SessionHandler extends StompSessionHandlerAdapter {
             });
         subscriptions.add(columnAddedSub);
 
-//        final Subscription columnRenamedSub = session.subscribe(
-//            "/topic/columns/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, String>(null, null)).getClass(); }
-//
-//                public void handleFrame(final StompHeaders headers, final Object payload) {
-//                    logger.info("Column renamed: " + payload.toString());
-//                }
-//            });
-//        subscriptions.add(columnRenamedSub);
+        final Subscription columnRenamedSub = session.subscribe(
+            "/topic/columns/" + joinKey + "/rename", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return ColumnDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    final ColumnDTO columnDTO = (ColumnDTO) payload;
+                    final Column column = boardService.getCurrentBoard().getColumnById(columnDTO.getColumnId());
+                    boardService.updateRenameColumn(column, columnDTO.getNewHeading());
+                    logger.info("Column renamed: " + columnDTO.getNewHeading());
+                }
+            });
+        subscriptions.add(columnRenamedSub);
 
         final Subscription columnRemovedSub = session.subscribe(
             "/topic/columns/" + joinKey + "/remove", new StompSessionHandlerAdapter() {

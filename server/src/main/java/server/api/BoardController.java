@@ -16,10 +16,11 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 @Controller
-@RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
 
@@ -47,7 +48,7 @@ public class BoardController {
      * @param password Optional password of the board
      * @return The board with the right joinKey if the board has the correct password provided, otherwise a
      */
-    @GetMapping("/get/{joinKey}")
+    @GetMapping("/boards/get/{joinKey}")
     public ResponseEntity<Board> getBoard(@PathVariable final String joinKey, @RequestBody(required = false) final String password) {
 
         final Board board = password == null ?
@@ -58,11 +59,27 @@ public class BoardController {
     }
 
     /**
+     * Returns a list of boards with the given join keys
+     * @param joinKeys List of join keys
+     * @return List of boards
+     */
+    @PostMapping("/getAll")
+    public ResponseEntity<List<Board>> getAllBoards(@RequestBody final List<String> joinKeys) {
+        final List<Board> boards = new ArrayList<>();
+
+        for (final String joinKey : joinKeys) {
+            boards.add(boardService.getBoardWithKeyUnsafe(joinKey));
+        }
+
+        return ResponseEntity.ok(boards);
+    }
+
+    /**
      * Creates a {@link Board}
      * @param boardDTO {@link Board} to create
      * @return The {@link Board} that was saved in the {@code BoardRepository}, so the client can ensure data integrity.
      */
-    @PostMapping("/create")
+    @PostMapping("/boards/create")
     public ResponseEntity<Board> createBoard(@Valid @RequestBody final Board boardDTO) {
 
         final String boardJoinKey = boardService.generateJoinKey();
@@ -80,7 +97,7 @@ public class BoardController {
      * @param password String password for board
      * @return Board the renamed board
      */
-    @MessageMapping("/rename/{joinKey}/{newHeading}")
+    @MessageMapping("/boards/rename/{joinKey}/{newHeading}")
     public Board renameBoard(final String password, @DestinationVariable final String joinKey,
                              @DestinationVariable final String newHeading)
     {

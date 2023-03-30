@@ -26,7 +26,7 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private List<SubTask> subtasks;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Getter @Setter
     private Set<Tag> tags;
 
