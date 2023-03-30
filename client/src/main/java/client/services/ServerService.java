@@ -84,7 +84,6 @@ public class ServerService {
                     .request(APPLICATION_JSON)
                     .get(Board.class);
             logger.info("Board request sent to server: " + joinKey);
-            sessionHandler.subscribeToBoard(joinKey);
             return board;
         }
     }
@@ -119,7 +118,6 @@ public class ServerService {
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
             logger.info("Created board sent to server: " + board.getJoinKey());
-            sessionHandler.subscribeToBoard(addedBoard.getJoinKey());
             return addedBoard;
         }
     }
@@ -254,5 +252,13 @@ public class ServerService {
                 column.getHeading(),
                 board.getPassword());
         logger.info("Renamed column sent to server");
+    }
+
+    /**
+     * Subscribes to loaded board
+     * @param joinKey String key to board
+     */
+    public void subscribeToBoard(final String joinKey) {
+        sessionHandler.subscribeToBoard(joinKey);
     }
 }

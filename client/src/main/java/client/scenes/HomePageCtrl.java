@@ -57,6 +57,7 @@ public class HomePageCtrl {
      */
     public void loadBoard(final Board board) {
         boardService.setCurrentBoard(board);
+        boardService.subscribeToBoard(board.getJoinKey());
         mainCtrl.showOverview();
         mainCtrl.refreshOverview();
     }
