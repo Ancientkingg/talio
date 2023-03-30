@@ -34,6 +34,19 @@ public class BoardService {
     }
 
     /**
+     * Constructs a board service
+     * @param boardModel the injected board model
+     * @param serverService the injected server service
+     * @param mainCtrl the injected mainCtrl
+     */
+    public BoardService(final BoardModel boardModel, final ServerService serverService, final MainCtrl mainCtrl) {
+        this.boardModel = boardModel;
+        this.serverService = serverService;
+        this.mainCtrl = mainCtrl;
+        this.setServerIP("http://localhost:8080"); // Default server IP
+    }
+
+    /**
      * Connects to the server
      * @param serverIP the ip of the server to connect to
      */
@@ -255,7 +268,6 @@ public class BoardService {
         boardModel.updateColumn(column);
     }
 
-
     /**
      * Saves joined or created boards to local storage
      */
@@ -328,7 +340,6 @@ public class BoardService {
             throw new RuntimeException("Error initializing stream");
         }
     }
-
 
     /**
      * Rename board function for local changes

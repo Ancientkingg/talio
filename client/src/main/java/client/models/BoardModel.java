@@ -13,6 +13,7 @@ import java.util.List;
 
 @Singleton
 public class BoardModel {
+
     @Getter
     @Setter
     private List<Board> boardList;
@@ -84,19 +85,6 @@ public class BoardModel {
             throw new BoardChangeException("Failed to add board : " + board);
         }
     }
-
-    /**
-     * Removes board from boardList
-     * @param board Board to remove
-     * @throws BoardChangeException if board is not removed
-     */
-    public void removeBoard(final Board board) throws BoardChangeException {
-        if (!boardList.remove(board)) {
-            throw new BoardChangeException("Failed to remove board : " + board);
-        }
-    }
-
-
 
     /**
      * Moves card from one column to another (IMPORTANT: This method is temporary
