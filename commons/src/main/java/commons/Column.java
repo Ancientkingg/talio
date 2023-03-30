@@ -13,7 +13,11 @@ public class Column implements Comparable<Column> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
+    private long serializationId;
+
+    @Getter
     private long id;
+
     @Getter @Setter
     @NotNull
     private int index;
@@ -57,6 +61,15 @@ public class Column implements Comparable<Column> {
         this.index = index;
         this.heading = heading;
         this.cards = cards;
+    }
+
+    /**
+     * Generates a unique id for the column
+     * @return generated id
+     */
+    public long generateId() {
+        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        return this.id;
     }
 
     /**

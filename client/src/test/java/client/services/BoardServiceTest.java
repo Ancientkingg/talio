@@ -2,6 +2,7 @@ package client.services;
 
 import client.exceptions.BoardChangeException;
 import client.models.BoardModel;
+import client.scenes.MainCtrl;
 import commons.Board;
 import commons.Card;
 import commons.Column;
@@ -17,6 +18,7 @@ public class BoardServiceTest {
     private BoardService boardService;
 
     private BoardModel boardModel;
+    private MainCtrl mainCtrl;
 
     class MockServerService extends ServerService {
         @Override
@@ -54,7 +56,8 @@ public class BoardServiceTest {
     public void setup() {
         this.boardModel = new BoardModel();
         MockServerService serverService = new MockServerService();
-        this.boardService = new BoardService(boardModel, serverService);
+        this.mainCtrl = new MainCtrl();
+        this.boardService = new BoardService(boardModel, serverService, mainCtrl);
     }
 
     @Test

@@ -2,11 +2,15 @@
 package client.utils;
 
 
+import client.services.BoardService;
 import client.services.ServerService;
 import lombok.Getter;
 
 
+import org.springframework.messaging.converter.CompositeMessageConverter;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
@@ -29,9 +33,10 @@ public class SocketThread implements  Runnable {
      * Sets up socket parameters to connect to server
      * @param serverService ServerService is passed on to the sessionHandler
      * @param serverIP String the ip is changed to the right format
+     * @param boardService BoardService that is passed to SessionHandler
      */
-    public SocketThread(final ServerService serverService, final URI serverIP) {
-        sessionHandler = new SessionHandler(serverService);
+    public SocketThread(final ServerService serverService, final URI serverIP, final BoardService boardService) {
+        sessionHandler = new SessionHandler(serverService, boardService);
         server = "ws://" + serverIP.getHost() + ":" + serverIP.getPort() + "/greeting";
         runningFlag = new AtomicBoolean(false);
     }
@@ -52,10 +57,14 @@ public class SocketThread implements  Runnable {
         final WebSocketClient webSocketClient = new StandardWebSocketClient();
         final WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
 
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        final List<MessageConverter> converters = new ArrayList<MessageConverter>();
+        converters.add(new MappingJackson2MessageConverter()); // used to handle json messages
+        converters.add(new StringMessageConverter()); // used to handle raw strings
+
+        stompClient.setMessageConverter(new CompositeMessageConverter(converters));
 
         stompClient.connect(server, sessionHandler);
 
-        new Scanner(System.in).nextLine(); // Don't close immediately.
+        while (true) { }
     }
 }

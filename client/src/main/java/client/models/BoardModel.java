@@ -139,4 +139,12 @@ public class BoardModel {
             oldColumn.setCards(column.getCards());
         }
     }
+
+    /**
+     * Rename the board by changing title
+     * @param newName String new title
+     */
+    public void renameBoard(final String newName) {
+        currentBoard.setTitle(newName);
+    }
 }

@@ -20,9 +20,8 @@ import java.util.TreeSet;
 public class ColumnController {
 
     private final BoardService boardService;
-
     private final SimpMessageSendingOperations messagingTemplate;
-    private final Logger logger = LogManager.getLogger(ColumnController.class);
+    private final Logger logger;
 
     /**
      * Constructor for the Column Controller
@@ -33,6 +32,7 @@ public class ColumnController {
     public ColumnController(final BoardService boardService, final SimpMessageSendingOperations messagingTemplate) {
         this.boardService = boardService;
         this.messagingTemplate = messagingTemplate;
+        logger = LogManager.getLogger(ColumnController.class);
     }
 
 
@@ -53,6 +53,7 @@ public class ColumnController {
 
 
         final Column column = new Column(columnHeading, index, new TreeSet<>());
+        column.generateId();
 
         board.addColumn(column);
         boardService.saveBoard(board);
