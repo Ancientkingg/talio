@@ -237,14 +237,13 @@ public class BoardService {
      * @param columnFromIdx the index of the column to move the card from
      * @param columnToIdx the index of the column to move the card to
      * @param priority the priority of the card in the new column
-     * @return Card moved to new position
      */
-    public Card moveCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
+    public void repositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
 
         final Board board = this.boardModel.getCurrentBoard();
 
-        return serverService.updatePosition(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
+        serverService.repositionCard(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
     }
 
     /**
@@ -254,11 +253,10 @@ public class BoardService {
      * @param columnToIdx the index of the column to move the card to
      * @param priority the priority of the card in the new column
      */
-    public void updateMoveCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
+    public void updateRepositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
         mainCtrl.refreshOverview();
     }
-
 
     /**
      * Updates a column
@@ -266,6 +264,25 @@ public class BoardService {
      */
     public void updateColumn(final Column column) {
         boardModel.updateColumn(column);
+    }
+
+    /**
+     * Renames column to new name (client initiated)
+     * @param column Column to rename
+     * @param newName String new name
+     */
+    public void renameColumn(final Column column, final String newName) {
+        boardModel.renameColumn(column, newName);
+        serverService.renameColumn(getCurrentBoard(), column);
+    }
+
+    /**
+     * Renames column to new name (server initiated)
+     * @param column Column to rename
+     * @param newName String new name
+     */
+    public void updateRenameColumn(final Column column, final String newName) {
+        boardModel.renameColumn(column, newName);
     }
 
     /**
@@ -357,5 +374,26 @@ public class BoardService {
     public void updateRenameBoard(final String newName) {
         boardModel.renameBoard(newName);
         mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Currently not functional, but connects to socket.
+     * Changes card title, description, and tags (client initiated)
+     * @param card Card to edit
+     * @param column Column that card is in
+     */
+    public void editCard(final Card card, final Column column) {
+//        boardModel.editCard(card, column);
+        serverService.editCard(getCurrentBoard(), card, column);
+    }
+
+    /**
+     * Currently not functional, but connects to socket.
+     * Changes card title, description, and tags (server initiated)
+     * @param card Card to edit
+     * @param column Column that card is in
+     */
+    public void updateEditCard(final Card card, final Column column) {
+//        boardModel.editCard(card, column);
     }
 }

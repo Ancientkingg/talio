@@ -24,7 +24,7 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Getter @Setter
     private Set<Tag> tags;
 

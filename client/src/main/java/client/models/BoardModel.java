@@ -135,4 +135,14 @@ public class BoardModel {
     public void renameBoard(final String newName) {
         currentBoard.setTitle(newName);
     }
+
+    /**
+     * Renames column to new name
+     * @param column Column to rename
+     * @param newName String new name
+     */
+    public void renameColumn(final Column column, final String newName) {
+        final Column oldColumn = currentBoard.getColumn(column.getIndex());
+        if (oldColumn != null) oldColumn.setHeading(column.getHeading());
+    }
 }
