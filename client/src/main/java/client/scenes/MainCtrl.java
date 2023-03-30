@@ -64,7 +64,7 @@ public class MainCtrl {
         this.homePageCtrl = homePage.getKey();
         this.homePageScene = new Scene(homePage.getValue());
 
-        showHomePage();
+        showJoinServer();
     }
 
     /**
@@ -73,6 +73,7 @@ public class MainCtrl {
     public void showHomePage() {
         primaryStage.setTitle("Talio: Home Page");
         primaryStage.setScene(homePageScene);
+        homePageCtrl.loadBoards();
         primaryStage.show();
     }
 

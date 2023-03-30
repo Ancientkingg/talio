@@ -28,14 +28,23 @@ public class ServerService {
 
     private SessionHandler sessionHandler;
 
+    private SocketThread socketThread;
+
     /**
      * Initializes client socket in a thread at the given serverIP
      * @param boardService BoardService that is passed on to SessionHandler through Socket
      */
     public void startSocket(final BoardService boardService) {
-        final SocketThread socketThread = new SocketThread(this, serverIP, boardService);
+        this.socketThread = new SocketThread(this, serverIP, boardService);
         final Thread thread = new Thread(socketThread);
         thread.start();
+    }
+
+    /**
+     * Stops the client socket
+     */
+    public void stopSocket() {
+        this.socketThread.stop();
     }
 
     /**

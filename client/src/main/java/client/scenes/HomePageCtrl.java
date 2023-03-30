@@ -45,10 +45,9 @@ public class HomePageCtrl {
     }
 
     /**
-     * Initializes the controller class. This method is automatically called
+     * Loads the boards from the server and renders them
      */
-    @FXML
-    public void initialize() {
+    public void loadBoards() {
         boardService.loadBoardsForCurrentServer();
         this.renderBoards();
     }
@@ -101,6 +100,8 @@ public class HomePageCtrl {
     @FXML
     public void onDisconnectButtonClick() {
         boardService.saveBoardsLocal();
+        boardService.disconnect();
+        mainCtrl.showJoinServer();
     }
 
     /**

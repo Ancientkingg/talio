@@ -11,14 +11,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.*;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 public class BoardService {
-    private final BoardModel boardModel;
+    private BoardModel boardModel;
     private final ServerService serverService;
     private final MainCtrl mainCtrl;
 
@@ -30,16 +28,42 @@ public class BoardService {
      * @param mainCtrl      the injected mainCtrl
      */
     @Inject
-    public BoardService(final BoardModel boardModel, final ServerService serverService, final MainCtrl mainCtrl) {
-        this.boardModel = boardModel;
+    public BoardService(final ServerService serverService, final MainCtrl mainCtrl) {
         this.serverService = serverService;
         this.mainCtrl = mainCtrl;
-        this.setServerIP("http://localhost:8080");
+        this.setServerIP("http://localhost:8080"); // Default server IP
+    }
+
+    /**
+     * Connects to the server
+     * @param serverIP the ip of the server to connect to
+     */
+    public void connect(String serverIP) {
+        this.boardModel = new BoardModel();
+        this.setServerIP(serverIP);
         this.startSocket();
     }
 
+    /**
+     * Disconnects from the server
+     */
+    public void disconnect() {
+        this.boardModel = null;
+        this.stopSocket();
+    }
+
+    /**
+     * Starts the websocket connection for the set server URL
+     */
     private void startSocket() {
         serverService.startSocket(this);
+    }
+
+    /**
+     * Stops the websocket connection for the set server URL
+     */
+    private void stopSocket() {
+        serverService.stopSocket();
     }
 
     /**
@@ -272,7 +296,7 @@ public class BoardService {
 
         final List<Board> boards = this.fetchAllBoards(joinKeys);
 
-        this.boardModel.setBoardList(boards);
+        this.boardModel.setBoardList(boards.stream().filter(Objects::nonNull).collect(Collectors.toList()));
 
 
         return boards;
