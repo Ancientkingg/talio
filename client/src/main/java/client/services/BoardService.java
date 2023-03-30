@@ -12,28 +12,53 @@ import javax.inject.Singleton;
 
 @Singleton
 public class BoardService {
-    private final BoardModel boardModel;
+    private BoardModel boardModel;
     private final ServerService serverService;
     private final MainCtrl mainCtrl;
 
     /**
      * Constructs a board service
      *
-     * @param boardModel    the injected board model
      * @param serverService the injected server service
      * @param mainCtrl      the injected mainCtrl
      */
     @Inject
-    public BoardService(final BoardModel boardModel, final ServerService serverService, final MainCtrl mainCtrl) {
-        this.boardModel = boardModel;
+    public BoardService(final ServerService serverService, final MainCtrl mainCtrl) {
         this.serverService = serverService;
         this.mainCtrl = mainCtrl;
-        this.setServerIP("http://localhost:8080");
+        this.setServerIP("http://localhost:8080"); // Default server IP
+    }
+
+    /**
+     * Connects to the server
+     * @param serverIP the ip of the server to connect to
+     */
+    public void connect(final String serverIP) {
+        this.boardModel = new BoardModel();
+        this.setServerIP(serverIP);
         this.startSocket();
     }
 
+    /**
+     * Disconnects from the server
+     */
+    public void disconnect() {
+        this.boardModel = null;
+        this.stopSocket();
+    }
+
+    /**
+     * Starts the websocket connection for the set server URL
+     */
     private void startSocket() {
         serverService.startSocket(this);
+    }
+
+    /**
+     * Stops the websocket connection for the set server URL
+     */
+    private void stopSocket() {
+        serverService.stopSocket();
     }
 
     /**
@@ -70,7 +95,6 @@ public class BoardService {
      */
     public void setCurrentBoard(final Board board) {
         boardModel.setCurrentBoard(board);
-
     }
 
     /**
