@@ -1,8 +1,10 @@
 package client.scenes;
 
+import client.scenes.components.ErrorModal;
 import client.services.BoardService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 
@@ -32,8 +34,13 @@ public class JoinServerCtrl {
      * @throws IllegalArgumentException if server URL is not valid
      */
     public void joinServer () throws IllegalArgumentException {
-        boardService.setServerIP(serverURL.getText());
-        mainCtrl.showJoinBoard();
+        try {
+            boardService.setServerIP(serverURL.getText());
+            mainCtrl.showJoinBoard();
+        } catch (IllegalArgumentException e) {
+            ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren().add(new ErrorModal(this.boardService, "Test", "Test", this.mainCtrl.getCurrentScene()));
+        }
+
     }
 
 

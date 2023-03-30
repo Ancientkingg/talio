@@ -142,4 +142,9 @@ public class MainCtrl {
         overviewCtrl.refreshColumn();
     }
 
+
+    public Scene getCurrentScene() {
+        return primaryStage.getScene();
+    }
+
 }
