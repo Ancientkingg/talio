@@ -3,16 +3,12 @@ package client.utils;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import client.services.ServerService;
-import com.fasterxml.classmate.GenericType;
-import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
 import commons.DTOs.ColumnDTO;
 import javafx.application.Platform;
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.javatuples.Quartet;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -76,7 +72,8 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
         subscribeToColumnUpdates(joinKey);
 
-        subscribeToCardUpdates(joinKey);
+        subscribeToCardChangeUpdates(joinKey);
+        subscribeToCardExistenceUpdates(joinKey);
 
         logger.info("Subscribed to board: " + joinKey);
     }
@@ -95,7 +92,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscriptions.add(boardRenameSub);
     }
 
-    private void subscribeToCardUpdates(final String joinKey) {
+    private void subscribeToCardChangeUpdates(final String joinKey) {
         final Subscription cardRepositionedSub = session.subscribe(
             "/topic/cards/" + joinKey + "/reposition", new StompSessionHandlerAdapter() {
                 public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
@@ -122,7 +119,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 }
             });
         subscriptions.add(cardEditedSub);
+    }
 
+    /**
+     * Session receives notifications regarding card addition and deletion
+     * @param joinKey String for board
+     */
+    public void subscribeToCardExistenceUpdates(final String joinKey) {
         final Subscription cardAddedSub = session.subscribe(
             "/topic/cards/" + joinKey + "/add", new StompSessionHandlerAdapter() {
                 public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }

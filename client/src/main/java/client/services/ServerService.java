@@ -198,24 +198,11 @@ public class ServerService {
     }
 
     /**
-     * Updates the contents of a card by posting a request to editCard endpoint on server
-     * @param board current board containing the card
-     * @param column column containing the card
-     * @param card card to be updated
-     * @return Updated card
-     * */
-    public Card update(final Board board, final Column column, final Card card) {
-        try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
-                    .path("/cards")
-                    .path("/update")
-                    .path(board.getJoinKey())
-                    .path(String.valueOf(column.getId()))
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
-        }
-    }
-
+     * Edits the contents of a card by posting a request to editCard endpoint on server
+     * @param board Board for joinKey
+     * @param card Card to edit
+     * @param column Column card is in
+     */
     public void editCard(final Board board, final Card card, final Column column) {
         session.send("/app/cards/edit/" +
             board.getJoinKey() + "/" +
@@ -225,6 +212,11 @@ public class ServerService {
         logger.info("Edited card sent to server");
     }
 
+    /**
+     * Renames column by posting a request to renameColumn endpoint on server
+     * @param board Board for join key
+     * @param column Column to rename
+     */
     public void renameColumn(final Board board, final Column column) {
         session.send("/app/columns/rename/" +
                 board.getJoinKey() + "/" +

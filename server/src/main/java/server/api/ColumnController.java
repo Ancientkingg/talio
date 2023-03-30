@@ -3,7 +3,6 @@ package server.api;
 import commons.Board;
 import commons.Column;
 import commons.DTOs.ColumnDTO;
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -93,8 +92,7 @@ public class ColumnController {
      *
      * @param password   String password for board
      * @param joinKey    String for board
-     * @param columnId   Id of column to be renamed
-     * @param oldHeading String for old name of column
+     * @param columnId   Long Id of column to be renamed
      * @param newHeading String for new name of column
      * @return Column the renamed column
      */
