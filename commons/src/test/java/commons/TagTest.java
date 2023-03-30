@@ -28,7 +28,7 @@ class TagTest {
         Tag t = new Tag("Important", new ColorScheme(Color.black, Color.white));
         assertEquals("Important", t.getTitle());
         t.setColorScheme(new ColorScheme(Color.black, Color.red));
-        assertEquals(new ColorScheme(Color.black, Color.white), t.getColorScheme());
+        assertEquals(new ColorScheme(Color.black, Color.red), t.getColorScheme());
     }
 
     @Test
