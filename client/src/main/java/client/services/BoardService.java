@@ -29,6 +29,13 @@ public class BoardService {
         this.setServerIP("http://localhost:8080"); // Default server IP
     }
 
+    public BoardService(final BoardModel boardModel, final ServerService serverService, final MainCtrl mainCtrl) {
+        this.boardModel = boardModel;
+        this.serverService = serverService;
+        this.mainCtrl = mainCtrl;
+        this.setServerIP("http://localhost:8080"); // Default server IP
+    }
+
     /**
      * Connects to the server
      * @param serverIP the ip of the server to connect to
