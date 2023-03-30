@@ -1,6 +1,7 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.HomePageCtrl;
 import commons.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +14,19 @@ public class BoardCardComponent extends Pane {
 
     private final Board board;
 
+    private final HomePageCtrl parentCtrl;
+
     @FXML
     private Text boardTitle;
 
     /**
      * Constructor for BoardCardComponent
      * @param board Board instance
+     * @param parentCtrl HomePageCtrl instance
      */
-    public BoardCardComponent(final Board board) {
+    public BoardCardComponent(final Board board, final HomePageCtrl parentCtrl) {
         this.board = board;
-
+        this.parentCtrl = parentCtrl;
 
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/BoardCard.fxml"));
         loader.setRoot(this);
@@ -36,6 +40,7 @@ public class BoardCardComponent extends Pane {
 
         setBoardTitle();
         setHover();
+        setClick();
     }
 
     private void setHover() {
@@ -46,6 +51,14 @@ public class BoardCardComponent extends Pane {
                 this.getStyleClass().remove("hovered");
             }
         });
+    }
+
+    private void setClick() {
+        this.setOnMouseClicked(event -> onClick());
+    }
+
+    private void onClick() {
+        parentCtrl.loadBoard(board);
     }
 
     private void setBoardTitle() {

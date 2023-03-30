@@ -31,9 +31,9 @@ public class JoinServerCtrl {
      * Updates the serverIP to
      * @throws IllegalArgumentException if server URL is not valid
      */
-    public void joinServer () throws IllegalArgumentException {
-        boardService.setServerIP(serverURL.getText());
-        mainCtrl.showJoinBoard();
+    public void joinServer() throws IllegalArgumentException {
+        boardService.connect(serverURL.getText());
+        mainCtrl.showHomePage();
     }
 
 
