@@ -9,6 +9,10 @@ import commons.Column;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.*;
+import java.net.URI;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 public class BoardService {
@@ -51,8 +55,17 @@ public class BoardService {
      * @throws BoardChangeException if the board cannot be added
      */
     public Board addBoard(final Board board) throws BoardChangeException {
-        boardModel.addBoard(board);
-        return serverService.addBoard(board);
+        final Board serverBoard = serverService.addBoard(board);
+        boardModel.addBoard(serverBoard);
+        return serverBoard;
+    }
+
+    /**
+     * Adds a board to the board list (server initiated)
+     * @return the board returned by the server
+     */
+    public List<Board> getAllBoards() {
+        return boardModel.getBoardList();
     }
 
     /**
@@ -65,12 +78,20 @@ public class BoardService {
     }
 
     /**
+     * Fetches all boards
+     * @param joinKeys the join-keys used to identify the boards
+     * @return the boards that were retrieved
+     */
+    public List<Board> fetchAllBoards(final List<String> joinKeys) {
+        return serverService.getAllBoards(joinKeys);
+    }
+
+    /**
      * Sets the current board
      * @param board the board to set as current
      */
     public void setCurrentBoard(final Board board) {
         boardModel.setCurrentBoard(board);
-
     }
 
     /**
@@ -208,6 +229,81 @@ public class BoardService {
     public void updateColumn(final Column column) {
         boardModel.updateColumn(column);
     }
+
+
+    /**
+     * Saves joined or created boards to local storage
+     */
+    public void saveBoardsLocal() {
+        final ArrayList<String> joinKeys = new ArrayList<>();
+
+        for (final Board board : boardModel.getBoardList()) {
+            joinKeys.add(board.getJoinKey());
+        }
+
+        final Map<URI, List<String>> allBoardJoinKeys = loadAllJoinKeysLocal();
+        allBoardJoinKeys.put(serverService.getServerIP(), joinKeys);
+
+        try {
+            final FileOutputStream fileOutputStream = new FileOutputStream("saved-boards");
+            final ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            objectOutputStream.writeObject(allBoardJoinKeys);
+
+            objectOutputStream.close();
+            fileOutputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error initializing stream");
+        }
+    }
+
+    /**
+     * Loads boards for the current server from local storage
+     * @return the list of boards for the current server
+     */
+    public List<Board> loadBoardsForCurrentServer() {
+
+        final Map<URI, List<String>> allBoardJoinKeys = loadAllJoinKeysLocal();
+
+        if (allBoardJoinKeys.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        final List<String> joinKeys = allBoardJoinKeys.get(serverService.getServerIP());
+
+
+        final List<Board> boards = this.fetchAllBoards(joinKeys);
+
+        this.boardModel.setBoardList(boards.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+
+
+        return boards;
+    }
+
+    /**
+     * Loads all join keys from local storage
+     * @return a map of server URIs to lists of join keys
+     */
+    public Map<URI, List<String>> loadAllJoinKeysLocal() {
+        try {
+            final FileInputStream fileInputStream = new FileInputStream("saved-boards");
+            final ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            final Map<URI, List<String>> allBoardJoinKeys = (Map<URI, List<String>>) objectInputStream.readObject();
+
+            objectInputStream.close();
+            fileInputStream.close();
+
+
+            return allBoardJoinKeys;
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+            return new HashMap<>();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Error initializing stream");
+        }
+    }
+
 
     /**
      * Rename board function for local changes
