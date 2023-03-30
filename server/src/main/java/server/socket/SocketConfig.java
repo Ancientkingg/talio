@@ -30,8 +30,8 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(final StompEndpointRegistry registry) {
         registry.addEndpoint("/greeting");
 
-        registry.addEndpoint("/boards");
-        registry.addEndpoint("/columns");
-        registry.addEndpoint("/cards");
+//        registry.addEndpoint("/boards");
+//        registry.addEndpoint("/columns");
+//        registry.addEndpoint("/cards");
     }
 }

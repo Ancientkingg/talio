@@ -3,12 +3,15 @@ package client.utils;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import client.services.ServerService;
+import com.fasterxml.classmate.GenericType;
 import commons.Card;
 import commons.Column;
+import commons.DTOs.CardDTO;
 import javafx.application.Platform;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.javatuples.Quartet;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -55,6 +58,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     public void afterConnected(@Nullable final StompSession session, @Nullable final StompHeaders headers) {
         this.session = session;
         serverService.setHandler(this);
+        serverService.setSession(session);
     }
 
     /**
@@ -91,19 +95,23 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     }
 
     private void subscribeToCardUpdates(final String joinKey) {
-//        final Subscription cardRepositionedSub = session.subscribe(
-//            "/topic/cards" + joinKey + "/reposition", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return (new ImmutableTriple<String, Integer, Card>(null, null, null).getClass()); }
-//
-//                public void handleFrame(final StompHeaders headers, final Object payload) { Platform.runLater( () -> {
-//                    logger.info("Card repositioned: " + payload.toString());
-//                }); }
-//            });
-//        subscriptions.add(cardRepositionedSub);
+        final Subscription cardRepositionedSub = session.subscribe(
+            "/topic/cards/" + joinKey + "/reposition", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    Platform.runLater( () -> {
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        boardService.updateRepositionCard(cardDTO.getCard().getId(), cardDTO.getColumnFromId(),
+                            cardDTO.getColumnToId(), cardDTO.getNewPosition());
+                        logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
+                    }); }
+            });
+        subscriptions.add(cardRepositionedSub);
 
 //        final Subscription cardEditedSub = session.subscribe(
-//            "/topic/cards" + joinKey + "/edit", new StompSessionHandlerAdapter() {
-//                public Type getPayloadType(final StompHeaders headers) { return (new Pair<String, Card>(null, null)).getClass(); }
+//            "/topic/cards/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
+//                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
 //
 //                public void handleFrame(final StompHeaders headers, final Object payload) {
 //                    logger.info("Card edited: " + payload.toString());
@@ -111,14 +119,14 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 //            });
 //        subscriptions.add(cardEditedSub);
         final Subscription cardAddedSub = session.subscribe(
-            "/topic/cards" + joinKey + "/add", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return Pair.class; }
+            "/topic/cards/" + joinKey + "/add", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
-                        final Pair<Long, Card> pair = (Pair) payload;
-                        final Column column = boardService.getCurrentBoard().getColumnById(pair.getKey());
-                        try { boardService.updateAddCardToColumn(pair.getValue(), column); }
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                        try { boardService.updateAddCardToColumn(cardDTO.getCard(), column); }
                         catch (BoardChangeException e) { throw new RuntimeException(e); }
                         logger.info("Card added: " + payload);
                     }); }
@@ -126,14 +134,14 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscriptions.add(cardAddedSub);
 
         final Subscription cardRemovedSub = session.subscribe(
-            "/topic/cards" + joinKey + "/remove", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return Pair.class; }
+            "/topic/cards/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
-                        final Pair<Long, Card> pair = (Pair) payload;
-                        final Column column = boardService.getCurrentBoard().getColumnById(pair.getKey());
-                        try { boardService.updateRemoveCardFromColumn(pair.getValue(), column); }
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                        try { boardService.updateRemoveCardFromColumn(cardDTO.getCard(), column); }
                         catch (BoardChangeException e) { throw new RuntimeException(e); }
                         logger.info("Card added: " + payload.toString());
                     }); }

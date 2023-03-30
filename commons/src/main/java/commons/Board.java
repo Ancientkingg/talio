@@ -27,7 +27,7 @@ public class Board {
     @Getter @Setter
     @Size(min = 1) // A password cannot be empty, but it can be null (non-existent).
     private String password;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy("index")
     @Getter @Setter
     private SortedSet<Column> columns;

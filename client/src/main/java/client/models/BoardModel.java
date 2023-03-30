@@ -145,4 +145,8 @@ public class BoardModel {
     public void renameBoard(final String newName) {
         currentBoard.setTitle(newName);
     }
+
+    public void editCard(final Card card) {
+
+    }
 }

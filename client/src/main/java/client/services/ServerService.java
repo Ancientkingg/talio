@@ -11,6 +11,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.messaging.simp.stomp.StompSession;
 
 import java.net.URI;
 
@@ -23,6 +24,7 @@ public class ServerService {
     private Logger logger = LogManager.getLogger(ServerService.class);
 
     private SessionHandler sessionHandler;
+    private StompSession session;
 
     /**
      * Initializes client socket in a thread at the given serverIP
@@ -42,6 +44,8 @@ public class ServerService {
     public void setHandler(final SessionHandler sessionHandler) {
         this.sessionHandler = sessionHandler;
     }
+
+    public void setSession(final StompSession session) { this.session = session; }
 
     /**
      * Sets the IP of the server to interact with
@@ -181,21 +185,27 @@ public class ServerService {
      * @param destinationColumn column to which card is being moved
      * @param card              card to be moved
      * @param newPosition       new index of the card
-     * @return Card being moved ?? the method in the server returns the column containing the card which has been updated
      * but compiler was complaining when I made return type of this method Column.
      */
-    public Card updatePosition(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
-        try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
-                    .path("/cards")
-                    .path("/updatePosition")
-                    .path(board.getJoinKey())
-                    .path(String.valueOf(column.getId()))
-                    .path(String.valueOf(destinationColumn.getId()))
-                    .path(String.valueOf(newPosition))
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
-        }
+    public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
+        session.send("/app/cards/reposition/" +
+            board.getJoinKey() + "/" +
+            column.getId() + "/" +
+            destinationColumn.getId() + "/" +
+            newPosition,
+            new CardDTO(card, board.getPassword()));
+        logger.info("Repositioned card sent to server");
+//        try (Client client = ClientBuilder.newClient()) {
+//            return client.target(serverIP)
+//                    .path("/cards")
+//                    .path("/updatePosition")
+//                    .path(board.getJoinKey())
+//                    .path(String.valueOf(column.getId()))
+//                    .path(String.valueOf(destinationColumn.getId()))
+//                    .path(String.valueOf(newPosition))
+//                    .request(APPLICATION_JSON)
+//                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
+//        }
     }
 
     /**

@@ -15,13 +15,14 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/cards")
+//@RequestMapping("/cards")
 public class CardController {
 
     private final BoardService boardService;
@@ -47,7 +48,7 @@ public class CardController {
      * @param columnId Used to identify column to which card is to be added
      * @return The card added to column in board
      */
-    @PostMapping("/add/{joinKey}/{columnId}")
+    @PostMapping("/cards/add/{joinKey}/{columnId}")
     public ResponseEntity<Card> addCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
                                         @PathVariable final long columnId)
     {
@@ -77,7 +78,7 @@ public class CardController {
      * @param columnId Name of column from which card is to be removed
      * @return The card removed from CardRepository
      */
-    @PostMapping("/remove/{joinKey}/{columnId}")
+    @PostMapping("/cards/remove/{joinKey}/{columnId}")
     public ResponseEntity<Card> removeCard(@Valid @RequestBody final CardDTO cardDTO, @PathVariable final String joinKey,
                                            @PathVariable final long columnId)
     {
@@ -106,7 +107,8 @@ public class CardController {
      *
      * @return The column in which the card was updated
      */
-    @MessageMapping("/reposition/{joinKey}/{sourceColumnId}/{destinationColumnId}/{newPosition}")
+//    @Transactional
+    @MessageMapping("/cards/reposition/{joinKey}/{sourceColumnId}/{destinationColumnId}/{newPosition}")
     public Column repositionCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                  @DestinationVariable final long sourceColumnId, @DestinationVariable final int newPosition,
                                  @PathVariable @DestinationVariable final long destinationColumnId)
@@ -147,7 +149,7 @@ public class CardController {
      * @param columnId Name of column from which card is to be updated
      * @return The card updated in CardRepository
      */
-    @MessageMapping("/edit/{joinKey}/{columnId}")
+    @MessageMapping("/cards/edit/{joinKey}/{columnId}")
     public ResponseEntity<Card> editCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                          @DestinationVariable final long columnId)
     {
@@ -178,7 +180,7 @@ public class CardController {
      */
     public void updateCardRepositioned(final String joinKey, final long columnId, final long destinationColumnId, final Card card, final int newPosition) {
         logger.info("Propagating card repositioned for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/reposition,", new Quartet<>(columnId, destinationColumnId, newPosition, card));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/reposition,", new CardDTO(card, columnId, destinationColumnId, newPosition));
     }
 
     /**
@@ -190,7 +192,7 @@ public class CardController {
      */
     public void updateCardEdited(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card edited for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/edit/", new Pair<>(columnId, card));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit/", new CardDTO(card, columnId));
     }
 
     /**
@@ -202,7 +204,7 @@ public class CardController {
      */
     public void updateCardAdded(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card added for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/add", new Pair<>(columnId, card));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/add", new CardDTO(card, columnId));
     }
 
     /**
@@ -214,7 +216,7 @@ public class CardController {
      */
     public void updateCardRemoved(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card removed for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards" + joinKey + "/remove", new Pair<>(columnId, card));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/remove", new CardDTO(card, columnId));
     }
 
 }
