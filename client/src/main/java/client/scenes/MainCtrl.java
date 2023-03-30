@@ -73,6 +73,7 @@ public class MainCtrl {
     public void showHomePage() {
         primaryStage.setTitle("Talio: Home Page");
         primaryStage.setScene(homePageScene);
+        homePageCtrl.loadBoards();
         primaryStage.show();
     }
 

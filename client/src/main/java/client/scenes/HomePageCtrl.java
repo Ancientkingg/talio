@@ -11,7 +11,6 @@ import javafx.scene.layout.FlowPane;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.TreeSet;
 
 public class HomePageCtrl {
 
@@ -45,38 +44,44 @@ public class HomePageCtrl {
     }
 
     /**
-     * Initializes the controller class. This method is automatically called
+     * Loads the boards from the server and renders them
      */
-    @FXML
-    public void initialize() {
+    public void loadBoards() {
+        boardService.loadBoardsForCurrentServer();
         this.renderBoards();
+    }
+
+    /**
+     * Loads the board and shows the overview
+     * @param board The board to load
+     */
+    public void loadBoard(final Board board) {
+        boardService.setCurrentBoard(board);
+        mainCtrl.showOverview();
+        mainCtrl.refreshOverview();
     }
 
     /**
      * Renders the boards
      */
-    public void renderBoards() {
+    protected void renderBoards() {
         innerBoardCardList.getChildren().clear();
 
-        final List<Board> tempBoardList = List.of(new Board("joinkey","Board 1", null, new TreeSet<>()),
-                new Board("joinkey","Board 2", null, new TreeSet<>()),
-                new Board("joinkey","Board 3", null, new TreeSet<>()),
-                new Board("joinkey","Board 4", null, new TreeSet<>()),
-                new Board("joinkey","Board 5", null, new TreeSet<>()));
+        final List<Board> boardList = boardService.getAllBoards();
 
-        final int rows = (int) Math.round((tempBoardList.size() + 2.0) / 4.0);
+        final int rows = (int) Math.round((boardList.size() + 2.0) / 4.0);
 
         for (int i = 0; i < rows * 4; i++) {
 
-            if (i < tempBoardList.size()) { // if there are still boards to add
+            if (i < boardList.size()) { // if there are still boards to add
 
-                final Board board = tempBoardList.get(i);
-                final BoardCardComponent boardCard = new BoardCardComponent(board);
+                final Board board = boardList.get(i);
+                final BoardCardComponent boardCard = new BoardCardComponent(board, this);
                 innerBoardCardList.getChildren().add(boardCard);
 
-            } else if (i == tempBoardList.size()) { // The add new board button
+            } else if (i == boardList.size()) { // The add new board button
 
-                final AddBoardCardButtonComponent boardCard = new AddBoardCardButtonComponent();
+                final AddBoardCardButtonComponent boardCard = new AddBoardCardButtonComponent(boardService, this);
                 innerBoardCardList.getChildren().add(boardCard);
 
             } else { // empty invisible board cards for UI alignment purposes.
@@ -95,7 +100,7 @@ public class HomePageCtrl {
      */
     @FXML
     public void onJoinBoardButtonClick() {
-
+        mainCtrl.showJoinBoard();
     }
 
     /**
@@ -103,7 +108,9 @@ public class HomePageCtrl {
      */
     @FXML
     public void onDisconnectButtonClick() {
-
+        boardService.saveBoardsLocal();
+        boardService.disconnect();
+        mainCtrl.showJoinServer();
     }
 
     /**
@@ -119,7 +126,7 @@ public class HomePageCtrl {
      * Refreshes the UI component
      */
     public void refresh() {
-
+        this.renderBoards();
     }
 
 

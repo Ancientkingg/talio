@@ -25,7 +25,7 @@ public class Column implements Comparable<Column> {
     @Getter @Setter
     @NotBlank
     private String heading;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy("priority")
     @Getter @Setter
     private SortedSet<Card> cards;

@@ -128,7 +128,7 @@ public class ColumnComponent extends GridPane {
 
 
 
-                    boardService.moveCard(cardId, columnIdx, column.getIndex(), priority);
+                    boardService.repositionCard(cardId, columnIdx, column.getIndex(), priority);
 
                     overviewCtrl.refreshColumn(column.getIndex());
                     overviewCtrl.refreshColumn(columnIdx);
