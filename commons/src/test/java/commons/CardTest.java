@@ -3,8 +3,8 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,8 +20,8 @@ class CardTest {
         t1 = new HashSet<>();
         t2 = new HashSet<>();
         for (int i = 0; i < 10; i+=2) {
-            t1.add(new Tag(String.valueOf(i), "#000000"));
-            t2.add(new Tag(String.valueOf(i+1), "#000000"));
+            t1.add(new Tag(String.valueOf(i), new ColorScheme(Color.black, Color.white)));
+            t2.add(new Tag(String.valueOf(i+1), new ColorScheme(Color.black, Color.red)));
         }
     }
 
