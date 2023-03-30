@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.scenes.components.ErrorModal;
+import client.scenes.components.InfoModal;
 import client.services.BoardService;
 import jakarta.ws.rs.ProcessingException;
 import javafx.fxml.FXML;
@@ -36,16 +36,7 @@ public class JoinServerCtrl {
      * @throws IllegalArgumentException if server URL is not valid
      */
     public void joinServer () {
-        try {
-            boardService.connect(serverURL.getText());
-            ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren().add(new ErrorModal(this.boardService, "Test", "Test", this.mainCtrl.getCurrentScene()));
-            Thread.sleep(1000);
-        } catch (ProcessingException e) {
-            ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren().add(new ErrorModal(this.boardService, "Test", "Test", this.mainCtrl.getCurrentScene()));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (UnresolvedAddressException e) {
-            ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren().add(new ErrorModal(this.boardService, "Test", "Test", this.mainCtrl.getCurrentScene()));
-        }
+        boardService.connect(serverURL.getText());
+        mainCtrl.showHomePage();
     }
 }

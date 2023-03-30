@@ -134,6 +134,12 @@ public class MainCtrl {
         primaryStage.close();
     }
 
+    /**
+     * Gets primary stage
+     * @return the primary stage instance
+     */
+    public Stage getPrimaryStage() { return primaryStage; }
+
 
     /**
      * Refreshes overview stage.

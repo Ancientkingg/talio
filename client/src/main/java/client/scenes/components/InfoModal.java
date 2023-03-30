@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class ErrorModal extends Modal {
+public class InfoModal extends Modal {
 
     @FXML
     private Text titleText;
@@ -23,9 +23,9 @@ public class ErrorModal extends Modal {
     @FXML
     private Button okButton;
 
-    public ErrorModal(final BoardService boardService, final String title, final String description, final Scene currentScene) {
+    public InfoModal(final BoardService boardService, final String title, final String description, final Scene currentScene) {
         super(boardService, title, description, currentScene);
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/ErrorModal.fxml"));
+        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/InfoModal.fxml"));
         loader.setRoot(this);
         loader.setController(this);
 

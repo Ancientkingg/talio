@@ -15,16 +15,16 @@
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="118.52321243286133" minWidth="0.0" percentWidth="25.0" prefWidth="47.483970642089844" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="29.0" valignment="TOP" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="69.0" valignment="TOP" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="29.491931915283203" valignment="TOP" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="69.5080680847168" valignment="TOP" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="37.0" valignment="TOP" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
         <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Placeholder description" textAlignment="CENTER" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
-            <Insets top="15.0" />
+            <Insets top="10.0" />
          </GridPane.margin></Text>
-      <HBox alignment="CENTER" prefHeight="88.0" prefWidth="396.0" styleClass="overviewToolbar" stylesheets="@../Style.css" GridPane.columnSpan="3">
+      <HBox alignment="CENTER" prefHeight="88.0" prefWidth="396.0" styleClass="modalToolbar" stylesheets="@../Style.css" GridPane.columnSpan="3">
          <children>
               <Text fx:id="titleText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Placeholder Title" />
          </children>
