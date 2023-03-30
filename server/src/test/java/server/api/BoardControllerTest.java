@@ -49,7 +49,7 @@ public class BoardControllerTest {
     @Test
     public void createBoardWithoutPasswordTest() throws Exception {
         // Input to the controller coming from the client
-        Board boardClientInput = new Board("joinkey", "title", null, null, null);
+        Board boardClientInput = new Board("joinkey", "title", null, null, (Timestamp) null);
         // Output from the controller going to the client
         Board boardServerOutput = new Board("joinkey", "title", null, new TreeSet<>(), new Timestamp(12345L));
 
@@ -71,7 +71,7 @@ public class BoardControllerTest {
     @Test
     public void createBoardWithPasswordTest() throws Exception {
         // Input to the controller coming from the client
-        Board boardClientInput = new Board("joinkey", "title", "password", null, null);
+        Board boardClientInput = new Board("joinkey", "title", "password", null, (Timestamp) null);
         // Output from the controller going to the client
         Board boardServerOutput = new Board("joinkey", "title", "password", new TreeSet<>(), new Timestamp(12345L));
 
