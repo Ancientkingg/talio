@@ -7,7 +7,7 @@ public class EmptyBoardCardComponent extends BoardCardComponent {
      * Constructor for EmptyBoardCardComponent
      */
     public EmptyBoardCardComponent() {
-        super(null);
+        super(null, null);
         this.setOpacity(0);
     }
 

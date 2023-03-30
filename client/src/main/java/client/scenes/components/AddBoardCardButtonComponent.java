@@ -18,6 +18,8 @@ public class AddBoardCardButtonComponent extends Pane {
 
     /**
      * Constructor for AddBoardCardButtonComponent
+     * @param boardService BoardService instance
+     * @param parentCtrl HomePageCtrl instance
      */
     public AddBoardCardButtonComponent(final BoardService boardService, final HomePageCtrl parentCtrl) {
         this.boardService = boardService;

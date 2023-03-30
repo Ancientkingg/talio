@@ -11,7 +11,6 @@ import javafx.scene.layout.FlowPane;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.TreeSet;
 
 public class HomePageCtrl {
 
@@ -53,6 +52,16 @@ public class HomePageCtrl {
     }
 
     /**
+     * Loads the board and shows the overview
+     * @param board The board to load
+     */
+    public void loadBoard(final Board board) {
+        boardService.setCurrentBoard(board);
+        mainCtrl.showOverview();
+        mainCtrl.refreshOverview();
+    }
+
+    /**
      * Renders the boards
      */
     protected void renderBoards() {
@@ -67,7 +76,7 @@ public class HomePageCtrl {
             if (i < boardList.size()) { // if there are still boards to add
 
                 final Board board = boardList.get(i);
-                final BoardCardComponent boardCard = new BoardCardComponent(board);
+                final BoardCardComponent boardCard = new BoardCardComponent(board, this);
                 innerBoardCardList.getChildren().add(boardCard);
 
             } else if (i == boardList.size()) { // The add new board button
@@ -91,7 +100,7 @@ public class HomePageCtrl {
      */
     @FXML
     public void onJoinBoardButtonClick() {
-
+        mainCtrl.showJoinBoard();
     }
 
     /**

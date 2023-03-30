@@ -42,7 +42,7 @@ public class BoardService {
      * @return The board with the right joinKey if exists, otherwise null
      */
     public Board getBoardWithKeyUnsafe(final String joinKey) {
-        Optional<Board> board = br.findById(joinKey);
+        final Optional<Board> board = br.findById(joinKey);
         return board.isEmpty() ? null : board.get();
     }
 

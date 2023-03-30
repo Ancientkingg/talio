@@ -96,7 +96,7 @@ public class ServerService {
                     .path("/boards")
                     .path("/getAll")
                     .request(APPLICATION_JSON)
-                    .post(Entity.entity(joinKeys, APPLICATION_JSON), new GenericType<>(){});
+                    .post(Entity.entity(joinKeys, APPLICATION_JSON), new GenericType<>() { });
         }
     }
 

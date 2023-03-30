@@ -23,7 +23,6 @@ public class BoardService {
     /**
      * Constructs a board service
      *
-     * @param boardModel    the injected board model
      * @param serverService the injected server service
      * @param mainCtrl      the injected mainCtrl
      */
@@ -38,7 +37,7 @@ public class BoardService {
      * Connects to the server
      * @param serverIP the ip of the server to connect to
      */
-    public void connect(String serverIP) {
+    public void connect(final String serverIP) {
         this.boardModel = new BoardModel();
         this.setServerIP(serverIP);
         this.startSocket();
@@ -81,11 +80,15 @@ public class BoardService {
      * @throws BoardChangeException if the board cannot be added
      */
     public Board addBoard(final Board board) throws BoardChangeException {
-        Board serverBoard = serverService.addBoard(board);
+        final Board serverBoard = serverService.addBoard(board);
         boardModel.addBoard(serverBoard);
         return serverBoard;
     }
 
+    /**
+     * Adds a board to the board list (server initiated)
+     * @return the board returned by the server
+     */
     public List<Board> getAllBoards() {
         return boardModel.getBoardList();
     }
