@@ -34,6 +34,13 @@ public class SubTask {
     }
 
     /**
+     * Dummy constructor made to keep checkstyle happy
+     */
+    public SubTask() {
+
+    }
+
+    /**
      * equals method for subtask
      * @param o SubTask to compare this with
      * @return this == o ?
