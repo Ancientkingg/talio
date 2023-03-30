@@ -9,6 +9,7 @@ import commons.Column;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.*;
 
 @Singleton
 public class BoardService {
@@ -89,8 +90,17 @@ public class BoardService {
      * @throws BoardChangeException if the board cannot be added
      */
     public Board addBoard(final Board board) throws BoardChangeException {
-        boardModel.addBoard(board);
-        return serverService.addBoard(board);
+        final Board serverBoard = serverService.addBoard(board);
+        boardModel.addBoard(serverBoard);
+        return serverBoard;
+    }
+
+    /**
+     * Adds a board to the board list (server initiated)
+     * @return the board returned by the server
+     */
+    public List<Board> getAllBoards() {
+        return boardModel.getBoardList();
     }
 
     /**
@@ -100,6 +110,15 @@ public class BoardService {
      */
     public Board fetchBoard(final String joinKey) {
         return serverService.getBoard(joinKey);
+    }
+
+    /**
+     * Fetches all boards
+     * @param joinKeys the join-keys used to identify the boards
+     * @return the boards that were retrieved
+     */
+    public List<Board> fetchAllBoards(final List<String> joinKeys) {
+        return serverService.getAllBoards(joinKeys);
     }
 
     /**

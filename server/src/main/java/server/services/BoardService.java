@@ -8,6 +8,7 @@ import server.api.exceptions.ResourceNotFoundException;
 import server.api.exceptions.UnauthorizedResourceException;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -33,6 +34,16 @@ public class BoardService {
         if (br.existsById(joinKey))
             return br.findById(joinKey).get();
         throw new ResourceNotFoundException(Board.class, joinKey);
+    }
+
+    /**
+     * Returns a Board object with the given join key
+     * @param joinKey Join key of the board
+     * @return The board with the right joinKey if exists, otherwise null
+     */
+    public Board getBoardWithKeyUnsafe(final String joinKey) {
+        final Optional<Board> board = br.findById(joinKey);
+        return board.isEmpty() ? null : board.get();
     }
 
     /**

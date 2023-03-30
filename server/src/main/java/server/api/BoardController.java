@@ -16,6 +16,8 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 @Controller
@@ -55,6 +57,22 @@ public class BoardController {
                 boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         return ResponseEntity.ok(board);
+    }
+
+    /**
+     * Returns a list of boards with the given join keys
+     * @param joinKeys List of join keys
+     * @return List of boards
+     */
+    @PostMapping("/getAll")
+    public ResponseEntity<List<Board>> getAllBoards(@RequestBody final List<String> joinKeys) {
+        final List<Board> boards = new ArrayList<>();
+
+        for (final String joinKey : joinKeys) {
+            boards.add(boardService.getBoardWithKeyUnsafe(joinKey));
+        }
+
+        return ResponseEntity.ok(boards);
     }
 
     /**
