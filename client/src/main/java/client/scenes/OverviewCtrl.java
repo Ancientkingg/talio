@@ -5,11 +5,13 @@ import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.services.BoardService;
 import commons.Column;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.TreeSet;
 
 public class OverviewCtrl {
@@ -46,7 +48,8 @@ public class OverviewCtrl {
      * and displaying the corresponding titles. Will also refresh cards in the future.
      */
     public void refreshColumn() {
-        columnBox.getChildren().stream().filter(c -> !(c instanceof ColumnComponent));
+        columnBox.getChildren().removeAll(columnBox.getChildren().stream().filter(c -> c instanceof ColumnComponent).toList());
+
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
             final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
 
