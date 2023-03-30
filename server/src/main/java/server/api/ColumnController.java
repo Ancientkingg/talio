@@ -53,6 +53,7 @@ public class ColumnController {
 
 
         final Column column = new Column(columnHeading, index, new TreeSet<>());
+        column.generateId();
 
         board.addColumn(column);
         boardService.saveBoard(board);
