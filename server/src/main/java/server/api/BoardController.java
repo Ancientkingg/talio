@@ -19,7 +19,6 @@ import java.time.Instant;
 import java.util.TreeSet;
 
 @Controller
-@RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
 
@@ -47,7 +46,7 @@ public class BoardController {
      * @param password Optional password of the board
      * @return The board with the right joinKey if the board has the correct password provided, otherwise a
      */
-    @GetMapping("/get/{joinKey}")
+    @GetMapping("/boards/get/{joinKey}")
     public ResponseEntity<Board> getBoard(@PathVariable final String joinKey, @RequestBody(required = false) final String password) {
 
         final Board board = password == null ?
@@ -62,7 +61,7 @@ public class BoardController {
      * @param boardDTO {@link Board} to create
      * @return The {@link Board} that was saved in the {@code BoardRepository}, so the client can ensure data integrity.
      */
-    @PostMapping("/create")
+    @PostMapping("/boards/create")
     public ResponseEntity<Board> createBoard(@Valid @RequestBody final Board boardDTO) {
 
         final String boardJoinKey = boardService.generateJoinKey();
@@ -80,7 +79,7 @@ public class BoardController {
      * @param password String password for board
      * @return Board the renamed board
      */
-    @MessageMapping("/rename/{joinKey}/{newHeading}")
+    @MessageMapping("/boards/rename/{joinKey}/{newHeading}")
     public Board renameBoard(final String password, @DestinationVariable final String joinKey,
                              @DestinationVariable final String newHeading)
     {
