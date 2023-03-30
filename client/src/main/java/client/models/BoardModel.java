@@ -31,6 +31,7 @@ public class BoardModel {
         this.currentBoard = null;
     }
 
+
     /**
      * Adds card to column
      * @param card Card to be added to column

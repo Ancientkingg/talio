@@ -9,6 +9,7 @@ import commons.DTOs.CardDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import lombok.Getter;
 import jakarta.ws.rs.core.GenericType;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
