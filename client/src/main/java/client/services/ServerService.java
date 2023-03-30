@@ -92,11 +92,13 @@ public class ServerService {
      */
     public List<Board> getAllBoards(final List<String> joinKeys) {
         try (Client client = ClientBuilder.newClient()) {
-            return client.target(serverIP)
+            final List<Board> boards = client.target(serverIP)
                     .path("/boards")
                     .path("/getAll")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(joinKeys, APPLICATION_JSON), new GenericType<>() { });
+            logger.info("Board request sent to server: " + joinKeys);
+            return boards;
         }
     }
 
