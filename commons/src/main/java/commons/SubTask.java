@@ -24,6 +24,16 @@ public class SubTask {
     private boolean isDone;
 
     /**
+     * Constructor for SubTask
+     * @param description description of the SubTask
+     * @param isDone whether the task is done or not
+     */
+    public SubTask(final String description, final boolean isDone) {
+        this.description = description;
+        this.isDone = isDone;
+    }
+
+    /**
      * equals method for subtask
      * @param o SubTask to compare this with
      * @return this == o ?
