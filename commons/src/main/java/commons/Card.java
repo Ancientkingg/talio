@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +25,13 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private String description;
 
+    @Getter @Setter
+    private boolean isDefaultThemed;
+
+    @OneToOne
+    @Getter @Setter
+    private ColorScheme colorScheme;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @Getter @Setter
     private Set<Tag> tags;
@@ -37,6 +45,8 @@ public class Card implements Comparable<Card> {
 
     /**
      * Constructor for the Card object
+     * gives default color scheme
+     *
      * @param title Card title
      * @param priority Card priority
      * @param description Card description
@@ -47,6 +57,9 @@ public class Card implements Comparable<Card> {
         this.priority = priority;
         this.description = description;
         this.tags = tags == null ? new HashSet<>(0) : tags;
+
+        this.isDefaultThemed = true;
+        this.colorScheme = new ColorScheme(Color.black, Color.white);
     }
 
     /**
@@ -62,12 +75,31 @@ public class Card implements Comparable<Card> {
         this.id = id;
     }
 
-    /**
-     * Assign one single tag to the card if not already assigned
-     * @param tag tag to assign
+     /**
+     * Constructor for the Card object
      *
-     * @return success/failure
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
+     * @param tags Tags assigned to the card
+     * @param colorScheme ColorScheme to be used by the card
      */
+    public Card(final String title, final int priority, final String description, final Set<Tag> tags, final ColorScheme colorScheme) {
+        this.title = title;
+        this.priority = priority;
+        this.description = description;
+        this.tags = tags == null ? new HashSet<>(0) : tags;
+        this.isDefaultThemed = false;
+        this.colorScheme = colorScheme;
+    }
+
+
+        /**
+         * Assign one single tag to the card if not already assigned
+         * @param tag tag to assign
+         *
+         * @return success/failure
+         */
     public boolean addTag(final Tag tag) {
         return this.tags.add(tag);
     }
