@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Card implements Comparable<Card> {
@@ -52,7 +49,7 @@ public class Card implements Comparable<Card> {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.subtasks = subTasks;
+        this.subtasks = subTasks == null ? new ArrayList<>(0) : subTasks;
         this.tags = tags == null ? new HashSet<>(0) : tags;
     }
 
@@ -67,6 +64,34 @@ public class Card implements Comparable<Card> {
      */
     public Card(final long id, final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
         this(title, priority, description, subTasks, tags);
+        this.id = id;
+    }
+
+    /**
+     * Constructor for the Card object without subtasks
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
+     * @param tags Tags assigned to the card
+     */
+    public Card(final String title, final int priority, final String description, final Set<Tag> tags) {
+        this.title = title;
+        this.priority = priority;
+        this.description = description;
+        this.subtasks = new ArrayList<>(0);
+        this.tags = tags == null ? new HashSet<>(0) : tags;
+    }
+
+    /**
+     * Constructor for the Card object with specified id and without subtasks
+     * @param id Card id
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
+     * @param tags Tags assigned to the card
+     */
+    public Card(final long id, final String title, final int priority, final String description, final Set<Tag> tags) {
+        this(title, priority, description, tags);
         this.id = id;
     }
 
