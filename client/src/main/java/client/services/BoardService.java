@@ -9,10 +9,7 @@ import commons.Column;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.*;
-import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Singleton
 public class BoardService {
