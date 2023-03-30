@@ -144,6 +144,10 @@ public class MainCtrl {
     }
 
 
+    /**
+     * Gets current scene
+     * @return current scene that is open
+     */
     public Scene getCurrentScene() {
         return primaryStage.getScene();
     }
