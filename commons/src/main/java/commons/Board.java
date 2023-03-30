@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import java.awt.*;
 import java.sql.Timestamp;
 import java.util.*;
 import javax.validation.constraints.NotBlank;
@@ -30,10 +31,67 @@ public class Board {
     @Getter @Setter
     private SortedSet<Column> columns;
 
+    @OneToOne
+    private ColorScheme columnTheme;
+
+    @OneToOne
+    private ColorScheme boardColorScheme;
+
     @OneToMany
     @Getter
     @Setter
     private Set<Tag> tags;
+
+    /**
+     * Constructor for a board object with password
+     *
+     * @param joinKey Key for joining
+     * @param title Title of the board
+     * @param password Password for the board
+     * @param columns A set containing the board columns
+     * @param columnTheme ColorScheme for column
+     * @param boardColorScheme ColorScheme for board
+     * @param created Timestamp for the board creation
+     * @param tags Set of tags that can be used by cards in the board
+     */
+    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns,
+                 final ColorScheme columnTheme, final ColorScheme boardColorScheme, final Set<Tag> tags, final Timestamp created)
+    {
+        this.joinKey = joinKey;
+        this.created = created;
+        this.title = title;
+        this.password = password;
+        this.columns = columns;
+        this.columnTheme = columnTheme;
+        this.boardColorScheme = boardColorScheme;
+        this.tags = tags;
+    }
+
+    /**
+     * Constructor for a board object with password
+     *
+     * Sets default color theme
+     *
+     * @param joinKey Key for joining
+     * @param title Title of the board
+     * @param password Password for the board
+     * @param columns A set containing the board columns
+     * @param timestamp Timestamp for the board creation
+     * @param tags Set of tags that can be used by cards in the board
+     */
+    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns,
+                 final Timestamp timestamp, final Set<Tag> tags)
+    {
+        this.joinKey = joinKey;
+        this.title = title;
+        this.password = password;
+        this.columns = columns == null ? new TreeSet<>() : columns;
+        this.created = timestamp;
+        this.tags = (tags == null) ? new HashSet<>(0) : tags;
+
+        columnTheme = new ColorScheme(Color.black, Color.white); // change these to whatever default is picked
+        boardColorScheme = new ColorScheme(Color.black, Color.white);
+    }
 
     /**
      * Constructor for the board object.
@@ -53,12 +111,7 @@ public class Board {
      * @param columns  A set containing the board columns
      */
     public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns) {
-        this.joinKey = joinKey;
-        this.title = title;
-        this.password = password;
-        this.columns = columns;
-        this.created = new Timestamp(System.currentTimeMillis());
-        this.tags = new HashSet<>(0);
+        this(joinKey, title, password, columns, new Timestamp(System.currentTimeMillis()), new HashSet<>(0));
     }
 
     /**
@@ -70,12 +123,7 @@ public class Board {
      * @param timestamp Timestamp for the board creation
      */
     public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns, final Timestamp timestamp) {
-        this.joinKey = joinKey;
-        this.title = title;
-        this.password = password;
-        this.columns = columns == null ? new TreeSet<>() : columns;
-        this.created = timestamp;
-        this.tags = new HashSet<>(0);
+        this(joinKey, title, password, columns, timestamp, new HashSet<>(0));
     }
 
     /**
@@ -89,33 +137,9 @@ public class Board {
      * @param tags Set of tags that can be used by cards in the board
      */
     public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns, final Set<Tag> tags) {
-        this.joinKey = joinKey;
-        this.title = title;
-        this.password = password;
-        this.columns = columns;
-        this.tags = (tags == null) ? new HashSet<>(0) : tags;
-        this.created = new Timestamp(System.currentTimeMillis());
+        this(joinKey, title, password, columns, new Timestamp(System.currentTimeMillis()), tags);
     }
 
-    /**
-     * Constructor for a board object with password
-     * @param joinKey Key for joining
-     * @param title Title of the board
-     * @param password Password for the board
-     * @param columns A set containing the board columns
-     * @param timestamp Timestamp for the board creation
-     * @param tags Set of tags that can be used by cards in the board
-     */
-    public Board(final String joinKey, final String title, final String password, final SortedSet<Column> columns,
-                 final Timestamp timestamp, final Set<Tag> tags)
-    {
-        this.joinKey = joinKey;
-        this.title = title;
-        this.password = password;
-        this.columns = columns == null ? new TreeSet<>() : columns;
-        this.created = timestamp;
-        this.tags = (tags == null) ? new HashSet<>(0) : tags;
-    }
 
     /**
      * Constructor for a board object without a password
