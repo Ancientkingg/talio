@@ -64,7 +64,7 @@ public class MainCtrl {
         this.homePageCtrl = homePage.getKey();
         this.homePageScene = new Scene(homePage.getValue());
 
-        showJoinServer();
+        showHomePage();
     }
 
     /**

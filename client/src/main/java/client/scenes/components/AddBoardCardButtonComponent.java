@@ -1,17 +1,28 @@
 package client.scenes.components;
 
 import client.Main;
+import client.exceptions.BoardChangeException;
+import client.scenes.HomePageCtrl;
+import client.services.BoardService;
+import commons.Board;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.TreeSet;
 
 public class AddBoardCardButtonComponent extends Pane {
+
+    private final BoardService boardService;
+    private final HomePageCtrl parentCtrl;
 
     /**
      * Constructor for AddBoardCardButtonComponent
      */
-    public AddBoardCardButtonComponent() {
+    public AddBoardCardButtonComponent(final BoardService boardService, final HomePageCtrl parentCtrl) {
+        this.boardService = boardService;
+        this.parentCtrl = parentCtrl;
+
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/AddBoardCardButton.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -42,7 +53,8 @@ public class AddBoardCardButtonComponent extends Pane {
     /**
      * Click handler for the component
      */
-    public void click() {
-
+    public void onClick() throws BoardChangeException {
+        boardService.addBoard(new Board("join-key", "Board Title", new TreeSet<>()));
+        parentCtrl.refresh();
     }
 }

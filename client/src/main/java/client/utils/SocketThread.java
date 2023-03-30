@@ -13,10 +13,14 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SocketThread implements  Runnable {
 
     private String server;
+
+    private final AtomicBoolean runningFlag;
+
 
     @Getter
     private SessionHandler sessionHandler;
@@ -29,6 +33,14 @@ public class SocketThread implements  Runnable {
     public SocketThread(final ServerService serverService, final URI serverIP) {
         sessionHandler = new SessionHandler(serverService);
         server = "ws://" + serverIP.getHost() + ":" + serverIP.getPort() + "/greeting";
+        runningFlag = new AtomicBoolean(false);
+    }
+
+    /**
+     * Stops the thread
+     */
+    public void stop() {
+        runningFlag.set(false);
     }
 
     /**

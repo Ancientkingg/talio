@@ -4,6 +4,8 @@ import client.exceptions.BoardChangeException;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.inject.Singleton;
 import java.util.LinkedList;
@@ -11,7 +13,12 @@ import java.util.List;
 
 @Singleton
 public class BoardModel {
-    private final List<Board> boardList;
+    @Getter
+    @Setter
+    private List<Board> boardList;
+
+    @Getter
+    @Setter
     private Board currentBoard;
 
 
@@ -23,24 +30,6 @@ public class BoardModel {
         this.currentBoard = null;
     }
 
-    /**
-     * Sets the board displayed in overview stage to parameter and loads that board.
-     * This method doesn't imply that a displayed board must also be in the boardList of
-     * the overviewCtrl, which should always be the case. Depending on implementation later
-     * on this may need to be adjusted.
-     * @param board Board to be displayed
-     */
-    public void setCurrentBoard(final Board board) {
-        currentBoard = board;
-    }
-
-    /**
-     * Gets currently loaded board
-     * @return Currently loaded board as Board
-     */
-    public Board getCurrentBoard() {
-        return currentBoard;
-    }
 
     /**
      * Adds card to column
@@ -95,6 +84,19 @@ public class BoardModel {
             throw new BoardChangeException("Failed to add board : " + board);
         }
     }
+
+    /**
+     * Removes board from boardList
+     * @param board Board to remove
+     * @throws BoardChangeException if board is not removed
+     */
+    public void removeBoard(final Board board) throws BoardChangeException {
+        if (!boardList.remove(board)) {
+            throw new BoardChangeException("Failed to remove board : " + board);
+        }
+    }
+
+
 
     /**
      * Moves card from one column to another (IMPORTANT: This method is temporary

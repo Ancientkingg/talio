@@ -49,34 +49,31 @@ public class HomePageCtrl {
      */
     @FXML
     public void initialize() {
+        boardService.loadBoardsForCurrentServer();
         this.renderBoards();
     }
 
     /**
      * Renders the boards
      */
-    public void renderBoards() {
+    protected void renderBoards() {
         innerBoardCardList.getChildren().clear();
 
-        final List<Board> tempBoardList = List.of(new Board("joinkey","Board 1", null, new TreeSet<>()),
-                new Board("joinkey","Board 2", null, new TreeSet<>()),
-                new Board("joinkey","Board 3", null, new TreeSet<>()),
-                new Board("joinkey","Board 4", null, new TreeSet<>()),
-                new Board("joinkey","Board 5", null, new TreeSet<>()));
+        final List<Board> boardList = boardService.getAllBoards();
 
-        final int rows = (int) Math.round((tempBoardList.size() + 2.0) / 4.0);
+        final int rows = (int) Math.round((boardList.size() + 2.0) / 4.0);
 
         for (int i = 0; i < rows * 4; i++) {
 
-            if (i < tempBoardList.size()) { // if there are still boards to add
+            if (i < boardList.size()) { // if there are still boards to add
 
-                final Board board = tempBoardList.get(i);
+                final Board board = boardList.get(i);
                 final BoardCardComponent boardCard = new BoardCardComponent(board);
                 innerBoardCardList.getChildren().add(boardCard);
 
-            } else if (i == tempBoardList.size()) { // The add new board button
+            } else if (i == boardList.size()) { // The add new board button
 
-                final AddBoardCardButtonComponent boardCard = new AddBoardCardButtonComponent();
+                final AddBoardCardButtonComponent boardCard = new AddBoardCardButtonComponent(boardService, this);
                 innerBoardCardList.getChildren().add(boardCard);
 
             } else { // empty invisible board cards for UI alignment purposes.
@@ -103,7 +100,7 @@ public class HomePageCtrl {
      */
     @FXML
     public void onDisconnectButtonClick() {
-
+        boardService.saveBoardsLocal();
     }
 
     /**
@@ -119,7 +116,7 @@ public class HomePageCtrl {
      * Refreshes the UI component
      */
     public void refresh() {
-
+        this.renderBoards();
     }
 
 
