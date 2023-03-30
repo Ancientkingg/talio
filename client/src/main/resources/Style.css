@@ -35,7 +35,7 @@ Column
 .scroll-pane {
     -fx-background-insets: 0;
     -fx-padding: 0;
-    -fx-background-color: blue;
+    -fx-background-color: #f2f2f2;
 }
 
 .scroll-pane:focused {
@@ -54,28 +54,29 @@ Column
 Card
  */
 .card {
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius:10 10 10 10;
-    -fx-background-color: transparent;
+    -fx-border-radius: 10px;
+    -fx-background-color: #f8f8f8;
+    -fx-background-radius: 10px;
     -fx-padding: 2px;
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(0,0,0,0.3);
 }
 .cardTextArea {
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
-}
-
-.cardTextArea:focused{
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
-    -fx-background-insets: 0, 0, 1, 2;
-}
-
-.cardTextArea .content{
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
     -fx-background-color: transparent;
-    -fx-border-color: #4e4e4e;
-    -fx-border-width: 0.5;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.cardTextArea .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.cardTextArea .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.cardTextArea .scroll-pane .content{
+    -fx-background-color: transparent;
 }
 
 
@@ -116,15 +117,19 @@ Overview
 }
 
 .add-card-button {
-    -fx-text-fill: #6b778c;
-    -fx-background-color: red;
+    -fx-text-fill: rgba(75, 75, 75, 0.6);
+    -fx-background-color: #f4f4f4;
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(0, 0, 0, 0.15);
+    -fx-font-family: Cabin;
+    -fx-font-size: 14px;
+    -fx-font-weight: bolder;
+
 }
 
 .add-card-button:hover {
-    -fx-text-fill: #091e42;
-    -fx-background-color: #091e4214;
 }
 
 .delete-column-button {

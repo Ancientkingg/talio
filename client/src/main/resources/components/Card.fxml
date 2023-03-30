@@ -16,7 +16,7 @@
   </rowConstraints>
    <children>
 
-      <TextArea fx:id="cardText" maxWidth="195.0" prefHeight="200.0" text="Test&#10;" />
+      <TextArea fx:id="cardText" maxWidth="195.0" prefHeight="200.0" styleClass="cardTextArea" stylesheets="@../Style.css" text="Test&#10;" />
       <Button fx:id="editCardButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" />
 
    </children>
