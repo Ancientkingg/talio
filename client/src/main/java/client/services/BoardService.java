@@ -291,25 +291,35 @@ public class BoardService {
         // Update the boardModel with addedTag here
     }
 
+    public void updateAddTagToBoard(final Tag tag) { }
+
     public void removeTagFromBoard(final Tag tag) {
         final Tag removedTag = serverService.removeTagFromBoard(getCurrentBoard(), tag);
         // Update the boardModel with deletedTag here
     }
 
+    public void updateRemoveTagFromBoard(final Tag tag) { }
+
     public void editTag(final Tag tag) {
-        final Tag editedTag = serverService.editTag(getCurrentBoard(), tag);
+        serverService.editTag(getCurrentBoard(), tag);
         // Update the boardModel with editedTag here
     }
+
+    public void updateEditTag(final Tag tag) { }
 
     public void addTagToCard(final Card card, final Tag tag) {
         final Tag addedTag = serverService.addTagToCard(getCurrentBoard(), card, tag);
         // Update the boardModel with addedTag here
     }
 
+    public void updateAddTagToCard(final Card card, final Tag tag) { }
+
     public void removeTagFromCard(final Card card, final Tag tag) {
         final Tag removedTag = serverService.removeTagFromCard(getCurrentBoard(), card, tag);
         // Update the boardModel with removedTag here
     }
+
+    public void updateRemoveTagFromCard(final Card card, final Tag tag) { }
 
     /**
      * Saves joined or created boards to local storage

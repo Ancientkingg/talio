@@ -233,17 +233,11 @@ public class ServerService {
         }
     }
 
-    public Tag editTag(final Board board, final Tag tag) {
-        try (Client client = ClientBuilder.newClient()) {
-            final Tag addedTag = client.target(serverIP)
-                .path("/tags")
-                .path("/edit")
-                .path(board.getJoinKey())
-                .request(APPLICATION_JSON)
-                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
-            logger.info("Edited tag sent to server");
-            return addedTag;
-        }
+    public void editTag(final Board board, final Tag tag) {
+        session.send("/app/tags/edit/" +
+                board.getJoinKey(),
+                new TagDTO(tag, board.getPassword()));
+        logger.info("Edited tag sent to server");
     }
 
     public Tag addTagToCard(final Board board, final Card card, final Tag tag) {
