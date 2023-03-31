@@ -5,9 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 @Entity
 public class Card implements Comparable<Card> {
@@ -24,6 +23,10 @@ public class Card implements Comparable<Card> {
     private int priority;
     @Getter @Setter
     private String description;
+
+    @OneToMany
+    @Getter @Setter
+    private List<SubTask> subtasks;
 
     @Getter @Setter
     private boolean isDefaultThemed;
@@ -50,12 +53,43 @@ public class Card implements Comparable<Card> {
      * @param title Card title
      * @param priority Card priority
      * @param description Card description
+     * @param subTasks List of subtasks for the card
+     * @param tags Tags assigned to the card
+     */
+    public Card(final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+        this.title = title;
+        this.priority = priority;
+        this.description = description;
+        this.subtasks = subTasks == null ? new ArrayList<>(0) : subTasks;
+        this.tags = tags == null ? new HashSet<>(0) : tags;
+    }
+
+    /**
+     * Constructor for the Card object with specified id
+     * @param id Card id
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
+     * @param subTasks List of subtasks for the card
+     * @param tags Tags assigned to the card
+     */
+    public Card(final long id, final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+        this(title, priority, description, subTasks, tags);
+        this.id = id;
+    }
+
+    /**
+     * Constructor for the Card object without subtasks
+     * @param title Card title
+     * @param priority Card priority
+     * @param description Card description
      * @param tags Tags assigned to the card
      */
     public Card(final String title, final int priority, final String description, final Set<Tag> tags) {
         this.title = title;
         this.priority = priority;
         this.description = description;
+        this.subtasks = new ArrayList<>(0);
         this.tags = tags == null ? new HashSet<>(0) : tags;
 
         this.isDefaultThemed = true;
@@ -63,7 +97,7 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Constructor for the Card object with specified id
+     * Constructor for the Card object with specified id and without subtasks
      * @param id Card id
      * @param title Card title
      * @param priority Card priority
@@ -115,6 +149,26 @@ public class Card implements Comparable<Card> {
     }
 
     /**
+     * Add one task to the card
+     * @param subtask sub-task to be added
+     *
+     * @return success/failure
+     */
+    public boolean addSubTask(final SubTask subtask) {
+        return subtasks.add(subtask);
+    }
+
+    /**
+     * Remove one sub-task from the card if the sub-task is a part of the card
+     * @param subtask tag to be removed
+     *
+     * @return success/failure
+     */
+    public boolean removeSubTask(final SubTask subtask) {
+        return subtasks.remove(subtask);
+    }
+
+    /**
      * Checks for equality of two card objects
      * @param o Other card
      *
@@ -126,7 +180,7 @@ public class Card implements Comparable<Card> {
         if (o == null || getClass() != o.getClass()) return false;
         final Card card = (Card) o;
         return id == card.id && title.equals(card.title) && priority == card.priority
-                && description.equals(card.description) && tags.equals(card.tags);
+                && description.equals(card.description) && subtasks.equals(card.subtasks) && tags.equals(card.tags);
     }
 
     /**
@@ -159,6 +213,7 @@ public class Card implements Comparable<Card> {
         this.title = card.title;
         this.priority = card.priority;
         this.description = card.description;
+        this.subtasks = card.subtasks;
         this.tags = card.tags;
     }
 }
