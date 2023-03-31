@@ -119,14 +119,14 @@ public class OverviewCtrl {
      */
     @FXML
     public void onLinkButtonClick() {
-        Point2D p = linkButton.localToScreen(-110, 32);
+        final Point2D p = linkButton.localToScreen(-110, 32);
 
         final Tooltip customTooltip = new Tooltip("Copied join-key to clipboard!");
         customTooltip.setAutoHide(false);
         customTooltip.show(linkButton,p.getX(),p.getY());
 
         final PauseTransition pt = new PauseTransition(Duration.millis(1250));
-        pt.setOnFinished(e->{
+        pt.setOnFinished(e -> {
             customTooltip.hide();
         });
         pt.play();
