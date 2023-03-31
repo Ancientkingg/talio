@@ -2,11 +2,8 @@ package server.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import commons.Board;
-import commons.Card;
-import commons.Column;
+import commons.*;
 import commons.DTOs.TagDTO;
-import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import server.services.BoardService;
 
+import java.awt.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.TreeSet;
@@ -73,7 +71,7 @@ public class TagControllerTest {
 
     @Test
     public void addTag() throws Exception {
-        Tag tag = new Tag("Tag 1", "#000000");
+        Tag tag = new Tag("Tag 1", new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addTag(tag);
@@ -89,7 +87,7 @@ public class TagControllerTest {
 
     @Test
     public void addTagToCard() throws Exception {
-        Tag tag = new Tag("Tag 1", "#000000");
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addColumn(actualColumn);
@@ -111,7 +109,7 @@ public class TagControllerTest {
 
     @Test
     public void removeTag() throws Exception {
-        Tag tag = new Tag("Tag 1", "#000000");
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addTag(tag);
@@ -127,7 +125,7 @@ public class TagControllerTest {
 
     @Test
     public void removeTagFromCard() throws Exception {
-        Tag tag = new Tag("Tag 1", "#000000");
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addColumn(actualColumn);
@@ -149,12 +147,12 @@ public class TagControllerTest {
 
     @Test
     public void updateTag() throws Exception {
-        Tag tag = new Tag("Tag 1", "#000000");
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
 
         actualBoard.addTag(tag);
         expectedBoard.addTag(tag);
 
-        Tag updatedTag = new Tag("Tag 1", "#110000");
+        Tag updatedTag = new Tag("Tag 1",  new ColorScheme(new Color(1, 0,0), new Color(1,0,0)));
         TagDTO tagDTO = new TagDTO(updatedTag, "password");
 
 
