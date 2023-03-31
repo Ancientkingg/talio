@@ -31,7 +31,7 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private Boolean isDefaultThemed;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Getter @Setter
     private ColorScheme colorScheme;
 
