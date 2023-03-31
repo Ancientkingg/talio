@@ -5,12 +5,18 @@ import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.services.BoardService;
 import commons.Column;
+import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 import javax.inject.Inject;
+import java.awt.datatransfer.StringSelection;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -20,6 +26,9 @@ public class OverviewCtrl {
 
     @FXML
     private HBox columnBox;
+    @FXML
+    private Button linkButton;
+
     private static int highestIndex = 0; //This is just a temporary fix to give columns different indexes
 
 
@@ -105,6 +114,24 @@ public class OverviewCtrl {
     @FXML
     public void onTagsButtonClick() {
 
+    }
+
+    @FXML
+    public void onLinkButtonClick() {
+        Point2D p = linkButton.localToScreen(-110, 32);
+
+        final Tooltip customTooltip = new Tooltip("Copied join-key to clipboard!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(linkButton,p.getX(),p.getY());
+
+        PauseTransition pt = new PauseTransition(Duration.millis(1250));
+        pt.setOnFinished(e->{
+            customTooltip.hide();
+        });
+        pt.play();
+
+        StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());
+        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(joinKeySelection, null);
     }
 
     /**

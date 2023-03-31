@@ -31,7 +31,6 @@ Column
 }
 
 
-
 .scroll-pane {
     -fx-background-insets: 0;
     -fx-padding: 0;
@@ -268,5 +267,19 @@ Overview
 .join-board-button:hover {
     -fx-background-color: #f8f8f8;
     -fx-text-fill: #181818;
+}
+
+.board-link-button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+}
+
+.board-link-button:hover {
+    -fx-background-color: rgba(206, 206, 206, 0.6);
+}
+
+.board-link-button:pressed {
+    -fx-background-color: rgba(157, 157, 157, 0.6);
 }
 

@@ -61,20 +61,40 @@
             </Button>
          </children>
       </GridPane>
-        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="edge-to-edge" vbarPolicy="NEVER" GridPane.rowIndex="1">
-            <content>
-                <HBox fx:id="columnBox" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #ebebeb;">
-               <children>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createColumn" prefHeight="35.0" prefWidth="230.0" styleClass="add-column-button" stylesheets="@Style.css" HBox.hgrow="NEVER">
-                     <graphic>
-                        <SVGPath content="M453 776h60V610h167v-60H513V376h-60v174H280v60h173v166Zm27.266 200q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80 658.319 80 575.5q0-82.819 31.5-155.659Q143 347 197.5 293t127.341-85.5Q397.681 176 480.5 176q82.819 0 155.659 31.5Q709 239 763 293t85.5 127Q880 493 880 575.734q0 82.734-31.5 155.5T763 858.316q-54 54.316-127 86Q563 976 480.266 976Zm.234-60Q622 916 721 816.5t99-241Q820 434 721.188 335 622.375 236 480 236q-141 0-240.5 98.812Q140 433.625 140 576q0 141 99.5 240.5t241 99.5Zm-.5-340Z" scaleX="0.02" scaleY="0.02" styleClass="add-column-button-icon" />
-                     </graphic>
-                  </Button>
-               </children>
-               <padding>
-                  <Insets left="37.0" right="37.0" top="26.0" />
-               </padding></HBox>
-            </content>
-        </ScrollPane>
+      <GridPane GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="0.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+              <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="edge-to-edge" vbarPolicy="NEVER">
+                  <content>
+                      <HBox fx:id="columnBox" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #ebebeb;">
+                     <children>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createColumn" prefHeight="35.0" prefWidth="230.0" styleClass="add-column-button" stylesheets="@Style.css" HBox.hgrow="NEVER">
+                           <graphic>
+                              <SVGPath content="M453 776h60V610h167v-60H513V376h-60v174H280v60h173v166Zm27.266 200q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80 658.319 80 575.5q0-82.819 31.5-155.659Q143 347 197.5 293t127.341-85.5Q397.681 176 480.5 176q82.819 0 155.659 31.5Q709 239 763 293t85.5 127Q880 493 880 575.734q0 82.734-31.5 155.5T763 858.316q-54 54.316-127 86Q563 976 480.266 976Zm.234-60Q622 916 721 816.5t99-241Q820 434 721.188 335 622.375 236 480 236q-141 0-240.5 98.812Q140 433.625 140 576q0 141 99.5 240.5t241 99.5Zm-.5-340Z" scaleX="0.02" scaleY="0.02" styleClass="add-column-button-icon" />
+                           </graphic>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets left="37.0" right="37.0" top="26.0" />
+                     </padding>
+                  </HBox>
+                  </content>
+              </ScrollPane>
+            <Button fx:id="linkButton" alignment="TOP_RIGHT" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLinkButtonClick" prefHeight="26.0" prefWidth="46.0" styleClass="board-link-button" stylesheets="@Style.css" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="12.0" top="5.0" />
+               </GridPane.margin>
+               <graphic>
+                  <SVGPath content="M450 776H280q-83 0-141.5-58.5T80 576q0-83 58.5-141.5T280 376h170v60H280q-58.333 0-99.167 40.765-40.833 40.764-40.833 99Q140 634 180.833 675q40.834 41 99.167 41h170v60ZM325 606v-60h310v60H325Zm185 170v-60h170q58.333 0 99.167-40.765 40.833-40.764 40.833-99Q820 518 779.167 477 738.333 436 680 436H510v-60h170q83 0 141.5 58.5T880 576q0 83-58.5 141.5T680 776H510Z" scaleX="0.04" scaleY="0.04" translateX="385.0" translateY="-190.0" />
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
     </children>
 </GridPane>
