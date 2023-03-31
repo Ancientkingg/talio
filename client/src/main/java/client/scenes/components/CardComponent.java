@@ -56,22 +56,8 @@ public class CardComponent extends GridPane {
 
         cardText.setText(card.getTitle());
         cardText.setWrapText(true);
-        cardText.sceneProperty().addListener((observableNewScene, oldScene, newScene) -> {
-            if (newScene != null) {
-                applyCss();
-                Node text = lookup(".text");
 
-                // 2)
-                prefHeightProperty().bind(Bindings.createDoubleBinding(() -> {
-                    return cardText.getFont().getSize() + text.getBoundsInLocal().getHeight() + 10;
-                }, text.boundsInLocalProperty()));
-
-                // 1)
-                text.boundsInLocalProperty().addListener((observableBoundsAfter, boundsBefore, boundsAfter) -> {
-                    Platform.runLater(() -> requestLayout());
-                });
-            }
-        });
+        setupDynamicallyResize();
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
 
@@ -102,6 +88,28 @@ public class CardComponent extends GridPane {
         setUpDragAndDrop();
         setEditIcon();
 
+    }
+
+    /**
+     * Sets up dynamically resizing of the card component
+     */
+    private void setupDynamicallyResize() {
+        cardText.sceneProperty().addListener((observableNewScene, oldScene, newScene) -> {
+            if (newScene != null) {
+                applyCss();
+                final Node text = lookup(".text");
+
+                // 2)
+                prefHeightProperty().bind(Bindings.createDoubleBinding(() -> {
+                    return cardText.getFont().getSize() + text.getBoundsInLocal().getHeight() + 10;
+                }, text.boundsInLocalProperty()));
+
+                // 1)
+                text.boundsInLocalProperty().addListener((observableBoundsAfter, boundsBefore, boundsAfter) -> {
+                    Platform.runLater(() -> requestLayout());
+                });
+            }
+        });
     }
 
     private void setEditIcon() {

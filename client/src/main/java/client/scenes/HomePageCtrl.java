@@ -5,13 +5,9 @@ import client.scenes.components.BoardCardComponent;
 import client.scenes.components.EmptyBoardCardComponent;
 import client.services.BoardService;
 import commons.Board;
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
-import javafx.util.Duration;
 
 import javax.inject.Inject;
 import java.util.List;

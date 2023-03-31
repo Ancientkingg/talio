@@ -6,7 +6,6 @@ import client.scenes.components.ColumnComponent;
 import client.services.BoardService;
 import commons.Column;
 import javafx.animation.PauseTransition;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -17,7 +16,6 @@ import javafx.util.Duration;
 
 import javax.inject.Inject;
 import java.awt.datatransfer.StringSelection;
-import java.util.List;
 import java.util.TreeSet;
 
 public class OverviewCtrl {
@@ -64,7 +62,7 @@ public class OverviewCtrl {
 
             columnComponent.setHeading(col.getHeading());
 
-            columnBox.getChildren().add(columnBox.getChildren().size()-1,columnComponent);
+            columnBox.getChildren().add(columnBox.getChildren().size() - 1,columnComponent);
         }
     }
 
@@ -127,13 +125,13 @@ public class OverviewCtrl {
         customTooltip.setAutoHide(false);
         customTooltip.show(linkButton,p.getX(),p.getY());
 
-        PauseTransition pt = new PauseTransition(Duration.millis(1250));
+        final PauseTransition pt = new PauseTransition(Duration.millis(1250));
         pt.setOnFinished(e->{
             customTooltip.hide();
         });
         pt.play();
 
-        StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());
+        final StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());
         java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(joinKeySelection, null);
     }
 
