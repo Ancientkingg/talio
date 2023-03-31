@@ -3,6 +3,7 @@ package commons;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -14,7 +15,7 @@ public class Tag {
     @Getter @Setter
     private String title;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @Getter @Setter
     private ColorScheme colorScheme;
 
