@@ -19,6 +19,37 @@ Talio text color: #F3F3F3
 }
 
 /*
+Modal
+ */
+
+.modalBackground {
+    -fx-background-color: #EBEBEB;
+    -fx-border-width: 2px;
+    -fx-border-color: #181818;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.modalTitleText {
+    -fx-text-fill: #f8f8f8;
+    -fx-font-family: Cabin;
+    -fx-font-size: 16;
+}
+
+.modalDescriptionText {
+    -fx-text-fill: #f8f8f8;
+    -fx-font-family: Cabin;
+    -fx-font-size: 13;
+}
+
+.modalToolbar {
+    -fx-background-color: #181818;
+    -fx-border-radius: 8 8 7px 7px;
+    -fx-background-radius: 8 8 7px 7px;
+}
+
+
+/*
 Column
  */
 

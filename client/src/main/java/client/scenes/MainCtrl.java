@@ -135,6 +135,12 @@ public class MainCtrl {
         primaryStage.close();
     }
 
+    /**
+     * Gets primary stage
+     * @return the primary stage instance
+     */
+    public Stage getPrimaryStage() { return primaryStage; }
+
 
     /**
      * Refreshes overview stage.
@@ -142,6 +148,15 @@ public class MainCtrl {
      */
     public void refreshOverview() {
         overviewCtrl.refreshColumn();
+    }
+
+
+    /**
+     * Gets current scene
+     * @return current scene that is open
+     */
+    public Scene getCurrentScene() {
+        return primaryStage.getScene();
     }
 
 }
