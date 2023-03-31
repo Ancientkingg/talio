@@ -116,6 +116,9 @@ public class OverviewCtrl {
 
     }
 
+    /**
+     * Handles the link button click
+     */
     @FXML
     public void onLinkButtonClick() {
         Point2D p = linkButton.localToScreen(-110, 32);
