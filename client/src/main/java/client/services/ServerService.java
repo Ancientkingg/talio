@@ -6,6 +6,8 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
+import commons.DTOs.TagDTO;
+import commons.Tag;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -202,6 +204,73 @@ public class ServerService {
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
             logger.info("Removed card sent to server");
             return removedCard;
+        }
+    }
+
+    public Tag addTagToBoard(final Board board, final Tag tag) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Tag addedTag = client.target(serverIP)
+                .path("/tags")
+                .path("/add")
+                .path(board.getJoinKey())
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+            logger.info("Added tag to board sent to server");
+            return addedTag;
+        }
+    }
+
+    public Tag removeTagFromBoard(final Board board, final Tag tag) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Tag addedTag = client.target(serverIP)
+                .path("/tags")
+                .path("/remove")
+                .path(board.getJoinKey())
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+            logger.info("Removed tag from board sent to server");
+            return addedTag;
+        }
+    }
+
+    public Tag editTag(final Board board, final Tag tag) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Tag addedTag = client.target(serverIP)
+                .path("/tags")
+                .path("/edit")
+                .path(board.getJoinKey())
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+            logger.info("Edited tag sent to server");
+            return addedTag;
+        }
+    }
+
+    public Tag addTagToCard(final Board board, final Card card, final Tag tag) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Tag addedTag = client.target(serverIP)
+                .path("/tags")
+                .path("/addToCard")
+                .path(board.getJoinKey())
+                .path(Long.toString(card.getId()))
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+            logger.info("Added tag to card sent to server");
+            return addedTag;
+        }
+    }
+
+    public Tag removeTagFromCard(final Board board, final Card card, final Tag tag) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Tag addedTag = client.target(serverIP)
+                .path("/tags")
+                .path("/removeFromCard")
+                .path(board.getJoinKey())
+                .path(Long.toString(card.getId()))
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+            logger.info("Removed tag from card sent to server");
+            return addedTag;
         }
     }
 

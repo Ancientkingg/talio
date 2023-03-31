@@ -44,7 +44,7 @@ public class TagController {
      * @return The tag added to board
      */
     @PostMapping("/add/{joinKey}/")
-    public ResponseEntity<Tag> addCard(@Valid @RequestBody final TagDTO tagDTO,
+    public ResponseEntity<Tag> addTag(@Valid @RequestBody final TagDTO tagDTO,
                                        @PathVariable final String joinKey)
     {
         final String password = tagDTO.password();
@@ -86,9 +86,9 @@ public class TagController {
      *
      * @return The tag updated on board
      */
-    @PostMapping("/update/{joinKey}/")
-    public ResponseEntity<Tag> updateTag(@Valid @RequestBody final TagDTO tagDTO ,
-                                         @PathVariable final String joinKey)
+    @PostMapping("/edit/{joinKey}/")
+    public ResponseEntity<Tag> editTag(@Valid @RequestBody final TagDTO tagDTO ,
+                                       @PathVariable final String joinKey)
     {
         final String password = tagDTO.password();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
@@ -98,7 +98,7 @@ public class TagController {
 
         boardService.saveBoard(board);
 
-        updateTagUpdated(tag, board);
+        editTagUpdated(tag, board);
         return ResponseEntity.ok(tag);
     }
 
@@ -162,7 +162,7 @@ public class TagController {
                 + cardId + "/editTag", tag);
     }
 
-    private void updateTagUpdated(final Tag tag, final Board board) {
+    private void editTagUpdated(final Tag tag, final Board board) {
         logger.info("Tag updated in board, propagating: " + board.getJoinKey() + " with name: " + tag.getTitle());
         messagingTemplate.convertAndSend("/topic/boards/" + board.getJoinKey() + "/addTag", tag);
     }

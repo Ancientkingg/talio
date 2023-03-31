@@ -6,6 +6,7 @@ import client.scenes.MainCtrl;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import commons.Tag;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -283,6 +284,31 @@ public class BoardService {
      */
     public void updateRenameColumn(final Column column, final String newName) {
         boardModel.renameColumn(column, newName);
+    }
+
+    public void addTagToBoard(final Tag tag) {
+        final Tag addedTag = serverService.addTagToBoard(getCurrentBoard(), tag);
+        // Update the boardModel with addedTag here
+    }
+
+    public void removeTagFromBoard(final Tag tag) {
+        final Tag removedTag = serverService.removeTagFromBoard(getCurrentBoard(), tag);
+        // Update the boardModel with deletedTag here
+    }
+
+    public void editTag(final Tag tag) {
+        final Tag editedTag = serverService.editTag(getCurrentBoard(), tag);
+        // Update the boardModel with editedTag here
+    }
+
+    public void addTagToCard(final Card card, final Tag tag) {
+        final Tag addedTag = serverService.addTagToCard(getCurrentBoard(), card, tag);
+        // Update the boardModel with addedTag here
+    }
+
+    public void removeTagFromCard(final Card card, final Tag tag) {
+        final Tag removedTag = serverService.removeTagFromCard(getCurrentBoard(), card, tag);
+        // Update the boardModel with removedTag here
     }
 
     /**
