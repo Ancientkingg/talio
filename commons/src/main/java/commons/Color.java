@@ -53,14 +53,23 @@ public class Color {
 
     }
 
+    /**
+     * equals method for Color
+     * @param o to compare with this
+     * @return this == o ?
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Color color = (Color) o;
+        final Color color = (Color) o;
         return red == color.red && green == color.green && blue == color.blue && alpha == color.alpha;
     }
 
+    /**
+     * hashcode for Color
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(red, green, blue, alpha);
