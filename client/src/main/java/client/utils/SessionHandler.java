@@ -78,7 +78,8 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscribeToCardChangeUpdates(joinKey);
         subscribeToCardExistenceUpdates(joinKey);
 
-        subscribeToTagUpdates(joinKey);
+        subscribeToTagCardUpdates(joinKey);
+        subscribeToTagBoardUpdates(joinKey);
 
         logger.info("Subscribed to board: " + joinKey);
     }
@@ -204,41 +205,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscriptions.add(columnRemovedSub);
     }
 
-    private void subscribeToTagUpdates(final String joinKey) {
-        final Subscription tagRemovedFromCardSub = session.subscribe(
-            "/topic/tags/" + joinKey + "/removeFromCard", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return TagDTO.class; }
-
-                public void handleFrame(final StompHeaders headers, final Object payload) {
-                    Platform.runLater(() -> {
-                        final TagDTO tagDTO = (TagDTO) payload;
-                        final Card card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
-//                        try {
-                            boardService.updateRemoveTagFromCard(card, tagDTO.getTag());
-//                        }
-//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        logger.info("Tag removed from card");
-                    }); }
-            });
-        subscriptions.add(tagRemovedFromCardSub);
-
-        final Subscription tagAddedToCardSub = session.subscribe(
-            "/topic/tags/" + joinKey + "/addToCard", new StompSessionHandlerAdapter() {
-                public Type getPayloadType(final StompHeaders headers) { return TagDTO.class; }
-
-                public void handleFrame(final StompHeaders headers, final Object payload) {
-                    Platform.runLater(() -> {
-                        final TagDTO tagDTO = (TagDTO) payload;
-                        final Card card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
-//                        try {
-                        boardService.updateAddTagToCard(card, tagDTO.getTag());
-//                        }
-//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        logger.info("Tag added to card");
-                    }); }
-            });
-        subscriptions.add(tagAddedToCardSub);
-
+    private void subscribeToTagBoardUpdates(final String joinKey) {
         final Subscription tagRemovedFromBoard = session.subscribe(
             "/topic/tags/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
                 public Type getPayloadType(final StompHeaders headers) { return Tag.class; }
@@ -280,5 +247,41 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                     }); }
             });
         subscriptions.add(tagEdited);
+    }
+
+    private void subscribeToTagCardUpdates(final String joinKey) {
+        final Subscription tagRemovedFromCardSub = session.subscribe(
+            "/topic/tags/" + joinKey + "/removeFromCard", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return TagDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    Platform.runLater(() -> {
+                        final TagDTO tagDTO = (TagDTO) payload;
+                        final Card card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
+//                        try {
+                        boardService.updateRemoveTagFromCard(card, tagDTO.getTag());
+//                        }
+//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        logger.info("Tag removed from card");
+                    }); }
+            });
+        subscriptions.add(tagRemovedFromCardSub);
+
+        final Subscription tagAddedToCardSub = session.subscribe(
+            "/topic/tags/" + joinKey + "/addToCard", new StompSessionHandlerAdapter() {
+                public Type getPayloadType(final StompHeaders headers) { return TagDTO.class; }
+
+                public void handleFrame(final StompHeaders headers, final Object payload) {
+                    Platform.runLater(() -> {
+                        final TagDTO tagDTO = (TagDTO) payload;
+                        final Card card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
+//                        try {
+                        boardService.updateAddTagToCard(card, tagDTO.getTag());
+//                        }
+//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        logger.info("Tag added to card");
+                    }); }
+            });
+        subscriptions.add(tagAddedToCardSub);
     }
 }

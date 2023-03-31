@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Board;
-import commons.DTOs.CardDTO;
 import commons.Tag;
 import commons.DTOs.TagDTO;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import server.services.BoardService;
 
 import javax.validation.Valid;

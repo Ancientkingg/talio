@@ -207,6 +207,12 @@ public class ServerService {
         }
     }
 
+    /**
+     * Adds tag to board
+     * @param board Board for joinKey
+     * @param tag Tag to add
+     * @return Tag from server
+     */
     public Tag addTagToBoard(final Board board, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
@@ -220,6 +226,12 @@ public class ServerService {
         }
     }
 
+    /**
+     * Removes tag from board
+     * @param board Board for joinKey
+     * @param tag Tag to remove
+     * @return Tag from server
+     */
     public Tag removeTagFromBoard(final Board board, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
@@ -233,6 +245,11 @@ public class ServerService {
         }
     }
 
+    /**
+     * Edits tag
+     * @param board Board for joinKey
+     * @param tag Tag to edit
+     */
     public void editTag(final Board board, final Tag tag) {
         session.send("/app/tags/edit/" +
                 board.getJoinKey(),
@@ -240,6 +257,13 @@ public class ServerService {
         logger.info("Edited tag sent to server");
     }
 
+    /**
+     * Adds tag to card
+     * @param board Board for joinKey
+     * @param tag Tag to add
+     * @param card Card added to
+     * @return Tag from server
+     */
     public Tag addTagToCard(final Board board, final Card card, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
@@ -254,6 +278,13 @@ public class ServerService {
         }
     }
 
+    /**
+     * Removed tag from card
+     * @param board Board for joinKey
+     * @param tag Tag to remove
+     * @param card Card removed from
+     * @return Tag from server
+     */
     public Tag removeTagFromCard(final Board board, final Card card, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
