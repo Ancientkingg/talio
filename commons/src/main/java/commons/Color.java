@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Color {
@@ -31,7 +32,14 @@ public class Color {
     @Setter
     private int alpha;
 
-    public Color(int red, int green, int blue, int alpha) {
+    /**
+     * Constructor for Color
+     * @param red red value
+     * @param green green value
+     * @param blue blue value
+     * @param alpha alpha value
+     */
+    public Color(final int red, final int green, final int blue, final int alpha) {
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -43,5 +51,18 @@ public class Color {
      */
     protected Color() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Color color = (Color) o;
+        return red == color.red && green == color.green && blue == color.blue && alpha == color.alpha;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(red, green, blue, alpha);
     }
 }
