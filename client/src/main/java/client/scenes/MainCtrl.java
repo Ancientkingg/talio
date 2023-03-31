@@ -65,6 +65,7 @@ public class MainCtrl {
         this.homePageScene = new Scene(homePage.getValue());
 
         showJoinServer();
+//        showOverview();
     }
 
     /**
