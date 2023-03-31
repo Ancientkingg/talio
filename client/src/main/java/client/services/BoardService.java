@@ -396,4 +396,12 @@ public class BoardService {
     public void updateEditCard(final Card card, final Column column) {
 //        boardModel.editCard(card, column);
     }
+
+    /**
+     * Subscribes to loaded board
+     * @param joinKey String key to board
+     */
+    public void subscribeToBoard(final String joinKey) {
+        serverService.subscribeToBoard(joinKey);
+    }
 }
