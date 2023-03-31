@@ -31,10 +31,10 @@ public class Board {
     @Getter @Setter
     private SortedSet<Column> columns;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ColorScheme columnTheme;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ColorScheme boardColorScheme;
 
     @OneToMany

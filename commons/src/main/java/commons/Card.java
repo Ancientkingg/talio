@@ -29,9 +29,9 @@ public class Card implements Comparable<Card> {
     private List<SubTask> subtasks;
 
     @Getter @Setter
-    private boolean isDefaultThemed;
+    private Boolean isDefaultThemed;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Getter @Setter
     private ColorScheme colorScheme;
 
