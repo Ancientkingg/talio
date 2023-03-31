@@ -53,6 +53,7 @@ public class Main extends Application {
     @Override
     public void start(final Stage primaryStage) throws IOException {
         try {
+            System.setProperty("prism.lcdtext", "false");
             final var joinServer = FXML.load(JoinServerCtrl.class, "JoinServer.fxml");
             final var overview = FXML.load(OverviewCtrl.class, "Overview.fxml");
             final var joinBoard = FXML.load(JoinBoardCtrl.class, "JoinBoard.fxml");

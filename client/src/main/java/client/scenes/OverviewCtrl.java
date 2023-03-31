@@ -5,11 +5,17 @@ import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.services.BoardService;
 import commons.Column;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 import javax.inject.Inject;
+import java.awt.datatransfer.StringSelection;
 import java.util.TreeSet;
 
 public class OverviewCtrl {
@@ -18,6 +24,9 @@ public class OverviewCtrl {
 
     @FXML
     private HBox columnBox;
+    @FXML
+    private Button linkButton;
+
     private static int highestIndex = 0; //This is just a temporary fix to give columns different indexes
 
 
@@ -46,13 +55,14 @@ public class OverviewCtrl {
      * and displaying the corresponding titles. Will also refresh cards in the future.
      */
     public void refreshColumn() {
-        columnBox.getChildren().clear();
+        columnBox.getChildren().removeAll(columnBox.getChildren().stream().filter(c -> c instanceof ColumnComponent).toList());
+
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
             final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
 
             columnComponent.setHeading(col.getHeading());
 
-            columnBox.getChildren().add(columnComponent);
+            columnBox.getChildren().add(columnBox.getChildren().size() - 1,columnComponent);
         }
     }
 
@@ -93,8 +103,52 @@ public class OverviewCtrl {
     public void createColumn() throws BoardChangeException {
         final Column column = new Column(getFunColumnName(), highestIndex++, new TreeSet<>());
         boardService.addColumnToCurrentBoard(column);
-        mainCtrl.showOverview();
         mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Handles the tags button click
+     */
+    @FXML
+    public void onTagsButtonClick() {
+
+    }
+
+    /**
+     * Handles the link button click
+     */
+    @FXML
+    public void onLinkButtonClick() {
+        final Point2D p = linkButton.localToScreen(-110, 32);
+
+        final Tooltip customTooltip = new Tooltip("Copied join-key to clipboard!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(linkButton,p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(1250));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+
+        final StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());
+        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(joinKeySelection, null);
+    }
+
+    /**
+     * Handles the back button click
+     */
+    @FXML
+    public void onBackButtonClick() {
+        mainCtrl.showHomePage();
+    }
+
+    /**
+     * Handles the settings button click
+     */
+    @FXML
+    public void onSettingsButtonClick() {
+
     }
 
     /**

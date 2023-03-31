@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HomePageCtrl">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HomePageCtrl">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
     </columnConstraints>
@@ -20,7 +20,7 @@
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-      <GridPane style="-fx-background-color: #181818;">
+      <GridPane styleClass="toolbar" stylesheets="@Style.css">
         <columnConstraints>
             <ColumnConstraints hgrow="NEVER" minWidth="220.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -55,7 +55,7 @@
             </Button>
          </children>
       </GridPane>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #ebebeb;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <content>
             <FlowPane fx:id="innerBoardCardList" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWrapLength="768.0" vgap="60.0">
                <padding>

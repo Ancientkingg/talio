@@ -56,6 +56,7 @@ public class HomePageCtrl {
      * @param board The board to load
      */
     public void loadBoard(final Board board) {
+        boardService.saveBoardsLocal();
         boardService.setCurrentBoard(board);
         boardService.subscribeToBoard(board.getJoinKey());
         mainCtrl.showOverview();
