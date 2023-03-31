@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import java.awt.*;
 import java.sql.Timestamp;
 import java.util.*;
 import javax.validation.constraints.NotBlank;
@@ -89,8 +88,8 @@ public class Board {
         this.created = timestamp;
         this.tags = (tags == null) ? new HashSet<>(0) : tags;
 
-        columnTheme = new ColorScheme(Color.black, Color.white); // change these to whatever default is picked
-        boardColorScheme = new ColorScheme(Color.black, Color.white);
+        columnTheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // change these to whatever default is picked
+        boardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255));
     }
 
     /**

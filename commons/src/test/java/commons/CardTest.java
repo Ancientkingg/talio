@@ -20,8 +20,8 @@ class CardTest {
         t1 = new HashSet<>();
         t2 = new HashSet<>();
         for (int i = 0; i < 10; i+=2) {
-            t1.add(new Tag(String.valueOf(i), new ColorScheme(Color.black, Color.white)));
-            t2.add(new Tag(String.valueOf(i+1), new ColorScheme(Color.black, Color.red)));
+            t1.add(new Tag(String.valueOf(i), new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255))));
+            t2.add(new Tag(String.valueOf(i+1), new ColorScheme(new Color(0,0,0,255), new Color(255,0,0,255))));
         }
     }
 
