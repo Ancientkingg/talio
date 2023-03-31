@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.awt.*;
 import java.util.Objects;
@@ -11,10 +13,15 @@ import java.util.Objects;
 @Entity
 public class ColorScheme {
 
-    @Id @Getter @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private long id;
+
+    @Getter @Setter
     private Color textColor;
 
-    @Id @Getter @Setter
+    @Getter @Setter
     private Color backgroundColor;
 
     /**
@@ -46,6 +53,7 @@ public class ColorScheme {
 
         final ColorScheme that = (ColorScheme) o;
 
+        if (id != that.id) return false;
         if (!Objects.equals(textColor, that.textColor)) return false;
         return Objects.equals(backgroundColor, that.backgroundColor);
     }
@@ -56,7 +64,8 @@ public class ColorScheme {
      */
     @Override
     public int hashCode() {
-        int result = textColor != null ? textColor.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (textColor != null ? textColor.hashCode() : 0);
         result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
         return result;
     }
