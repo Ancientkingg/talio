@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
 @Entity
@@ -13,8 +14,9 @@ public class Tag {
     @Getter @Setter
     private String title;
 
+    @OneToOne
     @Getter @Setter
-    private String hexColor;
+    private ColorScheme colorScheme;
 
     /**
      * Empty constructor for the Tag object
@@ -28,9 +30,9 @@ public class Tag {
      * @param title Title of the tag
      * @param hexColor Color of the tag in hex notation
      */
-    public Tag(final String title, final String hexColor) {
+    public Tag(final String title, final ColorScheme hexColor) {
         this.title = title;
-        this.hexColor = hexColor;
+        this.colorScheme = hexColor;
     }
 
     /**
@@ -44,7 +46,7 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Tag tag = (Tag) o;
-        return title.equals(tag.title) && hexColor.equals(tag.hexColor);
+        return title.equals(tag.title) && colorScheme.equals(tag.colorScheme);
     }
 
 
@@ -54,6 +56,6 @@ public class Tag {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(title, hexColor);
+        return Objects.hash(title, colorScheme);
     }
 }
