@@ -4,8 +4,11 @@ import client.Main;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import commons.Card;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
@@ -53,6 +56,22 @@ public class CardComponent extends GridPane {
 
         cardText.setText(card.getTitle());
         cardText.setWrapText(true);
+        cardText.sceneProperty().addListener((observableNewScene, oldScene, newScene) -> {
+            if (newScene != null) {
+                applyCss();
+                Node text = lookup(".text");
+
+                // 2)
+                prefHeightProperty().bind(Bindings.createDoubleBinding(() -> {
+                    return cardText.getFont().getSize() + text.getBoundsInLocal().getHeight() + 10;
+                }, text.boundsInLocalProperty()));
+
+                // 1)
+                text.boundsInLocalProperty().addListener((observableBoundsAfter, boundsBefore, boundsAfter) -> {
+                    Platform.runLater(() -> requestLayout());
+                });
+            }
+        });
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
 

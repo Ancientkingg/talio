@@ -65,6 +65,8 @@ Card
     -fx-background-color: transparent;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
+    -fx-font-family: Cabin;
+    -fx-font-size: 16px;
 }
 
 .cardTextArea .scroll-pane {
@@ -126,7 +128,11 @@ Overview
     -fx-font-family: Cabin;
     -fx-font-size: 14px;
     -fx-font-weight: bolder;
+}
 
+.add-card-button:hover {
+    -fx-background-color: #c3c3c3;
+    -fx-text-fill: #ffffff;
 }
 
 .add-card-button:hover {

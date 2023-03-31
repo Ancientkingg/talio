@@ -112,7 +112,7 @@ public class OverviewCtrl {
      */
     @FXML
     public void onBackButtonClick() {
-
+        mainCtrl.showHomePage();
     }
 
     /**
