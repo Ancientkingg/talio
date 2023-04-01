@@ -1,10 +1,8 @@
 package client.scenes;
 
-import client.scenes.components.InfoModal;
 import client.services.BoardService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 
