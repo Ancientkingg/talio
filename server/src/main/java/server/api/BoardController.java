@@ -63,7 +63,7 @@ public class BoardController {
      * @param joinKeys List of join keys
      * @return List of boards
      */
-    @PostMapping("/getAll")
+    @PostMapping("/boards/getAll")
     public ResponseEntity<List<Board>> getAllBoards(@RequestBody final List<String> joinKeys) {
         final List<Board> boards = new ArrayList<>();
 
