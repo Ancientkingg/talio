@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -18,6 +17,10 @@ public class InfoModal extends Modal {
 
     @FXML
     private Text descriptionText;
+
+    private final String title;
+
+    private final String description;
 
 
     @FXML
@@ -31,7 +34,10 @@ public class InfoModal extends Modal {
      * @param currentScene current scene (displayed under modal)
      */
     public InfoModal(final BoardService boardService, final String title, final String description, final Scene currentScene) {
-        super(boardService, title, description, currentScene);
+        super(boardService, currentScene);
+        this.title = title;
+        this.description = description;
+
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/InfoModal.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -50,7 +56,7 @@ public class InfoModal extends Modal {
         }
 
         okButton.setOnAction(event ->  {
-            ((StackPane) currentScene.getRoot()).getChildren().remove(this);
+            super.closeModal();
         });
 
     }

@@ -4,8 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="300.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -24,11 +24,12 @@
          <GridPane.margin>
             <Insets top="10.0" />
          </GridPane.margin></Text>
-      <HBox alignment="CENTER" prefHeight="88.0" prefWidth="396.0" styleClass="modalToolbar" stylesheets="@../Style.css" GridPane.columnSpan="3">
-         <children>
-              <Text fx:id="titleText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Placeholder Title" />
-         </children>
-      </HBox>
-      <Button fx:id="okButton" mnemonicParsing="false" prefHeight="22.0" prefWidth="82.0" styleClass="menuButton" stylesheets="@../Style.css" text="Ok" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button fx:id="okButton" mnemonicParsing="false" prefHeight="28.0" prefWidth="76.0" styleClass="modalOkButton" stylesheets="@../Style.css" text="Ok" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Placeholder Title" GridPane.columnIndex="1" />
+      <Button fx:id="crossButton1" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeModal" prefHeight="24.0" prefWidth="24.0" styleClass="modalCrossButton" stylesheets="@../../../../../../Style.css" GridPane.columnIndex="2">
+         <graphic>
+            <SVGPath content="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" scaleX="0.025" scaleY="0.025" styleClass="modalCrossButtonIcon" />
+         </graphic>
+      </Button>
     </children>
 </fx:root>

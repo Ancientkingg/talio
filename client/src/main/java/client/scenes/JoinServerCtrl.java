@@ -1,8 +1,10 @@
 package client.scenes;
 
+import client.scenes.components.InfoModal;
 import client.services.BoardService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 
@@ -33,6 +35,7 @@ public class JoinServerCtrl {
      */
     public void joinServer () {
         boardService.connect(serverURL.getText());
-        mainCtrl.showHomePage();
+        ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren().add(new InfoModal(this.boardService, "Test", "Test", this.mainCtrl.getCurrentScene()));
+        //mainCtrl.showHomePage();
     }
 }
