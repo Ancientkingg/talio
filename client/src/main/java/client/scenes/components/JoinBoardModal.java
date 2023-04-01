@@ -2,7 +2,6 @@ package client.scenes.components;
 
 import client.Main;
 import client.scenes.HomePageCtrl;
-import client.scenes.MainCtrl;
 import client.services.BoardService;
 import commons.Board;
 import jakarta.ws.rs.NotFoundException;
@@ -29,6 +28,7 @@ public class JoinBoardModal extends Modal {
      * Constructor for JoinBoardModal
      * @param boardService boardService instance
      * @param parentScene parent scene (displayed under modal)
+     * @param parentCtrl parent controller
      */
     public JoinBoardModal(final BoardService boardService, final Scene parentScene, final HomePageCtrl parentCtrl) {
         super(boardService, parentScene);
