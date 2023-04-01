@@ -41,15 +41,6 @@ public class OverviewCtrl {
         this.boardService = boardService;
     }
 
-
-    /**
-     * Redirects user to "createCard" FXML file on button press
-     * where they can create a card.
-     */
-    public void showCreateCard() {
-        mainCtrl.showCreateCard();
-    }
-
     /**
      * Refreshes the overview scene columnBox by iterating over each column in the current board
      * and displaying the corresponding titles. Will also refresh cards in the future.
