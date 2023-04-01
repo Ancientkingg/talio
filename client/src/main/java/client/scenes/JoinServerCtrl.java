@@ -35,7 +35,6 @@ public class JoinServerCtrl {
      */
     public void joinServer () {
         boardService.connect(serverURL.getText());
-        ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren().add(new InfoModal(this.boardService, "Test", "Test", this.mainCtrl.getCurrentScene()));
-        //mainCtrl.showHomePage();
+        mainCtrl.showHomePage();
     }
 }
