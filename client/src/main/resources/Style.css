@@ -23,17 +23,17 @@ Modal
  */
 
 .modalBackground {
-    -fx-background-color: #EBEBEB;
-    -fx-border-width: 2px;
+    -fx-background-color: #f8f8f8;
     -fx-border-color: #181818;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(30, 30, 30, 0.4), 25, 0, 0, 0);
 }
 
 .modalTitleText {
-    -fx-text-fill: #f8f8f8;
+    -fx-text-fill: #181818;
     -fx-font-family: Cabin;
-    -fx-font-size: 16;
+    -fx-font-size: 26;
 }
 
 .modalDescriptionText {
@@ -43,9 +43,41 @@ Modal
 }
 
 .modalToolbar {
-    -fx-background-color: #181818;
+    -fx-background-color: #f8f8f8;
     -fx-border-radius: 8 8 7px 7px;
     -fx-background-radius: 8 8 7px 7px;
+}
+
+.modalCrossButton {
+    -fx-background-color: transparent;
+    -fx-background-radius: 9px;
+    -fx-border-radius: 9px;
+}
+
+.modalCrossButtonIcon {
+    -fx-fill: #181818;
+}
+
+.modalCrossButton:hover {
+    -fx-background-color: #181818;
+}
+
+.modalCrossButton:hover .modalCrossButtonIcon {
+    -fx-fill: #f8f8f8;
+}
+
+.modalOkButton {
+    -fx-background-color: #f8f8f8;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1;
+    -fx-border-color: #181818;
+    -fx-text-fill: #181818;
+}
+
+.modalOkButton:hover {
+    -fx-background-color: #181818;
+    -fx-text-fill: #f8f8f8;
 }
 
 
