@@ -3,9 +3,11 @@ package client.scenes;
 import client.scenes.components.AddBoardCardButtonComponent;
 import client.scenes.components.BoardCardComponent;
 import client.scenes.components.EmptyBoardCardComponent;
+import client.scenes.components.JoinBoardModal;
 import client.services.BoardService;
 import commons.Board;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 
@@ -102,7 +104,9 @@ public class HomePageCtrl {
      */
     @FXML
     public void onJoinBoardButtonClick() {
-        mainCtrl.showJoinBoard();
+        final Scene parentScene = mainCtrl.getCurrentScene();
+        final JoinBoardModal modal = new JoinBoardModal(boardService, parentScene, this);
+        modal.showModal();
     }
 
     /**
