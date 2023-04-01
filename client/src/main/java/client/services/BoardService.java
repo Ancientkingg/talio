@@ -83,7 +83,10 @@ public class BoardService {
      * @param ip the ip of the server
      */
     public void setServerIP(final String ip) {
-        serverService.setServerIP(ip);
+        String serverIP = ip;
+        if (!ip.startsWith("http://")) serverIP = "http://" + serverIP;
+        if (!ip.endsWith(":8080")) serverIP = serverIP + ":8080";
+        serverService.setServerIP(serverIP);
     }
 
     /**
