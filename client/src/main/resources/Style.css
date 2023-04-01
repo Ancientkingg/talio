@@ -67,6 +67,20 @@ Modal
     -fx-fill: #f8f8f8;
 }
 
+.modalOkButton {
+    -fx-background-color: #f8f8f8;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1;
+    -fx-border-color: #181818;
+    -fx-text-fill: #181818;
+}
+
+.modalOkButton:hover {
+    -fx-background-color: #181818;
+    -fx-text-fill: #f8f8f8;
+}
+
 
 /*
 Column
