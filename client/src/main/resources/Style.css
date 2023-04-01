@@ -24,6 +24,7 @@ Modal
 
 .modalBackground {
     -fx-background-color: #f8f8f8;
+    -fx-border-width: 1px;
     -fx-border-color: #181818;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
@@ -344,5 +345,30 @@ Overview
 
 .board-link-button:pressed {
     -fx-background-color: rgba(157, 157, 157, 0.6);
+}
+
+.join-board-modal-button {
+    -fx-background-color: #f8f8f8;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-border-color: #181818;
+    -fx-font-family: Cabin;
+    -fx-text-fill: #181818;
+    -fx-font-size: 16px;
+}
+
+.join-board-modal-button:hover {
+    -fx-background-color: #181818;
+    -fx-text-fill: #f8f8f8;
+}
+
+.join-board-modal-text-field {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: #181818;
+    -fx-font-family: Cabin;
+    -fx-font-size: 15px;
 }
 

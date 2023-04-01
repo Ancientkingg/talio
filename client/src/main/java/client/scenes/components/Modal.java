@@ -21,6 +21,7 @@ public class Modal extends GridPane {
 
     private final EventHandler<MouseEvent> eventFilter;
 
+
     /**
      * Default constructor for modal
      * @param boardService boardService instance
@@ -81,3 +82,4 @@ public class Modal extends GridPane {
         return false;
     }
 }
+
