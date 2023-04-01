@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TagComponent extends GridPane {
 
@@ -32,7 +33,7 @@ public class TagComponent extends GridPane {
      *
      * @param boardService boardService instance
      * @param title        title of the tag
-     * @param colorScheme
+     * @param colorScheme the colorScheme of the tag used for the color bubble
      */
     public TagComponent(final BoardService boardService, final String title, final ColorScheme colorScheme) {
         this.boardService = boardService;
@@ -51,7 +52,7 @@ public class TagComponent extends GridPane {
 
         try {
             tagTitle.textProperty().set(this.title);
-            if (colorScheme.getBackgroundColor() == new Color(0, 0, 0)) {
+            if (Objects.equals(colorScheme.getBackgroundColor(), new Color(0, 0, 0))) {
                 colorBubble.setStyle("-fx-background-color: " + this.colorGenerator());
             } else {
                 colorBubble.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor().toString());
@@ -66,11 +67,11 @@ public class TagComponent extends GridPane {
 
     /**
      * Returns a random color for a tag
-     * @return String contaning hex code
+     * @return String containing hex code
      */
     String colorGenerator() {
-        final String [] colors = {"#2196F3", "#92D36E", "#FF3823", "#92D36E", "#00FFFF",
-                "#FF0000", "#ff9a00", "#694130", "#5A5A82" };
+        final String [] colors = {"#2196F3", "#92D36E", "#FF3823", "#92D36E",
+                                  "#00FFFF", "#FF0000", "#ff9a00", "#694130", "#5A5A82" };
 
         return colors [(int) (Math.random() * colors.length)];
     }
