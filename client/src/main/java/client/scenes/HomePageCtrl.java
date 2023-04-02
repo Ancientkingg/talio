@@ -76,7 +76,7 @@ public class HomePageCtrl {
 
     private void addResizeListener() {
         this.innerBoardCardList.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (System.currentTimeMillis() - this.lastTimeResize < 400) return;
+            if (System.currentTimeMillis() > this.lastTimeResize && System.currentTimeMillis() - this.lastTimeResize < 125) return;
             this.renderBoards();
             this.lastTimeResize = System.currentTimeMillis();
         });
@@ -92,8 +92,12 @@ public class HomePageCtrl {
 
         final Stage primaryStage = mainCtrl.getPrimaryStage();
         final double windowWidth = primaryStage.getWidth();
-        final double homePageWidth = windowWidth - 60;
+        final double homePageWidth = windowWidth - this.innerBoardCardList.getPadding().getLeft();
         final int rowSize = (int) Math.floor(homePageWidth / 313);
+
+        System.out.println("Window width: " + windowWidth);
+        System.out.println("Home page width: " + homePageWidth);
+        System.out.println("Row size: " + rowSize);
 
         final int rows = (int) Math.ceil((boardList.size() + 1.0) / rowSize);
 
