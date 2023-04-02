@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import javax.inject.Inject;
@@ -49,6 +48,9 @@ public class HomePageCtrl {
         this.boardService = boardService;
     }
 
+    /**
+     * Initializes the controller
+     */
     @FXML
     public void initialize() {
         this.addResizeListener();

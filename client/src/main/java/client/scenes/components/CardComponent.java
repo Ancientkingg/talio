@@ -14,8 +14,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
 
 import java.io.IOException;
 
