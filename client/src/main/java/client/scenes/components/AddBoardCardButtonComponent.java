@@ -1,15 +1,12 @@
 package client.scenes.components;
 
 import client.Main;
-import client.exceptions.BoardChangeException;
 import client.scenes.HomePageCtrl;
 import client.services.BoardService;
-import commons.Board;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.TreeSet;
 
 public class AddBoardCardButtonComponent extends Pane {
 
@@ -55,8 +52,8 @@ public class AddBoardCardButtonComponent extends Pane {
     /**
      * Click handler for the component
      */
-    public void onClick() throws BoardChangeException {
-        boardService.addBoard(new Board("join-key", "Board Title", new TreeSet<>()));
-        parentCtrl.refresh();
+    public void onClick() {
+        final CreateBoardModal modal = new CreateBoardModal(boardService, this.getScene(), parentCtrl);
+        modal.showModal();
     }
 }
