@@ -88,11 +88,6 @@ public class ColumnComponent extends GridPane {
 
         setUpDragAndDrop(overviewCtrl);
 
-        // Make the column unable to scroll horizontally
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
         refresh();
     }
 
@@ -183,6 +178,6 @@ public class ColumnComponent extends GridPane {
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());
-        innerCardList.getChildren().add(this.addCardButton);
+//        innerCardList.getChildren().add(this.addCardButton);
     }
 }

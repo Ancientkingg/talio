@@ -14,8 +14,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
 
 import java.io.IOException;
 
@@ -86,7 +84,6 @@ public class CardComponent extends GridPane {
         cardText.setDisable(true); // Disable editing of card text by default
 
         setUpDragAndDrop();
-        setEditIcon();
 
     }
 
@@ -112,10 +109,6 @@ public class CardComponent extends GridPane {
         });
     }
 
-    private void setEditIcon() {
-        // Set the icon for the edit button
-        editCardButton.setGraphic(new FontIcon(FontAwesome.PENCIL));
-    }
 
     private void setUpDragAndDrop() {
         setOnDragDetected(event -> {

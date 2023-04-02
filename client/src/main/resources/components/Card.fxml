@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <fx:root maxHeight="-Infinity" minWidth="-Infinity" styleClass="card" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -25,7 +26,10 @@
          <font>
             <Font size="18.0" />
          </font></TextArea>
-      <Button fx:id="editCardButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" />
+      <Button fx:id="editCardButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1">
+         <graphic>
+            <SVGPath content="M794 390 666 262l42-42q17-17 42.5-16.5T793 221l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Z" scaleX="0.02" scaleY="0.02" />
+         </graphic></Button>
 
    </children>
 </fx:root>

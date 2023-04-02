@@ -95,19 +95,25 @@ Column
 }
 
 
-.scroll-pane {
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-    -fx-background-color: #f2f2f2;
+.thumb {
+    -fx-background-color: rgba(124, 124, 124, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(30, 30, 30, 0.3), 5, 0, 0, 0);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
 }
 
-.scroll-pane:focused {
-    -fx-background-insets: 0;
+.increment-arrow,
+.increment-button,
+.decrement-arrow,
+.decrement-button,
+.track {
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+    -fx-fill: transparent;
 }
 
-.scroll-pane .corner {
-    -fx-background-insets: 0;
-}
+
+
 .card-heading {
     -fx-background-color: rgba(0, 0, 0, 0);
     -fx-font-family: Cabin;
@@ -193,12 +199,19 @@ Overview
     -fx-font-weight: bolder;
 }
 
-.add-card-button:hover {
-    -fx-background-color: #c3c3c3;
-    -fx-text-fill: #ffffff;
+.add-card-button .add-card-button-icon {
+    -fx-fill: rgba(75, 75, 75, 0.6);
+    -fx-font-smoothing-type: gray;
+    -fx-smooth: true;
+}
+
+.add-card-button:hover .add-card-button-icon {
+    -fx-fill: #ffffff;
 }
 
 .add-card-button:hover {
+    -fx-background-color: #c3c3c3;
+    -fx-text-fill: #ffffff;
 }
 
 .delete-column-button {

@@ -60,7 +60,7 @@
             </GridPane>
               <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #ebebeb;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <content>
-                  <FlowPane fx:id="innerBoardCardList" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWrapLength="768.0" vgap="60.0">
+                  <FlowPane fx:id="innerBoardCardList" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWrapLength="1366.0" vgap="60.0">
                      <padding>
                         <Insets left="30.0" right="30.0" top="60.0" />
                      </padding>
