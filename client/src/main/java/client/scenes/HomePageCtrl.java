@@ -93,7 +93,7 @@ public class HomePageCtrl {
         final Stage primaryStage = mainCtrl.getPrimaryStage();
         final double windowWidth = primaryStage.getWidth();
         final double homePageWidth = windowWidth - 60;
-        final int rowSize = (int) Math.floor(homePageWidth / 320);
+        final int rowSize = (int) Math.floor(homePageWidth / 313);
 
         final int rows = (int) Math.ceil((boardList.size() + 1.0) / rowSize);
 
