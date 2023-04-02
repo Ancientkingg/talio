@@ -1,8 +1,8 @@
 package server.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.*;
+import commons.Color;
 import commons.DTOs.TagDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,6 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import server.services.BoardService;
 
-import java.awt.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.TreeSet;
@@ -23,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -50,7 +48,7 @@ public class TagControllerTest {
     private Column expectedColumn;
 
     @BeforeEach
-    public void setup() { // exectued before each test
+    public void setup() { // executed before each test
         actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
 
@@ -71,7 +69,7 @@ public class TagControllerTest {
 
     @Test
     public void addTag() throws Exception {
-        Tag tag = new Tag("Tag 1", new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
+        Tag tag = new Tag("Tag 1", new ColorScheme(new Color(0, 0, 0,255), new Color(0,0,0, 255)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addTag(tag);
@@ -87,7 +85,7 @@ public class TagControllerTest {
 
     @Test
     public void addTagToCard() throws Exception {
-        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0, 0, 255), new Color(0, 0, 0, 255)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addColumn(actualColumn);
@@ -109,7 +107,7 @@ public class TagControllerTest {
 
     @Test
     public void removeTag() throws Exception {
-        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0, 0, 255), new Color(0, 0, 0, 255)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addTag(tag);
@@ -125,7 +123,7 @@ public class TagControllerTest {
 
     @Test
     public void removeTagFromCard() throws Exception {
-        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0, 0, 255), new Color(0, 0, 0, 255)));
         TagDTO tagDTO = new TagDTO(tag, "password");
 
         actualBoard.addColumn(actualColumn);
@@ -147,12 +145,12 @@ public class TagControllerTest {
 
     @Test
     public void updateTag() throws Exception {
-        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0,0), new Color(0,0,0)));
+        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0, 0, 255), new Color(0, 0, 0, 255)));
 
         actualBoard.addTag(tag);
         expectedBoard.addTag(tag);
 
-        Tag updatedTag = new Tag("Tag 1",  new ColorScheme(new Color(1, 0,0), new Color(1,0,0)));
+        Tag updatedTag = new Tag("Tag 1",  new ColorScheme(new Color(1, 0,0, 255), new Color(1,0,0, 255)));
         TagDTO tagDTO = new TagDTO(updatedTag, "password");
 
 

@@ -83,7 +83,10 @@ public class BoardService {
      * @param ip the ip of the server
      */
     public void setServerIP(final String ip) {
-        serverService.setServerIP(ip);
+        String serverIP = ip;
+        if (!ip.startsWith("http://")) serverIP = "http://" + serverIP;
+        if (!ip.contains(":")) serverIP = serverIP + ":8080";
+        serverService.setServerIP(serverIP);
     }
 
     /**
@@ -99,8 +102,8 @@ public class BoardService {
     }
 
     /**
-     * Adds a board to the board list (server initiated)
-     * @return the board returned by the server
+     * Adds a board to the board list
+     * @return the boards present on the client
      */
     public List<Board> getAllBoards() {
         return boardModel.getBoardList();

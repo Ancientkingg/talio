@@ -3,11 +3,7 @@ package commons;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.awt.*;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -19,9 +15,11 @@ public class ColorScheme {
     private long id;
 
     @Getter @Setter
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Color textColor;
 
     @Getter @Setter
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Color backgroundColor;
 
     /**

@@ -93,7 +93,7 @@ public class Card implements Comparable<Card> {
         this.tags = tags == null ? new HashSet<>(0) : tags;
 
         this.isDefaultThemed = true;
-        this.colorScheme = new ColorScheme(Color.black, Color.white); // set default here
+        this.colorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // set default here
     }
 
     /**
