@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -32,6 +34,8 @@ public class HomePageCtrl {
     @FXML
     private Button settingsButton;
 
+    private long lastTimeResize;
+
 
 
     /**
@@ -43,6 +47,11 @@ public class HomePageCtrl {
     public HomePageCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
+    }
+
+    @FXML
+    public void initialize() {
+        this.addResizeListener();
     }
 
     /**
@@ -65,17 +74,30 @@ public class HomePageCtrl {
         mainCtrl.refreshOverview();
     }
 
+    private void addResizeListener() {
+        this.innerBoardCardList.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (System.currentTimeMillis() - this.lastTimeResize < 400) return;
+            this.renderBoards();
+            this.lastTimeResize = System.currentTimeMillis();
+        });
+    }
+
     /**
      * Renders the boards
      */
     protected void renderBoards() {
-        innerBoardCardList.getChildren().clear();
+        this.innerBoardCardList.getChildren().clear();
 
         final List<Board> boardList = boardService.getAllBoards();
 
-        final int rows = (int) Math.round((boardList.size() + 2.0) / 4.0);
+        final Stage primaryStage = mainCtrl.getPrimaryStage();
+        final double windowWidth = primaryStage.getWidth();
+        final double homePageWidth = windowWidth - 60;
+        final int rowSize = (int) Math.floor(homePageWidth / 320);
 
-        for (int i = 0; i < rows * 4; i++) {
+        final int rows = (int) Math.ceil((boardList.size() + 1.0) / rowSize);
+
+        for (int i = 0; i < rows * rowSize; i++) {
 
             if (i < boardList.size()) { // if there are still boards to add
 
@@ -94,8 +116,6 @@ public class HomePageCtrl {
                 innerBoardCardList.getChildren().add(boardCard);
 
             }
-
-
         }
     }
 

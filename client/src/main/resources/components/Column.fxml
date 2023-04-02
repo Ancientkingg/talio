@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="230.0" styleClass="column" stylesheets="@../Style.css" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -19,7 +20,20 @@
     <rowConstraints>
         <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" />
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="CENTER" vgrow="SOMETIMES" />
     </rowConstraints>
+    <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" style="-fx-background-radius: 12px; -fx-border-width: 0px; -fx-background-color: transparent; -fx-padding: 0px; -fx-font-size: 6px;" stylesheets="@../Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+        <GridPane.margin>
+            <Insets bottom="4.0" left="10.0" right="10.0" />
+        </GridPane.margin>
+      <content>
+            <VBox fx:id="innerCardList" alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="7.0" style="-fx-background-color: #f2f2f2; -fx-border-radius: 12px; -fx-background-radius: 12px;" stylesheets="@../Style.css">
+            <padding>
+               <Insets top="18.0" />
+            </padding>
+            </VBox>
+      </content>
+    </ScrollPane>
     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
         <children>
             <TextField fx:id="columnHeading" prefHeight="35.0" prefWidth="193.0" styleClass="card-heading" stylesheets="@../Style.css" text="COLUMN HEADING">
@@ -36,26 +50,15 @@
             </HBox.margin></Button>
         </children>
     </HBox>
-    <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" styleClass="edge-to-edge" stylesheets="@../Style.css" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
-        <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
-        </GridPane.margin>
-      <content>
-            <VBox fx:id="innerCardList" alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="7.0" styleClass="scroll-pane" stylesheets="@../Style.css">
-                <children>
-                    <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="27.0" styleClass="add-card-button" stylesheets="@../Style.css" text="+ ADD CARD" textAlignment="CENTER">
-                        <font>
-                            <Font name="Segoe UI" size="14.0" />
-                        </font>
-                  <VBox.margin>
-                     <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                  </VBox.margin>
-                    </Button>
-                </children>
-            <padding>
-               <Insets top="18.0" />
-            </padding>
-            </VBox>
-      </content>
-    </ScrollPane>
+        <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="199.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD CARD" textAlignment="CENTER" GridPane.rowIndex="2">
+            <font>
+                <Font name="Segoe UI" size="14.0" />
+            </font>
+      <graphic>
+         <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-37.0" translateY="1.0" />
+      </graphic>
+      <GridPane.margin>
+         <Insets bottom="3.0" />
+      </GridPane.margin>
+        </Button>
 </fx:root>

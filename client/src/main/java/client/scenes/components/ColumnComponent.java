@@ -15,6 +15,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollBar;
 
 import java.io.IOException;
 import java.util.SortedSet;
@@ -87,11 +88,6 @@ public class ColumnComponent extends GridPane {
         });
 
         setUpDragAndDrop(overviewCtrl);
-
-        // Make the column unable to scroll horizontally
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         refresh();
     }
@@ -183,6 +179,6 @@ public class ColumnComponent extends GridPane {
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());
-        innerCardList.getChildren().add(this.addCardButton);
+//        innerCardList.getChildren().add(this.addCardButton);
     }
 }

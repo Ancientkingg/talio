@@ -84,7 +84,7 @@
                               </Button>
                            </children>
                            <padding>
-                              <Insets left="37.0" right="37.0" top="26.0" />
+                              <Insets bottom="10.0" left="37.0" right="37.0" top="26.0" />
                            </padding>
                         </HBox>
                         </content>
