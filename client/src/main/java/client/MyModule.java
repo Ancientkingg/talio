@@ -30,7 +30,5 @@ public class MyModule implements Module {
     public void configure(final Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(OverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(JoinBoardCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
     }
 }
