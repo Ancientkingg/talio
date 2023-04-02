@@ -95,9 +95,6 @@ public class HomePageCtrl {
         final double homePageWidth = windowWidth - this.innerBoardCardList.getPadding().getLeft();
         final int rowSize = (int) Math.floor(homePageWidth / 313);
 
-        System.out.println("Window width: " + windowWidth);
-        System.out.println("Home page width: " + homePageWidth);
-        System.out.println("Row size: " + rowSize);
 
         final int rows = (int) Math.ceil((boardList.size() + 1.0) / rowSize);
 
