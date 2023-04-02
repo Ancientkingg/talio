@@ -213,16 +213,28 @@ public class ServerService {
      * @param destinationColumn column to which card is being moved
      * @param card              card to be moved
      * @param newPosition       new index of the card
-     * but compiler was complaining when I made return type of this method Column.
      */
     public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
-        session.send("/app/cards/reposition/" +
-            board.getJoinKey() + "/" +
-            column.getId() + "/" +
-            destinationColumn.getId() + "/" +
-            newPosition,
-            new CardDTO(card, board.getPassword()));
-        logger.info("Repositioned card sent to server");
+        try (Client client = ClientBuilder.newClient()) {
+            final Card movedCard = client.target(serverIP)
+                    .path("/cards")
+                    .path("/reposition")
+                    .path(board.getJoinKey())
+                    .path(String.valueOf(column.getId()))
+                    .path(String.valueOf(destinationColumn.getId()))
+                    .path(String.valueOf(newPosition))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
+            logger.info("Repositioned card sent to server");
+        }
+//        }
+//        session.send("/app/cards/reposition/" +
+//            board.getJoinKey() + "/" +
+//            column.getId() + "/" +
+//            destinationColumn.getId() + "/" +
+//            newPosition,
+//            new CardDTO(card, board.getPassword()));
+//        logger.info("Repositioned card sent to server");
     }
 
     /**
