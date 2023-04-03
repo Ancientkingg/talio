@@ -116,7 +116,8 @@ public class CardController {
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = board.getCard(cardDTO.getCard().getId());
+        final Card clientCard = cardDTO.getCard();
+        final Card card = new Card(clientCard.getId(), clientCard.getTitle(), newPosition, clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
         final Column sourceColumn = board.getColumnById(sourceColumnId);
         final Column destinationColumn = board.getColumnById(destinationColumnId);
 
@@ -124,13 +125,12 @@ public class CardController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
         }
 
-        if (sourceColumnId == destinationColumnId && newPosition != card.getPriority()) {
+        if (sourceColumnId == destinationColumnId && newPosition != clientCard.getPriority()) {
             sourceColumn.updateCardPosition(card, newPosition);
         }
         else {
-            if (!sourceColumn.getCards().remove(card))
+            if (!sourceColumn.getCards().remove(clientCard))
                 throw new RuntimeException("Could not remove card when trying to reposition");
-            card.setPriority(newPosition);
             destinationColumn.addCard(card);
         }
 
