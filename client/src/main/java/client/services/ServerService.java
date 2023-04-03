@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.GenericType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
@@ -87,7 +88,7 @@ public class ServerService {
             logger.info("Board request sent to server: " + joinKey);
             return board;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The Board couldn't be retrieved from the Server: \n" + getServerIP());
         }
     }
@@ -107,7 +108,7 @@ public class ServerService {
             logger.info("Board request sent to server: " + joinKeys);
             return boards;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The Boards couldn't be retrieved from the Server: \n" + getServerIP());
         }
     }
@@ -127,7 +128,7 @@ public class ServerService {
             logger.info("Created board sent to server: " + board.getJoinKey());
             return addedBoard;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The Board couldn't be added to the Server: \n" + getServerIP());
         }
     }
@@ -151,7 +152,7 @@ public class ServerService {
             logger.info("Added column sent to server: " + column.getHeading());
             return addedColumn;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The column couldn't be added to the server.");
         }
     }
@@ -174,7 +175,7 @@ public class ServerService {
             logger.info("Removed column sent to server: " + column.getHeading());
             return removedColumn;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The Column couldn't be removed from the Server: \n" + getServerIP());
         }
     }
@@ -198,7 +199,7 @@ public class ServerService {
             logger.info("Added card sent to server");
             return addedCard;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The Card couldn't be added to the Server: \n" + getServerIP());
         }
     }
@@ -222,7 +223,7 @@ public class ServerService {
             logger.info("Removed card sent to server");
             return removedCard;
         }
-        catch (ServerException e) {
+        catch (ResponseStatusException e) {
             throw new ServerException("The Card couldn't be removed from the Server: \n" + getServerIP());
         }
     }
@@ -238,13 +239,18 @@ public class ServerService {
      * but compiler was complaining when I made return type of this method Column.
      */
     public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) throws ServerException {
-        session.send("/app/cards/reposition/" +
-            board.getJoinKey() + "/" +
-            column.getId() + "/" +
-            destinationColumn.getId() + "/" +
-            newPosition,
-            new CardDTO(card, board.getPassword()));
-        logger.info("Repositioned card sent to server");
+        try {
+            session.send("/app/cards/reposition/" +
+                            board.getJoinKey() + "/" +
+                            column.getId() + "/" +
+                            destinationColumn.getId() + "/" +
+                            newPosition,
+                    new CardDTO(card, board.getPassword()));
+            logger.info("Repositioned card sent to server");
+        }
+        catch (ResponseStatusException e) {
+            throw new ServerException("The Card couldn't be repositioned on the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -253,13 +259,18 @@ public class ServerService {
      * @param card Card to edit
      * @param column Column card is in
      */
-    public void editCard(final Board board, final Card card, final Column column) {
-        session.send("/app/cards/edit/" +
-            board.getJoinKey() + "/" +
-            column.getId() + "/" +
-            column.getId(),
-            new CardDTO(card, board.getPassword()));
-        logger.info("Edited card sent to server");
+    public void editCard(final Board board, final Card card, final Column column) throws ServerException {
+        try {
+            session.send("/app/cards/edit/" +
+                            board.getJoinKey() + "/" +
+                            column.getId() + "/" +
+                            column.getId(),
+                    new CardDTO(card, board.getPassword()));
+            logger.info("Edited card sent to server");
+        }
+        catch (ResponseStatusException e) {
+            throw new ServerException("The Card couldn't be edited on the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -267,13 +278,18 @@ public class ServerService {
      * @param board Board for join key
      * @param column Column to rename
      */
-    public void renameColumn(final Board board, final Column column) {
-        session.send("/app/columns/rename/" +
-                board.getJoinKey() + "/" +
-                column.getId() + "/" +
-                column.getHeading(),
-                board.getPassword());
-        logger.info("Renamed column sent to server");
+    public void renameColumn(final Board board, final Column column) throws ServerException {
+        try {
+            session.send("/app/columns/rename/" +
+                            board.getJoinKey() + "/" +
+                            column.getId() + "/" +
+                            column.getHeading(),
+                    board.getPassword());
+            logger.info("Renamed column sent to server");
+        }
+        catch (ResponseStatusException e) {
+            throw new ServerException("The Column couldn't be renamed on the Server: \n" + getServerIP());
+        }
     }
 
     /**

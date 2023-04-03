@@ -114,28 +114,32 @@ public class CardController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
         }
 
-        final String password = cardDTO.password();
+        try {
+            final String password = cardDTO.password();
 
-        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+            final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = cardDTO.getCard();
-        final Column sourceColumn = board.getColumnById(sourceColumnId);
-        final Column destinationColumn = board.getColumnById(destinationColumnId);
+            final Card card = cardDTO.getCard();
+            final Column sourceColumn = board.getColumnById(sourceColumnId);
+            final Column destinationColumn = board.getColumnById(destinationColumnId);
 
-        if (sourceColumnId == destinationColumnId && newPosition != card.getPriority()) {
-            sourceColumn.updateCardPosition(card, newPosition);
+            if (sourceColumnId == destinationColumnId && newPosition != card.getPriority()) {
+                sourceColumn.updateCardPosition(card, newPosition);
+            } else {
+                sourceColumn.getCards().remove(card);
+                card.setPriority(newPosition);
+                destinationColumn.addCard(card);
+            }
+
+            boardService.saveBoard(board);
+
+            updateCardRepositioned(joinKey, sourceColumnId, destinationColumnId, card, newPosition);
+
+            return sourceColumn;
         }
-        else {
-            sourceColumn.getCards().remove(card);
-            card.setPriority(newPosition);
-            destinationColumn.addCard(card);
+        catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getStackTrace().toString());
         }
-
-        boardService.saveBoard(board);
-
-        updateCardRepositioned(joinKey, sourceColumnId, destinationColumnId, card, newPosition);
-
-        return sourceColumn;
     }
 
     /**
@@ -147,23 +151,28 @@ public class CardController {
      * @return The card updated in CardRepository
      */
     @MessageMapping("/cards/edit/{joinKey}/{columnId}")
-    public ResponseEntity<Card> editCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
+    public Card editCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                          @DestinationVariable final long columnId)
     {
-        final String password = cardDTO.getPassword();
+        try {
+            final String password = cardDTO.getPassword();
 
-        final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
+            final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = cardDTO.getCard();
-        final Column column = board.getColumnById(columnId);
+            final Card card = cardDTO.getCard();
+            final Column column = board.getColumnById(columnId);
 
-        column.updateCard(card);
+            column.updateCard(card);
 
-        boardService.saveBoard(board);
+            boardService.saveBoard(board);
 
-        updateCardEdited(joinKey, columnId, card);
+            updateCardEdited(joinKey, columnId, card);
 
-        return ResponseEntity.ok(card);
+            return card;
+        }
+        catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Runtime Exception when repositioning card.");
+        }
     }
 
     /**
