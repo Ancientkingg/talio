@@ -180,7 +180,7 @@ public class CardController {
      */
     public void updateCardRepositioned(final String joinKey, final long columnId, final long destinationColumnId, final Card card, final int newPosition) {
         logger.info("Propagating card repositioned for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/reposition,", new CardDTO(card, columnId, destinationColumnId, newPosition));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/reposition", new CardDTO(card, columnId, destinationColumnId, newPosition));
     }
 
     /**
