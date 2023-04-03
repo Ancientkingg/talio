@@ -54,7 +54,7 @@ public class JoinServerCtrl {
             url = "http://" + url;
 
         if (!url.matches("/.*:\\d{1,5}/gs"))  // checks if string ends with a colon followed by 1 to 5 digits
-            url = url + "8080"; // if not, add ':8080' as default port number
+            url = url + ":8080"; // if not, add ':8080' as default port number
 
 
         try {
