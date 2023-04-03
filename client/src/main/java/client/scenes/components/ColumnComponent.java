@@ -93,8 +93,7 @@ public class ColumnComponent extends GridPane {
 
     private void addTextChangeListener(final BoardService boardService, final Column column) {
         columnHeading.textProperty().addListener((observable, oldValue, newValue) -> { // Save the heading of the column
-            column.setHeading(newValue);
-            boardService.updateColumn(column);
+            boardService.renameColumn(column, newValue);
         });
     }
 
