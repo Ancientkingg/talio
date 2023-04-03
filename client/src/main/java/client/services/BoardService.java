@@ -261,7 +261,7 @@ public class BoardService {
      */
     public void updateRepositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
-        mainCtrl.refreshOverview();
+        mainCtrl.refreshOverviewColumns(columnFromIdx, columnToIdx);
     }
 
     /**

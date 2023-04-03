@@ -113,4 +113,8 @@ public class MainCtrl {
         return primaryStage.getScene();
     }
 
+    public void refreshOverviewColumns(final long columnFromIdx, final long columnToIdx) {
+        overviewCtrl.refreshColumn(columnFromIdx);
+        overviewCtrl.refreshColumn(columnToIdx);
+    }
 }
