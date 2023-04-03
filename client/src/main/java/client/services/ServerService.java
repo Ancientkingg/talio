@@ -1,5 +1,6 @@
 package client.services;
 
+import client.exceptions.ServerException;
 import client.utils.SessionHandler;
 import client.utils.SocketThread;
 import commons.Board;
@@ -75,7 +76,7 @@ public class ServerService {
      * @param joinKey the join-key used to identify the board
      * @return the board that was retrieved
      */
-    public Board getBoard(final String joinKey) {
+    public Board getBoard(final String joinKey) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Board board = client.target(serverIP)
                     .path("/boards")
@@ -86,6 +87,9 @@ public class ServerService {
             logger.info("Board request sent to server: " + joinKey);
             return board;
         }
+        catch (ServerException e) {
+            throw new ServerException("The Board couldn't be retrieved from the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -93,7 +97,7 @@ public class ServerService {
      * @param joinKeys the join-keys used to identify the boards
      * @return the boards that were retrieved
      */
-    public List<Board> getAllBoards(final List<String> joinKeys) {
+    public List<Board> getAllBoards(final List<String> joinKeys) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final List<Board> boards = client.target(serverIP)
                     .path("/boards")
@@ -103,6 +107,9 @@ public class ServerService {
             logger.info("Board request sent to server: " + joinKeys);
             return boards;
         }
+        catch (ServerException e) {
+            throw new ServerException("The Boards couldn't be retrieved from the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -110,7 +117,7 @@ public class ServerService {
      * @param board the board to be added/created
      * @return the board that was created by the server (with id)
      */
-    public Board addBoard(final Board board) {
+    public Board addBoard(final Board board) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Board addedBoard =  client.target(serverIP)
                     .path("/boards")
@@ -120,6 +127,9 @@ public class ServerService {
             logger.info("Created board sent to server: " + board.getJoinKey());
             return addedBoard;
         }
+        catch (ServerException e) {
+            throw new ServerException("The Board couldn't be added to the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -128,10 +138,10 @@ public class ServerService {
      * @param column the column to be added/created
      * @return the column that was created by the server (with id)
      */
-    public Column addColumn(final Board board, final Column column) {
+    public Column addColumn(final Board board, final Column column) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Column addedColumn = client.target(serverIP)
-                    .path("/columns")
+                    .path("/columns test")
                     .path("/create")
                     .path(board.getJoinKey())
                     .path(column.getHeading())
@@ -141,6 +151,9 @@ public class ServerService {
             logger.info("Added column sent to server: " + column.getHeading());
             return addedColumn;
         }
+        catch (ServerException e) {
+            throw new ServerException("The column couldn't be added to the server.");
+        }
     }
 
     /**
@@ -149,7 +162,7 @@ public class ServerService {
      * @param column the column to be removed
      * @return the column that was removed by the server
      */
-    public Column removeColumn(final Board board, final Column column) {
+    public Column removeColumn(final Board board, final Column column) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Column removedColumn = client.target(serverIP)
                     .path("/columns")
@@ -161,6 +174,9 @@ public class ServerService {
             logger.info("Removed column sent to server: " + column.getHeading());
             return removedColumn;
         }
+        catch (ServerException e) {
+            throw new ServerException("The Column couldn't be removed from the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -170,7 +186,7 @@ public class ServerService {
      * @param card the column to be added/created
      * @return the card that was created by the server (with id)
      */
-    public Card addCard(final Board board, final Column column, final Card card) {
+    public Card addCard(final Board board, final Column column, final Card card) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Card addedCard = client.target(serverIP)
                     .path("/cards")
@@ -182,6 +198,9 @@ public class ServerService {
             logger.info("Added card sent to server");
             return addedCard;
         }
+        catch (ServerException e) {
+            throw new ServerException("The Card couldn't be added to the Server: \n" + getServerIP());
+        }
     }
 
     /**
@@ -191,7 +210,7 @@ public class ServerService {
      * @param card the card to be removed
      * @return The card that was removed by the server
      */
-    public Card removeCard(final Board board, final Column column, final Card card) {
+    public Card removeCard(final Board board, final Column column, final Card card) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Card removedCard = client.target(serverIP)
                     .path("/cards")
@@ -202,6 +221,9 @@ public class ServerService {
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
             logger.info("Removed card sent to server");
             return removedCard;
+        }
+        catch (ServerException e) {
+            throw new ServerException("The Card couldn't be removed from the Server: \n" + getServerIP());
         }
     }
 
@@ -215,7 +237,7 @@ public class ServerService {
      * @param newPosition       new index of the card
      * but compiler was complaining when I made return type of this method Column.
      */
-    public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
+    public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) throws ServerException {
         session.send("/app/cards/reposition/" +
             board.getJoinKey() + "/" +
             column.getId() + "/" +

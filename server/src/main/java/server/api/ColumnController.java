@@ -139,7 +139,7 @@ public class ColumnController {
      * @param columnId Column that was removed
      */
     public void updateColumnRemoved(final String joinKey, final long columnId) {
-        logger.info("Propagating column change to: " + joinKey);
+        logger.info("Propagating column removed to: " + joinKey);
         messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/remove", columnId);
     }
 }

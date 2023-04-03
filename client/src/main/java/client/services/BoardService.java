@@ -1,8 +1,10 @@
 package client.services;
 
 import client.exceptions.BoardChangeException;
+import client.exceptions.ServerException;
 import client.models.BoardModel;
 import client.scenes.MainCtrl;
+import client.scenes.components.InfoModal;
 import commons.Board;
 import commons.Card;
 import commons.Column;
@@ -149,10 +151,26 @@ public class BoardService {
      * @return the column returned by the server
      * @throws BoardChangeException if the column cannot be added
      */
-    public Column addColumnToCurrentBoard(final Column column) throws BoardChangeException {
-        final Column serverColumn = serverService.addColumn(this.boardModel.getCurrentBoard(), column);
-        boardModel.addColumn(serverColumn);
-        return serverColumn;
+    public void addColumnToCurrentBoard(final Column column) {
+        try {
+            boardModel.addColumn(column);
+        }
+        catch (BoardChangeException e) {
+            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The column couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            return;
+        }
+
+        try {
+            serverService.addColumn(this.boardModel.getCurrentBoard(), column);
+        }
+        catch (ServerException e) {
+            boardModel.removeColumn(column);
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            return;
+        }
+
     }
 
     /**
@@ -243,9 +261,9 @@ public class BoardService {
      */
     public void repositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
+        mainCtrl.refreshOverview();
 
         final Board board = this.boardModel.getCurrentBoard();
-
         serverService.repositionCard(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
     }
 

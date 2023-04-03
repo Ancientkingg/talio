@@ -110,6 +110,10 @@ public class CardController {
                                  @DestinationVariable final long sourceColumnId, @DestinationVariable final int newPosition,
                                  @PathVariable @DestinationVariable final long destinationColumnId)
     {
+        if (newPosition < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
+        }
+
         final String password = cardDTO.password();
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
@@ -117,10 +121,6 @@ public class CardController {
         final Card card = cardDTO.getCard();
         final Column sourceColumn = board.getColumnById(sourceColumnId);
         final Column destinationColumn = board.getColumnById(destinationColumnId);
-
-        if (newPosition < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new position must be a positive integer");
-        }
 
         if (sourceColumnId == destinationColumnId && newPosition != card.getPriority()) {
             sourceColumn.updateCardPosition(card, newPosition);
