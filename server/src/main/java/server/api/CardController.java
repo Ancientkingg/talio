@@ -130,9 +130,8 @@ public class CardController {
         else {
             if (!sourceColumn.getCards().remove(card))
                 throw new RuntimeException("Could not remove card when trying to reposition");
-
-            final Card newCard = new Card(card.getTitle(), newPosition, card.getDescription(), card.getSubtasks(), card.getTags());
-            destinationColumn.addCard(newCard);
+            card.setPriority(newPosition);
+            destinationColumn.addCard(card);
         }
 
         boardService.saveBoard(board);
