@@ -138,7 +138,7 @@ public class CardController {
             return sourceColumn;
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getStackTrace().toString());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
 
@@ -171,7 +171,7 @@ public class CardController {
             return card;
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Runtime Exception when repositioning card.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
 

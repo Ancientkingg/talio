@@ -42,19 +42,19 @@ public class ColumnController {
      * @param joinKey Key used to identify board
      * @param columnHeading Heading of column to be added
      * @param password Password to board
+     * @param columnId Id for column
      * @param index Index of column to be added
      * @return The Column added to the ColumnRepository
      */
-    @PostMapping("/columns/create/{joinKey}/{columnHeading}")
+    @PostMapping("/columns/create/{joinKey}/{columnHeading}/{columnId}")
     public ResponseEntity<Column> addColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
-                                            @RequestBody(required = false) final String password, @RequestParam final int index)
+                                            @PathVariable final String columnId, @RequestBody(required = false) final String password, @RequestParam final int index)
     {
         try {
             final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
 
-            final Column column = new Column(columnHeading, index, new TreeSet<>());
-            column.generateId();
+            final Column column = new Column(Long.valueOf(columnId), columnHeading, index, new TreeSet<>());
 
             board.addColumn(column);
             boardService.saveBoard(board);
@@ -64,7 +64,7 @@ public class ColumnController {
             return ResponseEntity.ok(column);
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Runtime Exception when adding column.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
 
@@ -93,7 +93,7 @@ public class ColumnController {
             return ResponseEntity.ok(toBeRemoved);
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Runtime Exception when removing column.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
 
@@ -122,7 +122,7 @@ public class ColumnController {
             return toBeRenamed;
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Runtime Exception when renaming column.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
 

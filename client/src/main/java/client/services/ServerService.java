@@ -142,17 +142,18 @@ public class ServerService {
     public Column addColumn(final Board board, final Column column) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final Column addedColumn = client.target(serverIP)
-                    .path("/columns test")
+                    .path("/columns")
                     .path("/create")
                     .path(board.getJoinKey())
                     .path(column.getHeading())
+                    .path(Long.toString(column.getId()))
                     .queryParam("index", column.getIndex())
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board.getPassword(), APPLICATION_JSON), Column.class);
             logger.info("Added column sent to server: " + column.getHeading());
             return addedColumn;
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The column couldn't be added to the server.");
         }
     }
@@ -175,7 +176,7 @@ public class ServerService {
             logger.info("Removed column sent to server: " + column.getHeading());
             return removedColumn;
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The Column couldn't be removed from the Server: \n" + getServerIP());
         }
     }
@@ -199,7 +200,7 @@ public class ServerService {
             logger.info("Added card sent to server");
             return addedCard;
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be added to the Server: \n" + getServerIP());
         }
     }
@@ -223,7 +224,7 @@ public class ServerService {
             logger.info("Removed card sent to server");
             return removedCard;
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be removed from the Server: \n" + getServerIP());
         }
     }
@@ -248,7 +249,7 @@ public class ServerService {
                     new CardDTO(card, board.getPassword()));
             logger.info("Repositioned card sent to server");
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be repositioned on the Server: \n" + getServerIP());
         }
     }
@@ -268,7 +269,7 @@ public class ServerService {
                     new CardDTO(card, board.getPassword()));
             logger.info("Edited card sent to server");
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be edited on the Server: \n" + getServerIP());
         }
     }
@@ -287,7 +288,7 @@ public class ServerService {
                     board.getPassword());
             logger.info("Renamed column sent to server");
         }
-        catch (ResponseStatusException e) {
+        catch (RuntimeException e) {
             throw new ServerException("The Column couldn't be renamed on the Server: \n" + getServerIP());
         }
     }

@@ -93,6 +93,7 @@ public class OverviewCtrl {
      */
     public void createColumn() throws BoardChangeException {
         final Column column = new Column(getFunColumnName(), highestIndex++, new TreeSet<>());
+        column.generateId();
         boardService.addColumnToCurrentBoard(column);
         mainCtrl.refreshOverview();
     }
