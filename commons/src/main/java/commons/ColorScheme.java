@@ -6,11 +6,10 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.awt.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class ColorScheme implements Serializable {
+public class ColorScheme {
 
     @Id @Getter @Setter
     private Color textColor;
