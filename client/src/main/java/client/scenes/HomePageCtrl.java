@@ -100,7 +100,7 @@ public class HomePageCtrl {
 
         final List<Board> boardList = boardService.getAllBoards();
 
-        int rowSize = this.getRowSize();
+        final int rowSize = this.getRowSize();
 
 
         final int rows = (int) Math.ceil((boardList.size() + 1.0) / rowSize);
