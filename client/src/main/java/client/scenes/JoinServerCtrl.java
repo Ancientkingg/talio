@@ -43,19 +43,20 @@ public class JoinServerCtrl {
 
         if (url == null || url.equals(""))
             url = defaultURL;
-        else if (url.startsWith("https://")) {
-            final InfoModal errorModal = new InfoModal(boardService, "Invalid Input",
-                    "Secure URLs are not supported. Use 'http' instead of 'https'", mainCtrl.getCurrentScene());
-            errorModal.showModal();
-            return;
+        else {
+            if (url.startsWith("https://")) {
+                final InfoModal errorModal = new InfoModal(boardService, "Invalid Input",
+                        "Secure URLs are not supported. Use 'http' instead of 'https'", mainCtrl.getCurrentScene());
+                errorModal.showModal();
+                return;
+            }
+
+            if (!url.startsWith("http://"))
+                url = "http://" + url;
+
+            if (!url.matches("/http://.*?:\\d*/gs"))  // checks if string ends with a colon followed by 1 to 5 digits
+                url = url + ":8080"; // if not, add ':8080' as default port number
         }
-
-        if (!url.startsWith("http://"))
-            url = "http://" + url;
-
-        if (!url.matches("/.*:\\d{1,5}/gs"))  // checks if string ends with a colon followed by 1 to 5 digits
-            url = url + ":8080"; // if not, add ':8080' as default port number
-
 
         try {
             new URL(url).toURI();
