@@ -33,7 +33,7 @@ public class HomePageCtrl {
     @FXML
     private Button settingsButton;
 
-    private long lastTimeResize;
+    private int lastRowSize;
 
 
 
@@ -78,10 +78,18 @@ public class HomePageCtrl {
 
     private void addResizeListener() {
         this.innerBoardCardList.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (System.currentTimeMillis() > this.lastTimeResize && System.currentTimeMillis() - this.lastTimeResize < 125) return;
+            final int rowSize = this.getRowSize();
+            if (this.lastRowSize == rowSize) return;
             this.renderBoards();
-            this.lastTimeResize = System.currentTimeMillis();
+            this.lastRowSize = rowSize;
         });
+    }
+
+    private int getRowSize() {
+        final Stage primaryStage = mainCtrl.getPrimaryStage();
+        final double windowWidth = primaryStage.getWidth();
+        final double homePageWidth = windowWidth - this.innerBoardCardList.getPadding().getLeft();
+        return (int) Math.floor(homePageWidth / 313);
     }
 
     /**
@@ -92,10 +100,7 @@ public class HomePageCtrl {
 
         final List<Board> boardList = boardService.getAllBoards();
 
-        final Stage primaryStage = mainCtrl.getPrimaryStage();
-        final double windowWidth = primaryStage.getWidth();
-        final double homePageWidth = windowWidth - this.innerBoardCardList.getPadding().getLeft();
-        final int rowSize = (int) Math.floor(homePageWidth / 313);
+        int rowSize = this.getRowSize();
 
 
         final int rows = (int) Math.ceil((boardList.size() + 1.0) / rowSize);
