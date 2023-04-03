@@ -134,7 +134,7 @@ public class TagController {
      *
      * @return The tag updated on board
      */
-    @MessageMapping("/edit/{joinKey}/")
+    @MessageMapping("/tags/edit/{joinKey}/")
     public Tag editTag(@Valid final TagDTO tagDTO, @DestinationVariable final String joinKey) {
         final String password = tagDTO.password();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
