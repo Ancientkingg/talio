@@ -54,7 +54,8 @@ public class CardController {
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card clientCard = cardDTO.card();
-        final Card card = new Card(clientCard.getTitle(), clientCard.getPriority(), clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
+        final Card card = new Card(clientCard.getTitle(), clientCard.getPriority(),
+                clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
 
         card.generateId();
         try {
@@ -117,7 +118,8 @@ public class CardController {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card clientCard = cardDTO.getCard();
-        final Card card = new Card(clientCard.getId(), clientCard.getTitle(), newPosition, clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
+        final Card card = new Card(clientCard.getId(), clientCard.getTitle(),
+                newPosition, clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
         final Column sourceColumn = board.getColumnById(sourceColumnId);
         final Column destinationColumn = board.getColumnById(destinationColumnId);
 
