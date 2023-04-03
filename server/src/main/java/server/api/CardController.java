@@ -53,8 +53,10 @@ public class CardController {
 
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = cardDTO.card();
+        final Card clientCard = cardDTO.card();
+        final Card card = new Card(clientCard.getTitle(), clientCard.getPriority(), clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
 
+        card.generateId();
         try {
             board.addCardToColumn(card, columnId);
         } catch (ColumnNotFoundException e) {
@@ -114,7 +116,7 @@ public class CardController {
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = cardDTO.getCard();
+        final Card card = board.getCard(cardDTO.getCard().getId());
         final Column sourceColumn = board.getColumnById(sourceColumnId);
         final Column destinationColumn = board.getColumnById(destinationColumnId);
 
