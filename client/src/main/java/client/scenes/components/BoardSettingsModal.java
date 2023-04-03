@@ -30,7 +30,13 @@ public class BoardSettingsModal extends Modal {
 
     private final OverviewCtrl parentCtrl;
 
-    public BoardSettingsModal(BoardService boardService, Scene parentScene, OverviewCtrl parentCtrl) {
+    /**
+     * Constructor for BoardSettingsModal
+     * @param boardService boardService instance
+     * @param parentScene parent scene (displayed under modal)
+     * @param parentCtrl parent controller (used to refresh board)
+     */
+    public BoardSettingsModal(final BoardService boardService, final Scene parentScene, final OverviewCtrl parentCtrl) {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
 
@@ -45,6 +51,9 @@ public class BoardSettingsModal extends Modal {
         }
     }
 
+    /**
+     * Initialize modal
+     */
     @FXML
     public void initialize() {
         super.initialize();
