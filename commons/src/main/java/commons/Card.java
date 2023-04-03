@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 @Entity
 public class Card implements Comparable<Card> {
@@ -24,7 +22,7 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private String description;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @Getter @Setter
     private List<SubTask> subtasks;
 
