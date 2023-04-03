@@ -40,7 +40,7 @@ Modal
 .modalDescriptionText {
     -fx-text-fill: #f8f8f8;
     -fx-font-family: Cabin;
-    -fx-font-size: 13;
+    -fx-font-size: 15;
 }
 
 .modalToolbar {
@@ -74,6 +74,7 @@ Modal
     -fx-border-width: 1;
     -fx-border-color: #181818;
     -fx-text-fill: #181818;
+    -fx-font-size: 15;
 }
 
 .modalOkButton:hover {
