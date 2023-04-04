@@ -56,8 +56,8 @@ public class CardControllerTest {
         actualBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         expectedBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
 
-        actualColumn = new Column(1, 1, "Column 1", new TreeSet<>());
-        expectedColumn = new Column(1, 1, "Column 1", new TreeSet<>());
+        actualColumn = new Column(1, "Column 1", 1, new TreeSet<>());
+        expectedColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
 
         when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
         when(boardService.saveBoard(any(Board.class))).thenReturn(actualBoard);

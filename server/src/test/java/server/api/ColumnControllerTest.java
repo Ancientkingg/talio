@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Board;
 import commons.Column;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -48,7 +47,7 @@ public class ColumnControllerTest {
     @Test
     public void addColumnToBoardWithPasswordTest() throws Exception {
 
-        Column addedColumn = new Column(0, 1, "Column 1", new TreeSet<>());
+        Column addedColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
 
         Board initialBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         Board finalBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
@@ -71,7 +70,7 @@ public class ColumnControllerTest {
     @Test
     public void addColumnToBoardWithoutPasswordTest() throws Exception {
 
-        Column addedColumn = new Column(1, 1, "Column 1", new TreeSet<>());
+        Column addedColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
 
         Board initialBoard = new Board("joinkey", "Board 1", null, new TreeSet<>(), new Timestamp(12345L));
         Board finalBoard = new Board("joinkey", "Board 1", null, new TreeSet<>(), new Timestamp(12345L));
@@ -94,7 +93,7 @@ public class ColumnControllerTest {
     @Test
     public void removeColumnFromBoardWithPasswordTest() throws Exception {
 
-        Column toBeRemovedColumn = new Column(1, 1, "Column 1", new TreeSet<>());
+        Column toBeRemovedColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
 
         Board initialBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
         Board finalBoard = new Board("joinkey", "Board 1", "password", new TreeSet<>(), new Timestamp(12345L));
@@ -117,7 +116,7 @@ public class ColumnControllerTest {
     @Test
     public void removeColumnFromBoardWithoutPasswordTest() throws Exception {
 
-        Column toBeRemovedColumn = new Column(1, 1, "Column 1", new TreeSet<>());
+        Column toBeRemovedColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
 
         Board initialBoard = new Board("joinkey", "Board 1", null, new TreeSet<>(), new Timestamp(12345L));
         Board finalBoard = new Board("joinkey", "Board 1", null, new TreeSet<>(), new Timestamp(12345L));
