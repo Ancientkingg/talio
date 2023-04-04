@@ -39,8 +39,6 @@ Tags
 .smallTag {
     -fx-background-radius: 20px;
     -fx-border-radius: 5px;
-    -fx-border-width: 1;
-    -fx-border-color: black;
 }
 
 .tagTitleText {

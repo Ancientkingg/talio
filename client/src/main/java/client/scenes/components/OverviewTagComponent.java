@@ -68,8 +68,12 @@ public class OverviewTagComponent extends GridPane {
         tt.setAutoHide(false);
         tt.setFont(javafx.scene.text.Font.font("System", 12));
         Tooltip.install(this, tt);
-        tagBackground.setStyle("-fx-background-color: #ffaa00;" +
-                "-fx-border-color: #bb5500"); // TODO: Change to colorScheme
+
+        // Set background color to a random color if it's not set yet
+        if (colorScheme.getBackgroundColor().equals(new Color(0, 0, 0, 0)))
+            colorScheme.setBackgroundColor(new Color(colorGenerator()));
+
+        tagBackground.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor());
     }
 
     /**
