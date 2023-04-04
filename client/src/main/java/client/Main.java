@@ -33,6 +33,7 @@ public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
     public static final MyFXML FXML = new MyFXML(INJECTOR);
+    public static final float[] SCREEN_SIZE = {1366, 768};
 
     /**
      * The main method of the client

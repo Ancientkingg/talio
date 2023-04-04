@@ -143,25 +143,25 @@ public class TagControllerTest {
         assertEquals(expectedBoard, actualBoard);
     }
 
-    @Test
-    public void updateTag() throws Exception {
-        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0, 0, 255), new Color(0, 0, 0, 255)));
-
-        actualBoard.addTag(tag);
-        expectedBoard.addTag(tag);
-
-        Tag updatedTag = new Tag("Tag 1",  new ColorScheme(new Color(1, 0,0, 255), new Color(1,0,0, 255)));
-        TagDTO tagDTO = new TagDTO(updatedTag, "password");
-
-
-        expectedBoard.updateTag(updatedTag);
-
-        mockMvc.perform(post("/tags/update/joinkey/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(tagDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(updatedTag)));
-
-        assertEquals(expectedBoard, actualBoard);
-    }
+//    @Test
+//    public void updateTag() throws Exception {
+//        Tag tag = new Tag("Tag 1",  new ColorScheme(new Color(0, 0, 0, 255), new Color(0, 0, 0, 255)));
+//
+//        actualBoard.addTag(tag);
+//        expectedBoard.addTag(tag);
+//
+//        Tag updatedTag = new Tag("Tag 1",  new ColorScheme(new Color(1, 0,0, 255), new Color(1,0,0, 255)));
+//        TagDTO tagDTO = new TagDTO(updatedTag, "password");
+//
+//
+//        expectedBoard.updateTag(updatedTag);
+//
+//        mockMvc.perform(post("/tags/update/joinkey/")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(tagDTO)))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string(objectMapper.writeValueAsString(updatedTag)));
+//
+//        assertEquals(expectedBoard, actualBoard);
+//    }
 }

@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import static client.Main.SCREEN_SIZE;
+
 public class MainCtrl {
 
 
@@ -51,13 +53,26 @@ public class MainCtrl {
 //        showOverview();
     }
 
+    private void saveStageSize() {
+        SCREEN_SIZE[0] = (float) primaryStage.getWidth();
+        SCREEN_SIZE[1] = (float) primaryStage.getHeight();
+    }
+
+    private void loadStageSize() {
+        primaryStage.setWidth(SCREEN_SIZE[0]);
+        primaryStage.setHeight(SCREEN_SIZE[1]);
+
+    }
+
     /**
      * Shows homePage stage in primaryStage
      */
     public void showHomePage() {
+        saveStageSize();
         primaryStage.setTitle("Talio: Home Page");
         primaryStage.setScene(homePageScene);
         homePageCtrl.loadBoards();
+        loadStageSize();
         primaryStage.show();
     }
 
@@ -65,9 +80,10 @@ public class MainCtrl {
      * Shows overview stage in primaryStage
      */
     public void showOverview() {
+        saveStageSize();
         primaryStage.setTitle("Talio: Overview");
         primaryStage.setScene(overviewScene);
-        overviewCtrl.refresh();
+        loadStageSize();
         primaryStage.show();
     }
 
@@ -76,8 +92,10 @@ public class MainCtrl {
      * Shows joinServer stage in primaryStage
      */
     public void showJoinServer() {
+        saveStageSize();
         primaryStage.setTitle("Talio: Join Server");
         primaryStage.setScene(joinServerScene);
+        loadStageSize();
         primaryStage.show();
     }
 
