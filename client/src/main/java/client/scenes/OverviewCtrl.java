@@ -105,6 +105,7 @@ public class OverviewCtrl {
 
     }
 
+
     /**
      * Handles the link button click
      */
@@ -182,4 +183,5 @@ public class OverviewCtrl {
         }
         highestIndex--;
     }
+
 }
