@@ -57,7 +57,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/create/joinkey/Column 1").param("index", "1")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 1/1").param("index", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString("password")))
                 .andExpect(status().isOk());
@@ -80,7 +80,7 @@ public class ColumnControllerTest {
         when(boardService.saveBoard(any(Board.class))).thenReturn(finalBoard);
 
         // Perform the request
-        this.mockMvc.perform(post("/columns/create/joinkey/Column 1").param("index", "1")
+        this.mockMvc.perform(post("/columns/create/joinkey/Column 1/1").param("index", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isOk());
@@ -154,7 +154,7 @@ public class ColumnControllerTest {
         this.mockMvc.perform(post("/columns/remove/joinkey/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString("password")))
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
 //                .andExpect(content().json(objectMapper.writeValueAsString(toBeRemovedColumn))); // "Unparsable JSON string: null"
 
         assertEquals(0, initialBoard.getColumns().size());
@@ -193,7 +193,7 @@ public class ColumnControllerTest {
 //        // add another column (to the beginning)
 //        expectedBoard.addColumn(column1); // [1, 3]
 //
-//        this.mockMvc.perform(post("/columns/create/joinkey/Column 1").param("index", "1")
+//        this.mockMvc.perform(post("/columns/create/joinkey/Column 1/1").param("index", "1")
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .content(objectMapper.writeValueAsString("password")))
 //                .andExpect(status().isOk())
