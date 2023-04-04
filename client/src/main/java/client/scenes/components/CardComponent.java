@@ -4,8 +4,6 @@ import client.Main;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import commons.Card;
-import commons.Color;
-import commons.ColorScheme;
 import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -91,10 +89,7 @@ public class CardComponent extends GridPane {
         cardText.setDisable(true); // Disable editing of card text by default
 
         setUpDragAndDrop();
-
-        for (final Tag tag : card.getTags()) {
-            tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
-        }
+        refresh();
     }
 
     /**

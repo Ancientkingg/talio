@@ -7,14 +7,11 @@ import commons.ColorScheme;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class OverviewTagComponent extends GridPane {
 
