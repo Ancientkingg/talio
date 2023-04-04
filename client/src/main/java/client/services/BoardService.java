@@ -291,7 +291,7 @@ public class BoardService {
         mainCtrl.refreshColumnHeading(column.getId());
     }
 
-    /**column.getHeading()
+    /**
      * Adds tag to board (client initiated)
      * @param tag Tag to add
      */
