@@ -59,7 +59,7 @@ public class BoardController {
 
             return ResponseEntity.ok(board);
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
@@ -80,7 +80,7 @@ public class BoardController {
 
             return ResponseEntity.ok(boards);
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
@@ -100,7 +100,7 @@ public class BoardController {
             final Board savedBoard = boardService.saveBoard(board);
             return ResponseEntity.ok(savedBoard);
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
@@ -126,7 +126,7 @@ public class BoardController {
 
             return toBeRenamed;
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }

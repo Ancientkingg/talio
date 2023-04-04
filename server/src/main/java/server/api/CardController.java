@@ -137,7 +137,7 @@ public class CardController {
 
             return sourceColumn;
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
@@ -170,7 +170,7 @@ public class CardController {
 
             return card;
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }

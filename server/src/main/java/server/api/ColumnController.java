@@ -56,14 +56,14 @@ public class ColumnController {
 
             final Column column = new Column(Long.valueOf(columnId), columnHeading, index, new TreeSet<>());
 
-            board.addColumn(column);
+            if (board.addColumn(column) == false) throw new Exception();
             boardService.saveBoard(board);
 
             updateColumnAdded(joinKey, column);
 
             return ResponseEntity.ok(column);
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
@@ -92,7 +92,7 @@ public class ColumnController {
 
             return ResponseEntity.ok(toBeRemoved);
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
@@ -121,7 +121,7 @@ public class ColumnController {
 
             return toBeRenamed;
         }
-        catch (RuntimeException e) {
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
