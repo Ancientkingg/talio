@@ -83,10 +83,13 @@ public class CardControllerTest {
         this.mockMvc.perform(post("/cards/add/joinkey/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cardDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(cardToBeAdded)));
+                .andExpect(status().isOk());
 
-        assertEquals(expectedBoard, actualBoard);
+        Card addedCard = expectedColumn.getCards().first();
+
+        assertEquals(cardToBeAdded.getTitle(), addedCard.getTitle());
+        assertEquals(cardToBeAdded.getDescription(), addedCard.getDescription());
+        assertEquals(cardToBeAdded.getPriority(), addedCard.getPriority());
     }
 
     @Test

@@ -99,8 +99,8 @@ public class BoardModel {
         // This method is temporary. It will be replaced by a method that sends the move to the server
         // and then updates the board accordingly.
         final Card card = currentBoard.getCard(cardId);
-        final Column column = currentBoard.getColumn(columnIdx);
-        final Column newColumn = currentBoard.getColumn(newColumnIdx);
+        final Column column = currentBoard.getColumnById(columnIdx);
+        final Column newColumn = currentBoard.getColumnById(newColumnIdx);
 
 
         if (card != null && column != null && newColumn != null) {

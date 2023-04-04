@@ -197,8 +197,9 @@ public class BoardService {
      * @throws BoardChangeException if the card could not be added
      */
     public Card addCardToColumn(final Card card, final Column column) throws BoardChangeException {
-        boardModel.addCard(card, column);
-        return serverService.addCard(this.boardModel.getCurrentBoard(), column, card);
+        final Card serverCard = serverService.addCard(this.boardModel.getCurrentBoard(), column, card);
+        boardModel.addCard(serverCard, column);
+        return serverCard;
     }
 
     /**
@@ -220,8 +221,9 @@ public class BoardService {
      * @throws BoardChangeException if the card could not be removed
      */
     public Card removeCardFromColumn(final Card card, final Column column) throws BoardChangeException {
-        boardModel.removeCard(card, column);
-        return serverService.removeCard(this.boardModel.getCurrentBoard(), column, card);
+        final Card serverCard = serverService.removeCard(this.boardModel.getCurrentBoard(), column, card);
+        boardModel.removeCard(serverCard, column);
+        return serverCard;
     }
 
     /**

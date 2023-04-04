@@ -69,7 +69,7 @@ Modal
 .modalDescriptionText {
     -fx-text-fill: #f8f8f8;
     -fx-font-family: Cabin;
-    -fx-font-size: 13;
+    -fx-font-size: 15;
 }
 
 .modalToolbar {
@@ -103,6 +103,7 @@ Modal
     -fx-border-width: 1;
     -fx-border-color: #181818;
     -fx-text-fill: #181818;
+    -fx-font-size: 15;
 }
 
 .modalOkButton:hover {
@@ -414,3 +415,27 @@ Overview
     -fx-font-size: 15px;
 }
 
+.board-joinkey-text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 18px;
+    -fx-background-radius: 18px;
+}
+
+.board-joinkey-text-field:hover {
+    -fx-background-color: rgba(60, 60, 60, 0.35);
+}
+
+.board-joinkey-text-field:pressed {
+    -fx-background-color: rgba(60, 60, 60, 0.5);
+}
+
+.board-edit-icon {
+    -fx-fill: transparent;
+}
+
+.board-name-button {
+    -fx-background-color: transparent;
+    -fx-font-family: Cabin;
+    -fx-text-fill: #f3f3f3;
+    -fx-font-size: 36px;
+}
