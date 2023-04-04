@@ -72,7 +72,6 @@ public class ColumnComponent extends GridPane {
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
-              //  final long id = (long) (Math.random() * Long.MAX_VALUE);
 
                 final SortedSet<Card> cards = column.getCards();
 

@@ -309,19 +309,6 @@ public class ServerService {
      * @param newPosition       new index of the card
      */
     public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) {
-//        try (Client client = ClientBuilder.newClient()) {
-//            final Card movedCard = client.target(serverIP)
-//                    .path("/cards")
-//                    .path("/reposition")
-//                    .path(board.getJoinKey())
-//                    .path(String.valueOf(column.getId()))
-//                    .path(String.valueOf(destinationColumn.getId()))
-//                    .path(String.valueOf(newPosition))
-//                    .request(APPLICATION_JSON)
-//                    .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
-//            logger.info("Repositioned card sent to server");
-//        }
-//        }
         session.send("/app/cards/reposition/" +
             board.getJoinKey() + "/" +
             column.getId() + "/" +
