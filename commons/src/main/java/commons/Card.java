@@ -33,7 +33,7 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private ColorScheme colorScheme;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Getter @Setter
     private Set<Tag> tags;
 

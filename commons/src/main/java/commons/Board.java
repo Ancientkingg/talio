@@ -36,7 +36,7 @@ public class Board {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ColorScheme boardColorScheme;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Getter
     @Setter
     private Set<Tag> tags;

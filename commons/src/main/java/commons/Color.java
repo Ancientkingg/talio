@@ -74,4 +74,13 @@ public class Color {
     public int hashCode() {
         return Objects.hash(red, green, blue, alpha);
     }
+
+    /**
+     * toString for Color
+     * @return string representation of Color
+     */
+    @Override
+    public String toString() {
+        return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";
+    }
 }

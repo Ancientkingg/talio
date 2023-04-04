@@ -4,6 +4,9 @@ import client.Main;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import commons.Card;
+import commons.Color;
+import commons.ColorScheme;
+import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -29,6 +33,9 @@ public class CardComponent extends GridPane {
 
     @FXML
     private Button editCardButton;
+
+    @FXML
+    private HBox tagContainer;
 
     /**
      * Constructor for CardComponent
@@ -85,6 +92,9 @@ public class CardComponent extends GridPane {
 
         setUpDragAndDrop();
 
+        for (final Tag tag : card.getTags()) {
+            tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
+        }
     }
 
     /**
@@ -151,5 +161,9 @@ public class CardComponent extends GridPane {
      */
     public void refresh() {
         cardText.setText(card.getTitle());
+        tagContainer.getChildren().clear();
+        for (final Tag tag : card.getTags()) {
+            tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
+        }
     }
 }
