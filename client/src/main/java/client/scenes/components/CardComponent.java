@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
@@ -18,6 +19,8 @@ import javafx.scene.layout.HBox;
 import lombok.Getter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardComponent extends GridPane {
     private final BoardService boardService;
@@ -157,8 +160,19 @@ public class CardComponent extends GridPane {
     public void refresh() {
         cardText.setText(card.getTitle());
         tagContainer.getChildren().clear();
-        for (final Tag tag : card.getTags()) {
-            tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
+        if (card.getTags().size() < 5) {
+            for (final Tag tag : card.getTags()) {
+                tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
+            }
+        } else {
+            final List<Tag> tags = new ArrayList<>(card.getTags());
+            for (int i = 0; i < 4; i++) {
+                tagContainer.getChildren().add(new OverviewTagComponent(boardService, tags.get(i)));
+            }
+            final Label moreTags = new Label(String.format("+%s more", card.getTags().size() - 4));
+            moreTags.setFont(javafx.scene.text.Font.font("fonts/Cabin-Regular.ttf", 9));
+            moreTags.setStyle("-fx-text-fill: #4f4f4f;-fx-padding: 0 0 15px 0;");
+            tagContainer.getChildren().add(moreTags);
         }
     }
 }
