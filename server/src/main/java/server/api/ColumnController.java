@@ -92,6 +92,9 @@ public class ColumnController {
             }
             boardService.saveBoard(board);
 
+            board.refreshIndices(toBeRemoved.getIndex());
+            boardService.saveBoard(board);
+
             updateColumnRemoved(joinKey, columnId);
 
             return ResponseEntity.ok(toBeRemoved);

@@ -179,20 +179,11 @@ public class BoardService {
      */
     public void addColumnToCurrentBoard(final Column column) {
         try {
-            boardModel.addColumn(column);
-        }
-        catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
-                    "The column couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
-            throw new RuntimeException(e);
-        }
-
-        try {
             serverService.addColumn(this.boardModel.getCurrentBoard(), column);
         }
         catch (ServerException e) {
-            boardModel.removeColumn(column);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
@@ -213,20 +204,11 @@ public class BoardService {
      */
     public void removeColumnFromCurrentBoard(final Column column) {
         try {
-            boardModel.removeColumn(column);
-        }
-        catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
-                    "The column couldn't be removed from the local Board Model.", mainCtrl.getCurrentScene());
-            return;
-        }
-
-        try {
             serverService.removeColumn(this.boardModel.getCurrentBoard(), column);
         }
         catch (ServerException e) {
-            boardModel.addColumn(column);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be removed from the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
@@ -239,6 +221,7 @@ public class BoardService {
     public void updateRemoveColumnFromCurrentBoard(final Long id) throws BoardChangeException, ColumnNotFoundException {
         final Column column = boardModel.getCurrentBoard().getColumnById(id);
         boardModel.removeColumn(column);
+        boardModel.getCurrentBoard().refreshIndices(column.getIndex());
         mainCtrl.refreshOverview();
     }
 
@@ -249,20 +232,11 @@ public class BoardService {
      */
     public void addCardToColumn(final Card card, final Column column) {
         try {
-            boardModel.addCard(card, column);
-        }
-        catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
-                    "The card couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
-            throw new RuntimeException(e);
-        }
-
-        try {
             serverService.addCard(this.boardModel.getCurrentBoard(), column, card);
         }
         catch (ServerException e) {
-            boardModel.removeCard(card, column);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
 
@@ -286,20 +260,11 @@ public class BoardService {
      */
     public void removeCardFromColumn(final Card card, final Column column) {
         try {
-            boardModel.removeCard(card, column);
-        }
-        catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
-                    "The card couldn't be removed from the local Board Model.", mainCtrl.getCurrentScene());
-            throw new RuntimeException(e);
-        }
-
-        try {
             serverService.removeCard(this.boardModel.getCurrentBoard(), column, card);
         }
         catch (ServerException e) {
-            boardModel.addCard(card, column);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be removed from the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
@@ -324,22 +289,12 @@ public class BoardService {
      */
     public void repositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         try {
-            boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
-//            mainCtrl.refreshOverview();
-        }
-        catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
-                    "The card couldn't be repositioned on the local Board Model.", mainCtrl.getCurrentScene());
-            throw new RuntimeException(e);
-        }
-
-        try {
             final Board board = this.boardModel.getCurrentBoard();
             serverService.repositionCard(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
         }
         catch (ServerException e) {
-            boardModel.moveCard(cardIdx, columnToIdx, columnFromIdx, 0);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
@@ -370,22 +325,12 @@ public class BoardService {
      * @param newName String new name
      */
     public void renameColumn(final Column column, final String newName) {
-        final String oldName = column.getHeading();
-
-        try {
-            boardModel.renameColumn(column, newName);
-        }
-        catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The column couldn't be renamed on the local Board Model.", mainCtrl.getCurrentScene());
-            throw new RuntimeException(e);
-        }
-
         try {
             serverService.renameColumn(getCurrentBoard(), column);
         }
         catch (ServerException e) {
-            boardModel.renameColumn(column, oldName);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be renamed on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
@@ -584,6 +529,7 @@ public class BoardService {
         catch (ServerException e) {
 //            boardModel.editCard(oldCard, column);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be edited on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
             throw new RuntimeException(e);
         }
     }

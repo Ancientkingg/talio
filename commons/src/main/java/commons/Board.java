@@ -202,12 +202,7 @@ public class Board {
      * @return success/failure
      */
     public boolean removeColumn(final Column column) {
-        if (column == null) return false;
-        if (!this.columns.remove(column)) return false;
-        else {
-            refreshIndices(column.getIndex());
-            return true;
-        }
+        return column != null && this.columns.remove(column);
     }
 
     /**
