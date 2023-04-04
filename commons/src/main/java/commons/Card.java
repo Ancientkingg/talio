@@ -11,6 +11,9 @@ public class Card implements Comparable<Card> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
+    private long serializationId;
+
+    @Getter
     private long id;
 
     @Getter @Setter
@@ -164,6 +167,15 @@ public class Card implements Comparable<Card> {
      */
     public boolean removeSubTask(final SubTask subtask) {
         return subtasks.remove(subtask);
+    }
+
+    /**
+     * Generates a unique id for the card
+     * @return generated id
+     */
+    public long generateId() {
+        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        return this.id;
     }
 
     /**

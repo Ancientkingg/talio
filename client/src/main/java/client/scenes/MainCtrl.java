@@ -131,5 +131,4 @@ public class MainCtrl {
     public Scene getCurrentScene() {
         return primaryStage.getScene();
     }
-
 }
