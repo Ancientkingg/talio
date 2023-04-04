@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -88,12 +87,12 @@ public class BoardModelTest {
     }
 
     @Test
-    public void testMoveCard() throws BoardChangeException {
+    public void testMoveCard() {
         Board currentBoard = new Board("join-key", "title", "password", new TreeSet<>());
         boardModel.setCurrentBoard(currentBoard);
 
-        Column column1 = new Column("heading1", 0, new TreeSet<>());
-        Column column2 = new Column("heading2", 1, new TreeSet<>());
+        Column column1 = new Column(0, 0, "heading1", new TreeSet<>());
+        Column column2 = new Column(1, 1, "heading2", new TreeSet<>());
         currentBoard.addColumn(column1);
         currentBoard.addColumn(column2);
 
