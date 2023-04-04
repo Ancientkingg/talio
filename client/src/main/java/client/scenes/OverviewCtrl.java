@@ -59,13 +59,27 @@ public class OverviewCtrl {
 
     /**
      * Refreshes the component containing the given column
-     * @param columnIdx index of the column to be found
+     * @param columnId index of the column to be found
      */
-    public void refreshColumn(final long columnIdx) {
+    public void refreshColumn(final long columnId) {
         for (final Node n : columnBox.getChildren()) {
             final ColumnComponent cc = (ColumnComponent) n;
-            if (cc.getColumn().getIndex() == columnIdx) {
+            if (cc.getColumn().getId() == columnId) {
                 cc.refresh();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Refreshes the heading of the component containing the given column
+     * @param columnId index of the column to be found
+     */
+    public void refreshColumnHeading(final long columnId) {
+        for (final Node n : columnBox.getChildren()) {
+            final ColumnComponent cc = (ColumnComponent) n;
+            if (cc.getColumn().getId() == columnId) {
+                cc.setHeading(cc.getColumn().getHeading());
                 break;
             }
         }

@@ -276,8 +276,7 @@ public class BoardService {
      * @param newName String new name
      */
     public void renameColumn(final Column column, final String newName) {
-        boardModel.renameColumn(column, newName);
-        serverService.renameColumn(getCurrentBoard(), column);
+        serverService.renameColumn(getCurrentBoard(), column, newName);
     }
 
     /**
@@ -287,9 +286,10 @@ public class BoardService {
      */
     public void updateRenameColumn(final Column column, final String newName) {
         boardModel.renameColumn(column, newName);
+        mainCtrl.refreshColumnHeading(column.getId());
     }
 
-    /**
+    /**column.getHeading()
      * Adds tag to board (client initiated)
      * @param tag Tag to add
      */

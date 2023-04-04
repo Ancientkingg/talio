@@ -113,4 +113,11 @@ public class MainCtrl {
         return primaryStage.getScene();
     }
 
+    /**
+     * refresh a column
+     * @param columnId id of column to be refreshed
+     */
+    public void refreshColumnHeading (final long columnId) {
+        overviewCtrl.refreshColumnHeading(columnId);
+    }
 }
