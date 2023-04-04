@@ -293,7 +293,8 @@ public class BoardService {
             serverService.repositionCard(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
         }
         catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
@@ -552,6 +553,10 @@ public class BoardService {
         serverService.subscribeToBoard(joinKey);
     }
 
+    /**
+     * This is used to assign a newly created column its index value
+     * @return int index
+     */
     public int getHighestIndex() {
         return getCurrentBoard().getColumns().size();
     }

@@ -333,7 +333,9 @@ public class ServerService {
      * @param newPosition       new index of the card
      * but compiler was complaining when I made return type of this method Column.
      */
-    public void repositionCard(final Board board, final Column column, final Column destinationColumn, final Card card, final int newPosition) throws ServerException {
+    public void repositionCard(final Board board, final Column column, final Column destinationColumn,
+                               final Card card, final int newPosition) throws ServerException
+    {
         try {
             session.send("/app/cards/reposition/" +
                             board.getJoinKey() + "/" +

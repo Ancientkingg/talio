@@ -1,6 +1,5 @@
 package client.utils;
 
-import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import client.services.ServerService;
 import commons.Card;

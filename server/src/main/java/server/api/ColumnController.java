@@ -48,7 +48,8 @@ public class ColumnController {
      */
     @PostMapping("/columns/create/{joinKey}/{columnHeading}/{columnId}")
     public ResponseEntity<Column> addColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
-                                            @PathVariable final String columnId, @RequestBody(required = false) final String password, @RequestParam final int index)
+                                            @PathVariable final String columnId, @RequestBody(required = false) final String password,
+                                            @RequestParam final int index)
     {
         try {
             final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);

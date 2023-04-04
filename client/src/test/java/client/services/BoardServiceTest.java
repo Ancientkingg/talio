@@ -6,6 +6,7 @@ import client.scenes.MainCtrl;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import commons.exceptions.ColumnNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,11 +53,16 @@ public class BoardServiceTest {
         }
     }
 
+    class MockMainCtrl extends MainCtrl {
+        @Override
+        public void refreshOverview() { return; }
+    }
+
     @BeforeEach
     public void setup() {
         this.boardModel = new BoardModel();
         MockServerService serverService = new MockServerService();
-        this.mainCtrl = new MainCtrl();
+        this.mainCtrl = new MockMainCtrl();
         this.boardService = new BoardService(boardModel, serverService, mainCtrl);
     }
 
@@ -92,21 +98,21 @@ public class BoardServiceTest {
         boardModel.setCurrentBoard(currentBoard);
 
         Column column = new Column("heading", 0, new TreeSet<>());
-        boardService.addColumnToCurrentBoard(column);
+        boardService.updateAddColumnToCurrentBoard(column);
 
         assertEquals(currentBoard.getColumns().size(), 1);
         assertEquals(currentBoard.getColumns().first(), column);
     }
 
     @Test
-    public void testRemoveColumn() throws BoardChangeException {
+    public void testRemoveColumn() throws BoardChangeException, ColumnNotFoundException {
         Board currentBoard = new Board("join-key", "title", "password", new TreeSet<>());
         boardModel.setCurrentBoard(currentBoard);
 
         Column column = new Column("heading", 0, new TreeSet<>());
         currentBoard.addColumn(column);
 
-        boardService.removeColumnFromCurrentBoard(column);
+        boardService.updateRemoveColumnFromCurrentBoard(column.getId());
 
         assertEquals(currentBoard.getColumns().size(), 0);
     }
@@ -120,7 +126,7 @@ public class BoardServiceTest {
         currentBoard.addColumn(column);
 
         Card card = new Card("title", 0, "description", null);
-        boardService.addCardToColumn(card, column);
+        boardService.updateAddCardToColumn(card, column);
 
         assertEquals(column.getCards().size(), 1);
         assertEquals(column.getCards().first(), card);
@@ -137,7 +143,7 @@ public class BoardServiceTest {
         Card card = new Card("title", 0, "description", new TreeSet<>());
         column.addCard(card);
 
-        boardService.removeCardFromColumn(card, column);
+        boardService.updateRemoveCardFromColumn(card, column);
 
         assertEquals(column.getCards().size(), 0);
     }
