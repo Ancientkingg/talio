@@ -8,6 +8,7 @@ import client.scenes.components.InfoModal;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import commons.Tag;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -391,6 +392,85 @@ public class BoardService {
     public void updateRenameColumn(final Column column, final String newName) {
         boardModel.renameColumn(column, newName);
     }
+
+    /**
+     * Adds tag to board (client initiated)
+     * @param tag Tag to add
+     */
+    public void addTagToBoard(final Tag tag) {
+        final Tag addedTag = serverService.addTagToBoard(getCurrentBoard(), tag);
+        // Update the boardModel with addedTag here
+    }
+
+    /**
+     * Adds tag to board (server initiated)
+     * @param tag Tag to add
+     */
+    public void updateAddTagToBoard(final Tag tag) { }
+
+    /**
+     * Removes tag from board (client initiated)
+     * @param tag Tag to remove
+     */
+    public void removeTagFromBoard(final Tag tag) {
+        final Tag removedTag = serverService.removeTagFromBoard(getCurrentBoard(), tag);
+        // Update the boardModel with deletedTag here
+    }
+
+    /**
+     * Removes tag from board (server initiated)
+     * @param tag Tag to remove
+     */
+    public void updateRemoveTagFromBoard(final Tag tag) { }
+
+    /**
+     * Edits tag in board (client initiated)
+     * @param tag Tag to edit
+     */
+    public void editTag(final Tag tag) {
+        serverService.editTag(getCurrentBoard(), tag);
+        // Update the boardModel with editedTag here
+    }
+
+    /**
+     * Edits tag in board (server initiated)
+     * @param tag Tag to edit
+     */
+    public void updateEditTag(final Tag tag) { }
+
+    /**
+     * Adds tag to card (client initiated)
+     * @param card Card added to
+     * @param tag Tag to add
+     */
+    public void addTagToCard(final Card card, final Tag tag) {
+        final Tag addedTag = serverService.addTagToCard(getCurrentBoard(), card, tag);
+        // Update the boardModel with addedTag here
+    }
+
+    /**
+     * Adds tag to card (server initiated)
+     * @param card Card added to
+     * @param tag Tag to add
+     */
+    public void updateAddTagToCard(final Card card, final Tag tag) { }
+
+    /**
+     * Removes tag from card (client initiated)
+     * @param card Card removed from
+     * @param tag Tag to remove
+     */
+    public void removeTagFromCard(final Card card, final Tag tag) {
+        final Tag removedTag = serverService.removeTagFromCard(getCurrentBoard(), card, tag);
+        // Update the boardModel with removedTag here
+    }
+
+    /**
+     * Removes tag from card (client initiated)
+     * @param card Card removed from
+     * @param tag Tag to remove
+     */
+    public void updateRemoveTagFromCard(final Card card, final Tag tag) { }
 
     /**
      * Saves joined or created boards to local storage
