@@ -202,7 +202,12 @@ public class Board {
      * @return success/failure
      */
     public boolean removeColumn(final Column column) {
-        return column != null && this.columns.remove(column);
+        if (column == null) return false;
+        if (!this.columns.remove(column)) return false;
+        else {
+            refreshIndices(column.getIndex());
+            return true;
+        }
     }
 
     /**
@@ -329,6 +334,20 @@ public class Board {
         final Card card = this.getCard(cardId);
         if (card != null) {
             card.removeTag(tag);
+        }
+    }
+
+    /**
+     * Refreshes indices of columns in an overview so that there are no gaps
+     * @param removedIndex index of removed column
+     */
+    public void refreshIndices (final int removedIndex) {
+        int indexCount = 0;
+        for (final Column col : columns) {
+            if  (indexCount >= removedIndex ) {
+                col.setIndex(col.getIndex() - 1);
+            }
+            indexCount++;
         }
     }
 }

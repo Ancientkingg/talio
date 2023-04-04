@@ -63,7 +63,6 @@ public class ColumnComponent extends GridPane {
             try {
                 this.delete();
                 overviewCtrl.refreshColumn();
-                overviewCtrl.refreshIndices(column.getIndex());
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);
             }

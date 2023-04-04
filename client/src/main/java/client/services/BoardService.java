@@ -605,4 +605,8 @@ public class BoardService {
     public void subscribeToBoard(final String joinKey) {
         serverService.subscribeToBoard(joinKey);
     }
+
+    public int getHighestIndex() {
+        return getCurrentBoard().getColumns().size();
+    }
 }
