@@ -56,7 +56,9 @@ public class ColumnController {
 
             final Column column = new Column(Long.valueOf(columnId), columnHeading, index, new TreeSet<>());
 
-            if (board.addColumn(column) == false) throw new Exception();
+            if (!board.addColumn(column)) {
+                throw new Exception();
+            }
             boardService.saveBoard(board);
 
             updateColumnAdded(joinKey, column);
@@ -85,7 +87,9 @@ public class ColumnController {
 
             final Column toBeRemoved = board.getColumnById(columnId);
 
-            board.removeColumn(toBeRemoved);
+            if (!board.removeColumn(toBeRemoved)) {
+                throw new RuntimeException();
+            }
             boardService.saveBoard(board);
 
             updateColumnRemoved(joinKey, columnId);

@@ -84,9 +84,11 @@ public class CardController {
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
         final Card card = cardDTO.getCard();
-        final Column column = board.getColumnById(columnId);
+        final Column column;
+        try { column = board.getColumnById(columnId); }
+        catch (ColumnNotFoundException e) { throw new RuntimeException(e); }
 
-        column.removeCard(card);
+        if (!column.removeCard(card)) throw new RuntimeException();
         boardService.saveBoard(board);
 
         updateCardRemoved(joinKey, columnId, card);

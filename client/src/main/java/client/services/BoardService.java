@@ -9,6 +9,7 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.Tag;
+import commons.exceptions.ColumnNotFoundException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -181,7 +182,8 @@ public class BoardService {
             boardModel.addColumn(column);
         }
         catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The column couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
+                    "The column couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
             throw new RuntimeException(e);
         }
 
@@ -214,7 +216,8 @@ public class BoardService {
             boardModel.removeColumn(column);
         }
         catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The column couldn't be removed from the local Board Model.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
+                    "The column couldn't be removed from the local Board Model.", mainCtrl.getCurrentScene());
             return;
         }
 
@@ -233,7 +236,7 @@ public class BoardService {
      * @param id Long id of the column to remove
      * @throws BoardChangeException if the column cannot be removed
      */
-    public void updateRemoveColumnFromCurrentBoard(final Long id) throws BoardChangeException {
+    public void updateRemoveColumnFromCurrentBoard(final Long id) throws BoardChangeException, ColumnNotFoundException {
         final Column column = boardModel.getCurrentBoard().getColumnById(id);
         boardModel.removeColumn(column);
         mainCtrl.refreshOverview();
@@ -249,7 +252,8 @@ public class BoardService {
             boardModel.addCard(card, column);
         }
         catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The card couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
+                    "The card couldn't be added to the local Board Model.", mainCtrl.getCurrentScene());
             throw new RuntimeException(e);
         }
 
@@ -285,7 +289,8 @@ public class BoardService {
             boardModel.removeCard(card, column);
         }
         catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The card couldn't be removed from the local Board Model.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
+                    "The card couldn't be removed from the local Board Model.", mainCtrl.getCurrentScene());
             throw new RuntimeException(e);
         }
 
@@ -323,7 +328,8 @@ public class BoardService {
 //            mainCtrl.refreshOverview();
         }
         catch (BoardChangeException e) {
-            final InfoModal errorModal = new InfoModal(this, "Board Change Exception", "The card couldn't be repositioned on the local Board Model.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Board Change Exception",
+                    "The card couldn't be repositioned on the local Board Model.", mainCtrl.getCurrentScene());
             throw new RuntimeException(e);
         }
 
