@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -97,8 +98,8 @@ public class ColumnController {
      * @return Column the renamed column
      */
     @MessageMapping("/columns/rename/{joinKey}/{columnId}/{newHeading}")
-    public Column renameColumn(final String password, @DestinationVariable final String joinKey, @DestinationVariable final long columnId,
-                               @DestinationVariable final String newHeading)
+    public Column renameColumn(@DestinationVariable final String joinKey, @DestinationVariable final long columnId,
+                               @DestinationVariable final String newHeading, @Payload(required = false) final String password)
     {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final Column toBeRenamed = board.getColumnById(columnId);
