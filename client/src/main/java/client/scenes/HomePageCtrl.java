@@ -1,9 +1,6 @@
 package client.scenes;
 
-import client.scenes.components.AddBoardCardButtonComponent;
-import client.scenes.components.BoardCardComponent;
-import client.scenes.components.EmptyBoardCardComponent;
-import client.scenes.components.JoinBoardModal;
+import client.scenes.components.*;
 import client.services.BoardService;
 import commons.Board;
 import javafx.animation.PauseTransition;
@@ -200,7 +197,9 @@ public class HomePageCtrl {
      */
     @FXML
     public void onSettingsButtonClick() {
-
+        final Scene parentScene = mainCtrl.getCurrentScene();
+        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this);
+        appSettingsModal.showModal();
     }
 
 
