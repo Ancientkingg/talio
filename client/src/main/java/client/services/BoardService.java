@@ -316,7 +316,7 @@ public class BoardService {
      * Updates a column
      * @param column the column to update
      */
-    public void updateColumn(final Column column) {
+    public void updateColumn(final Column column) throws ColumnNotFoundException {
         boardModel.updateColumn(column);
     }
 

@@ -121,7 +121,7 @@ public class BoardModel {
      * the server and then updates the board accordingly.)
      * @param column Column to be updated
      */
-    public void updateColumn(final Column column) {
+    public void updateColumn(final Column column) throws ColumnNotFoundException {
         final Column oldColumn = currentBoard.getColumnById(column.getId());
 
         if (oldColumn != null) {
