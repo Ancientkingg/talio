@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<fx:root fx:controller="client.scenes.components.AppSettingsModal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.components.AppSettingsModal">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="35.0" prefWidth="51.62375259399414" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="30.0" prefWidth="81.87624740600586" />
