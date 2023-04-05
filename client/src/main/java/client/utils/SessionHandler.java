@@ -1,5 +1,6 @@
 package client.utils;
 
+import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import client.services.ServerService;
 import commons.Card;
@@ -105,13 +106,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
                         final CardDTO cardDTO = (CardDTO) payload;
-//                        try {
-                        boardService.updateRepositionCard(cardDTO.getCard().getId(),
-                            cardDTO.getColumnFromId(),
-                            cardDTO.getColumnToId(), cardDTO.getNewPosition());
-                        logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
-//                        }
-//                        catch (BoardChangeException e) { logger.info("Couldn't reposition card : " + cardDTO.getCard().getTitle()); }
+                        try {
+                            boardService.updateRepositionCard(cardDTO.getCard().getId(),
+                                cardDTO.getColumnFromId(),
+                                cardDTO.getColumnToId(), cardDTO.getNewPosition());
+                            logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
+                        }
+                        catch (BoardChangeException e) { logger.info("Couldn't reposition card : " + cardDTO.getCard().getTitle()); }
                     }); }
             });
         subscriptions.add(cardRepositionedSub);

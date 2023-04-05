@@ -109,7 +109,6 @@ public class CardController {
      *
      * @return The column in which the card was updated
      */
-//    @Transactional
     @MessageMapping("/cards/reposition/{joinKey}/{sourceColumnId}/{destinationColumnId}/{newPosition}")
     public Column repositionCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                  @DestinationVariable final long sourceColumnId, @DestinationVariable final int newPosition,

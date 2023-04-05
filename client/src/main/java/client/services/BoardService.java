@@ -307,7 +307,7 @@ public class BoardService {
      * @param columnToIdx the index of the column to move the card to
      * @param priority the priority of the card in the new column
      */
-    public void updateRepositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
+    public void updateRepositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) throws BoardChangeException {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
         mainCtrl.refreshOverview();
     }

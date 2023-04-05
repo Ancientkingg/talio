@@ -27,7 +27,7 @@ public class BoardController {
     private final BoardService boardService;
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final Logger logger = LogManager.getLogger(CardController.class);
+    private final Logger logger = LogManager.getLogger(BoardController.class);
 
     private final Clock clock;
 
