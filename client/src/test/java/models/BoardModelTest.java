@@ -5,6 +5,7 @@ import client.models.BoardModel;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import commons.exceptions.ColumnNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -107,7 +108,7 @@ public class BoardModelTest {
     }
 
     @Test
-    public void testUpdateColumn() {
+    public void testUpdateColumn() throws ColumnNotFoundException {
         Board currentBoard = new Board("join-key", "title", "password", new TreeSet<>());
         boardModel.setCurrentBoard(currentBoard);
 
