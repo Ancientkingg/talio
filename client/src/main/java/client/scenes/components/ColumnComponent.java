@@ -71,13 +71,12 @@ public class ColumnComponent extends GridPane {
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
-                final long id = (long) (Math.random() * Long.MAX_VALUE);
 
                 final SortedSet<Card> cards = column.getCards();
 
                 final int priority = cards.size() == 0 ? 0 : cards.last().getPriority() + 1;
 
-                boardService.addCardToColumn(new Card(id, "", priority, "", null), column);
+                boardService.addCardToColumn(new Card("", priority, "", null), column);
                 this.refresh();
             } catch (BoardChangeException ex) {
                 throw new RuntimeException(ex);

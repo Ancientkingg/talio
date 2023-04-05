@@ -53,8 +53,11 @@ public class CardController {
 
         final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Card card = cardDTO.card();
+        final Card clientCard = cardDTO.card();
+        final Card card = new Card(clientCard.getTitle(), clientCard.getPriority(),
+                clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
 
+        card.generateId();
         try {
             board.addCardToColumn(card, columnId);
         } catch (ColumnNotFoundException e) {
@@ -121,15 +124,20 @@ public class CardController {
 
             final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-            final Card card = cardDTO.getCard();
+            final Card clientCard = cardDTO.getCard();
+            final Card card = new Card(clientCard.getId(), clientCard.getTitle(),
+                    newPosition, clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
             final Column sourceColumn = board.getColumnById(sourceColumnId);
             final Column destinationColumn = board.getColumnById(destinationColumnId);
 
-            if (sourceColumnId == destinationColumnId && newPosition != card.getPriority()) {
+
+
+            if (sourceColumnId == destinationColumnId && newPosition != clientCard.getPriority()) {
                 sourceColumn.updateCardPosition(card, newPosition);
-            } else {
-                sourceColumn.getCards().remove(card);
-                card.setPriority(newPosition);
+            }
+            else {
+                if (!sourceColumn.getCards().remove(clientCard))
+                    throw new RuntimeException("Could not remove card when trying to reposition");
                 destinationColumn.addCard(card);
             }
 
@@ -188,7 +196,7 @@ public class CardController {
      */
     public void updateCardRepositioned(final String joinKey, final long columnId, final long destinationColumnId, final Card card, final int newPosition) {
         logger.info("Propagating card repositioned for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/reposition,", new CardDTO(card, columnId, destinationColumnId, newPosition));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/reposition", new CardDTO(card, columnId, destinationColumnId, newPosition));
     }
 
     /**

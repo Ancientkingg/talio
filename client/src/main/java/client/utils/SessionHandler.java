@@ -167,7 +167,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                         try {
                             final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
                             boardService.updateRemoveCardFromColumn(cardDTO.getCard(), column);
-                            logger.info("Card added: " + cardDTO.getCard().getTitle());
+                            logger.info("Card removed: " + cardDTO.getCard().getTitle());
                         }
                         catch (Exception e) { logger.info("Couldn't remove card"); }
                     }); }

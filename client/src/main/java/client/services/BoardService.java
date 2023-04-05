@@ -522,13 +522,10 @@ public class BoardService {
      * @param column Column that card is in
      */
     public void editCard(final Card card, final Column column) {
-        final Card oldCard = card;
-//        boardModel.editCard(card, column);
         try {
             serverService.editCard(getCurrentBoard(), card, column);
         }
         catch (ServerException e) {
-//            boardModel.editCard(oldCard, column);
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be edited on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);

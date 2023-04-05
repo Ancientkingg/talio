@@ -331,7 +331,6 @@ public class ServerService {
      * @param destinationColumn column to which card is being moved
      * @param card              card to be moved
      * @param newPosition       new index of the card
-     * but compiler was complaining when I made return type of this method Column.
      */
     public void repositionCard(final Board board, final Column column, final Column destinationColumn,
                                final Card card, final int newPosition) throws ServerException
