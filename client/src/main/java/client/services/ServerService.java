@@ -11,6 +11,7 @@ import commons.Tag;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.Response;
 import lombok.Getter;
 import jakarta.ws.rs.core.GenericType;
 import org.apache.logging.log4j.LogManager;
@@ -354,5 +355,23 @@ public class ServerService {
      */
     public void subscribeToBoard(final String joinKey) {
         sessionHandler.subscribeToBoard(joinKey);
+    }
+
+    /**
+     * Deletes a board server-side
+     * @param board Board to delete
+     * @return True if successful
+     */
+    public boolean deleteBoard(final Board board) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Response response = client.target(serverIP)
+                .path("/boards")
+                .path("/delete")
+                .path(board.getJoinKey())
+                .request(APPLICATION_JSON)
+                .delete();
+            logger.info("Requested to delete board with join-key: " + board.getJoinKey());
+            return response.getStatus() == 200;
+        }
     }
 }

@@ -6,13 +6,18 @@ import client.scenes.components.EmptyBoardCardComponent;
 import client.scenes.components.JoinBoardModal;
 import client.services.BoardService;
 import commons.Board;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.inject.Inject;
+import java.awt.*;
 import java.util.List;
 
 public class HomePageCtrl {
@@ -74,6 +79,49 @@ public class HomePageCtrl {
         boardService.subscribeToBoard(board.getJoinKey());
         mainCtrl.showOverview();
         mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Removes the board from the list of boards
+     * @param board The board to remove
+     */
+    public void removeBoard(final Board board) {
+        final Point2D p = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
+
+        final Tooltip customTooltip = new Tooltip("Left board!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(mainCtrl.getCurrentScene().getRoot(),p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(750));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+
+        boardService.removeBoard(board);
+        boardService.saveBoardsLocal();
+        this.renderBoards();
+    }
+
+    /**
+     * Deletes the board from the list of boards (server-side as well)
+     * @param board The board to delete
+     */
+    public void deleteBoard(final Board board) {
+        final Point2D p = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
+
+        final Tooltip customTooltip = new Tooltip("Deleted board!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(mainCtrl.getCurrentScene().getRoot(),p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(800));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+        boardService.deleteBoard(board);
+        boardService.saveBoardsLocal();
+        this.renderBoards();
     }
 
     private void addResizeListener() {

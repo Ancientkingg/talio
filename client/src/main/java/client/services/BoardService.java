@@ -489,4 +489,23 @@ public class BoardService {
     public void subscribeToBoard(final String joinKey) {
         serverService.subscribeToBoard(joinKey);
     }
+
+    /**
+     * Removes a board from the client side
+     * @param board Board to remove
+     * @return true if board was removed
+     */
+    public boolean removeBoard(final Board board) {
+        return this.boardModel.getBoardList().remove(board);
+    }
+
+    /**
+     * Deletes a board from the server and client side
+     * @param board Board to delete
+     * @return true if board was deleted
+     */
+    public boolean deleteBoard(final Board board) {
+        this.removeBoard(board);
+        return serverService.deleteBoard(board);
+    }
 }

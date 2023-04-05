@@ -439,3 +439,27 @@ Overview
     -fx-text-fill: #f3f3f3;
     -fx-font-size: 36px;
 }
+
+.board-card-button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 10px;
+    -fx-border-width: 0.5px;
+    -fx-border-color: #bbbbbb;
+    -fx-background-radius: 10px;
+}
+
+.board-card-button:hover {
+    -fx-background-color: rgba(156, 156, 156, 0.2);
+}
+
+.board-card-button-icon {
+    -fx-fill: rgba(124, 124, 124, 0.6);
+}
+
+.board-card-button:hover .board-card-button-icon {
+    -fx-fill: red;
+}
+
+.board-card-button:hover {
+    -fx-background-color: #ebebeb;
+}

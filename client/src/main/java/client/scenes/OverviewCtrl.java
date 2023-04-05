@@ -72,6 +72,7 @@ public class OverviewCtrl {
      */
     public void refresh() {
         this.boardNameButton.setText(boardService.getCurrentBoard().getTitle());
+        this.refreshColumn();
     }
 
     /**
