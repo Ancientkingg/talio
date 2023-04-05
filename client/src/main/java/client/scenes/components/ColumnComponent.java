@@ -10,13 +10,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.SortedSet;
 
 public class ColumnComponent extends GridPane {
@@ -67,7 +69,7 @@ public class ColumnComponent extends GridPane {
                 throw new RuntimeException(ex);
             }
         });
-        addTextChangeListener(boardService, column);
+        addHeadingChangeListener(boardService, column);
         // Set the add action for the add card button
         addCardButton.setOnAction(e -> {
             try {
@@ -89,10 +91,14 @@ public class ColumnComponent extends GridPane {
         refresh();
     }
 
-    private void addTextChangeListener(final BoardService boardService, final Column column) {
-        columnHeading.textProperty().addListener((observable, oldValue, newValue) -> { // Save the heading of the column
-            column.setHeading(newValue);
-            boardService.updateColumn(column);
+    private void addHeadingChangeListener(final BoardService boardService, final Column column) {
+        columnHeading.focusedProperty().addListener((observable, oldValue, newValue) -> { // Save the heading of the column
+            if (!newValue) boardService.renameColumn(column, columnHeading.getText()); // when focus is lost, rename column
+        });
+
+        columnHeading.setOnKeyReleased(keyEvent -> {
+            if (Objects.equals(KeyCode.ENTER, (keyEvent.getCode()))) boardService.renameColumn(column, columnHeading.getText());
+            scrollPane.requestFocus();
         });
     }
 

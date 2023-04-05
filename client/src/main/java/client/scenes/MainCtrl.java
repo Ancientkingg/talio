@@ -2,6 +2,7 @@ package client.scenes;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -53,14 +54,35 @@ public class MainCtrl {
 //        showOverview();
     }
 
+    /**
+     * Saves the stage size to SCREEN_SIZE
+     */
     private void saveStageSize() {
-        SCREEN_SIZE[0] = (float) primaryStage.getWidth();
-        SCREEN_SIZE[1] = (float) primaryStage.getHeight();
+        final float width = (float) primaryStage.getWidth();
+        final float height = (float) primaryStage.getHeight();
+
+        SCREEN_SIZE[0] = Float.isNaN(width) ? 1366.0f : width;
+        SCREEN_SIZE[1] = Float.isNaN(height) ? 768.0f : height;
     }
 
+    /**
+     * Loads the stage size from SCREEN_SIZE
+     */
     private void loadStageSize() {
         primaryStage.setWidth(SCREEN_SIZE[0]);
         primaryStage.setHeight(SCREEN_SIZE[1]);
+
+        ( (StackPane) this.homePageScene.getRoot() ).setMinSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+        ( (StackPane) this.joinServerScene.getRoot() ).setMinSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+        ( (StackPane) this.overviewScene.getRoot() ).setMinSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+
+        ( (StackPane) this.homePageScene.getRoot() ).setPrefSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+        ( (StackPane) this.joinServerScene.getRoot() ).setPrefSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+        ( (StackPane) this.overviewScene.getRoot() ).setPrefSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+
+        ( (StackPane) this.homePageScene.getRoot() ).setMaxSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+        ( (StackPane) this.joinServerScene.getRoot() ).setMaxSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
+        ( (StackPane) this.overviewScene.getRoot() ).setMaxSize(SCREEN_SIZE[0], SCREEN_SIZE[1]);
 
     }
 
@@ -69,11 +91,12 @@ public class MainCtrl {
      */
     public void showHomePage() {
         saveStageSize();
+        loadStageSize();
         primaryStage.setTitle("Talio: Home Page");
         primaryStage.setScene(homePageScene);
         homePageCtrl.loadBoards();
-        loadStageSize();
         primaryStage.show();
+        primaryStage.sizeToScene();
     }
 
     /**
@@ -81,10 +104,11 @@ public class MainCtrl {
      */
     public void showOverview() {
         saveStageSize();
+        loadStageSize();
         primaryStage.setTitle("Talio: Overview");
         primaryStage.setScene(overviewScene);
-        loadStageSize();
         primaryStage.show();
+        primaryStage.sizeToScene();
     }
 
 
@@ -93,10 +117,11 @@ public class MainCtrl {
      */
     public void showJoinServer() {
         saveStageSize();
+        loadStageSize();
         primaryStage.setTitle("Talio: Join Server");
         primaryStage.setScene(joinServerScene);
-        loadStageSize();
         primaryStage.show();
+        primaryStage.sizeToScene();
     }
 
 
@@ -130,5 +155,13 @@ public class MainCtrl {
      */
     public Scene getCurrentScene() {
         return primaryStage.getScene();
+    }
+
+    /**
+     * refresh a column
+     * @param columnId id of column to be refreshed
+     */
+    public void refreshColumnHeading (final long columnId) {
+        overviewCtrl.refreshColumnHeading(columnId);
     }
 }

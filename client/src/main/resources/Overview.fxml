@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OverviewCtrl">
    <children>
@@ -26,18 +25,30 @@
             <GridPane styleClass="toolbar" stylesheets="@Style.css">
                <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" minWidth="220.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="220.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="600.0" minHeight="-Infinity" prefHeight="64.0" valignment="CENTER" vgrow="NEVER" />
                </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Cabin; -fx-fill: #f3f3f3;" text="talio." textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Text>
+                  <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="64.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button fx:id="boardNameButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBoardEditButtonClick" styleClass="board-name-button" text="Board name">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Button>
+                        <SVGPath fx:id="boardEditIcon" content="M31.76 15.6 26.64 10.48l1.68-1.68q.68-.68 1.7-.66T31.72 8.84l1.72 1.72q.68.68 .68 1.68t-.68 1.68l-1.68 1.68Zm-1.68 1.68L9.92 37.44H4.8V32.32l20.16-20.16 5.12 5.12Z" scaleX="0.85" scaleY="0.85" style="-fx-fill: transparent;" translateY="1.0">
+                           <HBox.margin>
+                              <Insets left="-10.0" />
+                           </HBox.margin>
+                        </SVGPath>
+                     </children>
+                     <padding>
+                        <Insets left="29.0" />
+                     </padding>
+                  </HBox>
                   <Button fx:id="settingsButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="48.0" prefWidth="48.0" styleClass="settings-button" stylesheets="@Style.css" GridPane.columnIndex="2">
                      <graphic>
                         <SVGPath content="m388 976-20-126q-19-7-40-19t-37-25l-118 54-93-164 108-79q-2-9-2.5-20.5T185 576q0-9 .5-20.5T188 535L80 456l93-164 118 54q16-13 37-25t40-18l20-127h184l20 126q19 7 40.5 18.5T669 346l118-54 93 164-108 77q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l108 78-93 164-118-54q-16 13-36.5 25.5T592 850l-20 126H388Zm92-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z" scaleX="0.045" scaleY="0.045" scaleZ="0.0" styleClass="settings-icon" />

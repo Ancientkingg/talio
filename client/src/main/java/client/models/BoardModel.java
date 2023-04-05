@@ -122,7 +122,7 @@ public class BoardModel {
      * @param column Column to be updated
      */
     public void updateColumn(final Column column) {
-        final Column oldColumn = currentBoard.getColumn(column.getIndex());
+        final Column oldColumn = currentBoard.getColumnById(column.getId());
 
         if (oldColumn != null) {
             oldColumn.setHeading(column.getHeading());
@@ -145,7 +145,8 @@ public class BoardModel {
      * @param newName String new name
      */
     public void renameColumn(final Column column, final String newName) {
-        final Column oldColumn = currentBoard.getColumn(column.getIndex());
-        if (oldColumn != null) oldColumn.setHeading(column.getHeading());
+        if (column != null) {
+            column.setHeading(newName);
+        }
     }
 }

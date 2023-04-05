@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.scenes.components.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.services.BoardService;
@@ -12,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 
 import javax.inject.Inject;
@@ -26,6 +28,12 @@ public class OverviewCtrl {
     private HBox columnBox;
     @FXML
     private Button linkButton;
+    
+    @FXML
+    private Button boardNameButton;
+
+    @FXML
+    private SVGPath boardEditIcon;
 
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
@@ -36,6 +44,31 @@ public class OverviewCtrl {
     public OverviewCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
+    }
+
+    /**
+     * Initialize overview scene
+     */
+    @FXML
+    public void initialize() {
+        setHover();
+    }
+
+    private void setHover() {
+        this.boardNameButton.hoverProperty().addListener((obs, newVal, oldVal) -> {
+            if (newVal) {
+                this.boardEditIcon.setStyle("-fx-fill: transparent");
+            } else {
+                this.boardEditIcon.setStyle("-fx-fill: #f3f3f3");
+            }
+        });
+    }
+
+    /**
+     * Refreshes the overview
+     */
+    public void refresh() {
+        this.boardNameButton.setText(boardService.getCurrentBoard().getTitle());
     }
 
     /**
@@ -56,13 +89,27 @@ public class OverviewCtrl {
 
     /**
      * Refreshes the component containing the given column
-     * @param columnIdx index of the column to be found
+     * @param columnId index of the column to be found
      */
-    public void refreshColumn(final long columnIdx) {
+    public void refreshColumn(final long columnId) {
         for (final Node n : columnBox.getChildren()) {
             final ColumnComponent cc = (ColumnComponent) n;
-            if (cc.getColumn().getIndex() == columnIdx) {
+            if (cc.getColumn().getId() == columnId) {
                 cc.refresh();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Refreshes the heading of the component containing the given column
+     * @param columnId index of the column to be found
+     */
+    public void refreshColumnHeading(final long columnId) {
+        for (final Node n : columnBox.getChildren()) {
+            final ColumnComponent cc = (ColumnComponent) n;
+            if (cc.getColumn().getId() == columnId) {
+                cc.setHeading(cc.getColumn().getHeading());
                 break;
             }
         }
@@ -123,6 +170,12 @@ public class OverviewCtrl {
 
         final StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());
         java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(joinKeySelection, null);
+    }
+
+    @FXML
+    private void onBoardEditButtonClick() {
+        final BoardSettingsModal modal = new BoardSettingsModal(boardService, this.mainCtrl.getCurrentScene(), this);
+        modal.showModal();
     }
 
     /**

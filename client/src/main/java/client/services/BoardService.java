@@ -327,7 +327,7 @@ public class BoardService {
      */
     public void renameColumn(final Column column, final String newName) {
         try {
-            serverService.renameColumn(getCurrentBoard(), column);
+            serverService.renameColumn(getCurrentBoard(), column, newName);
         }
         catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be renamed on the Server.", mainCtrl.getCurrentScene());
@@ -343,6 +343,7 @@ public class BoardService {
      */
     public void updateRenameColumn(final Column column, final String newName) {
         boardModel.renameColumn(column, newName);
+        mainCtrl.refreshColumnHeading(column.getId());
     }
 
     /**
