@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
@@ -56,6 +57,9 @@
                <padding>
                   <Insets left="50.0" />
                </padding>
+               <children>
+                  <VBox fx:id="tagBox" prefHeight="117.0" prefWidth="323.0" />
+               </children>
             </AnchorPane>
         </content>
          <GridPane.margin>

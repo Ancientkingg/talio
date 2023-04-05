@@ -3,12 +3,15 @@ package client.scenes.components;
 import client.Main;
 import client.services.BoardService;
 import commons.Card;
+import commons.Column;
+import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -26,6 +29,9 @@ public class CardDetailsModal extends Modal {
     @FXML
     private Button editDescriptionButton;
 
+    @FXML
+    private VBox tagBox;
+
 
     public CardDetailsModal(final BoardService boardService, final Scene parentScene, final Card card) {
         super(boardService, parentScene);
@@ -41,29 +47,31 @@ public class CardDetailsModal extends Modal {
             throw new RuntimeException(e);
         }
 
+        refreshTags();
+
         editDescriptionButton.setOnAction(e -> cardDescription.setDisable(false)); // Temporarily enable editing of card text
 
         cardDescription.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
                 cardDescription.setDisable(true);
                 card.setDescription(cardDescription.getText());
-                refresh();
+                refreshDescription();
             }
         });
 
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 card.setDescription(cardDescription.getText());
-                refresh();
+                refreshDescription();
                 cardDescription.setDisable(true);
             }
         });
 
         cardDescription.textProperty().addListener((observable, oldValue, newValue) -> {
             card.setDescription(cardDescription.getText());
-            refresh();
+            refreshDescription();
         });
-        
+
         cardDescription.setDisable(true);
     }
 
@@ -74,14 +82,17 @@ public class CardDetailsModal extends Modal {
         this.cardDescription.setText(card.getDescription());
     }
 
-    public void refresh() {
+    public void refreshDescription() {
         cardDescription.setText(card.getDescription());
     }
 
+    public void refreshTags() {
+        tagBox.getChildren().removeAll(tagBox.getChildren().stream().filter(c -> c instanceof TagComponent).toList());
 
-
-
-
-
+        for (final Tag tag : card.getTags()) {
+            final TagComponent tagComponent = new TagComponent(boardService, tag.getTitle(), tag.getColorScheme());
+            tagBox.getChildren().add(tagBox.getChildren().size() - 1, tagComponent);
+        }
+    }
 
 }
