@@ -20,7 +20,7 @@
       <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="15.0" valignment="BOTTOM" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onUrlClick" prefHeight="36.0" prefWidth="200.0" style="-fx-font-size: 18;" stylesheets="@../Style.css" translateX="-18.0" translateY="40.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onUrlClick" prefHeight="36.0" prefWidth="270.0" style="-fx-font-size: 18;" stylesheets="@../Style.css" translateX="-18.0" translateY="40.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets bottom="29.0" left="70.0" />
          </GridPane.margin>
@@ -46,9 +46,9 @@
          </graphic>
       </Button>
       <Text fx:id="serverURL" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" styleClass="modalDescriptionText" text="Server URL" translateX="-104.0" translateY="47.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Copy Server URL" translateX="-90.0" translateY="15.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Button fx:id="disconnectFromServer" mnemonicParsing="false" onAction="#onDisconnectButtonClick" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Disconnect" textFill="#f5f4f4" translateX="-97.0" translateY="119.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Text layoutX="500.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Disconnect from Server" translateX="-48.0" translateY="96.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Copy Server URL" translateX="-103.0" translateY="15.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Button fx:id="disconnectFromServer" mnemonicParsing="false" onAction="#onDisconnectButtonClick" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Disconnect" textFill="#f5f4f4" translateX="-103.0" translateY="119.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Text layoutX="500.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Disconnect from Server" translateX="-79.0" translateY="96.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <Button fx:id="clearCache" layoutX="501.0" layoutY="101.0" mnemonicParsing="false" onAction="#deleteSavedBoards" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Clear Cache" textFill="#f5f4f4" translateX="40.0" translateY="-140.0" GridPane.rowIndex="3" />
       <Button fx:id="adminButton" layoutX="501.0" layoutY="134.0" mnemonicParsing="false" onAction="#adminMode" prefHeight="33.0" prefWidth="173.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Enable God Mode" textFill="#f5f4f4" translateX="10.0" translateY="-10.0" GridPane.rowIndex="3" />
       <Button fx:id="exit" layoutX="501.0" layoutY="134.0" mnemonicParsing="false" onAction="#exitApplication" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Exit" textFill="#f5f4f4" translateX="40.0" translateY="-74.0" GridPane.rowIndex="3" />
