@@ -36,6 +36,12 @@ public class AppSettingsModal extends Modal {
     private Button exit;
 
 
+    /**
+     * Constructor for AppSettingsModal
+     * @param boardService BoardService
+     * @param parentScene Parent Scene
+     * @param parentCtrl Parent ctrl (HomePageCtrl)
+     */
     public AppSettingsModal (final BoardService boardService, final Scene parentScene, final HomePageCtrl parentCtrl) {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
@@ -54,6 +60,7 @@ public class AppSettingsModal extends Modal {
     /**
      * Initialize the settings modal
      */
+    @Override
     @FXML
     public void initialize() {
         super.initialize();
@@ -81,7 +88,15 @@ public class AppSettingsModal extends Modal {
      */
     @FXML
     public void adminMode () {
-
+        if (Main.isAdmin()) {
+            Main.setAdmin(false);
+            adminButton.setText("Enable God Mode");
+        }
+        else {
+            final AdminPasswordModal adminPasswordModal = new AdminPasswordModal(boardService,
+                    parentCtrl.getMainCtrl().getCurrentScene(), parentCtrl);
+            adminPasswordModal.showModal();
+        }
     }
 
     /**
