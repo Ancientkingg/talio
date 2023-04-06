@@ -94,6 +94,14 @@ public class BoardService {
     }
 
     /**
+     * gets the server IP from server service
+     * @return current server IP address
+     */
+    public String getServerIP() {
+        return serverService.getServerIP().toString();
+    }
+
+    /**
      * Adds a new board
      * @param board the board to add
      * @return the board returned by the server

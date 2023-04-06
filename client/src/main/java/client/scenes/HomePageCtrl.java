@@ -212,7 +212,7 @@ public class HomePageCtrl {
     @FXML
     public void onSettingsButtonClick() {
         final Scene parentScene = mainCtrl.getCurrentScene();
-        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this);
+        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this, boardService.getServerIP());
         appSettingsModal.showModal();
     }
 

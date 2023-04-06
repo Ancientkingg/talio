@@ -15,10 +15,15 @@ import javafx.util.Duration;
 
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 
 public class AppSettingsModal extends Modal {
 
     private final HomePageCtrl parentCtrl;
+
+    private String serverIP;
 
     @FXML
     private Text serverURL;
@@ -38,13 +43,16 @@ public class AppSettingsModal extends Modal {
 
     /**
      * Constructor for AppSettingsModal
+     *
      * @param boardService BoardService
-     * @param parentScene Parent Scene
-     * @param parentCtrl Parent ctrl (HomePageCtrl)
+     * @param parentScene  Parent Scene
+     * @param parentCtrl   Parent ctrl (HomePageCtrl)
+     * @param serverIP
      */
-    public AppSettingsModal (final BoardService boardService, final Scene parentScene, final HomePageCtrl parentCtrl) {
+    public AppSettingsModal (final BoardService boardService, final Scene parentScene, final HomePageCtrl parentCtrl, final String serverIP) {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
+        this.serverIP = serverIP;
 
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/AppSettingsModal.fxml"));
         loader.setRoot(this);
@@ -64,7 +72,7 @@ public class AppSettingsModal extends Modal {
     @FXML
     public void initialize() {
         super.initialize();
-        this.serverURL.setText("Server URL"); // TBD - replace with actual url
+        this.serverURL.setText(serverIP);
         this.adminButton.setText(Main.isAdmin() ? "Disable God Mode" : "Enable God Mode");
     }
 
@@ -92,6 +100,31 @@ public class AppSettingsModal extends Modal {
     @FXML
     public void deleteSavedBoards () {
 
+        String message = "Cache cleared!";
+
+        try {
+            Files.delete(Path.of("client", "saved-boards"));
+        }
+        catch (NoSuchFileException e) {
+            message = "cache was already empty";
+        }
+        catch (IOException e) {
+            message = "Failed to clear cache"; // lacking permissions
+        }
+
+        final Point2D p = this.clearCache.localToScreen(110, -32);
+
+        final Tooltip customTooltip = new Tooltip(message);
+        customTooltip.setStyle("-fx-font-size: 11px");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(this.serverURL,p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(750));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+
     }
 
     /**
@@ -116,7 +149,7 @@ public class AppSettingsModal extends Modal {
      */
     @FXML
     public void exitApplication () {
-
+        System.exit(0);
     }
 
     /**
@@ -137,7 +170,7 @@ public class AppSettingsModal extends Modal {
         });
         pt.play();
 
-        final StringSelection serverUrlSelection = new StringSelection("TBD - server url");
+        final StringSelection serverUrlSelection = new StringSelection(serverIP);
         java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(serverUrlSelection, null);
 
     }
