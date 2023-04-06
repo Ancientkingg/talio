@@ -168,7 +168,7 @@ public class HomePageCtrl {
                 final Board board = boardList.get(i);
                 final BoardCardComponent boardCard = new BoardCardComponent(board, this);
                 if (Main.isAdmin()) {
-                    boardCard.enableAdmin();
+                    boardCard.changeMode();
                 }
                 innerBoardCardList.getChildren().add(boardCard);
 

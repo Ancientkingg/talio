@@ -101,6 +101,7 @@ public class AppSettingsModal extends Modal {
     public void adminMode () {
         if (Main.isAdmin()) { // If user is already in admin mode, then disable it
             Main.setAdmin(false);
+            parentCtrl.refresh();
             adminButton.setText("Enable God Mode");
         }
         else {

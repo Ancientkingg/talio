@@ -80,11 +80,19 @@ public class BoardCardComponent extends Pane {
     }
 
     /**
-     * Enables admin controls such as the delete board button
+     * Enables/disables admin controls - deleting boards.
+     * Also disables the leave button since leaving only removes the board from the homepage but the board persists in the server.
+     * This goes against the requirement - the admin should be able to see all boards on the server.
      */
-    public void enableAdmin() {
-        deleteButton.setVisible(true);
-        deleteButton.setDisable(false);
+    public void changeMode() {
+
+        final boolean isAdmin = Main.isAdmin();
+
+        deleteButton.setVisible(isAdmin); // if admin, make visible
+        deleteButton.setDisable(!isAdmin); // if admin, enable
+
+        leaveButton.setVisible(!isAdmin); // if admin, hide leave button
+        leaveButton.setDisable(isAdmin); // if admin, disable leave button
     }
 
     @FXML
