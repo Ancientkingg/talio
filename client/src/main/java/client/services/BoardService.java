@@ -489,4 +489,13 @@ public class BoardService {
     public void subscribeToBoard(final String joinKey) {
         serverService.subscribeToBoard(joinKey);
     }
+
+    /**
+     * Verifies password provided by user for switching to admin mode
+     * @param adminPassword Password provided by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        return serverService.verifyAdminPassword(adminPassword);
+    }
 }

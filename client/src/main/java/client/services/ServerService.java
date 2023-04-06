@@ -354,4 +354,21 @@ public class ServerService {
     public void subscribeToBoard(final String joinKey) {
         sessionHandler.subscribeToBoard(joinKey);
     }
+
+    /**
+     * Verifies password provided by user for switching to admin mode
+     * @param adminPassword Password provided by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Boolean isValid = client.target(serverIP)
+                    .path("admin")
+                    .path("verify")
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(adminPassword, APPLICATION_JSON), Boolean.class);
+            logger.info("Attempting to switch to god mode...\nPassword is valid ? " + isValid);
+            return isValid != null && isValid;
+        }
+    }
 }

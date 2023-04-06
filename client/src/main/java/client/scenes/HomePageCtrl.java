@@ -8,12 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import javax.inject.Inject;
 import java.util.List;
 
 public class HomePageCtrl {
 
+    @Getter
     private final MainCtrl mainCtrl;
 
     private final BoardService boardService;
@@ -162,5 +164,12 @@ public class HomePageCtrl {
         this.renderBoards();
     }
 
-
+    /**
+     * Verifies admin password given by user
+     * @param adminPassword Password entered by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        return boardService.verifyAdminPassword(adminPassword);
+    }
 }
