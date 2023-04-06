@@ -36,6 +36,11 @@ Tags
     -fx-border-color: black;
 }
 
+.smallTag {
+    -fx-background-radius: 20px;
+    -fx-border-radius: 5px;
+}
+
 .tagTitleText {
     -fx-text-fill: #f8f8f8;
     -fx-font-family: Cabin;

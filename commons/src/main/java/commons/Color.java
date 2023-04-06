@@ -47,6 +47,17 @@ public class Color {
     }
 
     /**
+     * Constructor for Color from hex string
+     * @param hexColor hex color string
+     */
+    public Color (final String hexColor) {
+        this.red = Integer.parseInt(hexColor.substring(1, 3), 16);
+        this.green = Integer.parseInt(hexColor.substring(3, 5), 16);
+        this.blue = Integer.parseInt(hexColor.substring(5, 7), 16);
+        this.alpha = 255;
+    }
+
+    /**
      * for checkstyle
      */
     protected Color() {
@@ -73,5 +84,14 @@ public class Color {
     @Override
     public int hashCode() {
         return Objects.hash(red, green, blue, alpha);
+    }
+
+    /**
+     * toString for Color
+     * @return string representation of Color
+     */
+    @Override
+    public String toString() {
+        return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";
     }
 }
