@@ -463,3 +463,8 @@ Overview
 .board-card-button:hover {
     -fx-background-color: #ebebeb;
 }
+.incorrect-password-text {
+    -fx-font-size: 12px;
+    -fx-font-family: Cabin-Bold;
+    -fx-color-label-visible: red;
+}
