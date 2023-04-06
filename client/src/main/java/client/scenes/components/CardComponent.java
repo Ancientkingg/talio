@@ -65,7 +65,7 @@ public class CardComponent extends GridPane {
             public void handle(final MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene() , getCard());
+                        final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
                         modal.showModal();
                     }
 

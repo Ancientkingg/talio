@@ -7,6 +7,7 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.Tag;
+import lombok.Getter;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class BoardService {
     private BoardModel boardModel;
     private final ServerService serverService;
+    @Getter
     private final MainCtrl mainCtrl;
 
     /**
