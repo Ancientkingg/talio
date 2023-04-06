@@ -439,3 +439,9 @@ Overview
     -fx-text-fill: #f3f3f3;
     -fx-font-size: 36px;
 }
+
+.incorrect-password-text {
+    -fx-font-size: 12px;
+    -fx-font-family: Cabin-Bold;
+    -fx-color-label-visible: red;
+}
