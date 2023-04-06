@@ -106,6 +106,19 @@ public class BoardController {
     }
 
     /**
+     * Deletes a board
+     * @param joinKey join key of a board
+     * @return 200 OK if the board has been deleted
+     */
+    @DeleteMapping("/boards/delete/{joinKey}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable final String joinKey) {
+        final Board board = boardService.getBoardWithKey(joinKey);
+        boardService.deleteBoard(board);
+        logger.info("Deleted board with join key: " + joinKey);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * Renames board in repo and sends update to subscribed clients
      * @param joinKey String for board
      * @param newHeading  String for new name of board
