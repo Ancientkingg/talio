@@ -25,7 +25,6 @@ public class CardDetailsModal extends Modal {
     @FXML
     private TextArea cardDescription;
 
-
     @FXML
     private VBox tagBox;
 
@@ -74,6 +73,14 @@ public class CardDetailsModal extends Modal {
         this.card.setDescription(cardDescription.getText());
         this.closeModal();
         this.cardComponent.refresh();
+    }
+
+    @FXML
+    private void deleteCard() {
+        this.cardComponent.getColumnParent().deleteCard(this.cardComponent);
+        this.cardComponent.getColumnParent().getColumn().removeCard(this.card);
+        this.closeModal();
+        this.cardComponent.getColumnParent().refresh();
     }
 
 

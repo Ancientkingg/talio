@@ -68,7 +68,6 @@ public class CardComponent extends GridPane {
                         final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
                         modal.showModal();
                     }
-
                 }
                 }
             });
