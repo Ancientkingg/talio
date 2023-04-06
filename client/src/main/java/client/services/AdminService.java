@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class AdminService {
-    private BoardModel boardModel;
+    private final BoardModel boardModel;
     private final ServerService serverService;
     private final MainCtrl mainCtrl;
 

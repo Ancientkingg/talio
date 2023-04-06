@@ -65,6 +65,7 @@ public class AppSettingsModal extends Modal {
     public void initialize() {
         super.initialize();
         this.serverURL.setText("Server URL"); // TBD - replace with actual url
+        this.adminButton.setText(Main.isAdmin() ? "Disable God Mode" : "Enable God Mode");
     }
 
     /**
@@ -88,7 +89,7 @@ public class AppSettingsModal extends Modal {
      */
     @FXML
     public void adminMode () {
-        if (Main.isAdmin()) {
+        if (Main.isAdmin()) { // If user is already in admin mode, then disable it
             Main.setAdmin(false);
             adminButton.setText("Enable God Mode");
         }
@@ -114,7 +115,7 @@ public class AppSettingsModal extends Modal {
     public void onUrlClick() {
         final Point2D p = this.serverURL.localToScreen(110, -32);
 
-        final Tooltip customTooltip = new Tooltip("Copied join-key to clipboard!");
+        final Tooltip customTooltip = new Tooltip("Copied server URL to clipboard!");
         customTooltip.setStyle("-fx-font-size: 11px");
         customTooltip.setAutoHide(false);
         customTooltip.show(this.serverURL,p.getX(),p.getY());
@@ -125,8 +126,8 @@ public class AppSettingsModal extends Modal {
         });
         pt.play();
 
-        final StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());
-        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(joinKeySelection, null);
+        final StringSelection serverUrlSelection = new StringSelection("TBD - server url");
+        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(serverUrlSelection, null);
 
     }
 }

@@ -115,7 +115,7 @@ public class BoardService {
     }
 
     /**
-     * Adds a board to the board list
+     * Returns all boards on the client
      * @return the boards present on the client
      */
     public List<Board> getAllBoards() {

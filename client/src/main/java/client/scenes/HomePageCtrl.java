@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.components.*;
+import client.services.AdminService;
 import client.services.BoardService;
 import commons.Board;
 import javafx.animation.PauseTransition;
@@ -25,6 +26,8 @@ public class HomePageCtrl {
 
     private final BoardService boardService;
 
+    private final AdminService adminService;
+
     @FXML
     private FlowPane innerBoardCardList;
 
@@ -45,11 +48,13 @@ public class HomePageCtrl {
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
      * @param boardService Shared instance of BoardService
+     * @param adminService inject shared instance of AdminService
      */
     @Inject
-    public HomePageCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
+    public HomePageCtrl(final MainCtrl mainCtrl, final BoardService boardService, final AdminService adminService) {
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
+        this.adminService = adminService;
     }
 
     /**
@@ -65,6 +70,14 @@ public class HomePageCtrl {
      */
     public void loadBoards() {
         boardService.loadBoardsForCurrentServer();
+        this.renderBoards();
+    }
+
+    /**
+     * Loads all the boards from the server and renders them
+     */
+    public void loadAllBoards() {
+        adminService.adminLoadAllBoards();
         this.renderBoards();
     }
 
@@ -218,6 +231,6 @@ public class HomePageCtrl {
      * @return correct/incorrect
      */
     public boolean verifyAdminPassword(final String adminPassword) {
-        return boardService.verifyAdminPassword(adminPassword);
+        return adminService.verifyAdminPassword(adminPassword);
     }
 }
