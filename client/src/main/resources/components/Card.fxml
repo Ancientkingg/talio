@@ -31,7 +31,7 @@
                   <Font size="18.0" />
                </font>
             </TextArea>
-            <HBox fx:id="tagContainer" minHeight="10.0" prefHeight="10.0" prefWidth="199.0" />
+            <HBox fx:id="tagContainer" fillHeight="false" minHeight="10.0" prefHeight="10.0" prefWidth="199.0" />
          </children>
       </VBox>
 

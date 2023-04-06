@@ -167,7 +167,9 @@ public class CardComponent extends GridPane {
         } else {
             final List<Tag> tags = new ArrayList<>(card.getTags());
             for (int i = 0; i < 4; i++) {
-                tagContainer.getChildren().add(new OverviewTagComponent(boardService, tags.get(i)));
+                final OverviewTagComponent otc = new OverviewTagComponent(boardService, tags.get(i));
+                otc.setPrefWidth(40);
+                tagContainer.getChildren().add(otc);
             }
             final Label moreTags = new Label(String.format("+%s more", card.getTags().size() - 4));
             moreTags.setFont(javafx.scene.text.Font.font("fonts/Cabin-Regular.ttf", 9));
