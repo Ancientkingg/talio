@@ -337,12 +337,13 @@ public class ServerService {
      * Renames column by posting a request to renameColumn endpoint on server
      * @param board Board for join key
      * @param column Column to rename
+     * @param newName New name of column
      */
-    public void renameColumn(final Board board, final Column column) {
+    public void renameColumn(final Board board, final Column column, final String newName) {
         session.send("/app/columns/rename/" +
                 board.getJoinKey() + "/" +
                 column.getId() + "/" +
-                column.getHeading(),
+                newName,
                 board.getPassword());
         logger.info("Renamed column sent to server");
     }
