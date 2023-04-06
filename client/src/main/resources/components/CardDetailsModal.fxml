@@ -40,7 +40,7 @@
                 <SVGPath content="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" scaleX="0.025" scaleY="0.025" styleClass="modalCrossButtonIcon" />
             </graphic>
         </Button>
-        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitBoard" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Submit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="5">
+        <Button fx:id="submitButton" mnemonicParsing="false" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Submit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="5">
             <GridPane.margin>
                 <Insets bottom="16.0" right="22.0" />
             </GridPane.margin>
@@ -81,9 +81,9 @@
             <Insets left="50.0" right="50.0" />
          </GridPane.margin>
       </TextArea>
-      <Button fx:id="editDescriptionButton1" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <Button fx:id="editTitleButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <graphic>
-            <SVGPath fx:id="editTitleButton" content="M794 390 666 262l42-42q17-17 42.5-16.5T793 221l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Z" scaleX="0.02" scaleY="0.02" />
+            <SVGPath content="M794 390 666 262l42-42q17-17 42.5-16.5T793 221l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Z" scaleX="0.02" scaleY="0.02" />
          </graphic>
          <opaqueInsets>
             <Insets />

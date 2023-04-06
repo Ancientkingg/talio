@@ -87,6 +87,11 @@ public class CardDetailsModal extends Modal {
         this.cardDescription.setText(card.getDescription());
     }
 
+    @FXML
+    private void submitDetails() { 
+        this.closeModal();
+    }
+
     /**
      * Listens for changes in description
      */

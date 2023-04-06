@@ -6,6 +6,7 @@ import client.services.BoardService;
 import commons.Card;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -58,6 +59,19 @@ public class CardComponent extends GridPane {
         setupDynamicallyResize();
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
+
+        setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(final MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene() , getCard());
+                        modal.showModal();
+                    }
+
+                }
+                }
+            });
 
         cardText.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
