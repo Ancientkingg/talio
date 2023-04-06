@@ -590,4 +590,20 @@ public class BoardService {
     public boolean verifyAdminPassword(final String adminPassword) {
         return serverService.verifyAdminPassword(adminPassword);
     }
+
+    /**
+     * Gets all Boards in the database from the server
+     * @return List of all Boards
+     */
+    public List<Board> adminGetAllBoards() {
+        return serverService.adminGetAllBoards();
+    }
+
+    /**
+     * Loads all the Boards in the server for admin view
+     */
+    public void adminLoadAllBoards() {
+        final List<Board> boards = this.adminGetAllBoards();
+        this.boardModel.setBoardList(boards.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+    }
 }

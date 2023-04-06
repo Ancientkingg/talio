@@ -46,11 +46,22 @@ public class AdminPasswordModal extends Modal {
     }
 
     /**
-     * Closes modal
+     * sets incorrectPasswordText visibility to false every time modal is opened to clear any old message
+     */
+    @Override
+    public void initialize() {
+        super.initialize();
+        incorrectPasswordText.setVisible(false);
+    }
+
+    /**
+     * overriden closeModal method that also refreshes Homepage to reflect any changes made
      */
     @FXML
+    @Override
     public void closeModal() {
         super.closeModal();
+        parentCtrl.refresh();
     }
 
     /**
@@ -58,9 +69,6 @@ public class AdminPasswordModal extends Modal {
      */
     @FXML
     private void enableAdminMode() {
-
-        incorrectPasswordText.setVisible(false);
-        // produces effect of error message disappearing and reappearing if incorrect password given repeatedly
 
         final String adminPassword = this.adminPasswordTextField.getText();
 

@@ -69,6 +69,16 @@ public class AppSettingsModal extends Modal {
     }
 
     /**
+     * overriden closeModal method that also refreshes Homepage to reflect any changes made
+     */
+    @Override
+    @FXML
+    public void closeModal() {
+        super.closeModal();
+        parentCtrl.refresh();
+    }
+
+    /**
      * Disconnect from server
      */
     @FXML
