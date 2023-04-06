@@ -160,6 +160,7 @@ public class CardComponent extends GridPane {
     public void refresh() {
         cardText.setText(card.getTitle());
         tagContainer.getChildren().clear();
+        tagContainer.setSpacing(2);
         if (card.getTags().size() < 5) {
             for (final Tag tag : card.getTags()) {
                 tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
