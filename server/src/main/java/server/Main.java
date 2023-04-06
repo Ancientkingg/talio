@@ -15,19 +15,51 @@
  */
 package server;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import java.util.Objects;
 
 @SpringBootApplication
 @EntityScan(basePackages = { "commons", "server" })
 public class Main {
 
+    private static final Logger logger = LogManager.getLogger();
+
+    private static String adminPassword;
+
     /**
      * The main method of the server
+     *
      * @param args The arguments to the server application
      */
     public static void main(final String[] args) {
         SpringApplication.run(Main.class, args);
+
+        adminPassword = generateRandomPassword();
+        logger.info("\nAdministrator password: " + adminPassword); // prints the admin password in server console
+    }
+
+    /**
+     * Generate a random string of length 30 as password
+     * (the size is because there is no restriction to the number of
+     * attempts users can make to guess password)
+     * @return A randomly generated String of length 30
+     */
+    private static String generateRandomPassword() {
+        return RandomStringUtils.random(30);
+    }
+
+    /**
+     * Checks if password provided as parameter matches the administrator password of the server
+     * @param userPassword password provided by user
+     * @return correct/incorrect
+     */
+    public static boolean validatePassword(final String userPassword) {
+        return Objects.equals(adminPassword, userPassword);
     }
 }
