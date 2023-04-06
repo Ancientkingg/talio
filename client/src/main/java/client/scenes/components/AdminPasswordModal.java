@@ -69,7 +69,7 @@ public class AdminPasswordModal extends Modal {
             if (parentCtrl.verifyAdminPassword(adminPassword)) {
                 Main.setAdmin(true);
                 closeModal();
-                parentCtrl.loadBoards();
+                parentCtrl.loadAllBoards();
             }
             else {
                 incorrectPasswordText.setText("Entered password is incorrect");

@@ -103,7 +103,7 @@ public class BoardService {
     }
 
     /**
-     * Adds a board to the board list
+     * Returns all boards on the client
      * @return the boards present on the client
      */
     public List<Board> getAllBoards() {
@@ -488,14 +488,5 @@ public class BoardService {
      */
     public void subscribeToBoard(final String joinKey) {
         serverService.subscribeToBoard(joinKey);
-    }
-
-    /**
-     * Verifies password provided by user for switching to admin mode
-     * @param adminPassword Password provided by user
-     * @return correct/incorrect
-     */
-    public boolean verifyAdminPassword(final String adminPassword) {
-        return serverService.verifyAdminPassword(adminPassword);
     }
 }
