@@ -5,6 +5,7 @@ import commons.Column;
 import commons.DTOs.ColumnDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 
 import java.util.TreeSet;
@@ -41,26 +43,33 @@ public class ColumnController {
      * @param joinKey Key used to identify board
      * @param columnHeading Heading of column to be added
      * @param password Password to board
+     * @param columnId Id for column
      * @param index Index of column to be added
      * @return The Column added to the ColumnRepository
      */
-    @PostMapping("/columns/create/{joinKey}/{columnHeading}")
+    @PostMapping("/columns/create/{joinKey}/{columnHeading}/{columnId}")
     public ResponseEntity<Column> addColumn(@PathVariable final String joinKey, @PathVariable final String columnHeading,
-                                            @RequestBody(required = false) final String password, @RequestParam final int index)
+                                            @PathVariable final String columnId, @RequestBody(required = false) final String password,
+                                            @RequestParam final int index)
     {
+        try {
+            final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
+            final Column column = new Column(Long.valueOf(columnId), columnHeading, index, new TreeSet<>());
 
-        final Column column = new Column(columnHeading, index, new TreeSet<>());
-        column.generateId();
+            if (!board.addColumn(column)) {
+                throw new Exception();
+            }
+            boardService.saveBoard(board);
 
-        board.addColumn(column);
-        boardService.saveBoard(board);
+            updateColumnAdded(joinKey, column);
 
-        updateColumnAdded(joinKey, column);
-
-        return ResponseEntity.ok(column);
+            return ResponseEntity.ok(column);
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
     }
 
     /**
@@ -75,17 +84,26 @@ public class ColumnController {
     public ResponseEntity<Column> removeColumn(@PathVariable final String joinKey, @PathVariable final long columnId,
                                                @RequestBody(required = false) final String password)
     {
+        try {
+            final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+            final Column toBeRemoved = board.getColumnById(columnId);
 
-        final Column toBeRemoved = board.getColumnById(columnId);
+            if (!board.removeColumn(toBeRemoved)) {
+                throw new RuntimeException();
+            }
+            boardService.saveBoard(board);
 
-        board.removeColumn(toBeRemoved);
-        boardService.saveBoard(board);
+            board.refreshIndices(toBeRemoved.getIndex());
+            boardService.saveBoard(board);
 
-        updateColumnRemoved(joinKey, columnId);
+            updateColumnRemoved(joinKey, columnId);
 
-        return ResponseEntity.ok(toBeRemoved);
+            return ResponseEntity.ok(toBeRemoved);
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
     }
 
     /**
@@ -101,15 +119,20 @@ public class ColumnController {
     public Column renameColumn(@DestinationVariable final String joinKey, @DestinationVariable final long columnId,
                                @DestinationVariable final String newHeading, @Payload(required = false) final String password)
     {
-        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
-        final Column toBeRenamed = board.getColumnById(columnId);
+        try {
+            final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+            final Column toBeRenamed = board.getColumnById(columnId);
 
-        toBeRenamed.setHeading(newHeading);
-        boardService.saveBoard(board);
+            toBeRenamed.setHeading(newHeading);
+            boardService.saveBoard(board);
 
-        updateColumnRenamed(joinKey, columnId, newHeading);
+            updateColumnRenamed(joinKey, columnId, newHeading);
 
-        return toBeRenamed;
+            return toBeRenamed;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
     }
 
     /**
@@ -140,7 +163,7 @@ public class ColumnController {
      * @param columnId Column that was removed
      */
     public void updateColumnRemoved(final String joinKey, final long columnId) {
-        logger.info("Propagating column change to: " + joinKey);
+        logger.info("Propagating column removed to: " + joinKey);
         messagingTemplate.convertAndSend("/topic/columns/" + joinKey + "/remove", columnId);
     }
 }

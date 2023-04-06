@@ -157,7 +157,7 @@ public class Board {
      * @param columnId The id of the column to get
      * @return The column with the id {@code columnId}
      */
-    public Column getColumnById(final long columnId) {
+    public Column getColumnById(final long columnId) throws ColumnNotFoundException {
 
         for (final Column column : this.columns) {
             if (column.getId() == columnId) {
@@ -165,7 +165,7 @@ public class Board {
             }
         }
 
-        return null;
+        throw new ColumnNotFoundException("Column not found");
     }
 
     /**
@@ -176,8 +176,6 @@ public class Board {
      */
     public void addCardToColumn(final Card card, final long columnId) throws ColumnNotFoundException {
         final Column column = this.getColumnById(columnId);
-
-        if (column == null) throw new ColumnNotFoundException("The column " + columnId + " cannot be found in the board" + this.title);
 
         column.addCard(card);
     }
@@ -331,6 +329,20 @@ public class Board {
         final Card card = this.getCard(cardId);
         if (card != null) {
             card.removeTag(tag);
+        }
+    }
+
+    /**
+     * Refreshes indices of columns in an overview so that there are no gaps
+     * @param removedIndex index of removed column
+     */
+    public void refreshIndices (final int removedIndex) {
+        int indexCount = 0;
+        for (final Column col : columns) {
+            if  (indexCount >= removedIndex ) {
+                col.setIndex(col.getIndex() - 1);
+            }
+            indexCount++;
         }
     }
 }

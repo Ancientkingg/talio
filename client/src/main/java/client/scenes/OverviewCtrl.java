@@ -35,9 +35,6 @@ public class OverviewCtrl {
     @FXML
     private SVGPath boardEditIcon;
 
-    private static int highestIndex = 0; //This is just a temporary fix to give columns different indexes
-
-
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
      * @param mainCtrl Shared instance of MainCtrl
@@ -139,7 +136,8 @@ public class OverviewCtrl {
      * Will be used to create a column when user passes through the column name
      */
     public void createColumn() throws BoardChangeException {
-        final Column column = new Column(getFunColumnName(), highestIndex++, new TreeSet<>());
+        final Column column = new Column(getFunColumnName(), boardService.getHighestIndex(), new TreeSet<>());
+        column.generateId();
         boardService.addColumnToCurrentBoard(column);
         mainCtrl.refreshOverview();
     }
@@ -220,21 +218,6 @@ public class OverviewCtrl {
 
         return adjectives[(int) (Math.random() * adjectives.length)]
                 + " " + animalNames[(int) (Math.random() * animalNames.length)];
-    }
-
-    /**
-     * Refreshes indices of columns in an overview so that there are no gaps
-     * @param removedIndex index of removed column
-     */
-    public void refreshIndices (final int removedIndex) {
-        int indexCount = 0;
-        for (final Column col : boardService.getCurrentBoard().getColumns()) {
-            if  (indexCount >= removedIndex ) {
-                col.setIndex(col.getIndex() - 1);
-            }
-            indexCount++;
-        }
-        highestIndex--;
     }
 
 }

@@ -106,13 +106,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
                         final CardDTO cardDTO = (CardDTO) payload;
-//                        try {
-                        boardService.updateRepositionCard(cardDTO.getCard().getId(),
-                            cardDTO.getColumnFromId(),
-                            cardDTO.getColumnToId(), cardDTO.getNewPosition());
-                        logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
-//                        }
-//                        catch (BoardChangeException e) { logger.info("Couldn't reposition card : " + cardDTO.getCard().getTitle()); }
+                        try {
+                            boardService.updateRepositionCard(cardDTO.getCard().getId(),
+                                cardDTO.getColumnFromId(),
+                                cardDTO.getColumnToId(), cardDTO.getNewPosition());
+                            logger.info("Card repositioned: " + cardDTO.getCard().getTitle());
+                        }
+                        catch (BoardChangeException e) { logger.info("Couldn't reposition card : " + cardDTO.getCard().getTitle()); }
                     }); }
             });
         subscriptions.add(cardRepositionedSub);
@@ -123,12 +123,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     final CardDTO cardDTO = (CardDTO) payload;
-                    final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
-//                    try {
-                    boardService.updateEditCard(cardDTO.getCard(), column);
-                    logger.info("Card edited: " + cardDTO.getCard().getTitle());
-//                    }
-//                    catch (BoardChangeException e) { logger.info("Couldn't edit card : " + cardDTO.getCard().getTitle()); }
+                    final Column column;
+                    try {
+                        column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+                        boardService.updateEditCard(cardDTO.getCard(), column);
+                        logger.info("Card edited: " + cardDTO.getCard().getTitle());
+                    }
+                    catch (Exception e) { logger.info("Couldn't edit card"); }
                 }
             });
         subscriptions.add(cardEditedSub);
@@ -146,12 +147,12 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
                         final CardDTO cardDTO = (CardDTO) payload;
-                        final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
                         try {
+                            final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
                             boardService.updateAddCardToColumn(cardDTO.getCard(), column);
                             logger.info("Card added: " + cardDTO.getCard().getTitle());
                         }
-                        catch (BoardChangeException e) { logger.info("Couldn't add card : " + cardDTO.getCard().getTitle()); }
+                        catch (Exception e) { logger.info("Couldn't add card"); }
                     }); }
             });
         subscriptions.add(cardAddedSub);
@@ -163,12 +164,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater( () -> {
                         final CardDTO cardDTO = (CardDTO) payload;
-                        final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
+
                         try {
+                            final Column column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
                             boardService.updateRemoveCardFromColumn(cardDTO.getCard(), column);
                             logger.info("Card removed: " + cardDTO.getCard().getTitle());
                         }
-                        catch (BoardChangeException e) { logger.info("Couldn't delete card  : " + cardDTO.getCard().getTitle()); }
+                        catch (Exception e) { logger.info("Couldn't remove card"); }
                     }); }
             });
         subscriptions.add(cardRemovedSub);
@@ -186,7 +188,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                             boardService.updateAddColumnToCurrentBoard(column);
                             logger.info("Column added: " + ((Column) payload).getHeading());
                         }
-                        catch (BoardChangeException e) { logger.info("Couldn't add column : " + column.getHeading()); }
+                        catch (Exception e) { logger.info("Couldn't add column : " + column.getHeading()); }
                     }); }
             });
         subscriptions.add(columnAddedSub);
@@ -197,9 +199,12 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     final ColumnDTO columnDTO = (ColumnDTO) payload;
-                    final Column column = boardService.getCurrentBoard().getColumnById(columnDTO.getColumnId());
-                    boardService.updateRenameColumn(column, columnDTO.getNewHeading());
-                    logger.info("Column renamed: " + columnDTO.getNewHeading());
+                    try {
+                        final Column column = boardService.getCurrentBoard().getColumnById(columnDTO.getColumnId());
+                        boardService.updateRenameColumn(column, columnDTO.getNewHeading());
+                        logger.info("Column renamed: " + columnDTO.getNewHeading());
+                    }
+                    catch (Exception e) { logger.info("Couldn't remove column"); }
                 }
             });
         subscriptions.add(columnRenamedSub);
@@ -214,10 +219,8 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                             boardService.updateRemoveColumnFromCurrentBoard((Long) payload);
                             logger.info("Column removed");
                         }
-                        catch (BoardChangeException e) {
-                            final String title = boardService.getCurrentBoard().getColumnById((Long) payload).getHeading();
-                            logger.info("Couldn't remove column : " + title);
-                        } }); }
+                        catch (Exception e) { logger.info("Couldn't remove column"); }
+                    }); }
             });
         subscriptions.add(columnRemovedSub);
     }
