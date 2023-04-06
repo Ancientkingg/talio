@@ -98,8 +98,10 @@ public class ColumnComponent extends GridPane {
         });
 
         columnHeading.setOnKeyReleased(keyEvent -> {
-            if (Objects.equals(KeyCode.ENTER, (keyEvent.getCode()))) boardService.renameColumn(column, columnHeading.getText());
-            scrollPane.requestFocus();
+            if (Objects.equals(KeyCode.ENTER, (keyEvent.getCode()))) {
+                boardService.renameColumn(column, columnHeading.getText());
+                scrollPane.requestFocus();
+            }
         });
     }
 
