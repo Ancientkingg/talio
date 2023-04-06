@@ -177,7 +177,6 @@ public class BoardService {
     /**
      * Adds a column to the currently selected board (client initiated)
      * @param column the column to add
-     * @return the column returned by the server
      * @throws BoardChangeException if the column cannot be added
      */
     public void addColumnToCurrentBoard(final Column column) {
@@ -204,7 +203,6 @@ public class BoardService {
     /**
      * Removes a column from the currently selected board (client initiated)
      * @param column the column to remove
-     * @return the removed column returned by the server
      * @throws BoardChangeException if the column cannot be removed
      */
     public void removeColumnFromCurrentBoard(final Column column) {
@@ -233,7 +231,6 @@ public class BoardService {
      * Adds a card to the specified column of the currently selected board (client initiated)
      * @param card the card to add
      * @param column the column to add the card to
-     * @return the card returned by the server
      * @throws BoardChangeException if the card could not be added
      */
     public void addCardToColumn(final Card card, final Column column) {
@@ -263,7 +260,6 @@ public class BoardService {
      * Removes a card from the specified column of the currently selected board (client initiated)
      * @param card the card to remove
      * @param column the column to remove the card from
-     * @return the removed card returned by the server
      * @throws BoardChangeException if the card could not be removed
      */
     public void removeCardFromColumn(final Card card, final Column column) {
