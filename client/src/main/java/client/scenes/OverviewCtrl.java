@@ -1,10 +1,10 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
-import client.scenes.components.BoardSettingsModal;
+import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
-import client.scenes.components.TagsOverviewModal;
+import client.scenes.components.modals.TagsOverviewModal;
 import client.services.BoardService;
 import commons.Column;
 import javafx.animation.PauseTransition;

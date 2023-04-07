@@ -1,4 +1,4 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.services.BoardService;
 import javafx.event.EventHandler;

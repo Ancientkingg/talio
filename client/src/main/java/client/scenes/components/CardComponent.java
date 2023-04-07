@@ -2,6 +2,7 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
+import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
 import commons.Tag;

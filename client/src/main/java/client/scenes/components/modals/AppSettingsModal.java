@@ -1,7 +1,8 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
 import client.scenes.HomePageCtrl;
+import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;

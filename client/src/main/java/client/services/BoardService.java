@@ -4,7 +4,7 @@ import client.exceptions.BoardChangeException;
 import client.exceptions.ServerException;
 import client.models.BoardModel;
 import client.scenes.MainCtrl;
-import client.scenes.components.InfoModal;
+import client.scenes.components.modals.InfoModal;
 import commons.Board;
 import commons.Card;
 import commons.Column;

@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.scenes.components.TagsOverviewModal;
+import client.scenes.components.modals.TagsOverviewModal;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
