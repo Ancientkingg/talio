@@ -68,8 +68,11 @@ public class OverviewCtrl {
             focussedCard.getStyleClass().remove("selectedCard"); // remove focus from currently focussed card component
             focussedCard.toggleCardEditing(true); // disable card editing
         }
-        cardComponent.getStyleClass().add("selectedCard");
-        cardComponent.requestFocus();
+
+        if (cardComponent != null) { // null is passed if the last card in a column has focus and is deleted
+            cardComponent.getStyleClass().add("selectedCard");
+            cardComponent.requestFocus();
+        }
 
         focussedCard = cardComponent;
     }
@@ -111,11 +114,30 @@ public class OverviewCtrl {
         //shortcut to start editing highlighted task
         final KeyCombination e = new KeyCodeCombination(KeyCode.E);
         final Runnable editTask = () -> {
-            focussedCard.toggleCardEditing(false);
+            if (focussedCard != null)
+                focussedCard.toggleCardEditing(false);
         };
         keyboardShortcuts.put(e, editTask);
 
+        //shortcut to start editing highlighted task
+        final KeyCombination delete = new KeyCodeCombination(KeyCode.DELETE);
+        final KeyCombination backspace = new KeyCodeCombination(KeyCode.BACK_SPACE);
 
+        final Runnable deleteTask = () -> { // this is not done correctly. Should simply call a method in board service
+            if (focussedCard != null) {
+                final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
+                final int index = children.indexOf(focussedCard);
+
+                children.remove(index);
+                // if empty, set focussedCard to null, else (if last card was deleted, then set focussedCard to card just before it else next card)
+                setFocussedCard((children.size() == 0) ? null : (CardComponent) children.get(Math.min(children.size() - 1, index)));
+
+                refreshColumn(focussedCard.getColumnParent().getColumn().getId());
+                // TODO: send delete request to server via BoardService
+            }
+        };
+        keyboardShortcuts.put(delete, deleteTask);
+        keyboardShortcuts.put(backspace, deleteTask);
 
         setShiftingCardsKeyboardShortcuts(keyboardShortcuts);
 
