@@ -33,22 +33,22 @@ class TagTest {
 
     @Test
     void testEquals() {
-        Tag t = new Tag("Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
-        Tag t2 = new Tag("Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
-        assertEquals(t, t2);
-        Tag t3 = new Tag("Priority", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
-        Tag t4 = new Tag("Important", new ColorScheme(new Color(255,0,0,255), new Color(255,255,255,255)));
-        assertNotEquals(t, t3);
-        assertNotEquals(t, t4);
+        Tag t = new Tag(1,"Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t2 = new Tag(1, "Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        assertEquals(t.hashCode(), t2.hashCode());
+        Tag t3 = new Tag(2,"Priority", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t4 = new Tag(2,"Priority", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        assertNotEquals(t.hashCode(), t3.hashCode());
+        assertNotEquals(t.hashCode(), t4.hashCode());
     }
 
     @Test
     void testHashCode() {
-        Tag t = new Tag("Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
-        Tag t2 = new Tag("Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t = new Tag(1,"Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t2 = new Tag(1, "Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
         assertEquals(t.hashCode(), t2.hashCode());
-        Tag t3 = new Tag("Priority", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
-        Tag t4 = new Tag("Important", new ColorScheme(new Color(255,0,0,255), new Color(255,255,255,255)));
+        Tag t3 = new Tag(2,"Priority", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t4 = new Tag(2,"Important", new ColorScheme(new Color(0,0,0,0), new Color(0,0,255,255)));
         assertNotEquals(t.hashCode(), t3.hashCode());
         assertNotEquals(t.hashCode(), t4.hashCode());
     }

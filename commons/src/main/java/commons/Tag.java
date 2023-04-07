@@ -14,7 +14,7 @@ public class Tag {
     private long serializationId;
 
     @Getter
-    private final long id = (long) (Math.random() * 1000000000);
+    private final long id;
 
     @Getter @Setter
     private String title;
@@ -27,7 +27,7 @@ public class Tag {
      * Empty constructor for the Tag object
      */
     protected Tag() {
-
+        this.id = (long) (Math.random() * 1000000000);
     }
 
     /**
@@ -36,6 +36,13 @@ public class Tag {
      * @param hexColor Color of the tag in hex notation
      */
     public Tag(final String title, final ColorScheme hexColor) {
+        this.id = (long) (Math.random() * 1000000000);
+        this.title = title;
+        this.colorScheme = hexColor;
+    }
+
+    public Tag(final long id, final String title, final ColorScheme hexColor) {
+        this.id = id;
         this.title = title;
         this.colorScheme = hexColor;
     }
