@@ -232,10 +232,10 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater(() -> {
-                        boardService.updateRemoveTagFromBoard((Tag) payload);
-//                        }
-//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        logger.info("Tag removed from board");
+                        try {
+                            boardService.updateRemoveTagFromBoard((Tag) payload);
+                            logger.info("Tag removed from board");
+                        } catch (BoardChangeException e) { throw new RuntimeException(e); }
                     }); }
             });
         subscriptions.add(tagRemovedFromBoard);
@@ -246,10 +246,11 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater(() -> {
-                        boardService.updateAddTagToBoard((Tag) payload);
-//                        }
-//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        logger.info("Tag added to board");
+                        try {
+                            boardService.updateAddTagToBoard((Tag) payload);
+                            logger.info("Tag added to board");
+                        }
+                        catch (BoardChangeException e) { throw new RuntimeException(e); }
                     }); }
             });
         subscriptions.add(tagAddedToBoard);
@@ -260,10 +261,11 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater(() -> {
-                        boardService.updateEditTag((Tag) payload);
-//                        }
-//                        catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        logger.info("Tag added to board");
+                        try {
+                            boardService.updateEditTag((Tag) payload);
+                            logger.info("Tag added to board");
+                        }
+                        catch (BoardChangeException e) { throw new RuntimeException(e); }
                     }); }
             });
         subscriptions.add(tagEdited);
