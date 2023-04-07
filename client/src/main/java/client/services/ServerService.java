@@ -22,6 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.inject.Singleton;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -465,6 +467,30 @@ public class ServerService {
             if (response.getStatus() != 200) {
                 throw new ServerException("The server is not responding");
             }
+        }
+    }
+
+    /**
+     * Gets all users from the server using long polling
+     * @param boards List of boards to check
+     *
+     * @return List of boards that are still active
+     */
+    public List<String> getBoardsStatus(final List<String> boards) {
+        try (Client client = ClientBuilder.newClient()) {
+            final HashMap<String, Boolean> existingBoards = client.target(serverIP)
+                    .path("/home")
+                    .path("/getBoardsStatus")
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(boards, APPLICATION_JSON), new GenericType<>() { });
+            final List<String> activeBoards = new ArrayList<>();
+            for (final String board : boards) {
+                if (existingBoards.get(board)) {
+                    activeBoards.add(board);
+                }
+            }
+            logger.info("(long polling) Sending request to server to get status of boards");
+            return activeBoards;
         }
     }
 }
