@@ -9,7 +9,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,11 +18,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardComponent extends GridPane {
+public class CardComponent extends GridPane implements UIComponent {
     private final BoardService boardService;
     @Getter
     private final Card card;
@@ -51,15 +49,7 @@ public class CardComponent extends GridPane {
         this.card = card;
         this.columnParent = columnParent;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Card.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/Card.fxml"));
 
         cardText.setText(card.getTitle());
         cardText.setWrapText(true);

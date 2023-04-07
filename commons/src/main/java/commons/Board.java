@@ -205,6 +205,22 @@ public class Board {
         return column != null && this.columns.remove(column);
     }
 
+
+    /**
+     * Remove a tag from the board by id
+     * @param tag The tag to remove
+     * @return success/failure
+     */
+    public boolean removeTagById(final Tag tag) {
+        if (tag == null) return false;
+        for (final Tag t : this.tags) {
+            if (tag.getId() == t.getId()) {
+                return this.tags.remove(t);
+            }
+        }
+        return false;
+    }
+
     /**
      * Checks for equality between two boards
      *
@@ -301,9 +317,9 @@ public class Board {
      */
     public void updateTag(final Tag tag) {
         for (final Tag t : tags)
-            if (t.getTitle().equals(tag.getTitle())) {
-                tags.remove(t);
-                tags.add(t);
+            if (t.getId() == tag.getId()) {
+                t.setColorScheme(tag.getColorScheme());
+                t.setTitle(tag.getTitle());
                 break;
             }
     }

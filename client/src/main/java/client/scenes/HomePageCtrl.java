@@ -21,8 +21,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
 
-
-public class HomePageCtrl {
+public class HomePageCtrl implements LiveUIController {
 
     @Getter
     private final MainCtrl mainCtrl;

@@ -5,7 +5,6 @@ import client.scenes.HomePageCtrl;
 import commons.Board;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -13,9 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.IOException;
-
-public class BoardCardComponent extends Pane {
+public class BoardCardComponent extends Pane implements UIComponent {
 
     private final Board board;
 
@@ -39,15 +36,7 @@ public class BoardCardComponent extends Pane {
         this.board = board;
         this.parentCtrl = parentCtrl;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/BoardCard.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/BoardCard.fxml"));
 
         setBoardTitle();
         setHover();

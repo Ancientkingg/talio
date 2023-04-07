@@ -3,7 +3,6 @@ package client.scenes.components;
 import client.Main;
 import client.services.BoardService;
 import commons.Card;
-import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -99,12 +98,7 @@ public class CardDetailsModal extends Modal {
      * Refreshes tags in the scroll pane and displays them in their component form
      */
     public void refreshTags() {
-        tagBox.getChildren().removeAll(tagBox.getChildren().stream().filter(c -> c instanceof TagComponent).toList());
-
-        for (final Tag tag : card.getTags()) {
-            final TagComponent tagComponent = new TagComponent(boardService, tag.getTitle(), tag.getColorScheme());
-            tagBox.getChildren().add(tagBox.getChildren().size() - 1, tagComponent);
-        }
+        // TODO
     }
 
 }

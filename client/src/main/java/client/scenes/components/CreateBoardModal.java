@@ -6,16 +6,14 @@ import client.scenes.HomePageCtrl;
 import client.services.BoardService;
 import commons.Board;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-public class CreateBoardModal extends Modal {
+public class CreateBoardModal extends Modal implements UIComponent {
 
     @FXML
     private Button crossButton;
@@ -38,15 +36,7 @@ public class CreateBoardModal extends Modal {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/CreateBoardModal.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/CreateBoardModal.fxml"));
     }
 
     /**

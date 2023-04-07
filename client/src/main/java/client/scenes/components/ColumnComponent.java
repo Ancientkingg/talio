@@ -7,7 +7,6 @@ import client.services.BoardService;
 import commons.Card;
 import commons.Column;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -18,11 +17,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.SortedSet;
 
-public class ColumnComponent extends GridPane {
+public class ColumnComponent extends GridPane implements UIComponent {
 
     @Getter
     private final BoardService boardService;
@@ -53,15 +51,8 @@ public class ColumnComponent extends GridPane {
     public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl) {
         this.boardService = boardService;
         this.column = column;
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Column.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
+        loadSource(Main.class.getResource("/components/Column.fxml"));
 
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         // Set the delete action for the delete column button
         deleteColumnButton.setOnAction(e -> {
             try {

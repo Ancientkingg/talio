@@ -4,6 +4,7 @@ import client.exceptions.BoardChangeException;
 import client.scenes.components.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
+import client.scenes.components.TagsOverviewModal;
 import client.services.BoardService;
 import commons.Column;
 import javafx.animation.PauseTransition;
@@ -20,7 +21,7 @@ import javax.inject.Inject;
 import java.awt.datatransfer.StringSelection;
 import java.util.TreeSet;
 
-public class OverviewCtrl {
+public class OverviewCtrl implements LiveUIController {
     private final MainCtrl mainCtrl;
     private final BoardService boardService;
 
@@ -148,7 +149,9 @@ public class OverviewCtrl {
      */
     @FXML
     public void onTagsButtonClick() {
-
+        final TagsOverviewModal modal = new TagsOverviewModal(boardService, this.mainCtrl.getCurrentScene());
+        mainCtrl.setTagsOverviewModal(modal);
+        modal.showModal();
     }
 
 

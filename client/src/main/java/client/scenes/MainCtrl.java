@@ -1,11 +1,13 @@
 package client.scenes;
 
+import client.scenes.components.TagsOverviewModal;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import lombok.Getter;
+import lombok.Setter;
 
 import static client.Main.SCREEN_SIZE;
 
@@ -24,6 +26,10 @@ public class MainCtrl {
 
     private HomePageCtrl homePageCtrl;
     private Scene homePageScene;
+
+    @Getter
+    @Setter
+    private TagsOverviewModal tagsOverviewModal;
 
 
 

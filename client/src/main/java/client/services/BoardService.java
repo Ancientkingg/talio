@@ -387,13 +387,14 @@ public class BoardService {
     }
 
     /**
-     * Adds tag to board (client initiated)
-     *
+     * Adds tag to current board (client initiated)
      * @param tag Tag to add
+     * @return Tag added tag
      */
-    public void addTagToBoard(final Tag tag) {
+    public Tag addTagToCurrentBoard(final Tag tag) {
         final Tag addedTag = serverService.addTagToBoard(getCurrentBoard(), tag);
-        // Update the boardModel with addedTag here
+        boardModel.getCurrentBoard().addTag(addedTag);
+        return addedTag;
     }
 
     /**
@@ -402,6 +403,8 @@ public class BoardService {
      * @param tag Tag to add
      */
     public void updateAddTagToBoard(final Tag tag) {
+        boardModel.getCurrentBoard().addTag(tag);
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
     }
 
     /**
@@ -410,8 +413,7 @@ public class BoardService {
      * @param tag Tag to remove
      */
     public void removeTagFromBoard(final Tag tag) {
-        final Tag removedTag = serverService.removeTagFromBoard(getCurrentBoard(), tag);
-        // Update the boardModel with deletedTag here
+        serverService.removeTagFromBoard(getCurrentBoard(), tag);
     }
 
     /**
@@ -420,6 +422,8 @@ public class BoardService {
      * @param tag Tag to remove
      */
     public void updateRemoveTagFromBoard(final Tag tag) {
+        boardModel.removeTag(tag, getCurrentBoard());
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
     }
 
     /**
@@ -438,6 +442,8 @@ public class BoardService {
      * @param tag Tag to edit
      */
     public void updateEditTag(final Tag tag) {
+        boardModel.getCurrentBoard().updateTag(tag);
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
     }
 
     /**
