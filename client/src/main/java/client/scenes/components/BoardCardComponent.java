@@ -3,10 +3,15 @@ package client.scenes.components;
 import client.Main;
 import client.scenes.HomePageCtrl;
 import commons.Board;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -15,6 +20,12 @@ public class BoardCardComponent extends Pane {
     private final Board board;
 
     private final HomePageCtrl parentCtrl;
+
+    @FXML
+    private Button leaveButton;
+
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private Text boardTitle;
@@ -66,5 +77,43 @@ public class BoardCardComponent extends Pane {
 
         boardTitleText = board != null && board.getTitle() != null ? board.getTitle() : boardTitleText;
         boardTitle.setText(boardTitleText);
+    }
+
+    /**
+     * Enables/disables admin controls - deleting boards.
+     * Also disables the leave button since leaving only removes the board from the homepage but the board persists in the server.
+     * This goes against the requirement - the admin should be able to see all boards on the server.
+     */
+    public void changeMode() {
+
+        final boolean isAdmin = Main.isAdmin();
+
+        deleteButton.setVisible(isAdmin); // if admin, make visible
+        deleteButton.setDisable(!isAdmin); // if admin, enable
+
+        leaveButton.setVisible(!isAdmin); // if admin, hide leave button
+        leaveButton.setDisable(isAdmin); // if admin, disable leave button
+    }
+
+    @FXML
+    private void onLeave() {
+        final Point2D p = leaveButton.localToScreen(-110, 32);
+
+        parentCtrl.removeBoard(this.board);
+
+        final Tooltip customTooltip = new Tooltip("Left board!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(parentCtrl.getInnerBoardCardList(),p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(1250));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+    }
+
+    @FXML
+    private void onDelete() {
+        parentCtrl.deleteBoard(this.board);
     }
 }

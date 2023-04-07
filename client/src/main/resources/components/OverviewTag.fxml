@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<fx:root fx:id="tagBackground" maxHeight="-Infinity" maxWidth="200.0" minHeight="-Infinity" minWidth="40.0" prefHeight="5.0" prefWidth="200.0" styleClass="smallTag" stylesheets="@../Style.css" type="Pane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" />

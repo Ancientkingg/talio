@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="35.0" prefWidth="51.62375259399414" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="30.0" prefWidth="81.87624740600586" />
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="118.52321243286133" minWidth="0.0" percentWidth="35.0" prefWidth="47.483970642089844" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="29.491931915283203" valignment="TOP" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="69.5080680847168" valignment="TOP" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="15.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onUrlClick" prefHeight="36.0" prefWidth="209.0" style="-fx-font-size: 18;" stylesheets="@../Style.css" translateX="-30.0" translateY="20.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="29.0" left="70.0" />
+         </GridPane.margin>
+         <graphic>
+            <SVGPath content="M450 776H280q-83 0-141.5-58.5T80 576q0-83 58.5-141.5T280 376h170v60H280q-58.333 0-99.167 40.765-40.833 40.764-40.833 99Q140 634 180.833 675q40.834 41 99.167 41h170v60ZM325 606v-60h310v60H325Zm185 170v-60h170q58.333 0 99.167-40.765 40.833-40.764 40.833-99Q820 518 779.167 477 738.333 436 680 436H510v-60h170q83 0 141.5 58.5T880 576q0 83-58.5 141.5T680 776H510Z" scaleX="0.025" scaleY="0.029" translateX="78.0" />
+         </graphic>
+         <styleClass>
+            <String fx:value="join-board-modal-text-field" />
+            <String fx:value="board-joinkey-text-field" />
+         </styleClass>
+      </Button>
+        <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Board settings" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets top="21.0" />
+         </GridPane.margin>
+      </Text>
+      <Button fx:id="crossButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeModal" prefHeight="24.0" prefWidth="24.0" styleClass="modalCrossButton" stylesheets="@../Style.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="11.0" top="9.0" />
+         </GridPane.margin>
+         <graphic>
+            <SVGPath content="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" scaleX="0.025" scaleY="0.025" styleClass="modalCrossButtonIcon" />
+         </graphic>
+      </Button>
+      <Text fx:id="serverURL" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" styleClass="modalDescriptionText" text="Server URL" translateX="-110.0" translateY="27.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalSubTitleText" text="Copy Server URL" translateX="50.0" translateY="28.0" GridPane.rowIndex="2" />
+      <Button fx:id="disconnectFromServer" mnemonicParsing="false" onAction="#onDisconnectButtonClick" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Disconnect" textFill="#f5f4f4" translateX="-130.0" translateY="80.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Text layoutX="500.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalSubTitleText" text="Disconnect from Server" translateX="50.0" translateY="84.0" wrappingWidth="205.68002319335938" GridPane.rowIndex="2" />
+      <Button fx:id="clearCache" layoutX="501.0" layoutY="101.0" mnemonicParsing="false" onAction="#deleteSavedBoards" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Clear Cache" textFill="#f5f4f4" translateX="-130.0" translateY="-155.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Button fx:id="adminButton" layoutX="501.0" layoutY="134.0" mnemonicParsing="false" onAction="#adminMode" prefHeight="33.0" prefWidth="159.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Enable God Mode" textFill="#f5f4f4" translateX="-20.0" translateY="-10.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Button fx:id="exit" layoutX="501.0" layoutY="134.0" mnemonicParsing="false" onAction="#exitApplication" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Exit" textFill="#f5f4f4" translateX="-130.0" translateY="-93.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Text layoutX="500.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalSubTitleText" text="Clear stored data" translateX="50.0" translateY="-172.0" GridPane.rowIndex="3" />
+      <Text layoutX="11.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalSubTitleText" text="Close application" translateX="50.0" translateY="-96.0" GridPane.rowIndex="3" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Clear locally stored data from disk" translateX="50.0" translateY="-152.0" wrappingWidth="216.65966796875" GridPane.rowIndex="3" />
+    </children>
+</fx:root>

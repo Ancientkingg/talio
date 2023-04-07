@@ -4,6 +4,7 @@ import client.exceptions.BoardChangeException;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import commons.exceptions.ColumnNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -95,19 +96,21 @@ public class BoardModel {
      * @param newColumnIdx Index of column to be moved to
      * @param priority Priority of card in new column
      */
-    public void moveCard(final long cardId, final long columnIdx, final long newColumnIdx, final int priority) {
-        // This method is temporary. It will be replaced by a method that sends the move to the server
-        // and then updates the board accordingly.
-        final Card card = currentBoard.getCard(cardId);
-        final Column column = currentBoard.getColumnById(columnIdx);
-        final Column newColumn = currentBoard.getColumnById(newColumnIdx);
+    public void moveCard(final long cardId, final long columnIdx, final long newColumnIdx, final int priority) throws BoardChangeException {
+        try {
+            final Card card = currentBoard.getCard(cardId);
+            final Column column = currentBoard.getColumnById(columnIdx);
+            final Column newColumn = currentBoard.getColumnById(newColumnIdx);
 
-
-        if (card != null && column != null && newColumn != null) {
-            column.removeCard(card);
-            card.setPriority(Integer.MAX_VALUE);
-            newColumn.addCard(card);
-            newColumn.updateCardPosition(card, priority);
+            if (card != null && column != null && newColumn != null) {
+                column.removeCard(card);
+                card.setPriority(Integer.MAX_VALUE);
+                newColumn.addCard(card);
+                newColumn.updateCardPosition(card, priority);
+            }
+        }
+        catch (ColumnNotFoundException e) {
+            throw new BoardChangeException(e.getMessage());
         }
     }
 
@@ -118,7 +121,7 @@ public class BoardModel {
      * the server and then updates the board accordingly.)
      * @param column Column to be updated
      */
-    public void updateColumn(final Column column) {
+    public void updateColumn(final Column column) throws ColumnNotFoundException {
         final Column oldColumn = currentBoard.getColumnById(column.getId());
 
         if (oldColumn != null) {

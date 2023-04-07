@@ -4,6 +4,7 @@ import client.Main;
 import client.exceptions.BoardChangeException;
 import client.services.BoardService;
 import commons.Card;
+import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
@@ -11,12 +12,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import lombok.Getter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardComponent extends GridPane {
     private final BoardService boardService;
@@ -30,6 +35,9 @@ public class CardComponent extends GridPane {
 
     @FXML
     private Button editCardButton;
+
+    @FXML
+    private HBox tagContainer;
 
     /**
      * Constructor for CardComponent
@@ -97,7 +105,7 @@ public class CardComponent extends GridPane {
         cardText.setDisable(true); // Disable editing of card text by default
 
         setUpDragAndDrop();
-
+        refresh();
     }
 
     /**
@@ -164,5 +172,23 @@ public class CardComponent extends GridPane {
      */
     public void refresh() {
         cardText.setText(card.getTitle());
+        tagContainer.getChildren().clear();
+        tagContainer.setSpacing(2);
+        if (card.getTags().size() < 5) {
+            for (final Tag tag : card.getTags()) {
+                tagContainer.getChildren().add(new OverviewTagComponent(boardService, tag));
+            }
+        } else {
+            final List<Tag> tags = new ArrayList<>(card.getTags());
+            for (int i = 0; i < 4; i++) {
+                final OverviewTagComponent otc = new OverviewTagComponent(boardService, tags.get(i));
+                otc.setPrefWidth(40);
+                tagContainer.getChildren().add(otc);
+            }
+            final Label moreTags = new Label(String.format("+%s more", card.getTags().size() - 4));
+            moreTags.setFont(javafx.scene.text.Font.font("fonts/Cabin-Regular.ttf", 9));
+            moreTags.setStyle("-fx-text-fill: #4f4f4f;-fx-padding: 0 0 15px 0;");
+            tagContainer.getChildren().add(moreTags);
+        }
     }
 }
