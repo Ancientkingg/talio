@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class BoardService {
     private BoardModel boardModel;
     private final ServerService serverService;
+
     private final MainCtrl mainCtrl;
 
     /**

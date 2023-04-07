@@ -7,6 +7,7 @@ import commons.Card;
 import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -67,6 +68,18 @@ public class CardComponent extends GridPane {
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
 
+        setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(final MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
+                        modal.showModal();
+                    }
+                }
+                }
+            });
+
         cardText.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
                 cardText.setDisable(true);
@@ -75,18 +88,7 @@ public class CardComponent extends GridPane {
             }
         });
 
-        focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                card.setTitle(cardText.getText());
-                refresh();
-                cardText.setDisable(true);
-            }
-        });
-
-        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
-            card.setTitle(cardText.getText());
-            refresh();
-        });
+        this.listenForTitleChanges();
 
 
         cardText.setDisable(true); // Disable editing of card text by default
@@ -114,6 +116,24 @@ public class CardComponent extends GridPane {
                     Platform.runLater(() -> requestLayout());
                 });
             }
+        });
+    }
+
+    /**
+     * Listens for changes in title
+     */
+    public void listenForTitleChanges () {
+        focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                card.setTitle(cardText.getText());
+                refresh();
+                cardText.setDisable(true);
+            }
+        });
+
+        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
+            card.setTitle(cardText.getText());
+            refresh();
         });
     }
 

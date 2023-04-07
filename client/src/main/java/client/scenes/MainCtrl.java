@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import lombok.Getter;
 
 import static client.Main.SCREEN_SIZE;
 
@@ -17,6 +18,7 @@ public class MainCtrl {
 
     private Scene joinServerScene;
 
+    @Getter
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
 
