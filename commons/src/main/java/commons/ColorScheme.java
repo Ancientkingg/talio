@@ -15,11 +15,11 @@ public class ColorScheme {
     private long id;
 
     @Getter @Setter
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Color textColor;
 
     @Getter @Setter
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Color backgroundColor;
 
     /**
@@ -36,7 +36,8 @@ public class ColorScheme {
      * for checkstyle
      */
     public ColorScheme() {
-
+        this.textColor = new Color(0,0,0,255);
+        this.backgroundColor = new Color(0,0,0,255);
     }
 
     /**

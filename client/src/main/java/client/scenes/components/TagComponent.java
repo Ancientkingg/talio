@@ -1,63 +1,77 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.LiveUIController;
 import client.services.BoardService;
 import commons.ColorScheme;
+import commons.Tag;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
-public class TagComponent extends GridPane {
+public class TagComponent extends GridPane implements UIComponent {
 
     private final BoardService boardService;
 
-    private final String title;
+    private final Tag tag;
 
-    private final ColorScheme colorScheme;
+    private final Scene parentScene;
+
+    private final LiveUIController parentCtrl;
 
     @FXML
     private Text tagTitle;
 
     @FXML
-    private VBox colorBubble;
+    private Pane colorBubble;
 
 
     /**
      * Constructor for tag
      *
      * @param boardService boardService instance
-     * @param title        title of the tag
-     * @param colorScheme the colorScheme of the tag used for the color bubble
+     * @param parentScene  parent scene
+     * @param parentCtrl parent controller
+     * @param tag tag to be displayed
      */
-    public TagComponent(final BoardService boardService, final String title, final ColorScheme colorScheme) {
+    public TagComponent(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl, final Tag tag) {
         this.boardService = boardService;
-        this.title = title;
-        this.colorScheme = colorScheme;
+        this.parentScene = parentScene;
+        this.parentCtrl = parentCtrl;
+        this.tag = tag;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Tag.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/Tag.fxml"));
 
         try {
-            tagTitle.textProperty().set(this.title);
-            if (Objects.equals(colorScheme.getBackgroundColor(), new Color(0, 0, 0))) {
-                colorBubble.setStyle("-fx-background-color: " + this.colorGenerator());
+            tagTitle.textProperty().set(tag.getTitle());
+
+            final ColorScheme colorScheme = tag.getColorScheme();
+            final commons.Color backgroundColor = colorScheme.getBackgroundColor();
+
+            final String primaryStyle;
+
+
+            if (backgroundColor == null || Objects.equals(backgroundColor, new Color(0, 0, 0, 0))) {
+                primaryStyle = "-fx-background-color: " + this.colorGenerator() + ";";
             } else {
-                colorBubble.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor().toString());
-                //Not sure if functional, might have to mak custom toString method
+                primaryStyle = "-fx-background-color: " + backgroundColor + ";";
             }
+
+            final String secondaryStyle;
+
+            final commons.Color textColor = colorScheme.getTextColor();
+            if (textColor == null || Objects.equals(textColor, new Color(0,0,0,0))) {
+                secondaryStyle = "-fx-border-color: " + this.colorGenerator() + ";";
+            } else {
+                secondaryStyle = "-fx-border-color: " + textColor + ";";
+            }
+
+            colorBubble.setStyle(primaryStyle + secondaryStyle);
         } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
@@ -74,5 +88,11 @@ public class TagComponent extends GridPane {
                                   "#00FFFF", "#FF0000", "#ff9a00", "#694130", "#5A5A82" };
 
         return colors [(int) (Math.random() * colors.length)];
+    }
+
+    @FXML
+    private void onEdit() {
+        final TagSettingsModal tagSettingsModal = new TagSettingsModal(boardService, parentScene, parentCtrl, tag);
+        tagSettingsModal.showModal();
     }
 }

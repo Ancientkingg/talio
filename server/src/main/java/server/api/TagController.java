@@ -43,7 +43,7 @@ public class TagController {
      *
      * @return The tag added to board
      */
-    @PostMapping("/tags/add/{joinKey}/")
+    @PostMapping("/tags/add/{joinKey}")
     public ResponseEntity<Tag> addTag(@Valid @RequestBody final TagDTO tagDTO,
                                        @PathVariable final String joinKey)
     {
@@ -64,7 +64,7 @@ public class TagController {
      *
      * @return The tag removed from board
      */
-    @PostMapping("/tags/remove/{joinKey}/")
+    @PostMapping("/tags/remove/{joinKey}")
     public ResponseEntity<Tag> removeTag(@Valid @RequestBody final TagDTO tagDTO ,
                                          @PathVariable final String joinKey)
     {
@@ -134,7 +134,7 @@ public class TagController {
      *
      * @return The tag updated on board
      */
-    @MessageMapping("/tags/edit/{joinKey}/")
+    @MessageMapping("/tags/edit/{joinKey}")
     public Tag editTag(@Valid final TagDTO tagDTO, @DestinationVariable final String joinKey) {
         final String password = tagDTO.password();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);

@@ -359,34 +359,41 @@ public class BoardService {
     }
 
     /**
-     * Adds tag to board (client initiated)
+     * Adds tag to current board (client initiated)
      * @param tag Tag to add
+     * @return Tag added tag
      */
-    public void addTagToBoard(final Tag tag) {
+    public Tag addTagToCurrentBoard(final Tag tag) {
         final Tag addedTag = serverService.addTagToBoard(getCurrentBoard(), tag);
-        // Update the boardModel with addedTag here
+        boardModel.getCurrentBoard().addTag(addedTag);
+        return addedTag;
     }
 
     /**
      * Adds tag to board (server initiated)
      * @param tag Tag to add
      */
-    public void updateAddTagToBoard(final Tag tag) { }
+    public void updateAddTagToBoard(final Tag tag) {
+        boardModel.getCurrentBoard().addTag(tag);
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+    }
 
     /**
      * Removes tag from board (client initiated)
      * @param tag Tag to remove
      */
     public void removeTagFromBoard(final Tag tag) {
-        final Tag removedTag = serverService.removeTagFromBoard(getCurrentBoard(), tag);
-        // Update the boardModel with deletedTag here
+        serverService.removeTagFromBoard(getCurrentBoard(), tag);
     }
 
     /**
      * Removes tag from board (server initiated)
      * @param tag Tag to remove
      */
-    public void updateRemoveTagFromBoard(final Tag tag) { }
+    public void updateRemoveTagFromBoard(final Tag tag) {
+        boardModel.removeTag(tag, getCurrentBoard());
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+    }
 
     /**
      * Edits tag in board (client initiated)
@@ -401,7 +408,10 @@ public class BoardService {
      * Edits tag in board (server initiated)
      * @param tag Tag to edit
      */
-    public void updateEditTag(final Tag tag) { }
+    public void updateEditTag(final Tag tag) {
+        boardModel.getCurrentBoard().updateTag(tag);
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+    }
 
     /**
      * Adds tag to card (client initiated)

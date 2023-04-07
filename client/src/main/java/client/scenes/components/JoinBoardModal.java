@@ -6,15 +6,13 @@ import client.services.BoardService;
 import commons.Board;
 import jakarta.ws.rs.NotFoundException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.util.List;
 
-public class JoinBoardModal extends Modal {
+public class JoinBoardModal extends Modal implements UIComponent {
 
     @FXML
     private Button crossButton;
@@ -34,15 +32,7 @@ public class JoinBoardModal extends Modal {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/JoinBoardModal.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/JoinBoardModal.fxml"));
     }
 
     /**
