@@ -97,8 +97,8 @@ public class BoardService {
      * gets the server IP from server service
      * @return current server IP address
      */
-    public String getServerIP() {
-        return serverService.getServerIP().toString();
+    public URI getServerIP() {
+        return serverService.getServerIP();
     }
 
     /**
@@ -613,5 +613,12 @@ public class BoardService {
     public void adminLoadAllBoards() {
         final List<Board> boards = this.adminGetAllBoards();
         this.boardModel.setBoardList(boards.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+    }
+
+    /**
+     * Removes all saved boards (used for clearing cache)
+     */
+    public void removeAllBoards() {
+        this.boardModel.getBoardList().clear();
     }
 }

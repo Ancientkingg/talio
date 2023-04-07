@@ -103,7 +103,7 @@ public class AppSettingsModal extends Modal {
         String message = "Cache cleared!";
 
         try {
-            Files.delete(Path.of("client", "saved-boards"));
+            Files.delete(Path.of( "saved-boards"));
         }
         catch (NoSuchFileException e) {
             message = "cache was already empty";
@@ -119,12 +119,13 @@ public class AppSettingsModal extends Modal {
         customTooltip.setAutoHide(false);
         customTooltip.show(this.serverURL,p.getX(),p.getY());
 
-        final PauseTransition pt = new PauseTransition(Duration.millis(750));
+        final PauseTransition pt = new PauseTransition(Duration.millis(1250));
         pt.setOnFinished(e -> {
             customTooltip.hide();
         });
         pt.play();
 
+        parentCtrl.removeAllBoards();
     }
 
     /**
@@ -149,6 +150,7 @@ public class AppSettingsModal extends Modal {
      */
     @FXML
     public void exitApplication () {
+        parentCtrl.onDisconnectButtonClick();
         System.exit(0);
     }
 

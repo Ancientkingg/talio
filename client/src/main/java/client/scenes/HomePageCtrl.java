@@ -112,6 +112,14 @@ public class HomePageCtrl {
     }
 
     /**
+     * Clears all saved boards
+     */
+    public void removeAllBoards() {
+        boardService.removeAllBoards();
+        this.renderBoards();
+    }
+
+    /**
      * Deletes the board from the list of boards (server-side as well)
      * @param board The board to delete
      */
@@ -212,7 +220,7 @@ public class HomePageCtrl {
     @FXML
     public void onSettingsButtonClick() {
         final Scene parentScene = mainCtrl.getCurrentScene();
-        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this, boardService.getServerIP());
+        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this, boardService.getServerIP().getHost());
         appSettingsModal.showModal();
     }
 
