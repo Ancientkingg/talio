@@ -8,6 +8,7 @@ import commons.Card;
 import commons.Column;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -25,6 +26,8 @@ public class ColumnComponent extends GridPane {
 
     private final BoardService boardService;
     private final Column column;
+
+    private final Scene overviewScene;
 
     @FXML
     private TextField columnHeading;
@@ -47,10 +50,14 @@ public class ColumnComponent extends GridPane {
      * @param boardService   BoardService instance
      * @param column       Column instance
      * @param overviewCtrl OverviewCtrl instance
+     * @param overviewScene overview scene
      */
-    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl) {
+    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl, final Scene overviewScene) {
         this.boardService = boardService;
         this.column = column;
+
+        this.overviewScene = overviewScene;
+
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Column.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -180,7 +187,7 @@ public class ColumnComponent extends GridPane {
     public void refresh() {
         innerCardList.getChildren().clear();
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardService, card, this);
+            final CardComponent cc = new CardComponent(boardService, card, this, overviewScene);
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());

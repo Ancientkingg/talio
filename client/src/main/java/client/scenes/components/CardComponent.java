@@ -10,6 +10,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -28,6 +29,7 @@ public class CardComponent extends GridPane {
     private final Card card;
     @Getter
     private final ColumnComponent columnParent;
+    private final Scene overviewScene;
 
     @FXML
     private TextArea cardText;
@@ -44,11 +46,14 @@ public class CardComponent extends GridPane {
      * @param boardService   BoardService instance
      * @param card         Card instance
      * @param columnParent ColumnComponent instance
+     * @param overviewScene overview scene
      */
-    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent) {
+    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent, final Scene overviewScene) {
         this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
+
+        this.overviewScene = overviewScene;
 
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Card.fxml"));
         loader.setRoot(this);
@@ -92,7 +97,19 @@ public class CardComponent extends GridPane {
         cardText.setDisable(true); // Disable editing of card text by default
 
         setUpDragAndDrop();
+        setHover();
         refresh();
+    }
+
+    private void setHover() {
+        this.hoverProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                if (overviewScene.getFocusOwner().getClass().equals(CardComponent.class))
+                    overviewScene.getFocusOwner().getStyleClass().remove("selectedCard");
+                this.requestFocus();
+                this.getStyleClass().add("selectedCard");
+            }
+        });
     }
 
     /**

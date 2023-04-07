@@ -98,7 +98,7 @@ public class OverviewCtrl {
         columnBox.getChildren().removeAll(columnBox.getChildren().stream().filter(c -> c instanceof ColumnComponent).toList());
 
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
-            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
+            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this, mainCtrl.getCurrentScene());
 
             columnComponent.setHeading(col.getHeading());
 
