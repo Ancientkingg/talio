@@ -55,8 +55,8 @@ public class TagControllerTest {
         actualCard = new Card("title", 1, "Tag 1", new HashSet<>());
         expectedCard = new Card("title", 1, "Tag 1", new HashSet<>());
 
-        actualColumn = new Column(1, 1, "Column 1", new TreeSet<>());
-        expectedColumn = new Column(1, 1, "Column 1", new TreeSet<>());
+        actualColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
+        expectedColumn = new Column(1, "Column 1", 1,  new TreeSet<>());
 
         when(boardService.getBoardWithKeyAndPassword(anyString(), anyString())).thenReturn(actualBoard);
         when(boardService.saveBoard(any(Board.class))).thenReturn(expectedBoard);

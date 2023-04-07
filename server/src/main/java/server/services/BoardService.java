@@ -83,4 +83,11 @@ public class BoardService {
         return joinKey;
     }
 
+    /**
+     * Deletes a board from the database
+     * @param board Board to delete
+     */
+    public void deleteBoard(final Board board) {
+        this.br.delete(board);
+    }
 }

@@ -92,9 +92,9 @@ public class TagController {
                                             @PathVariable final String joinKey,
                                             @PathVariable final long cardId)
     {
-        final String password = tagDTO.password();
+        final String password = tagDTO.getPassword();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
-        final Tag tag = tagDTO.tag();
+        final Tag tag = tagDTO.getTag();
 
         board.addTagToCard(cardId, tag);
         boardService.saveBoard(board);

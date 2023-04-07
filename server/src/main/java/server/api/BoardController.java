@@ -4,12 +4,14 @@ package server.api;
 import commons.Board;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 
 import javax.validation.Valid;
@@ -25,7 +27,7 @@ public class BoardController {
     private final BoardService boardService;
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final Logger logger = LogManager.getLogger(CardController.class);
+    private final Logger logger = LogManager.getLogger(BoardController.class);
 
     private final Clock clock;
 
@@ -50,12 +52,16 @@ public class BoardController {
      */
     @GetMapping("/boards/get/{joinKey}")
     public ResponseEntity<Board> getBoard(@PathVariable final String joinKey, @RequestBody(required = false) final String password) {
+        try {
+            final Board board = password == null ?
+                    boardService.getBoardWithKey(joinKey) :
+                    boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        final Board board = password == null ?
-                boardService.getBoardWithKey(joinKey) :
-                boardService.getBoardWithKeyAndPassword(joinKey, password);
-
-        return ResponseEntity.ok(board);
+            return ResponseEntity.ok(board);
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
     }
 
     /**
@@ -65,13 +71,18 @@ public class BoardController {
      */
     @PostMapping("/boards/getAll")
     public ResponseEntity<List<Board>> getAllBoards(@RequestBody final List<String> joinKeys) {
-        final List<Board> boards = new ArrayList<>();
+        try {
+            final List<Board> boards = new ArrayList<>();
 
-        for (final String joinKey : joinKeys) {
-            boards.add(boardService.getBoardWithKeyUnsafe(joinKey));
+            for (final String joinKey : joinKeys) {
+                boards.add(boardService.getBoardWithKeyUnsafe(joinKey));
+            }
+
+            return ResponseEntity.ok(boards);
         }
-
-        return ResponseEntity.ok(boards);
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
     }
 
     /**
@@ -81,13 +92,30 @@ public class BoardController {
      */
     @PostMapping("/boards/create")
     public ResponseEntity<Board> createBoard(@Valid @RequestBody final Board boardDTO) {
+        try {
+            final String boardJoinKey = boardService.generateJoinKey();
 
-        final String boardJoinKey = boardService.generateJoinKey();
+            final Board board = new Board(boardJoinKey, boardDTO.getTitle(), boardDTO.getPassword(), new TreeSet<>(), Timestamp.from(Instant.now(clock)));
 
-        final Board board = new Board(boardJoinKey, boardDTO.getTitle(), boardDTO.getPassword(), new TreeSet<>(), Timestamp.from(Instant.now(clock)));
+            final Board savedBoard = boardService.saveBoard(board);
+            return ResponseEntity.ok(savedBoard);
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
+    }
 
-        final Board savedBoard = boardService.saveBoard(board);
-        return ResponseEntity.ok(savedBoard);
+    /**
+     * Deletes a board
+     * @param joinKey join key of a board
+     * @return 200 OK if the board has been deleted
+     */
+    @DeleteMapping("/boards/delete/{joinKey}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable final String joinKey) {
+        final Board board = boardService.getBoardWithKey(joinKey);
+        boardService.deleteBoard(board);
+        logger.info("Deleted board with join key: " + joinKey);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -101,14 +129,19 @@ public class BoardController {
     public Board renameBoard(final String password, @DestinationVariable final String joinKey,
                              @DestinationVariable final String newHeading)
     {
-        final Board toBeRenamed = boardService.getBoardWithKeyAndPassword(joinKey, password);
+        try {
+            final Board toBeRenamed = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-        toBeRenamed.setTitle(newHeading);
-        boardService.saveBoard(toBeRenamed);
+            toBeRenamed.setTitle(newHeading);
+            boardService.saveBoard(toBeRenamed);
 
-        updateBoardRenamed(joinKey, newHeading);
+            updateBoardRenamed(joinKey, newHeading);
 
-        return toBeRenamed;
+            return toBeRenamed;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
     }
 
     /**

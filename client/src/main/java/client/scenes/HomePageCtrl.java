@@ -1,27 +1,33 @@
 package client.scenes;
 
-import client.scenes.components.AddBoardCardButtonComponent;
-import client.scenes.components.BoardCardComponent;
-import client.scenes.components.EmptyBoardCardComponent;
-import client.scenes.components.JoinBoardModal;
+import client.Main;
+import client.scenes.components.*;
 import client.services.BoardService;
 import commons.Board;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import lombok.Getter;
 
 import javax.inject.Inject;
+import java.awt.*;
 import java.util.List;
 
 public class HomePageCtrl {
 
+    @Getter
     private final MainCtrl mainCtrl;
 
     private final BoardService boardService;
 
     @FXML
+    @Getter
     private FlowPane innerBoardCardList;
 
     @FXML
@@ -65,6 +71,14 @@ public class HomePageCtrl {
     }
 
     /**
+     * Loads all the boards from the server and renders them
+     */
+    public void loadAllBoards() {
+        boardService.adminLoadAllBoards();
+        this.renderBoards();
+    }
+
+    /**
      * Loads the board and shows the overview
      * @param board The board to load
      */
@@ -74,6 +88,57 @@ public class HomePageCtrl {
         boardService.subscribeToBoard(board.getJoinKey());
         mainCtrl.showOverview();
         mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Removes the board from the list of boards
+     * @param board The board to remove
+     */
+    public void removeBoard(final Board board) {
+        final Point2D p = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
+
+        final Tooltip customTooltip = new Tooltip("Left board!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(mainCtrl.getCurrentScene().getRoot(),p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(750));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+
+        boardService.removeBoard(board);
+        boardService.saveBoardsLocal();
+        this.renderBoards();
+    }
+
+    /**
+     * Clears all saved boards
+     */
+    public void removeAllBoards() {
+        boardService.removeAllBoards();
+        this.renderBoards();
+    }
+
+    /**
+     * Deletes the board from the list of boards (server-side as well)
+     * @param board The board to delete
+     */
+    public void deleteBoard(final Board board) {
+        final Point2D p = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
+
+        final Tooltip customTooltip = new Tooltip("Deleted board!");
+        customTooltip.setAutoHide(false);
+        customTooltip.show(mainCtrl.getCurrentScene().getRoot(),p.getX(),p.getY());
+
+        final PauseTransition pt = new PauseTransition(Duration.millis(800));
+        pt.setOnFinished(e -> {
+            customTooltip.hide();
+        });
+        pt.play();
+        boardService.deleteBoard(board);
+        boardService.saveBoardsLocal();
+        this.renderBoards();
     }
 
     private void addResizeListener() {
@@ -111,6 +176,9 @@ public class HomePageCtrl {
 
                 final Board board = boardList.get(i);
                 final BoardCardComponent boardCard = new BoardCardComponent(board, this);
+                if (Main.isAdmin()) {
+                    boardCard.changeMode();
+                }
                 innerBoardCardList.getChildren().add(boardCard);
 
             } else if (i == boardList.size()) { // The add new board button
@@ -152,7 +220,9 @@ public class HomePageCtrl {
      */
     @FXML
     public void onSettingsButtonClick() {
-
+        final Scene parentScene = mainCtrl.getCurrentScene();
+        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this, boardService.getServerIP().getHost());
+        appSettingsModal.showModal();
     }
 
 
@@ -163,5 +233,12 @@ public class HomePageCtrl {
         this.renderBoards();
     }
 
-
+    /**
+     * Verifies admin password given by user
+     * @param adminPassword Password entered by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        return boardService.verifyAdminPassword(adminPassword);
+    }
 }

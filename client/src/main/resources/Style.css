@@ -36,6 +36,11 @@ Tags
     -fx-border-color: black;
 }
 
+.smallTag {
+    -fx-background-radius: 20px;
+    -fx-border-radius: 5px;
+}
+
 .tagTitleText {
     -fx-text-fill: #f8f8f8;
     -fx-font-family: Cabin;
@@ -64,6 +69,12 @@ Modal
     -fx-text-fill: #181818;
     -fx-font-family: Cabin;
     -fx-font-size: 26;
+}
+
+.modalSubTitleText {
+    -fx-text-fill: #181818;
+    -fx-font-family: Cabin;
+    -fx-font-size: 20;
 }
 
 .modalDescriptionText {
@@ -438,4 +449,38 @@ Overview
     -fx-font-family: Cabin;
     -fx-text-fill: #f3f3f3;
     -fx-font-size: 36px;
+}
+
+.board-card-button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 10px;
+    -fx-border-width: 0.5px;
+    -fx-border-color: #bbbbbb;
+    -fx-background-radius: 10px;
+}
+
+.board-card-button:hover {
+    -fx-background-color: rgba(156, 156, 156, 0.2);
+}
+
+.board-card-button-icon {
+    -fx-fill: rgba(124, 124, 124, 0.6);
+}
+
+.board-card-button:hover .board-card-button-icon {
+    -fx-fill: red;
+}
+
+.board-card-button:hover {
+    -fx-background-color: #ebebeb;
+}
+.incorrect-password-text {
+    -fx-font-size: 12px;
+    -fx-font-family: Cabin-Bold;
+    -fx-color-label-visible: red;
+}
+.incorrect-password-text {
+    -fx-font-size: 12px;
+    -fx-font-family: Cabin-Bold;
+    -fx-color-label-visible: red;
 }
