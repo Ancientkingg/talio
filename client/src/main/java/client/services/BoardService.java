@@ -73,6 +73,7 @@ public class BoardService {
      */
     private void startSocket() {
         serverService.startSocket(this);
+        serverService.checkConnection();
     }
 
     /**

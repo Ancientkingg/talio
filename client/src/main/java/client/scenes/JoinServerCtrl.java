@@ -74,7 +74,14 @@ public class JoinServerCtrl {
             return;
         }
 
-        boardService.connect(url);
+        try {
+            boardService.connect(url);
+        } catch (Exception e) {
+            final InfoModal errorModal = new InfoModal(boardService, "Connection Error",
+                    "Could not connect to Talio server. Please check your network configuration or the server address.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            return;
+        }
         mainCtrl.showHomePage();
     }
 }

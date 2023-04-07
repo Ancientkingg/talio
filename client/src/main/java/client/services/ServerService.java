@@ -451,4 +451,20 @@ public class ServerService {
             return boards;
         }
     }
+
+    /**
+     * Checks if the server is responding
+     */
+    public void checkConnection() {
+        try (Client client = ClientBuilder.newClient()) {
+            final Response response = client.target(serverIP)
+                    .path("/checkConnection")
+                    .request(APPLICATION_JSON)
+                    .get();
+            logger.info("Checking connection to server");
+            if (response.getStatus() != 200) {
+                throw new ServerException("The server is not responding");
+            }
+        }
+    }
 }
