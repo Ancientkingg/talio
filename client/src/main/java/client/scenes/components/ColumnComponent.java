@@ -15,12 +15,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 import java.util.Objects;
 import java.util.SortedSet;
 
 public class ColumnComponent extends GridPane implements UIComponent {
 
+    @Getter
     private final BoardService boardService;
     private final Column column;
 

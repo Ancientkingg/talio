@@ -20,6 +20,7 @@ public class MainCtrl {
 
     private Scene joinServerScene;
 
+    @Getter
     private OverviewCtrl overviewCtrl;
     private Scene overviewScene;
 

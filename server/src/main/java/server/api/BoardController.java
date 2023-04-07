@@ -45,6 +45,14 @@ public class BoardController {
     }
 
     /**
+     * @return 200 OK if the server is running
+     */
+    @GetMapping("/checkConnection")
+    public ResponseEntity<Void> checkConnection() {
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * Returns a Board object with the given join key
      * @param joinKey Join key of the board
      * @param password Optional password of the board
