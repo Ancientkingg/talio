@@ -1,9 +1,7 @@
 package client.scenes;
 
-import client.scenes.components.AddBoardCardButtonComponent;
-import client.scenes.components.BoardCardComponent;
-import client.scenes.components.EmptyBoardCardComponent;
-import client.scenes.components.JoinBoardModal;
+import client.Main;
+import client.scenes.components.*;
 import client.services.BoardService;
 import commons.Board;
 import javafx.animation.PauseTransition;
@@ -15,6 +13,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.Getter;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -22,6 +21,7 @@ import java.util.List;
 
 public class HomePageCtrl {
 
+    @Getter
     private final MainCtrl mainCtrl;
 
     private final BoardService boardService;
@@ -70,6 +70,14 @@ public class HomePageCtrl {
     }
 
     /**
+     * Loads all the boards from the server and renders them
+     */
+    public void loadAllBoards() {
+        boardService.adminLoadAllBoards();
+        this.renderBoards();
+    }
+
+    /**
      * Loads the board and shows the overview
      * @param board The board to load
      */
@@ -100,6 +108,14 @@ public class HomePageCtrl {
 
         boardService.removeBoard(board);
         boardService.saveBoardsLocal();
+        this.renderBoards();
+    }
+
+    /**
+     * Clears all saved boards
+     */
+    public void removeAllBoards() {
+        boardService.removeAllBoards();
         this.renderBoards();
     }
 
@@ -159,6 +175,9 @@ public class HomePageCtrl {
 
                 final Board board = boardList.get(i);
                 final BoardCardComponent boardCard = new BoardCardComponent(board, this);
+                if (Main.isAdmin()) {
+                    boardCard.changeMode();
+                }
                 innerBoardCardList.getChildren().add(boardCard);
 
             } else if (i == boardList.size()) { // The add new board button
@@ -200,7 +219,9 @@ public class HomePageCtrl {
      */
     @FXML
     public void onSettingsButtonClick() {
-
+        final Scene parentScene = mainCtrl.getCurrentScene();
+        final AppSettingsModal appSettingsModal = new AppSettingsModal(boardService, parentScene, this, boardService.getServerIP().getHost());
+        appSettingsModal.showModal();
     }
 
 
@@ -211,5 +232,12 @@ public class HomePageCtrl {
         this.renderBoards();
     }
 
-
+    /**
+     * Verifies admin password given by user
+     * @param adminPassword Password entered by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        return boardService.verifyAdminPassword(adminPassword);
+    }
 }

@@ -20,11 +20,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.inject.Singleton;
 import java.net.URI;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+@Singleton
 public class ServerService {
 
     @Getter
@@ -413,6 +415,40 @@ public class ServerService {
                 .delete();
             logger.info("Requested to delete board with join-key: " + board.getJoinKey());
             return response.getStatus() == 200;
+        }
+    }
+
+    /**
+     * Verifies password provided by user for switching to admin mode
+     * @param adminPassword Password provided by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Boolean isValid = client.target(serverIP)
+                    .path("admin")
+                    .path("verify")
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(adminPassword, APPLICATION_JSON), Boolean.class);
+            logger.info("Attempting to switch to god mode...\nPassword is valid ? " + isValid);
+            return isValid != null && isValid;
+        }
+    }
+
+
+    /**
+     * Gets all boards from the server
+     * @return the boards that were retrieved
+     */
+    public List<Board> adminGetAllBoards() {
+        try (Client client = ClientBuilder.newClient()) {
+            final List<Board> boards = client.target(serverIP)
+                    .path("/admin")
+                    .path("/getAllBoards")
+                    .request(APPLICATION_JSON)
+                    .get(new GenericType<>() { });
+            logger.info("(admin) Sending request to server to get all boards");
+            return boards;
         }
     }
 }

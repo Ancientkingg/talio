@@ -16,15 +16,18 @@
 package client;
 
 
-import java.io.IOException;
-
-import client.scenes.*;
-
+import client.scenes.HomePageCtrl;
+import client.scenes.JoinServerCtrl;
+import client.scenes.MainCtrl;
+import client.scenes.OverviewCtrl;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import com.google.inject.Injector;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.ComponentScan;
+
+import java.io.IOException;
 
 import static com.google.inject.Guice.createInjector;
 
@@ -34,6 +37,9 @@ public class Main extends Application {
     private static final Injector INJECTOR = createInjector(new MyModule());
     public static final MyFXML FXML = new MyFXML(INJECTOR);
     public static final float[] SCREEN_SIZE = {1366, 768};
+
+    @Getter @Setter
+    private static boolean isAdmin = false;
 
     /**
      * The main method of the client

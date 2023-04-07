@@ -94,6 +94,14 @@ public class BoardService {
     }
 
     /**
+     * gets the server IP from server service
+     * @return current server IP address
+     */
+    public URI getServerIP() {
+        return serverService.getServerIP();
+    }
+
+    /**
      * Adds a new board
      * @param board the board to add
      * @return the board returned by the server
@@ -115,7 +123,7 @@ public class BoardService {
     }
 
     /**
-     * Adds a board to the board list
+     * Returns all boards on the client
      * @return the boards present on the client
      */
     public List<Board> getAllBoards() {
@@ -580,5 +588,37 @@ public class BoardService {
     public boolean deleteBoard(final Board board) {
         this.removeBoard(board);
         return serverService.deleteBoard(board);
+    }
+
+    /**
+     * Verifies password provided by user for switching to admin mode
+     * @param adminPassword Password provided by user
+     * @return correct/incorrect
+     */
+    public boolean verifyAdminPassword(final String adminPassword) {
+        return serverService.verifyAdminPassword(adminPassword);
+    }
+
+    /**
+     * Gets all Boards in the database from the server
+     * @return List of all Boards
+     */
+    public List<Board> adminGetAllBoards() {
+        return serverService.adminGetAllBoards();
+    }
+
+    /**
+     * Loads all the Boards in the server for admin view
+     */
+    public void adminLoadAllBoards() {
+        final List<Board> boards = this.adminGetAllBoards();
+        this.boardModel.setBoardList(boards.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+    }
+
+    /**
+     * Removes all saved boards (used for clearing cache)
+     */
+    public void removeAllBoards() {
+        this.boardModel.getBoardList().clear();
     }
 }

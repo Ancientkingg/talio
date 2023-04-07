@@ -71,6 +71,12 @@ Modal
     -fx-font-size: 26;
 }
 
+.modalSubTitleText {
+    -fx-text-fill: #181818;
+    -fx-font-family: Cabin;
+    -fx-font-size: 20;
+}
+
 .modalDescriptionText {
     -fx-text-fill: #f8f8f8;
     -fx-font-family: Cabin;
@@ -467,4 +473,14 @@ Overview
 
 .board-card-button:hover {
     -fx-background-color: #ebebeb;
+}
+.incorrect-password-text {
+    -fx-font-size: 12px;
+    -fx-font-family: Cabin-Bold;
+    -fx-color-label-visible: red;
+}
+.incorrect-password-text {
+    -fx-font-size: 12px;
+    -fx-font-family: Cabin-Bold;
+    -fx-color-label-visible: red;
 }
