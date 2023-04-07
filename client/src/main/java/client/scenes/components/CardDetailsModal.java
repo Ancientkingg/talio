@@ -3,7 +3,6 @@ package client.scenes.components;
 import client.Main;
 import client.services.BoardService;
 import commons.Card;
-import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
