@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -29,6 +30,9 @@ public class ColumnComponent extends GridPane {
 
     private final Scene overviewScene;
 
+    @Getter
+    private final OverviewCtrl overviewCtrl;
+
     @FXML
     private TextField columnHeading;
 
@@ -39,6 +43,7 @@ public class ColumnComponent extends GridPane {
     private ScrollPane scrollPane;
 
     @FXML
+    @Getter
     private VBox innerCardList;
 
     @FXML
@@ -57,6 +62,7 @@ public class ColumnComponent extends GridPane {
         this.column = column;
 
         this.overviewScene = overviewScene;
+        this.overviewCtrl = overviewCtrl;
 
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Column.fxml"));
         loader.setRoot(this);

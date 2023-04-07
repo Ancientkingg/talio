@@ -104,12 +104,17 @@ public class CardComponent extends GridPane {
     private void setHover() {
         this.hoverProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                if (overviewScene.getFocusOwner().getClass().equals(CardComponent.class))
-                    overviewScene.getFocusOwner().getStyleClass().remove("selectedCard");
-                this.requestFocus();
-                this.getStyleClass().add("selectedCard");
+                columnParent.getOverviewCtrl().setFocussedCard(this);
             }
         });
+    }
+
+    /**
+     * Change editability of card
+     * @param setDisable value to be passed to method setDisable
+     */
+    public void toggleCardEditing (final boolean setDisable) {
+        editCardButton.setDisable(setDisable);
     }
 
     /**
