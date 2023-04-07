@@ -80,18 +80,7 @@ public class CardComponent extends GridPane {
             }
         });
 
-        focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                card.setTitle(cardText.getText());
-                refresh();
-                cardText.setDisable(true);
-            }
-        });
-
-        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
-            card.setTitle(cardText.getText());
-            refresh();
-        });
+        this.listenForTitleChanges();
 
 
         cardText.setDisable(true); // Disable editing of card text by default
@@ -119,6 +108,21 @@ public class CardComponent extends GridPane {
                     Platform.runLater(() -> requestLayout());
                 });
             }
+        });
+    }
+
+    public void listenForTitleChanges () {
+        focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                card.setTitle(cardText.getText());
+                refresh();
+                cardText.setDisable(true);
+            }
+        });
+
+        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
+            card.setTitle(cardText.getText());
+            refresh();
         });
     }
 

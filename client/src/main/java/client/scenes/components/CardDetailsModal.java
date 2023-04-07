@@ -1,7 +1,6 @@
 package client.scenes.components;
 
 import client.Main;
-import client.scenes.MainCtrl;
 import client.services.BoardService;
 import commons.Card;
 import commons.Tag;
