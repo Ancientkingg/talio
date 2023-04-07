@@ -4,6 +4,7 @@ import client.exceptions.BoardChangeException;
 import client.scenes.components.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
+import client.scenes.components.InfoModal;
 import client.services.BoardService;
 import commons.Column;
 import javafx.animation.PauseTransition;
@@ -12,6 +13,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCharacterCombination;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
@@ -62,6 +67,19 @@ public class OverviewCtrl {
                 this.boardEditIcon.setStyle("-fx-fill: #f3f3f3");
             }
         });
+    }
+
+    public void setKeyboardShortcuts() {
+
+        final KeyCombination helpMenu = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_DOWN);
+        final Runnable showHelpModal = () -> {
+            final InfoModal keyboardShortcutsModal = new InfoModal(boardService, "Keyboard Shortcuts",
+                    "show this menu:\t?\n", this.mainCtrl.getCurrentScene());
+            keyboardShortcutsModal.showModal();
+        };
+        mainCtrl.getCurrentScene().getAccelerators().put(helpMenu, showHelpModal);
+
+
     }
 
     /**

@@ -109,6 +109,7 @@ public class MainCtrl {
         primaryStage.setScene(overviewScene);
         primaryStage.show();
         primaryStage.sizeToScene();
+        overviewCtrl.setKeyboardShortcuts();
     }
 
 
