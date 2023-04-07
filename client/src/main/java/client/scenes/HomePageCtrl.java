@@ -27,6 +27,7 @@ public class HomePageCtrl {
     private final BoardService boardService;
 
     @FXML
+    @Getter
     private FlowPane innerBoardCardList;
 
     @FXML
