@@ -119,6 +119,9 @@ public class CardComponent extends GridPane {
         });
     }
 
+    /**
+     * Listens for changes in title
+     */
     public void listenForTitleChanges () {
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
