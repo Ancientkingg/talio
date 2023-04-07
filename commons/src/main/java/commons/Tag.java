@@ -41,6 +41,12 @@ public class Tag {
         this.colorScheme = hexColor;
     }
 
+    /**
+     * Constructor for the Tag object
+     * @param id ID of the tag
+     * @param title Title of the tag
+     * @param hexColor Color of the tag in hex notation
+     */
     public Tag(final long id, final String title, final ColorScheme hexColor) {
         this.id = id;
         this.title = title;
