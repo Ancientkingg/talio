@@ -2,6 +2,7 @@ package client.scenes.components;
 
 import client.Main;
 import client.scenes.HomePageCtrl;
+import client.scenes.components.modals.CreateBoardModal;
 import client.services.BoardService;
 import javafx.scene.layout.Pane;
 

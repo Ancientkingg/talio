@@ -2,6 +2,7 @@ package client.scenes.components;
 
 import client.Main;
 import client.scenes.LiveUIController;
+import client.scenes.components.modals.TagSettingsModal;
 import client.services.BoardService;
 import commons.ColorScheme;
 import commons.Tag;

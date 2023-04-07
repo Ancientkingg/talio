@@ -2,6 +2,8 @@ package client.scenes;
 
 import client.Main;
 import client.scenes.components.*;
+import client.scenes.components.modals.AppSettingsModal;
+import client.scenes.components.modals.JoinBoardModal;
 import client.services.BoardService;
 import commons.Board;
 import javafx.animation.KeyFrame;

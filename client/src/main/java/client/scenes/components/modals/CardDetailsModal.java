@@ -1,6 +1,7 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.components.CardComponent;
 import client.services.BoardService;
 import commons.Card;
 import javafx.fxml.FXML;

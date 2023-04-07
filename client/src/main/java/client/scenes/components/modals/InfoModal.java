@@ -1,6 +1,7 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;

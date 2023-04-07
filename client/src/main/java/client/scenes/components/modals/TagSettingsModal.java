@@ -1,7 +1,8 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
 import client.scenes.LiveUIController;
+import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import commons.ColorScheme;
 import commons.Tag;
