@@ -36,7 +36,7 @@ public class AdminController {
      */
     @PostMapping("/admin/verify")
     public ResponseEntity<Boolean> verifyPassword (@RequestBody final String password) {
-        logger.info("recieved request to switch to admin mode");
+        logger.info("received request to switch to admin mode");
         return ResponseEntity.ok(validatePassword(password));
     }
 
@@ -46,7 +46,7 @@ public class AdminController {
      */
     @GetMapping("/admin/getAllBoards")
     public ResponseEntity<List<Board>> getAllBoards () {
-        logger.info("recieved requset to fetch all boards in server");
+        logger.info("received request to fetch all boards in server");
         final List<Board> allBoards = adminService.getAllBoards();
         return ResponseEntity.ok(allBoards);
     }

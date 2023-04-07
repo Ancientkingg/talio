@@ -28,7 +28,7 @@ import java.util.Objects;
 @EntityScan(basePackages = { "commons", "server" })
 public class Main {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     private static String adminPassword;
 
@@ -51,7 +51,7 @@ public class Main {
      * @return A randomly generated String of length 30
      */
     private static String generateRandomPassword() {
-        return RandomStringUtils.random(30);
+        return RandomStringUtils.randomAscii(30);
     }
 
     /**
