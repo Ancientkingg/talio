@@ -86,13 +86,13 @@ public class BoardCardComponent extends Pane implements UIComponent {
 
     @FXML
     private void onLeave() {
-        parentCtrl.removeBoard(this.board);
-
         final Point2D p = leaveButton.localToScreen(-110, 32);
+
+        parentCtrl.removeBoard(this.board);
 
         final Tooltip customTooltip = new Tooltip("Left board!");
         customTooltip.setAutoHide(false);
-        customTooltip.show(leaveButton,p.getX(),p.getY());
+        customTooltip.show(parentCtrl.getInnerBoardCardList(),p.getX(),p.getY());
 
         final PauseTransition pt = new PauseTransition(Duration.millis(1250));
         pt.setOnFinished(e -> {
