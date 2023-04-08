@@ -41,6 +41,18 @@ public class SubTask {
     }
 
     /**
+     * Constructor for SubTask (mainly for testing)
+     * @param description description of the SubTask
+     * @param isDone whether the task is done or not
+     * @param id id of subtask
+     */
+    public SubTask(final String description, final boolean isDone, final long id) {
+        this.description = description;
+        this.isDone = isDone;
+        this.id = id;
+    }
+
+    /**
      * Dummy constructor made to keep checkstyle happy
      */
     public SubTask() {

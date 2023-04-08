@@ -153,4 +153,6 @@ public class SubTaskController {
                 ", subTask description: " + subTask.getDescription());
         messagingTemplate.convertAndSend("/topic/subtasks/" + joinkey + "/toggle", new SubTaskDTO(subTask, cardId));
     }
+
+
 }
