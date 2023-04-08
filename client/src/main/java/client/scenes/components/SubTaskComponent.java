@@ -23,7 +23,10 @@ public class SubTaskComponent extends GridPane implements UIComponent {
     @FXML
     private Button editDescriptionButton;
 
-
+    /**
+     * Loads new subtask component
+     * @param subTask subTask object
+     */
     public SubTaskComponent(final SubTask subTask) {
         this.subTask = subTask;
 
@@ -53,9 +56,13 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         });
 
         descriptionField.setDisable(true); //Disables editing by default
+        this.listenForChanges();
     }
 
-    public void listenForTitleChanges () {
+    /**
+     * Listens for changes in subtask content
+     */
+    public void listenForChanges () {
         descriptionField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 subTask.setDescription(descriptionField.getText());
