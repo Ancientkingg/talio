@@ -15,14 +15,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardComponent extends GridPane implements UIComponent {
+public class CardComponent extends Draggable implements UIComponent {
     private final BoardService boardService;
     @Getter
     private final Card card;
@@ -46,6 +45,7 @@ public class CardComponent extends GridPane implements UIComponent {
      * @param columnParent ColumnComponent instance
      */
     public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent) {
+        super(columnParent.getOverviewCtrl());
         this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
@@ -55,21 +55,21 @@ public class CardComponent extends GridPane implements UIComponent {
         cardText.setText(card.getTitle());
         cardText.setWrapText(true);
 
+
         setupDynamicallyResize();
+
+        setDraggable(true);
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
 
-        setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(final MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
-                        modal.showModal();
-                    }
+        setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
+                    modal.showModal();
                 }
-                }
-            });
+            }
+        });
 
         cardText.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
@@ -84,7 +84,7 @@ public class CardComponent extends GridPane implements UIComponent {
 
         cardText.setDisable(true); // Disable editing of card text by default
 
-        setUpDragAndDrop();
+//        setUpDragAndDrop();
         refresh();
     }
 
@@ -163,6 +163,15 @@ public class CardComponent extends GridPane implements UIComponent {
      */
     public void delete() throws BoardChangeException {
         boardService.removeCardFromColumn(card, columnParent.getColumn());
+    }
+
+    public void onDrop(Draggable intersectedComponent, boolean isBelow) {
+        if (!(intersectedComponent instanceof final CardComponent intersectedCardComponent)) throw new RuntimeException("Trying to drop a card on a non-card component");
+        ColumnComponent intersectedColumn = intersectedCardComponent.getColumnParent();
+        Card intersectedCard = intersectedCardComponent.getCard();
+
+        boardService.repositionCard(this.card.getId(), columnParent.getColumn().getIndex(),
+            intersectedCardComponent.getColumnParent().getColumn().getIndex(), intersectedCard.getPriority());
     }
 
     /**

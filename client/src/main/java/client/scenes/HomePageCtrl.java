@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
 
-public class HomePageCtrl implements LiveUIController {
+public class HomePageCtrl implements Refreshable {
 
     @Getter
     private final MainCtrl mainCtrl;
@@ -68,8 +68,8 @@ public class HomePageCtrl implements LiveUIController {
         final Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(5)),
                 new KeyFrame(Duration.seconds(5), event -> {
-                    boardService.checkBoardsValidity();
-                    renderBoards();
+//                    boardService.checkBoardsValidity();
+//                    renderBoards();
                 })
 
         );

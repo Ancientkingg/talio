@@ -24,6 +24,9 @@ public class ColumnComponent extends GridPane implements UIComponent {
 
     @Getter
     private final BoardService boardService;
+
+    @Getter
+    private final OverviewCtrl overviewCtrl;
     private final Column column;
 
     @FXML
@@ -50,6 +53,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
      */
     public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl) {
         this.boardService = boardService;
+        this.overviewCtrl = overviewCtrl;
         this.column = column;
         loadSource(Main.class.getResource("/components/Column.fxml"));
 

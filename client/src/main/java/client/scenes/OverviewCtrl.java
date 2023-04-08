@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import java.awt.datatransfer.StringSelection;
 import java.util.TreeSet;
 
-public class OverviewCtrl implements LiveUIController {
+public class OverviewCtrl implements Refreshable {
     private final MainCtrl mainCtrl;
     private final BoardService boardService;
 
