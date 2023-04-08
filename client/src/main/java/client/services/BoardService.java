@@ -389,12 +389,15 @@ public class BoardService {
     /**
      * Adds tag to current board (client initiated)
      * @param tag Tag to add
-     * @return Tag added tag
      */
-    public Tag addTagToCurrentBoard(final Tag tag) {
-        final Tag addedTag = serverService.addTagToBoard(getCurrentBoard(), tag);
-        boardModel.getCurrentBoard().addTag(addedTag);
-        return addedTag;
+    public void addTagToCurrentBoard(final Tag tag) {
+        try {
+            serverService.addTagToBoard(getCurrentBoard(), tag);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -413,7 +416,14 @@ public class BoardService {
      * @param tag Tag to remove
      */
     public void removeTagFromBoard(final Tag tag) {
-        serverService.removeTagFromBoard(getCurrentBoard(), tag);
+        try {
+            serverService.removeTagFromBoard(getCurrentBoard(), tag);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be removed from the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -432,8 +442,13 @@ public class BoardService {
      * @param tag Tag to edit
      */
     public void editTag(final Tag tag) {
-        serverService.editTag(getCurrentBoard(), tag);
-        // Update the boardModel with editedTag here
+        try {
+            serverService.editTag(getCurrentBoard(), tag);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be edited on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
     }
 
     /**
