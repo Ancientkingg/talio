@@ -372,7 +372,16 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 }
         );
 
-        final Subscription subtaskToggledSub = session.subscribe(
+        final Subscription subtaskToggledSub = addSubscriptionForSubTaskToggleSub(joinKey);
+
+        subscriptions.add(subtaskAddedSub);
+        subscriptions.add(subtaskRemovedSub);
+        subscriptions.add(subtaskToggledSub);
+    }
+
+    // split because of method length restrictions
+    private Subscription addSubscriptionForSubTaskToggleSub(final String joinKey) {
+        return session.subscribe(
                 "/topic/subtasks/" + joinKey + "/toggle", new StompSessionHandlerAdapter() {
                     @Override
                     public Type getPayloadType(final StompHeaders headers) {
@@ -396,9 +405,5 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                     }
                 }
         );
-
-        subscriptions.add(subtaskAddedSub);
-        subscriptions.add(subtaskRemovedSub);
-        subscriptions.add(subtaskToggledSub);
     }
 }
