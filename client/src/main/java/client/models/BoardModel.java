@@ -5,6 +5,7 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.Tag;
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
@@ -124,7 +125,10 @@ public class BoardModel {
         }
         catch (ColumnNotFoundException e) {
             throw new BoardChangeException(e.getMessage());
+        } catch (CardNotFoundException e) {
+            throw new BoardChangeException(e.getMessage());
         }
+        //TODO: add InfoModals for errors
     }
 
 

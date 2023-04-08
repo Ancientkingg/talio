@@ -9,6 +9,7 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.Tag;
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 
 import javax.inject.Inject;
@@ -332,6 +333,11 @@ public class BoardService {
         } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception",
                     "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        } catch (CardNotFoundException e) {
+            final InfoModal errorModal = new InfoModal(this, "Card Not Found",
+                    "The card you are trying to reposition could not be found on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }

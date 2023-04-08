@@ -9,6 +9,7 @@ import commons.DTOs.CardDTO;
 import commons.DTOs.ColumnDTO;
 import commons.DTOs.TagDTO;
 import commons.Tag;
+import commons.exceptions.CardNotFoundException;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -277,7 +278,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater(() -> {
                         final TagDTO tagDTO = (TagDTO) payload;
-                        final Card card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
+                        final Card card;
+                        try {
+                            card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
+                        } catch (CardNotFoundException e) {
+                            logger.info("Could not remove tag from card because card was not found");
+                            throw new RuntimeException(e);
+                        }
 //                        try {
                         boardService.updateRemoveTagFromCard(card, tagDTO.getTag());
 //                        }
@@ -294,7 +301,13 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public void handleFrame(final StompHeaders headers, final Object payload) {
                     Platform.runLater(() -> {
                         final TagDTO tagDTO = (TagDTO) payload;
-                        final Card card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
+                        final Card card;
+                        try {
+                            card = boardService.getCurrentBoard().getCard(tagDTO.getCardId());
+                        } catch (CardNotFoundException e) {
+                            logger.info("Could not remove tag from card because card was not found");
+                            throw new RuntimeException(e);
+                        }
 //                        try {
                         boardService.updateAddTagToCard(card, tagDTO.getTag());
 //                        }

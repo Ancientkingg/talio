@@ -1,5 +1,6 @@
 package commons;
 
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 
 import javax.persistence.*;
@@ -256,7 +257,7 @@ public class Board {
      *
      * @return The card with the id {@code cardId} or null if not found
      */
-    public Card getCard(final long cardId) {
+    public Card getCard(final long cardId) throws CardNotFoundException {
         for (final Column column : this.columns) {
             for (final Card card : column.getCards()) {
                 if (card.getId() == cardId) {
@@ -265,7 +266,7 @@ public class Board {
             }
         }
 
-        return null;
+        throw new CardNotFoundException("Card not found");
     }
 
     /**
@@ -329,11 +330,8 @@ public class Board {
      * @param cardId The id of the card to add the tag to
      * @param tag The tag to add to the card
      */
-    public void addTagToCard(final long cardId, final Tag tag) {
+    public void addTagToCard(final long cardId, final Tag tag) throws CardNotFoundException {
         final Card card = this.getCard(cardId);
-        if (card != null) {
-            card.addTag(tag);
-        }
     }
 
     /**
@@ -341,11 +339,8 @@ public class Board {
      * @param cardId The id of the card to remove the tag from
      * @param tag The tag to remove from the card
      */
-    public void removeTagFromCard(final long cardId, final Tag tag) {
+    public void removeTagFromCard(final long cardId, final Tag tag) throws CardNotFoundException {
         final Card card = this.getCard(cardId);
-        if (card != null) {
-            card.removeTag(tag);
-        }
     }
 
     /**
