@@ -61,6 +61,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
         this.column = column;
 
         this.overviewScene = overviewScene;
+        this.overviewCtrl = overviewCtrl;
 
         loadSource(Main.class.getResource("/components/Column.fxml"));
 

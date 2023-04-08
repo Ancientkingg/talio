@@ -1,16 +1,19 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
-import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
+import client.scenes.components.modals.BoardSettingsModal;
+import client.scenes.components.modals.CardDetailsModal;
+import client.scenes.components.modals.InfoModal;
 import client.scenes.components.modals.TagsOverviewModal;
-import client.scenes.components.InfoModal;
 import client.services.BoardService;
+import commons.Card;
 import commons.Column;
 import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -19,8 +22,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -98,6 +101,8 @@ public class OverviewCtrl implements LiveUIController {
 
     /**
      * Set up keyboard shortcuts for overview
+     *
+     * cannot be called from initialize() because it requires overviewScene to have been initialized which is not the case when initialize is called.
       */
     public void setKeyboardShortcuts() {
 
@@ -107,7 +112,13 @@ public class OverviewCtrl implements LiveUIController {
         final KeyCombination helpMenu = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_DOWN);
         final Runnable showHelpModal = () -> {
             final InfoModal keyboardShortcutsModal = new InfoModal(boardService, "Keyboard Shortcuts",
-                    "show this menu:\t?\n", this.mainCtrl.getCurrentScene());
+                    "show this menu:\t\t?\n" +
+                            "open card description:\t\tENTER\n" +
+                            "close card description:\t\tESC\n" +
+                            "select neighboring cards:\t\tArrow keys\n" +
+                            "move selected card up or down:\t\tSHIFT+UP/DOWN\n" +
+                            "Edit task directly in overview\t\te\n" +
+                            "Delete a task from overview\t\tDEL/Backspace\n", this.mainCtrl.getCurrentScene());
             keyboardShortcutsModal.showModal();
         };
         keyboardShortcuts.put(helpMenu, showHelpModal);
@@ -120,7 +131,29 @@ public class OverviewCtrl implements LiveUIController {
         };
         keyboardShortcuts.put(e, editTask);
 
-        //shortcut to start editing highlighted task
+        mainCtrl.getCurrentScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    final CardDetailsModal modal = new CardDetailsModal(boardService, focussedCard.getColumnParent().getScene(),
+                            focussedCard.getCard(), focussedCard);
+                    modal.showModal();
+                    event.consume();
+                }
+            }
+        });
+
+        //shortcut to delete the highlighted task
+        setDeletingCardsKeyboardShortcuts(keyboardShortcuts);
+
+        setShiftingCardsKeyboardShortcuts(keyboardShortcuts);
+
+        setMovingFocusKeyboardShortcutsUpDown();
+
+        setMovingFocusKeyboardShortcutsLeftRight();
+    }
+
+    private void setDeletingCardsKeyboardShortcuts(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
         final KeyCombination delete = new KeyCodeCombination(KeyCode.DELETE);
         final KeyCombination backspace = new KeyCodeCombination(KeyCode.BACK_SPACE);
 
@@ -129,22 +162,19 @@ public class OverviewCtrl implements LiveUIController {
                 final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
                 final int index = children.indexOf(focussedCard);
 
-                children.remove(index);
-                // if empty, set focussedCard to null, else (if last card was deleted, then set focussedCard to card just before it else next card)
-                setFocussedCard((children.size() == 0) ? null : (CardComponent) children.get(Math.min(children.size() - 1, index)));
+                final Card cardToBeRemoved = focussedCard.getCard();
+                final Column column = focussedCard.getColumnParent().getColumn();
 
-                refreshColumn(focussedCard.getColumnParent().getColumn().getId());
-                // TODO: send delete request to server via BoardService
+                // if empty, set focussedCard to null, else (if last card was deleted, then set focussedCard to card just before it else next card)
+                setFocussedCard((children.size() == 1) ? null : (CardComponent) children.get(Math.max(0, Math.min(children.size() - 1, index))));
+
+                boardService.removeCardFromColumn(cardToBeRemoved, column);
+
+                refreshColumn(column.getId());
             }
         };
         keyboardShortcuts.put(delete, deleteTask);
         keyboardShortcuts.put(backspace, deleteTask);
-
-        setShiftingCardsKeyboardShortcuts(keyboardShortcuts);
-
-        setMovingFocusKeyboardShortcutsUpDown(keyboardShortcuts);
-
-        setMovingFocusKeyboardShortcutsLeftRight(keyboardShortcuts);
     }
 
     private void setShiftingCardsKeyboardShortcuts(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
@@ -170,80 +200,78 @@ public class OverviewCtrl implements LiveUIController {
         keyboardShortcuts.put(shiftCardDown, moveCardDown);
     }
 
-    private void setMovingFocusKeyboardShortcutsUpDown (final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
+    private void setMovingFocusKeyboardShortcutsUpDown () {
 
-        final KeyCombination down = new KeyCodeCombination(KeyCode.DOWN);
-        final Runnable moveFocusDown = () -> {
-            if (focussedCard != null) {
-                final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
-                final int index = children.indexOf(focussedCard);
-                if (index < children.size() - 1) // not last
-                    setFocussedCard(((CardComponent) children.get(index + 1)));
+        mainCtrl.getCurrentScene().addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                if (focussedCard != null) {
+                    if (event.getCode().equals(KeyCode.DOWN)) {
+                        final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
+                        final int index = children.indexOf(focussedCard);
+                        if (index < children.size() - 1) // not last
+                            setFocussedCard(((CardComponent) children.get(index + 1)));
+                    }
+                    else if (event.getCode().equals(KeyCode.UP)) {
+                        final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
+                        final int index = children.indexOf(focussedCard);
+                        if (index > 0) // not last
+                            setFocussedCard(((CardComponent) children.get(index - 1)));
+                    }
+                }
             }
-        };
-        keyboardShortcuts.put(down, moveFocusDown);
-
-        final KeyCombination up = new KeyCodeCombination(KeyCode.UP);
-        final Runnable moveFocusUp = () -> {
-            if (focussedCard != null) {
-                final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
-                final int index = children.indexOf(focussedCard);
-                if (index > 0) // not last
-                    setFocussedCard(((CardComponent) children.get(index - 1)));
-            }
-        };
-        keyboardShortcuts.put(up, moveFocusUp);
+        });
     }
 
-    private void setMovingFocusKeyboardShortcutsLeftRight(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
+    private void setMovingFocusKeyboardShortcutsLeftRight() {
 
-        final KeyCombination left = new KeyCodeCombination(KeyCode.LEFT);
-        final Runnable moveFocusLeft = () -> {
-            if (focussedCard != null) {
+        mainCtrl.getCurrentScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                if (focussedCard != null) {
+                    if (event.getCode().equals(KeyCode.LEFT)) {
+                        // column containing current card with focus
+                        final ObservableList<Node> currentColumn = focussedCard.getColumnParent().getInnerCardList().getChildren();
+                        int columnIndex = columnBox.getChildren().indexOf(focussedCard.getColumnParent()); // index of column containing the focussed card
+                        int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
+                        ObservableList<Node> leftColumn;
 
-                // column containing current card with focus
-                final ObservableList<Node> currentColumn = focussedCard.getColumnParent().getInnerCardList().getChildren();
-                final int columnIndex = columnBox.getChildren().indexOf(focussedCard.getColumnParent()); // index of column containing the focussed card
+                        while (columnIndex -- > 0) { // not first, meaning there is a column to the left
+                            leftColumn = ((ColumnComponent) columnBox.getChildren().get(columnIndex))
+                                    .getInnerCardList().getChildren(); // column to the left
 
-                if (columnIndex > 0) { // not first, meaning there is a column to the left
+                            if (leftColumn == null || leftColumn.size() == 0) // if left column has no cards, try to check for columns further to the left
+                                continue;
+                            else // if column to the left has cards, move focus to a card in it
+                                rowIndex = Math.min(leftColumn.size() - 1, rowIndex); // last card if column to left does not have enough cards,
+                                                                                        // else card at same index
+                            setFocussedCard(((CardComponent) leftColumn.get(rowIndex))); // set the focus
+                            break;
+                        }
+                        event.consume();
+                    }
+                    else if (event.getCode().equals(KeyCode.RIGHT)) {
+                        final ObservableList<Node> currentColumn = focussedCard.getColumnParent().getInnerCardList().getChildren();
+                        int columnIndex = columnBox.getChildren().indexOf(focussedCard.getColumnParent()); // index of column containing the focussed card
+                        int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
+                        ObservableList<Node> rightColumn;
 
-                    final ObservableList<Node> leftColumn = ((VBox)columnBox.getChildren().get(columnIndex - 1)).getChildren(); // column to the left
-                    int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
+                        while (columnIndex ++ < columnBox.getChildren().size() - 1) { // not last, meaning there is a column to the right
+                            rightColumn = ((ColumnComponent) columnBox.getChildren().get(columnIndex))
+                                    .getInnerCardList().getChildren(); // column to the right
 
-                    if (leftColumn == null || leftColumn.size() == 0) // if left column has no cards, do not move focus
-                        return;
+                            if (rightColumn == null || rightColumn.size() == 0) // if right column has no cards, check next column (more to the right)
+                                continue;
+                            else rowIndex = Math.min(rightColumn.size() - 1, rowIndex); // last card if column to right doesn't have enough cards
 
-                    else
-                        rowIndex = Math.min(leftColumn.size() - 1, rowIndex); // last card if column to left does not have enough cards, else card at same index
-
-                    setFocussedCard(((CardComponent) leftColumn.get(rowIndex))); // set the focus
+                            setFocussedCard(((CardComponent) rightColumn.get(rowIndex))); // set the focus
+                            break;
+                        }
+                        event.consume();
+                    }
                 }
             }
-        };
-        keyboardShortcuts.put(left, moveFocusLeft);
-
-        final KeyCombination right = new KeyCodeCombination(KeyCode.RIGHT);
-        final Runnable moveFocusRight = () -> {
-            if (focussedCard != null) {
-                // column containing current card with focus
-                final ObservableList<Node> currentColumn = focussedCard.getColumnParent().getInnerCardList().getChildren();
-                final int columnIndex = columnBox.getChildren().indexOf(focussedCard.getColumnParent()); // index of column containing the focussed card
-
-                if (columnIndex < columnBox.getChildren().size() - 1) { // not last, meaning there is a column to the right
-
-                    final ObservableList<Node> rightColumn = ((VBox)columnBox.getChildren().get(columnIndex + 1)).getChildren(); // column to the right
-                    int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
-
-                    if (rightColumn == null || rightColumn.size() == 0) // if right column has no cards, do not move focus
-                        return;
-                    else
-                        rowIndex = Math.min(rightColumn.size() - 1, rowIndex); // last card if column to right does not have enough cards, else card at same pos
-
-                    setFocussedCard(((CardComponent) rightColumn.get(rowIndex))); // set the focus
-                }
-            }
-        };
-        keyboardShortcuts.put(right, moveFocusRight);
+        });
     }
 
     /**
@@ -282,6 +310,7 @@ public class OverviewCtrl implements LiveUIController {
                 break;
             }
         }
+        setFocussedCard(focussedCard);
     }
 
     /**
