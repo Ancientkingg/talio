@@ -82,19 +82,27 @@ public class Column implements Comparable<Column> {
         return card != null && this.cards.add(card);
     }
 
+    /**
+     * Inserts a card into the column with the given priority
+     * @param card Card to be inserted
+     * @return success/failure
+     */
     public boolean insertCard(final Card card) {
         if (card == null) return false;
-        boolean result = false;
 
-        for (Card c : this.cards) {
-            if (result) {
+        final int idx = card.getPriority();
+        for (final Card c : this.cards) {
+            if (c.getPriority() >= idx)
                 c.setPriority(c.getPriority() + 1);
-            } else if (c.getPriority() == card.getPriority()) {
-                result = this.cards.add(c);
-            }
+        }
+        if (!this.cards.add(card)) return false;
+
+        int priority = 0;
+        for (final Card c : this.cards) {
+            c.setPriority(priority++);
         }
 
-        return result;
+        return true;
     }
 
     /**
@@ -109,7 +117,7 @@ public class Column implements Comparable<Column> {
         if (!this.cards.remove(card)) return false;
 
         int idx = 0;
-        for (Card c : this.cards) {
+        for (final Card c : this.cards) {
             c.setPriority(idx++);
         }
 

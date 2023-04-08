@@ -1,20 +1,15 @@
 package client.scenes.components;
 
 import client.scenes.Refreshable;
-import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import lombok.Getter;
 
 import java.util.List;
@@ -26,9 +21,11 @@ public abstract class Draggable extends GridPane {
 
     private boolean dragState;
 
-    private Refreshable parentContainer = null;
+    private Refreshable parentController = null;
 
-    private Draggable intersectedComponent;
+    private Parent parentContainer;
+
+    private Node intersectedComponent;
 
     private boolean isBelow;
 
@@ -37,8 +34,8 @@ public abstract class Draggable extends GridPane {
         if (!e.isShiftDown()) return;
         dragState = true;
 
-        Scene rootScene = this.getScene();
-        StackPane root = (StackPane) rootScene.getRoot();
+        final Scene rootScene = this.getScene();
+        final StackPane root = (StackPane) rootScene.getRoot();
 
         this.setMaxWidth(this.getWidth());
         this.setPrefWidth(this.getWidth());
@@ -47,10 +44,10 @@ public abstract class Draggable extends GridPane {
         this.setMouseTransparent(true);
 
 
-        Point2D p = this.localToScene(this.getWidth()/2.0,this.getHeight()/2.0);
+        final Point2D p = this.localToScene(this.getWidth() / 2.0,this.getHeight() / 2.0);
 
-        this.setTranslateX(p.getX() - rootScene.getWidth()/2.0);
-        this.setTranslateY(p.getY() - rootScene.getHeight()/2.0);
+        this.setTranslateX(p.getX() - rootScene.getWidth() / 2.0);
+        this.setTranslateY(p.getY() - rootScene.getHeight() / 2.0);
 
         root.getChildren().add(this);
     };
@@ -58,17 +55,17 @@ public abstract class Draggable extends GridPane {
     private final EventHandler<MouseEvent> onDrag = e -> {
         if (!dragState) return;
         this.setRotate(7.5);
-        Scene rootScene = this.getScene();
+        final Scene rootScene = this.getScene();
 
-        this.setTranslateX(e.getSceneX() - rootScene.getWidth()/2.0);
-        this.setTranslateY(e.getSceneY() - rootScene.getHeight()/2.0);
+        this.setTranslateX(e.getSceneX() - rootScene.getWidth() / 2.0);
+        this.setTranslateY(e.getSceneY() - rootScene.getHeight() / 2.0);
 
-        Node intersectedNode = pick(rootScene.getRoot(), e.getSceneX(), e.getSceneY());
-        Draggable intersectedComponent = toDraggableComponent(intersectedNode);
+        final Node intersectedNode = pick(rootScene.getRoot(), e.getSceneX(), e.getSceneY());
+        final Node intersectedComponent = toComponent(intersectedNode);
         if (intersectedComponent == null) return;
         this.intersectedComponent = intersectedComponent;
 
-        Bounds b = intersectedNode.localToScene(intersectedNode.getBoundsInLocal());
+        final Bounds b = intersectedNode.localToScene(intersectedNode.getBoundsInLocal());
 
         this.isBelow = e.getSceneY() > b.getCenterY();
     };
@@ -79,17 +76,29 @@ public abstract class Draggable extends GridPane {
         if (this.getParent() instanceof StackPane)
             ((StackPane) this.getParent()).getChildren().remove(this);
 
+        System.out.println(intersectedComponent instanceof ColumnComponent);
+
         this.onDrop(intersectedComponent, isBelow);
-        parentContainer.refresh();
+        parentController.refresh();
     };
 
-    public Draggable(Refreshable parentContainer) {
+    /**
+     * Constructor for Draggable
+     * @param parentController Parent controller
+     * @param parentContainer Parent container
+     */
+    public Draggable(final Refreshable parentController, final Parent parentContainer) {
+        this.parentController = parentController;
         this.parentContainer = parentContainer;
         this.draggable = false;
         this.dragState = false;
     }
 
 
+    /**
+     * Sets whether the component is draggable or not
+     * @param draggable True if draggable, false otherwise
+     */
     public void setDraggable(final boolean draggable) {
         this.draggable = draggable;
         if (draggable) {
@@ -103,37 +112,25 @@ public abstract class Draggable extends GridPane {
         }
     }
 
-    private void addPressAndHoldEventHandler(Duration holdTime,
-                                        EventHandler<MouseEvent> handler) {
+    /**
+     * Called when the component is dropped
+     * @param intersectedComponent Component that was intersected
+     * @param isBelow True if the component was dropped below the intersected component, false otherwise
+     */
+    public abstract void onDrop(Node intersectedComponent, boolean isBelow);
 
-        class Wrapper<T> { T content ; }
-        Wrapper<MouseEvent> eventWrapper = new Wrapper<>();
-
-        PauseTransition holdTimer = new PauseTransition(holdTime);
-        holdTimer.setOnFinished(event -> handler.handle(eventWrapper.content));
-
-
-        this.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            eventWrapper.content = event;
-            holdTimer.playFromStart();
-        });
-        this.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> holdTimer.stop());
-        this.addEventHandler(MouseEvent.DRAG_DETECTED, event -> holdTimer.stop());
-    }
-
-    public abstract void onDrop(Draggable intersectedComponent, boolean isBelow);
-
-    private Draggable toDraggableComponent(final Node node) {
+    private Node toComponent(final Node node) {
         if (node == null) return null;
-        if (node instanceof Draggable) return (Draggable) node;
+        if (node.getClass() == this.parentContainer.getClass()) return node;
+        if (node instanceof Refreshable) return node;
         Node nodeCandidate = node;
 
-        while (!(nodeCandidate instanceof Draggable)) {
+        while (!(nodeCandidate instanceof Draggable) && !(nodeCandidate.getClass() == this.parentContainer.getClass())) {
             nodeCandidate = nodeCandidate.getParent();
             if (nodeCandidate == null) return null;
         }
 
-        return (Draggable) nodeCandidate;
+        return nodeCandidate;
     }
 
     private Node pick(final Node node, final double sceneX, final double sceneY) {
@@ -143,10 +140,10 @@ public abstract class Draggable extends GridPane {
 
         if (node instanceof Parent) {
             Node childCandidate = null;
-            List<Node> children = ((Parent) node).getChildrenUnmodifiable();
+            final List<Node> children = ((Parent) node).getChildrenUnmodifiable();
 
             for (int i = children.size() - 1; i >= 0; i--) {
-                Node child = children.get(i);
+                final Node child = children.get(i);
 
                 point = child.sceneToLocal(sceneX, sceneY, true);
 

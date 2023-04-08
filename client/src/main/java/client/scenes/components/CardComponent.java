@@ -8,7 +8,6 @@ import commons.Card;
 import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -45,7 +44,7 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param columnParent ColumnComponent instance
      */
     public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent) {
-        super(columnParent.getOverviewCtrl());
+        super(columnParent.getOverviewCtrl(), columnParent);
         this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
@@ -165,13 +164,32 @@ public class CardComponent extends Draggable implements UIComponent {
         boardService.removeCardFromColumn(card, columnParent.getColumn());
     }
 
-    public void onDrop(Draggable intersectedComponent, boolean isBelow) {
-        if (!(intersectedComponent instanceof final CardComponent intersectedCardComponent)) throw new RuntimeException("Trying to drop a card on a non-card component");
-        ColumnComponent intersectedColumn = intersectedCardComponent.getColumnParent();
-        Card intersectedCard = intersectedCardComponent.getCard();
+    /**
+     * Gets called when the card is dropped on another component
+     * @param intersectedComponent The component the card was dropped on
+     * @param isBelow Whether the card was dropped below the component
+     */
+    public void onDrop(final Node intersectedComponent, final boolean isBelow) {
+        if (!(intersectedComponent instanceof CardComponent) && !(intersectedComponent instanceof ColumnComponent))
+            throw new RuntimeException("Trying to drop a card on a non-card component");
 
-        boardService.repositionCard(this.card.getId(), columnParent.getColumn().getIndex(),
-            intersectedCardComponent.getColumnParent().getColumn().getIndex(), intersectedCard.getPriority());
+        if (intersectedComponent instanceof final ColumnComponent intersectedColumn &&
+                intersectedColumn.getColumn().getCards().size() == 0)
+        {
+
+            boardService.repositionCard(card.getId(), columnParent.getColumn().getIndex(),
+                    intersectedColumn.getColumn().getIndex(), 0);
+
+        } else if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
+
+            final Card intersectedCard = intersectedCardComponent.getCard();
+
+            int priority = intersectedCard.getPriority();
+            if (isBelow) priority++;
+
+            boardService.repositionCard(card.getId(), columnParent.getColumn().getIndex(),
+                    intersectedCardComponent.getColumnParent().getColumn().getIndex(), priority);
+        }
     }
 
     /**
