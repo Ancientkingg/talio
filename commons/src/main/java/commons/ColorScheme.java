@@ -15,6 +15,9 @@ public class ColorScheme {
     private long id;
 
     @Getter @Setter
+    private String name;
+
+    @Getter @Setter
     @OneToOne(cascade = CascadeType.ALL)
     private Color textColor;
 
@@ -28,6 +31,18 @@ public class ColorScheme {
      * @param backgroundColor color for background
      */
     public ColorScheme(final Color textColor, final Color backgroundColor) {
+        this.textColor = textColor;
+        this.backgroundColor = backgroundColor;
+    }
+
+    /**
+     * Constructor for ColorScheme
+     * @param name name of the color scheme
+     * @param textColor color for text (called font color in backlog)
+     * @param backgroundColor color for background
+     */
+    public ColorScheme(final String name, final Color textColor, final Color backgroundColor) {
+        this.name = name;
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
     }
@@ -67,5 +82,14 @@ public class ColorScheme {
         result = 31 * result + (textColor != null ? textColor.hashCode() : 0);
         result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
         return result;
+    }
+
+    /**
+     * toString for ColorScheme
+     * @return name of the color scheme
+     */
+    @Override
+    public String toString() {
+        return this.name == null ? "Untitled colorscheme" : this.name;
     }
 }

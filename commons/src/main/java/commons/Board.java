@@ -42,6 +42,10 @@ public class Board {
     @Setter
     private Set<Tag> tags;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Getter
+    private List<ColorScheme> colorPresets;
+
     /**
      * Constructor for a board object with password
      *
@@ -65,6 +69,7 @@ public class Board {
         this.columnTheme = columnTheme;
         this.boardColorScheme = boardColorScheme;
         this.tags = tags;
+        this.colorPresets = new ArrayList<>();
     }
 
     /**
@@ -91,6 +96,7 @@ public class Board {
 
         columnTheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // change these to whatever default is picked
         boardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255));
+        this.colorPresets = new ArrayList<>();
     }
 
     /**

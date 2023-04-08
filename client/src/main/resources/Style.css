@@ -373,7 +373,10 @@ Overview
     -fx-text-fill: #181818;
 }
 
-.join-board-button {
+.join-board-button,
+.combo-box,
+.list-view,
+.combo-box-popup {
     -fx-background-color: #181818;
     -fx-text-fill: #f8f8f8;
     -fx-font-family: Cabin;
@@ -382,6 +385,43 @@ Overview
     -fx-border-radius: 14;
     -fx-border-color: #f8f8f8;
     -fx-border-width: 1;
+}
+
+.list-view {
+    -fx-border-color: #181818;
+    -fx-background-color: #ffffff;
+}
+
+.list-view:hover {
+    -fx-text-fill: red;
+}
+
+.join-board-modal-button:hover > .list-cell {
+    -fx-text-fill: #f8f8f8;
+    -fx-background-color: #181818;
+    -fx-background-radius: 12px;
+}
+
+.list-cell:hover {
+    -fx-text-fill: #f8f8f8;
+    -fx-background-color: #181818;
+
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #181818;
+    -fx-background-radius: 12px;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: rgba(60, 60, 60, 0.25);
+}
+
+.combo-box,
+.list-view,
+.combo-box-popup {
+    -fx-font-size: 16px;
 }
 
 .join-board-button:hover {
@@ -408,10 +448,12 @@ Overview
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
     -fx-border-width: 1px;
-    -fx-border-color: #181818;
+    -fx-border-color:  rgba(24, 24, 24, 0.8);
     -fx-font-family: Cabin;
     -fx-text-fill: #181818;
     -fx-font-size: 16px;
+    -fx-border-insets: -1px;
+    -fx-effect: dropshadow(gaussian, rgba(30, 30, 30, 0.3), 5, 0, 0, 0);
 }
 
 .join-board-modal-button:hover {
@@ -423,9 +465,32 @@ Overview
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
     -fx-border-width: 1px;
-    -fx-border-color: #181818;
+    -fx-border-color: rgba(24, 24, 24, 0.6);
     -fx-font-family: Cabin;
     -fx-font-size: 15px;
+    -fx-text-box-border: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(30, 30, 30, 0.3), 4, 0, 0, 0);
+}
+
+.join-board-modal-text-field .content {
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.modal-text-area .scroll-pane {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+.modal-text-area .scroll-pane .viewport{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+.modal-text-area .scroll-pane .content{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
 }
 
 .board-joinkey-text-field {
