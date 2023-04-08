@@ -1,7 +1,6 @@
 package client.scenes.components;
 
 import client.Main;
-import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
