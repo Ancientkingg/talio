@@ -5,10 +5,7 @@ import client.exceptions.ServerException;
 import client.models.BoardModel;
 import client.scenes.MainCtrl;
 import client.scenes.components.modals.InfoModal;
-import commons.Board;
-import commons.Card;
-import commons.Column;
-import commons.Tag;
+import commons.*;
 import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 
@@ -708,5 +705,63 @@ public class BoardService {
                         .collect(Collectors.toList())
         );
         this.saveBoardsLocal();
+    }
+
+    /**
+     * adds subtask to card (client initiated)
+     * @param card card to which subtask is to be added
+     * @param description description of subtask to be added
+     */
+    public void addSubTask(final Card card, final String description) {
+        // TODO update boardModel to show changes
+        serverService.addSubTask(this.boardModel.getCurrentBoard(), card, description);
+    }
+
+    /**
+     * removes subtask from card (client initiated)
+     * @param card card from which subtask is to be removed
+     * @param subTask subtask to remove
+     */
+    public void removeSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+        serverService.removeSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+    }
+
+    /**
+     * toggles done/not done of subtask in card (server initiated)
+     * @param card card whose subtask is to be toggled
+     * @param subTask subtask to toggle
+     */
+    public void toggleSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+        serverService.toggleSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+    }
+
+
+    /**
+     * adds subtask to card (server initiated)
+     * @param card card to which subtask is to be added
+     * @param subTask subtask to add
+     */
+    public void updateAddSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+    }
+
+    /**
+     * removes subtask from card (server initiated)
+     * @param card card from which subtask is to be removed
+     * @param subTask subtask to remove
+     */
+    public void updateRemoveSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+    }
+
+    /**
+     * toggles done/not done of subtask in card (server initiated)
+     * @param card card whose subtask is to be toggled
+     * @param subTask subtask to toggle
+     */
+    public void updateToggleSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
     }
 }

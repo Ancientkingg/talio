@@ -7,6 +7,7 @@ import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
 import commons.DTOs.ColumnDTO;
+import commons.DTOs.SubTaskDTO;
 import commons.DTOs.TagDTO;
 import commons.Tag;
 import commons.exceptions.CardNotFoundException;
@@ -81,6 +82,8 @@ public class SessionHandler extends StompSessionHandlerAdapter {
 
         subscribeToTagCardUpdates(joinKey);
         subscribeToTagBoardUpdates(joinKey);
+
+        subscribeToSubTaskUpdates(joinKey);
 
         logger.info("Subscribed to board: " + joinKey);
     }
@@ -316,5 +319,86 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                     }); }
             });
         subscriptions.add(tagAddedToCardSub);
+    }
+
+    private void subscribeToSubTaskUpdates(final String joinKey) {
+        final Subscription subtaskAddedSub = session.subscribe(
+                "/topic/subtasks/" + joinKey + "/add", new StompSessionHandlerAdapter() {
+                    @Override
+                    public Type getPayloadType(final StompHeaders headers) {
+                        return SubTaskDTO.class;
+                    }
+
+                    @Override
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            final SubTaskDTO subTaskDTO = (SubTaskDTO) payload;
+                            final Card card;
+                            try {
+                                card = boardService.getCurrentBoard().getCard(subTaskDTO.cardId());
+                            } catch (CardNotFoundException e) {
+                                logger.info("Could not add subtask to card because card was not found");
+                                throw new RuntimeException(e);
+                            }
+                            boardService.updateAddSubTask(card, subTaskDTO.subTask());
+                            logger.info("Subtask added to card");
+                        });
+                    }
+                }
+        );
+
+        final Subscription subtaskRemovedSub = session.subscribe(
+                "/topic/subtasks/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
+                    @Override
+                    public Type getPayloadType(final StompHeaders headers) {
+                        return SubTaskDTO.class;
+                    }
+
+                    @Override
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            final SubTaskDTO subTaskDTO = (SubTaskDTO) payload;
+                            final Card card;
+                            try {
+                                card = boardService.getCurrentBoard().getCard(subTaskDTO.cardId());
+                            } catch (CardNotFoundException e) {
+                                logger.info("Could not remove subtask from card because card was not found");
+                                throw new RuntimeException(e);
+                            }
+                            boardService.updateRemoveSubTask(card, subTaskDTO.subTask());
+                            logger.info("Subtask added to card");
+                        });
+                    }
+                }
+        );
+
+        final Subscription subtaskToggledSub = session.subscribe(
+                "/topic/subtasks/" + joinKey + "/toggle", new StompSessionHandlerAdapter() {
+                    @Override
+                    public Type getPayloadType(final StompHeaders headers) {
+                        return SubTaskDTO.class;
+                    }
+
+                    @Override
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            final SubTaskDTO subTaskDTO = (SubTaskDTO) payload;
+                            final Card card;
+                            try {
+                                card = boardService.getCurrentBoard().getCard(subTaskDTO.cardId());
+                            } catch (CardNotFoundException e) {
+                                logger.info("Could not toggle subtask in card because card was not found");
+                                throw new RuntimeException(e);
+                            }
+                            boardService.updateToggleSubTask(card, subTaskDTO.subTask());
+                            logger.info("Subtask added to card");
+                        });
+                    }
+                }
+        );
+
+        subscriptions.add(subtaskAddedSub);
+        subscriptions.add(subtaskRemovedSub);
+        subscriptions.add(subtaskToggledSub);
     }
 }
