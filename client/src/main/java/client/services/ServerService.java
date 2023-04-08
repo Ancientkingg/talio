@@ -548,10 +548,33 @@ public class ServerService {
                     .path("/subtasks")
                     .path("/toggle")
                     .path(currentBoard.getJoinKey())
-                    .queryParam("cardId", Long.toString(card.getId()))
+                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
             logger.info("Toggle SubTask sent to server");
+            return resultSubTask;
+        }
+    }
+
+    /**
+     * Moves subtask within card
+     * @param currentBoard current board
+     * @param card containing the subtask
+     * @param subTask to be moved
+     * @param index new index of subtask
+     * @return moved subtask
+     */
+    public SubTask moveSubTask(final Board currentBoard, final Card card, final SubTask subTask, final int index) {
+        try (Client client = ClientBuilder.newClient()) {
+            final SubTask resultSubTask = client.target(serverIP)
+                    .path("/subtasks")
+                    .path("/move")
+                    .path(currentBoard.getJoinKey())
+                    .queryParam("index", index)
+                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+            logger.info("Move SubTask sent to server");
             return resultSubTask;
         }
     }

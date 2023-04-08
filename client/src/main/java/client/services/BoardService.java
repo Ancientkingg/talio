@@ -737,6 +737,17 @@ public class BoardService {
         serverService.toggleSubTask(this.boardModel.getCurrentBoard(), card, subTask);
     }
 
+    /**
+     * moves a subtask within a card
+     * @param card containing the subtask
+     * @param subTask to be moved
+     * @param index new index of subtask
+     */
+    public void moveSubCard(final Card card, final SubTask subTask, final int index) {
+        // TODO update boardModel
+        serverService.moveSubTask(this.boardModel.getCurrentBoard(), card, subTask, index);
+    }
+
 
     /**
      * adds subtask to card (server initiated)
@@ -763,5 +774,15 @@ public class BoardService {
      */
     public void updateToggleSubTask(final Card card, final SubTask subTask) {
         // TODO update boardModel to show changes
+    }
+
+    /**
+     * moves a subtask within a card
+     * @param card containing the subtask
+     * @param subTask to be moved
+     * @param index new index of subtask
+     */
+    public void updateMoveSubTask(final Card card, final SubTask subTask, final int index) {
+        // TODO update boardModel
     }
 }
