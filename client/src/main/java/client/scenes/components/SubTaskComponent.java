@@ -4,17 +4,15 @@ import client.Main;
 import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
 public class SubTaskComponent extends GridPane implements UIComponent {
 
-    private final Card card;
-
     private final SubTask subTask;
-
-    private final String description;
 
     @FXML
     private CheckBox checkBox;
@@ -22,11 +20,12 @@ public class SubTaskComponent extends GridPane implements UIComponent {
     @FXML
     private TextField descriptionField;
 
+    @FXML
+    private Button editDescriptionButton;
 
-    public SubTaskComponent(final Card card, final SubTask subTask, final String description) {
-        this.card = card;
+
+    public SubTaskComponent(final SubTask subTask) {
         this.subTask = subTask;
-        this.description = description;
 
         loadSource(Main.class.getResource("/components/SubTask.fxml"));
 
@@ -40,9 +39,42 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+
+
+        descriptionField.setOnKeyReleased(e -> { // Disable editing of description when enter is pressed
+            if (e.getCode() == KeyCode.ENTER) {
+                descriptionField.setDisable(true);
+            }
+        });
+
+        editDescriptionButton.setOnAction(event -> {
+            descriptionField.setDisable(false);
+            descriptionField.requestFocus();
+        });
+
+        descriptionField.setDisable(true); //Disables editing by default
     }
 
-    
+    public void listenForTitleChanges () {
+        descriptionField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                subTask.setDescription(descriptionField.getText());
+                descriptionField.setDisable(true);
+            }
+        });
+
+        descriptionField.textProperty().addListener((observable, oldValue, newValue) -> {
+            subTask.setDescription(descriptionField.getText());
+        });
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                subTask.setDone(true);
+            }
+        });
+    }
+
+
 
 
 }
