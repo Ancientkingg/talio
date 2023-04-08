@@ -181,9 +181,10 @@ public class SubTaskController {
         if (!card.getSubtasks().contains(subTask))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id " + card.getId() + " does not contain the subtask being moved");
 
-        if (index < 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "subtask cannot be moved to negative index"); // this should also be dealt with on client side
-       final int newIndex = Math.min(card.getSubtasks().size() - 1, index);
+        if (index < 0) // this should also be dealt with on client side
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "subtask cannot be moved to negative index");
+
+        final int newIndex = Math.min(card.getSubtasks().size() - 1, index);
 
         card.getSubtasks().remove(subTask);
         card.getSubtasks().add(newIndex, subTask);
