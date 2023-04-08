@@ -2,13 +2,14 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
+import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
 import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,11 +20,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardComponent extends GridPane {
+public class CardComponent extends GridPane implements UIComponent {
     private final BoardService boardService;
     @Getter
     private final Card card;
@@ -55,15 +55,7 @@ public class CardComponent extends GridPane {
 
         this.overviewScene = overviewScene;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/Card.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/Card.fxml"));
 
         cardText.setText(card.getTitle());
         cardText.setWrapText(true);
@@ -71,6 +63,18 @@ public class CardComponent extends GridPane {
         setupDynamicallyResize();
 
         editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
+
+        setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(final MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
+                        modal.showModal();
+                    }
+                }
+                }
+            });
 
         cardText.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
@@ -80,18 +84,7 @@ public class CardComponent extends GridPane {
             }
         });
 
-        focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                card.setTitle(cardText.getText());
-                refresh();
-                cardText.setDisable(true);
-            }
-        });
-
-        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
-            card.setTitle(cardText.getText());
-            refresh();
-        });
+        this.listenForTitleChanges();
 
 
         cardText.setDisable(true); // Disable editing of card text by default
@@ -136,6 +129,24 @@ public class CardComponent extends GridPane {
                     Platform.runLater(() -> requestLayout());
                 });
             }
+        });
+    }
+
+    /**
+     * Listens for changes in title
+     */
+    public void listenForTitleChanges () {
+        focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                card.setTitle(cardText.getText());
+                refresh();
+                cardText.setDisable(true);
+            }
+        });
+
+        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
+            card.setTitle(cardText.getText());
+            refresh();
         });
     }
 

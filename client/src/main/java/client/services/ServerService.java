@@ -3,12 +3,10 @@ package client.services;
 import client.exceptions.ServerException;
 import client.utils.SessionHandler;
 import client.utils.SocketThread;
-import commons.Board;
-import commons.Card;
-import commons.Column;
+import commons.*;
 import commons.DTOs.CardDTO;
+import commons.DTOs.SubTaskDTO;
 import commons.DTOs.TagDTO;
-import commons.Tag;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -22,6 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.inject.Singleton;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -362,8 +362,7 @@ public class ServerService {
         try {
             session.send("/app/cards/edit/" +
                             board.getJoinKey() + "/" +
-                            column.getId() + "/" +
-                            column.getId(),
+                            column.getId() + "/",
                     new CardDTO(card, board.getPassword()));
             logger.info("Edited card sent to server");
         }
@@ -449,6 +448,133 @@ public class ServerService {
                     .get(new GenericType<>() { });
             logger.info("(admin) Sending request to server to get all boards");
             return boards;
+        }
+    }
+
+    /**
+     * Checks if the server is responding
+     */
+    public void checkConnection() {
+        try (Client client = ClientBuilder.newClient()) {
+            final Response response = client.target(serverIP)
+                    .path("/checkConnection")
+                    .request(APPLICATION_JSON)
+                    .get();
+            logger.info("Checking connection to server");
+            if (response.getStatus() != 200) {
+                throw new ServerException("The server is not responding");
+            }
+        }
+    }
+
+    /**
+     * Gets all users from the server using long polling
+     * @param boards List of boards to check
+     *
+     * @return List of boards that are still active
+     */
+    public List<String> getBoardsStatus(final List<String> boards) {
+        try (Client client = ClientBuilder.newClient()) {
+            final HashMap<String, Boolean> existingBoards = client.target(serverIP)
+                    .path("/home")
+                    .path("/getBoardsStatus")
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(boards, APPLICATION_JSON), new GenericType<>() { });
+            final List<String> activeBoards = new ArrayList<>();
+            for (final String board : boards) {
+                if (existingBoards.get(board)) {
+                    activeBoards.add(board);
+                }
+            }
+            logger.info("(long polling) Sending request to server to get status of boards");
+            return activeBoards;
+        }
+    }
+
+    /**
+     * Adds subtask to card
+     * @param currentBoard board containing card to which subtask is being added
+     * @param card card to which subtask is being added
+     * @param description description of subtask
+     * @return added subtask
+     */
+    public SubTask addSubTask(final Board currentBoard, final Card card, final String description) {
+        try (Client client = ClientBuilder.newClient()) {
+            final SubTask subTask = client.target(serverIP)
+                    .path("/subtasks")
+                    .path("/add")
+                    .path(currentBoard.getJoinKey())
+                    .queryParam("cardId", Long.toString(card.getId()))
+                    .queryParam("description", description)
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+            logger.info("Add SubTask to card sent to server");
+            return subTask;
+        }
+    }
+
+    /**
+     * removes subtask from card
+     * @param currentBoard board containing card from which subtask is being removed
+     * @param card card from which subtask is being removed
+     * @param subTask subtask being removed
+     * @return removed subtask
+     */
+    public SubTask removeSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
+        try (Client client = ClientBuilder.newClient()) {
+            final SubTask returnedSubTask = client.target(serverIP)
+                    .path("/subtasks")
+                    .path("/remove")
+                    .path(currentBoard.getJoinKey())
+                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+            logger.info("Remove SubTask from card sent to server");
+            return returnedSubTask;
+        }
+    }
+
+    /**
+     * Toggles state of subtask (done / not done)
+     * @param currentBoard board containing card whose subtask is to be toggled
+     * @param card card whose subtask is being toggled
+     * @param subTask subtask being toggled
+     * @return toggled subtask
+     */
+    public SubTask toggleSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
+        try (Client client = ClientBuilder.newClient()) {
+            final SubTask resultSubTask = client.target(serverIP)
+                    .path("/subtasks")
+                    .path("/toggle")
+                    .path(currentBoard.getJoinKey())
+                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+            logger.info("Toggle SubTask sent to server");
+            return resultSubTask;
+        }
+    }
+
+    /**
+     * Moves subtask within card
+     * @param currentBoard current board
+     * @param card containing the subtask
+     * @param subTask to be moved
+     * @param index new index of subtask
+     * @return moved subtask
+     */
+    public SubTask moveSubTask(final Board currentBoard, final Card card, final SubTask subTask, final int index) {
+        try (Client client = ClientBuilder.newClient()) {
+            final SubTask resultSubTask = client.target(serverIP)
+                    .path("/subtasks")
+                    .path("/move")
+                    .path(currentBoard.getJoinKey())
+                    .queryParam("index", index)
+                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+            logger.info("Move SubTask sent to server");
+            return resultSubTask;
         }
     }
 }

@@ -5,7 +5,6 @@ import client.scenes.HomePageCtrl;
 import commons.Board;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -13,9 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.IOException;
-
-public class BoardCardComponent extends Pane {
+public class BoardCardComponent extends Pane implements UIComponent {
 
     private final Board board;
 
@@ -39,15 +36,7 @@ public class BoardCardComponent extends Pane {
         this.board = board;
         this.parentCtrl = parentCtrl;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/BoardCard.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/BoardCard.fxml"));
 
         setBoardTitle();
         setHover();
@@ -97,13 +86,13 @@ public class BoardCardComponent extends Pane {
 
     @FXML
     private void onLeave() {
-        parentCtrl.removeBoard(this.board);
-
         final Point2D p = leaveButton.localToScreen(-110, 32);
+
+        parentCtrl.removeBoard(this.board);
 
         final Tooltip customTooltip = new Tooltip("Left board!");
         customTooltip.setAutoHide(false);
-        customTooltip.show(leaveButton,p.getX(),p.getY());
+        customTooltip.show(parentCtrl.getInnerBoardCardList(),p.getX(),p.getY());
 
         final PauseTransition pt = new PauseTransition(Duration.millis(1250));
         pt.setOnFinished(e -> {

@@ -1,11 +1,11 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
 import client.scenes.HomePageCtrl;
+import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
-public class AppSettingsModal extends Modal {
+public class AppSettingsModal extends Modal implements UIComponent {
 
     private final HomePageCtrl parentCtrl;
 
@@ -54,15 +54,7 @@ public class AppSettingsModal extends Modal {
         this.parentCtrl = parentCtrl;
         this.serverIP = serverIP;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/AppSettingsModal.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/AppSettingsModal.fxml"));
     }
 
     /**

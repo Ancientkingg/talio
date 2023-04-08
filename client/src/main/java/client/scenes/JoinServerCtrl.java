@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.scenes.components.InfoModal;
+import client.scenes.components.modals.InfoModal;
 import client.services.BoardService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -74,7 +74,14 @@ public class JoinServerCtrl {
             return;
         }
 
-        boardService.connect(url);
+        try {
+            boardService.connect(url);
+        } catch (Exception e) {
+            final InfoModal errorModal = new InfoModal(boardService, "Connection Error",
+                    "Could not connect to Talio server. Please check your network configuration or the server address.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            return;
+        }
         mainCtrl.showHomePage();
     }
 }

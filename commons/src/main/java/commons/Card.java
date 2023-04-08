@@ -25,6 +25,7 @@ public class Card implements Comparable<Card> {
     @Getter @Setter
     private String description;
 
+    @OrderColumn
     @OneToMany(fetch = FetchType.EAGER)
     @Getter @Setter
     private List<SubTask> subtasks;

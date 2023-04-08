@@ -11,10 +11,10 @@ class SubTaskTest {
 
     @BeforeEach
     public void setup() {
-        subtask1 = new SubTask("do something", false);
-        subtask2 = new SubTask("do something", true);
-        subtask3 = new SubTask("do nothing", false);
-        subtask4 = new SubTask("do something", false);
+        subtask1 = new SubTask("do something", false, 123L);
+        subtask2 = new SubTask("do something", true, 123L);
+        subtask3 = new SubTask("do nothing", false, 123L);
+        subtask4 = new SubTask("do something", false, 123L);
     }
 
     @Test

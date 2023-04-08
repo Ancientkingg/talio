@@ -1,5 +1,6 @@
 package commons;
 
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 
 import javax.persistence.*;
@@ -205,6 +206,22 @@ public class Board {
         return column != null && this.columns.remove(column);
     }
 
+
+    /**
+     * Remove a tag from the board by id
+     * @param tag The tag to remove
+     * @return success/failure
+     */
+    public boolean removeTagById(final Tag tag) {
+        if (tag == null) return false;
+        for (final Tag t : this.tags) {
+            if (tag.getId() == t.getId()) {
+                return this.tags.remove(t);
+            }
+        }
+        return false;
+    }
+
     /**
      * Checks for equality between two boards
      *
@@ -240,7 +257,7 @@ public class Board {
      *
      * @return The card with the id {@code cardId} or null if not found
      */
-    public Card getCard(final long cardId) {
+    public Card getCard(final long cardId) throws CardNotFoundException {
         for (final Column column : this.columns) {
             for (final Card card : column.getCards()) {
                 if (card.getId() == cardId) {
@@ -249,7 +266,7 @@ public class Board {
             }
         }
 
-        return null;
+        throw new CardNotFoundException("Card not found");
     }
 
     /**
@@ -301,9 +318,9 @@ public class Board {
      */
     public void updateTag(final Tag tag) {
         for (final Tag t : tags)
-            if (t.getTitle().equals(tag.getTitle())) {
-                tags.remove(t);
-                tags.add(t);
+            if (t.getId() == tag.getId()) {
+                t.setColorScheme(tag.getColorScheme());
+                t.setTitle(tag.getTitle());
                 break;
             }
     }
@@ -313,11 +330,8 @@ public class Board {
      * @param cardId The id of the card to add the tag to
      * @param tag The tag to add to the card
      */
-    public void addTagToCard(final long cardId, final Tag tag) {
+    public void addTagToCard(final long cardId, final Tag tag) throws CardNotFoundException {
         final Card card = this.getCard(cardId);
-        if (card != null) {
-            card.addTag(tag);
-        }
     }
 
     /**
@@ -325,11 +339,8 @@ public class Board {
      * @param cardId The id of the card to remove the tag from
      * @param tag The tag to remove from the card
      */
-    public void removeTagFromCard(final long cardId, final Tag tag) {
+    public void removeTagFromCard(final long cardId, final Tag tag) throws CardNotFoundException {
         final Card card = this.getCard(cardId);
-        if (card != null) {
-            card.removeTag(tag);
-        }
     }
 
     /**

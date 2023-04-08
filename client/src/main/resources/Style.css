@@ -23,9 +23,11 @@ Tags
  */
 
 .tagColorBubble {
-    -fx-border-insets: 12px;
-    -fx-background-insets: 12px;
     -fx-background-color: black; /*Default*/
+    -fx-border-color: black; /*Default*/
+    -fx-border-width: 3px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 8px;
 }
 
 .tagBackground {

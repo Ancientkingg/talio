@@ -1,12 +1,12 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.services.BoardService;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.util.concurrent.Executors;
@@ -18,6 +18,8 @@ public class Modal extends GridPane {
     protected final BoardService boardService;
 
     protected final Scene parentScene;
+
+    private Pane background;
 
     private final EventHandler<MouseEvent> eventFilter;
 
@@ -31,11 +33,9 @@ public class Modal extends GridPane {
         this.boardService = boardService;
         this.parentScene = parentScene;
 
-        this.eventFilter = event -> {
-            if (!inHierarchy(event.getPickResult().getIntersectedNode(), this)) {
-                closeModal();
-            }
-        };
+        setBackgroundPane();
+
+        this.eventFilter = event -> closeModal();
     }
 
     /**
@@ -44,7 +44,7 @@ public class Modal extends GridPane {
     @FXML
     public void initialize() {
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.schedule(() -> parentScene.addEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter), 150, TimeUnit.MILLISECONDS);
+        executorService.schedule(() -> this.background.addEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter), 150, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -52,6 +52,7 @@ public class Modal extends GridPane {
      */
     public void closeModal() {
         ((StackPane) parentScene.getRoot()).getChildren().remove(this);
+        ((StackPane) parentScene.getRoot()).getChildren().remove(background);
         parentScene.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter);
     }
 
@@ -62,24 +63,14 @@ public class Modal extends GridPane {
         ((StackPane) parentScene.getRoot()).getChildren().add(this);
     }
 
-    /**
-     * Checks if node is in the hierarchy of potentialHierarchyElement
-     * @param node node to check
-     * @param potentialHierarchyElement potential hierarchy element
-     * @return true if node is in the hierarchy of potentialHierarchyElement
-     */
-    private boolean inHierarchy(final Node node, final Node potentialHierarchyElement) {
-        if (potentialHierarchyElement == null) {
-            return true;
-        }
-        Node nodeTraverser = node;
-        while (nodeTraverser != null) {
-            if (nodeTraverser == potentialHierarchyElement) {
-                return true;
-            }
-            nodeTraverser = nodeTraverser.getParent();
-        }
-        return false;
+    private void setBackgroundPane() {
+        this.background = new Pane();
+        this.background.setStyle("-fx-background-color: rgba(0, 0, 0, 0.1);");
+        this.background.setPrefSize(10000, 10000);
+        this.background.setMinSize(10000, 10000);
+        this.background.setMaxSize(10000, 10000);
+
+        ((StackPane) parentScene.getRoot()).getChildren().add(background);
     }
 }
 

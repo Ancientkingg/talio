@@ -6,14 +6,11 @@ import commons.Color;
 import commons.ColorScheme;
 import commons.Tag;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
-
-public class OverviewTagComponent extends GridPane {
+public class OverviewTagComponent extends GridPane implements UIComponent {
 
     private final BoardService boardService;
 
@@ -47,15 +44,7 @@ public class OverviewTagComponent extends GridPane {
         this.title = title;
         this.colorScheme = colorScheme;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/OverviewTag.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/OverviewTag.fxml"));
 
         this.initialize();
     }

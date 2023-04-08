@@ -3,15 +3,19 @@ package commons;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private long serializationId;
+
+    @Getter
+    private final long id;
+
     @Getter @Setter
     private String title;
 
@@ -23,7 +27,7 @@ public class Tag {
      * Empty constructor for the Tag object
      */
     protected Tag() {
-
+        this.id = (long) (Math.random() * 1000000000);
     }
 
     /**
@@ -32,6 +36,19 @@ public class Tag {
      * @param hexColor Color of the tag in hex notation
      */
     public Tag(final String title, final ColorScheme hexColor) {
+        this.id = (long) (Math.random() * 1000000000);
+        this.title = title;
+        this.colorScheme = hexColor;
+    }
+
+    /**
+     * Constructor for the Tag object
+     * @param id ID of the tag
+     * @param title Title of the tag
+     * @param hexColor Color of the tag in hex notation
+     */
+    public Tag(final long id, final String title, final ColorScheme hexColor) {
+        this.id = id;
         this.title = title;
         this.colorScheme = hexColor;
     }
@@ -47,7 +64,7 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Tag tag = (Tag) o;
-        return title.equals(tag.title) && colorScheme.equals(tag.colorScheme);
+        return id == tag.id;
     }
 
 
@@ -57,6 +74,6 @@ public class Tag {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(title, colorScheme);
+        return Objects.hash(id);
     }
 }

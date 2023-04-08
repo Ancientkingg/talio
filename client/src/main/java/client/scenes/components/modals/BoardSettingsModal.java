@@ -1,11 +1,11 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
 import client.scenes.OverviewCtrl;
+import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -14,9 +14,8 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 
-public class BoardSettingsModal extends Modal {
+public class BoardSettingsModal extends Modal implements UIComponent {
 
 
     @FXML
@@ -40,15 +39,7 @@ public class BoardSettingsModal extends Modal {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/BoardSettingsModal.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/BoardSettingsModal.fxml"));
     }
 
     /**

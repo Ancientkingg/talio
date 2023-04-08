@@ -3,8 +3,10 @@ package server.api;
 import commons.Board;
 import commons.Tag;
 import commons.DTOs.TagDTO;
+import commons.exceptions.CardNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 
 import javax.validation.Valid;
@@ -43,7 +46,7 @@ public class TagController {
      *
      * @return The tag added to board
      */
-    @PostMapping("/tags/add/{joinKey}/")
+    @PostMapping("/tags/add/{joinKey}")
     public ResponseEntity<Tag> addTag(@Valid @RequestBody final TagDTO tagDTO,
                                        @PathVariable final String joinKey)
     {
@@ -64,7 +67,7 @@ public class TagController {
      *
      * @return The tag removed from board
      */
-    @PostMapping("/tags/remove/{joinKey}/")
+    @PostMapping("/tags/remove/{joinKey}")
     public ResponseEntity<Tag> removeTag(@Valid @RequestBody final TagDTO tagDTO ,
                                          @PathVariable final String joinKey)
     {
@@ -96,7 +99,11 @@ public class TagController {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final Tag tag = tagDTO.getTag();
 
-        board.addTagToCard(cardId, tag);
+        try {
+            board.addTagToCard(cardId, tag);
+        } catch (CardNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id" + cardId + " was not found in the board with join key " + joinKey);
+        }
         boardService.saveBoard(board);
 
         updateTagAddedToCard(tag, cardId, board);
@@ -120,7 +127,11 @@ public class TagController {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final Tag tag = tagDTO.tag();
 
-        board.removeTagFromCard(cardId, tag);
+        try {
+            board.removeTagFromCard(cardId, tag);
+        } catch (CardNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The caed with id" + cardId + " was not found in the board with join key " + joinKey);
+        }
         boardService.saveBoard(board);
 
         updateTagRemovedFromCard(tag, cardId, board);
@@ -134,7 +145,7 @@ public class TagController {
      *
      * @return The tag updated on board
      */
-    @MessageMapping("/tags/edit/{joinKey}/")
+    @MessageMapping("/tags/edit/{joinKey}")
     public Tag editTag(@Valid final TagDTO tagDTO, @DestinationVariable final String joinKey) {
         final String password = tagDTO.password();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);

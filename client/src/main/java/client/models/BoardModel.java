@@ -4,6 +4,8 @@ import client.exceptions.BoardChangeException;
 import commons.Board;
 import commons.Card;
 import commons.Column;
+import commons.Tag;
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,6 +55,18 @@ public class BoardModel {
     public void removeCard(final Card card, final Column col) throws BoardChangeException {
         if (!col.removeCard(card)) {
             throw new BoardChangeException("Failed to remove card : " + card);
+        }
+    }
+
+    /**
+     * Removes tag from a board
+     * @param tag Tag to be removed
+     * @param board Board to be removed from
+     * @throws BoardChangeException if tag is not removed
+     */
+    public void removeTag(final Tag tag, final Board board) throws BoardChangeException {
+        if (!board.removeTagById(tag)) {
+            throw new BoardChangeException("Failed to remove tag : " + tag);
         }
     }
 
@@ -111,7 +125,10 @@ public class BoardModel {
         }
         catch (ColumnNotFoundException e) {
             throw new BoardChangeException(e.getMessage());
+        } catch (CardNotFoundException e) {
+            throw new BoardChangeException(e.getMessage());
         }
+        //TODO: add InfoModals for errors
     }
 
 

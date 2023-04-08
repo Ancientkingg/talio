@@ -1,16 +1,14 @@
-package client.scenes.components;
+package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-
-public class InfoModal extends Modal {
+public class InfoModal extends Modal implements UIComponent {
 
     @FXML
     private Text titleText;
@@ -38,15 +36,7 @@ public class InfoModal extends Modal {
         this.title = title;
         this.description = description;
 
-        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/InfoModal.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSource(Main.class.getResource("/components/InfoModal.fxml"));
 
         try {
             titleText.textProperty().set(title);

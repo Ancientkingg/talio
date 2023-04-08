@@ -2,9 +2,13 @@ package client.scenes;
 
 import client.Main;
 import client.scenes.components.*;
+import client.scenes.components.modals.AppSettingsModal;
+import client.scenes.components.modals.JoinBoardModal;
 import client.services.BoardService;
 import commons.Board;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -19,7 +23,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
 
-public class HomePageCtrl {
+public class HomePageCtrl implements LiveUIController {
 
     @Getter
     private final MainCtrl mainCtrl;
@@ -27,6 +31,7 @@ public class HomePageCtrl {
     private final BoardService boardService;
 
     @FXML
+    @Getter
     private FlowPane innerBoardCardList;
 
     @FXML
@@ -41,10 +46,10 @@ public class HomePageCtrl {
     private int lastRowSize;
 
 
-
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
-     * @param mainCtrl Shared instance of MainCtrl
+     *
+     * @param mainCtrl     Shared instance of MainCtrl
      * @param boardService Shared instance of BoardService
      */
     @Inject
@@ -59,6 +64,17 @@ public class HomePageCtrl {
     @FXML
     public void initialize() {
         this.addResizeListener();
+
+        final Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(5)),
+                new KeyFrame(Duration.seconds(5), event -> {
+                    boardService.checkBoardsValidity();
+                    renderBoards();
+                })
+
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     /**
@@ -79,6 +95,7 @@ public class HomePageCtrl {
 
     /**
      * Loads the board and shows the overview
+     *
      * @param board The board to load
      */
     public void loadBoard(final Board board) {
@@ -91,6 +108,7 @@ public class HomePageCtrl {
 
     /**
      * Removes the board from the list of boards
+     *
      * @param board The board to remove
      */
     public void removeBoard(final Board board) {
@@ -98,7 +116,7 @@ public class HomePageCtrl {
 
         final Tooltip customTooltip = new Tooltip("Left board!");
         customTooltip.setAutoHide(false);
-        customTooltip.show(mainCtrl.getCurrentScene().getRoot(),p.getX(),p.getY());
+        customTooltip.show(mainCtrl.getCurrentScene().getRoot(), p.getX(), p.getY());
 
         final PauseTransition pt = new PauseTransition(Duration.millis(750));
         pt.setOnFinished(e -> {
@@ -121,6 +139,7 @@ public class HomePageCtrl {
 
     /**
      * Deletes the board from the list of boards (server-side as well)
+     *
      * @param board The board to delete
      */
     public void deleteBoard(final Board board) {
@@ -128,7 +147,7 @@ public class HomePageCtrl {
 
         final Tooltip customTooltip = new Tooltip("Deleted board!");
         customTooltip.setAutoHide(false);
-        customTooltip.show(mainCtrl.getCurrentScene().getRoot(),p.getX(),p.getY());
+        customTooltip.show(mainCtrl.getCurrentScene().getRoot(), p.getX(), p.getY());
 
         final PauseTransition pt = new PauseTransition(Duration.millis(800));
         pt.setOnFinished(e -> {
@@ -234,7 +253,9 @@ public class HomePageCtrl {
 
     /**
      * Verifies admin password given by user
+     *
      * @param adminPassword Password entered by user
+     *
      * @return correct/incorrect
      */
     public boolean verifyAdminPassword(final String adminPassword) {

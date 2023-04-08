@@ -4,11 +4,9 @@ import client.exceptions.BoardChangeException;
 import client.exceptions.ServerException;
 import client.models.BoardModel;
 import client.scenes.MainCtrl;
-import client.scenes.components.InfoModal;
-import commons.Board;
-import commons.Card;
-import commons.Column;
-import commons.Tag;
+import client.scenes.components.modals.InfoModal;
+import commons.*;
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 
 import javax.inject.Inject;
@@ -22,6 +20,7 @@ import java.util.stream.Collectors;
 public class BoardService {
     private BoardModel boardModel;
     private final ServerService serverService;
+
     private final MainCtrl mainCtrl;
 
     /**
@@ -39,9 +38,10 @@ public class BoardService {
 
     /**
      * Constructs a board service
-     * @param boardModel the injected board model
+     *
+     * @param boardModel    the injected board model
      * @param serverService the injected server service
-     * @param mainCtrl the injected mainCtrl
+     * @param mainCtrl      the injected mainCtrl
      */
     public BoardService(final BoardModel boardModel, final ServerService serverService, final MainCtrl mainCtrl) {
         this.boardModel = boardModel;
@@ -52,6 +52,7 @@ public class BoardService {
 
     /**
      * Connects to the server
+     *
      * @param serverIP the ip of the server to connect to
      */
     public void connect(final String serverIP) {
@@ -73,6 +74,7 @@ public class BoardService {
      */
     private void startSocket() {
         serverService.startSocket(this);
+        serverService.checkConnection();
     }
 
     /**
@@ -84,6 +86,7 @@ public class BoardService {
 
     /**
      * Sets the IP of the server to interact with
+     *
      * @param ip the ip of the server
      */
     public void setServerIP(final String ip) {
@@ -95,6 +98,7 @@ public class BoardService {
 
     /**
      * gets the server IP from server service
+     *
      * @return current server IP address
      */
     public URI getServerIP() {
@@ -103,8 +107,11 @@ public class BoardService {
 
     /**
      * Adds a new board
+     *
      * @param board the board to add
+     *
      * @return the board returned by the server
+     *
      * @throws BoardChangeException if the board cannot be added
      */
     public Board addBoard(final Board board) {
@@ -112,8 +119,7 @@ public class BoardService {
             final Board serverBoard = serverService.addBoard(board);
             boardModel.addBoard(serverBoard);
             return serverBoard;
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this,
                     "Server Exception", "The Board couldn't be added to the Server: " + serverService.getServerIP()
                     , mainCtrl.getCurrentScene());
@@ -124,6 +130,7 @@ public class BoardService {
 
     /**
      * Returns all boards on the client
+     *
      * @return the boards present on the client
      */
     public List<Board> getAllBoards() {
@@ -132,14 +139,15 @@ public class BoardService {
 
     /**
      * Fetches a board by join-key
+     *
      * @param joinKey the join-key used to identify the board
+     *
      * @return the board that was retrieved
      */
     public Board fetchBoard(final String joinKey) {
         try {
             return serverService.getBoard(joinKey);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this,
                     "Server Exception", "The Board couldn't be retrieved from the Server: " + serverService.getServerIP()
                     , mainCtrl.getCurrentScene());
@@ -150,14 +158,15 @@ public class BoardService {
 
     /**
      * Fetches all boards
+     *
      * @param joinKeys the join-keys used to identify the boards
+     *
      * @return the boards that were retrieved
      */
     public List<Board> fetchAllBoards(final List<String> joinKeys) {
         try {
             return serverService.getAllBoards(joinKeys);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this,
                     "Server Exception", "The Boards couldn't be retrieved from the Server: " + serverService.getServerIP()
                     , mainCtrl.getCurrentScene());
@@ -168,6 +177,7 @@ public class BoardService {
 
     /**
      * Sets the current board
+     *
      * @param board the board to set as current
      */
     public void setCurrentBoard(final Board board) {
@@ -176,6 +186,7 @@ public class BoardService {
 
     /**
      * Gets the current board
+     *
      * @return the current board
      */
     public Board getCurrentBoard() {
@@ -184,14 +195,15 @@ public class BoardService {
 
     /**
      * Adds a column to the currently selected board (client initiated)
+     *
      * @param column the column to add
+     *
      * @throws BoardChangeException if the column cannot be added
      */
     public void addColumnToCurrentBoard(final Column column) {
         try {
             serverService.addColumn(this.boardModel.getCurrentBoard(), column);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be added to the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
@@ -200,7 +212,9 @@ public class BoardService {
 
     /**
      * Adds a column to the currently selected board (server initiated)
+     *
      * @param column the column to add
+     *
      * @throws BoardChangeException if the column cannot be added
      */
     public void updateAddColumnToCurrentBoard(final Column column) throws BoardChangeException {
@@ -210,14 +224,15 @@ public class BoardService {
 
     /**
      * Removes a column from the currently selected board (client initiated)
+     *
      * @param column the column to remove
+     *
      * @throws BoardChangeException if the column cannot be removed
      */
     public void removeColumnFromCurrentBoard(final Column column) {
         try {
             serverService.removeColumn(this.boardModel.getCurrentBoard(), column);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be removed from the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
@@ -226,7 +241,9 @@ public class BoardService {
 
     /**
      * Removes a column from the currently selected board (client initiated)
+     *
      * @param id Long id of the column to remove
+     *
      * @throws BoardChangeException if the column cannot be removed
      */
     public void updateRemoveColumnFromCurrentBoard(final Long id) throws BoardChangeException, ColumnNotFoundException {
@@ -237,15 +254,16 @@ public class BoardService {
 
     /**
      * Adds a card to the specified column of the currently selected board (client initiated)
-     * @param card the card to add
+     *
+     * @param card   the card to add
      * @param column the column to add the card to
+     *
      * @throws BoardChangeException if the card could not be added
      */
     public void addCardToColumn(final Card card, final Column column) {
         try {
             serverService.addCard(this.boardModel.getCurrentBoard(), column, card);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be added to the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
@@ -255,8 +273,10 @@ public class BoardService {
 
     /**
      * Adds a card to the specified column of the currently selected board (server initiated)
-     * @param card the card to add
+     *
+     * @param card   the card to add
      * @param column the column to add the card to
+     *
      * @throws BoardChangeException if the card could not be added
      */
     public void updateAddCardToColumn(final Card card, final Column column) throws BoardChangeException {
@@ -266,15 +286,16 @@ public class BoardService {
 
     /**
      * Removes a card from the specified column of the currently selected board (client initiated)
-     * @param card the card to remove
+     *
+     * @param card   the card to remove
      * @param column the column to remove the card from
+     *
      * @throws BoardChangeException if the card could not be removed
      */
     public void removeCardFromColumn(final Card card, final Column column) {
         try {
             serverService.removeCard(this.boardModel.getCurrentBoard(), column, card);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be removed from the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
@@ -283,8 +304,10 @@ public class BoardService {
 
     /**
      * Removes a card from the specified column of the currently selected board (server initiated)
-     * @param card the card to remove
+     *
+     * @param card   the card to remove
      * @param column the column to remove the card from
+     *
      * @throws BoardChangeException if the card could not be removed
      */
     public void updateRemoveCardFromColumn(final Card card, final Column column) throws BoardChangeException {
@@ -294,19 +317,24 @@ public class BoardService {
 
     /**
      * Moves a card from one column to another (client initiated)
-     * @param cardIdx the index of the card to move
+     *
+     * @param cardIdx       the index of the card to move
      * @param columnFromIdx the index of the column to move the card from
-     * @param columnToIdx the index of the column to move the card to
-     * @param priority the priority of the card in the new column
+     * @param columnToIdx   the index of the column to move the card to
+     * @param priority      the priority of the card in the new column
      */
     public void repositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) {
         try {
             final Board board = this.boardModel.getCurrentBoard();
             serverService.repositionCard(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception",
                     "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        } catch (CardNotFoundException e) {
+            final InfoModal errorModal = new InfoModal(this, "Card Not Found",
+                    "The card you are trying to reposition could not be found on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
@@ -314,10 +342,11 @@ public class BoardService {
 
     /**
      * Moves a card from one column to another (server initiated)
-     * @param cardIdx the index of the card to move
+     *
+     * @param cardIdx       the index of the card to move
      * @param columnFromIdx the index of the column to move the card from
-     * @param columnToIdx the index of the column to move the card to
-     * @param priority the priority of the card in the new column
+     * @param columnToIdx   the index of the column to move the card to
+     * @param priority      the priority of the card in the new column
      */
     public void updateRepositionCard(final long cardIdx, final long columnFromIdx, final long columnToIdx, final int priority) throws BoardChangeException {
         boardModel.moveCard(cardIdx, columnFromIdx, columnToIdx, priority);
@@ -326,6 +355,7 @@ public class BoardService {
 
     /**
      * Updates a column
+     *
      * @param column the column to update
      */
     public void updateColumn(final Column column) throws ColumnNotFoundException {
@@ -334,14 +364,14 @@ public class BoardService {
 
     /**
      * Renames column to new name (client initiated)
-     * @param column Column to rename
+     *
+     * @param column  Column to rename
      * @param newName String new name
      */
     public void renameColumn(final Column column, final String newName) {
         try {
             serverService.renameColumn(getCurrentBoard(), column, newName);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The column couldn't be renamed on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
@@ -350,7 +380,8 @@ public class BoardService {
 
     /**
      * Renames column to new name (server initiated)
-     * @param column Column to rename
+     *
+     * @param column  Column to rename
      * @param newName String new name
      */
     public void updateRenameColumn(final Column column, final String newName) {
@@ -359,54 +390,85 @@ public class BoardService {
     }
 
     /**
-     * Adds tag to board (client initiated)
+     * Adds tag to current board (client initiated)
      * @param tag Tag to add
      */
-    public void addTagToBoard(final Tag tag) {
-        final Tag addedTag = serverService.addTagToBoard(getCurrentBoard(), tag);
-        // Update the boardModel with addedTag here
+    public void addTagToCurrentBoard(final Tag tag) {
+        try {
+            serverService.addTagToBoard(getCurrentBoard(), tag);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Adds tag to board (server initiated)
+     *
      * @param tag Tag to add
      */
-    public void updateAddTagToBoard(final Tag tag) { }
+    public void updateAddTagToBoard(final Tag tag) {
+        boardModel.getCurrentBoard().addTag(tag);
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+    }
 
     /**
      * Removes tag from board (client initiated)
+     *
      * @param tag Tag to remove
      */
     public void removeTagFromBoard(final Tag tag) {
-        final Tag removedTag = serverService.removeTagFromBoard(getCurrentBoard(), tag);
-        // Update the boardModel with deletedTag here
+        try {
+            serverService.removeTagFromBoard(getCurrentBoard(), tag);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be removed from the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
      * Removes tag from board (server initiated)
+     *
      * @param tag Tag to remove
      */
-    public void updateRemoveTagFromBoard(final Tag tag) { }
+    public void updateRemoveTagFromBoard(final Tag tag) {
+        boardModel.removeTag(tag, getCurrentBoard());
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+    }
 
     /**
      * Edits tag in board (client initiated)
+     *
      * @param tag Tag to edit
      */
     public void editTag(final Tag tag) {
-        serverService.editTag(getCurrentBoard(), tag);
-        // Update the boardModel with editedTag here
+        try {
+            serverService.editTag(getCurrentBoard(), tag);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be edited on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Edits tag in board (server initiated)
+     *
      * @param tag Tag to edit
      */
-    public void updateEditTag(final Tag tag) { }
+    public void updateEditTag(final Tag tag) {
+        boardModel.getCurrentBoard().updateTag(tag);
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+    }
 
     /**
      * Adds tag to card (client initiated)
+     *
      * @param card Card added to
-     * @param tag Tag to add
+     * @param tag  Tag to add
      */
     public void addTagToCard(final Card card, final Tag tag) {
         final Tag addedTag = serverService.addTagToCard(getCurrentBoard(), card, tag);
@@ -415,15 +477,18 @@ public class BoardService {
 
     /**
      * Adds tag to card (server initiated)
+     *
      * @param card Card added to
-     * @param tag Tag to add
+     * @param tag  Tag to add
      */
-    public void updateAddTagToCard(final Card card, final Tag tag) { }
+    public void updateAddTagToCard(final Card card, final Tag tag) {
+    }
 
     /**
      * Removes tag from card (client initiated)
+     *
      * @param card Card removed from
-     * @param tag Tag to remove
+     * @param tag  Tag to remove
      */
     public void removeTagFromCard(final Card card, final Tag tag) {
         final Tag removedTag = serverService.removeTagFromCard(getCurrentBoard(), card, tag);
@@ -432,10 +497,12 @@ public class BoardService {
 
     /**
      * Removes tag from card (client initiated)
+     *
      * @param card Card removed from
-     * @param tag Tag to remove
+     * @param tag  Tag to remove
      */
-    public void updateRemoveTagFromCard(final Card card, final Tag tag) { }
+    public void updateRemoveTagFromCard(final Card card, final Tag tag) {
+    }
 
     /**
      * Saves joined or created boards to local storage
@@ -465,6 +532,7 @@ public class BoardService {
 
     /**
      * Loads boards for the current server from local storage
+     *
      * @return the list of boards for the current server
      */
     public List<Board> loadBoardsForCurrentServer() {
@@ -488,6 +556,7 @@ public class BoardService {
 
     /**
      * Loads all join keys from local storage
+     *
      * @return a map of server URIs to lists of join keys
      */
     public Map<URI, List<String>> loadAllJoinKeysLocal() {
@@ -512,6 +581,7 @@ public class BoardService {
 
     /**
      * Rename board function for local changes
+     *
      * @param newName String new board name
      */
     public void renameBoard(final String newName) {
@@ -521,6 +591,7 @@ public class BoardService {
 
     /**
      * Rename board function for server changes
+     *
      * @param newName String new board name
      */
     public void updateRenameBoard(final String newName) {
@@ -531,14 +602,14 @@ public class BoardService {
     /**
      * Currently not functional, but connects to socket.
      * Changes card title, description, and tags (client initiated)
-     * @param card Card to edit
+     *
+     * @param card   Card to edit
      * @param column Column that card is in
      */
     public void editCard(final Card card, final Column column) {
         try {
             serverService.editCard(getCurrentBoard(), card, column);
-        }
-        catch (ServerException e) {
+        } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The card couldn't be edited on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
@@ -548,7 +619,8 @@ public class BoardService {
     /**
      * Currently not functional, but connects to socket.
      * Changes card title, description, and tags (server initiated)
-     * @param card Card to edit
+     *
+     * @param card   Card to edit
      * @param column Column that card is in
      */
     public void updateEditCard(final Card card, final Column column) {
@@ -557,6 +629,7 @@ public class BoardService {
 
     /**
      * Subscribes to loaded board
+     *
      * @param joinKey String key to board
      */
     public void subscribeToBoard(final String joinKey) {
@@ -565,6 +638,7 @@ public class BoardService {
 
     /**
      * This is used to assign a newly created column its index value
+     *
      * @return int index
      */
     public int getHighestIndex() {
@@ -573,7 +647,9 @@ public class BoardService {
 
     /**
      * Removes a board from the client side
+     *
      * @param board Board to remove
+     *
      * @return true if board was removed
      */
     public boolean removeBoard(final Board board) {
@@ -582,7 +658,9 @@ public class BoardService {
 
     /**
      * Deletes a board from the server and client side
+     *
      * @param board Board to delete
+     *
      * @return true if board was deleted
      */
     public boolean deleteBoard(final Board board) {
@@ -592,7 +670,9 @@ public class BoardService {
 
     /**
      * Verifies password provided by user for switching to admin mode
+     *
      * @param adminPassword Password provided by user
+     *
      * @return correct/incorrect
      */
     public boolean verifyAdminPassword(final String adminPassword) {
@@ -601,6 +681,7 @@ public class BoardService {
 
     /**
      * Gets all Boards in the database from the server
+     *
      * @return List of all Boards
      */
     public List<Board> adminGetAllBoards() {
@@ -620,5 +701,103 @@ public class BoardService {
      */
     public void removeAllBoards() {
         this.boardModel.getBoardList().clear();
+    }
+
+    /**
+     * Checks if the boards are still valid
+     */
+    public void checkBoardsValidity() {
+        final List<String> validBoards = serverService.getBoardsStatus(
+                this.boardModel.getBoardList()
+                        .stream()
+                        .map(Board::getJoinKey)
+                        .toList());
+
+        this.boardModel.setBoardList(
+                this.boardModel.getBoardList()
+                        .stream()
+                        .filter(board -> validBoards.contains(board.getJoinKey()))
+                        .collect(Collectors.toList())
+        );
+        this.saveBoardsLocal();
+    }
+
+    /**
+     * adds subtask to card (client initiated)
+     * @param card card to which subtask is to be added
+     * @param description description of subtask to be added
+     */
+    public void addSubTask(final Card card, final String description) {
+        // TODO update boardModel to show changes
+        serverService.addSubTask(this.boardModel.getCurrentBoard(), card, description);
+    }
+
+    /**
+     * removes subtask from card (client initiated)
+     * @param card card from which subtask is to be removed
+     * @param subTask subtask to remove
+     */
+    public void removeSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+        serverService.removeSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+    }
+
+    /**
+     * toggles done/not done of subtask in card (server initiated)
+     * @param card card whose subtask is to be toggled
+     * @param subTask subtask to toggle
+     */
+    public void toggleSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+        serverService.toggleSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+    }
+
+    /**
+     * moves a subtask within a card
+     * @param card containing the subtask
+     * @param subTask to be moved
+     * @param index new index of subtask
+     */
+    public void moveSubCard(final Card card, final SubTask subTask, final int index) {
+        // TODO update boardModel
+        serverService.moveSubTask(this.boardModel.getCurrentBoard(), card, subTask, index);
+    }
+
+
+    /**
+     * adds subtask to card (server initiated)
+     * @param card card to which subtask is to be added
+     * @param subTask subtask to add
+     */
+    public void updateAddSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+    }
+
+    /**
+     * removes subtask from card (server initiated)
+     * @param card card from which subtask is to be removed
+     * @param subTask subtask to remove
+     */
+    public void updateRemoveSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+    }
+
+    /**
+     * toggles done/not done of subtask in card (server initiated)
+     * @param card card whose subtask is to be toggled
+     * @param subTask subtask to toggle
+     */
+    public void updateToggleSubTask(final Card card, final SubTask subTask) {
+        // TODO update boardModel to show changes
+    }
+
+    /**
+     * moves a subtask within a card
+     * @param card containing the subtask
+     * @param subTask to be moved
+     * @param index new index of subtask
+     */
+    public void updateMoveSubTask(final Card card, final SubTask subTask, final int index) {
+        // TODO update boardModel
     }
 }
