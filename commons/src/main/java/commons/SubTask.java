@@ -8,12 +8,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class SubTask {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private long serializationId;
+
     @Getter
     private long id;
 
@@ -27,10 +31,13 @@ public class SubTask {
      * Constructor for SubTask
      * @param description description of the SubTask
      * @param isDone whether the task is done or not
+     *
+     * id set to a randomly generated id
      */
     public SubTask(final String description, final boolean isDone) {
         this.description = description;
         this.isDone = isDone;
+        this.id = generateId();
     }
 
     /**
@@ -38,6 +45,15 @@ public class SubTask {
      */
     public SubTask() {
 
+    }
+
+    /**
+     * Generates a unique id for the subtask
+     * @return generated id
+     */
+    public long generateId() {
+        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        return this.id;
     }
 
     /**
