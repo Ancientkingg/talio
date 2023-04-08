@@ -68,8 +68,8 @@ public class HomePageCtrl implements Refreshable {
         final Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(5)),
                 new KeyFrame(Duration.seconds(5), event -> {
-//                    boardService.checkBoardsValidity();
-//                    renderBoards();
+                    boardService.checkBoardsValidity();
+                    renderBoards();
                 })
 
         );
