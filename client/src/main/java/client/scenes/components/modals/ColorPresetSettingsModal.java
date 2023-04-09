@@ -1,7 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import commons.ColorScheme;
@@ -22,7 +22,7 @@ public class ColorPresetSettingsModal extends Modal implements UIComponent {
     @FXML
     private ColorPicker secondaryColor;
 
-    private final LiveUIController parentCtrl;
+    private final Refreshable parentCtrl;
 
     private final ColorScheme colorPreset;
 
@@ -33,7 +33,7 @@ public class ColorPresetSettingsModal extends Modal implements UIComponent {
      * @param parentCtrl parent controller
      * @param colorPreset color preset to edit
      */
-    public ColorPresetSettingsModal(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl,
+    public ColorPresetSettingsModal(final BoardService boardService, final Scene parentScene, final Refreshable parentCtrl,
                                     final ColorScheme colorPreset)
     {
         super(boardService, parentScene);

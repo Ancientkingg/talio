@@ -187,7 +187,7 @@ public class MainCtrl {
      * Gets the color presets overview modal
      * @return the color presets overview modal
      */
-    public LiveUIController getColorPresetsOverviewModal() {
+    public Refreshable getColorPresetsOverviewModal() {
         return colorPresetsOverviewModal;
     }
 
@@ -195,7 +195,7 @@ public class MainCtrl {
      * Gets the board settings modal
      * @return the board settings modal
      */
-    public LiveUIController getBoardSettingsModal() {
+    public Refreshable getBoardSettingsModal() {
         return boardSettingsModal;
     }
 }

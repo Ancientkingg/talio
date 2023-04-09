@@ -1,7 +1,7 @@
 package client.scenes.components;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.scenes.components.modals.ColorPresetSettingsModal;
 import client.services.BoardService;
 import commons.ColorScheme;
@@ -22,7 +22,7 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
 
     private final Scene parentScene;
 
-    private final LiveUIController parentCtrl;
+    private final Refreshable parentCtrl;
 
     @FXML
     private Text tagTitle;
@@ -39,7 +39,7 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
      * @param parentCtrl parent controller
      * @param colorPreset color preset
      */
-    public ColorPresetComponent(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl, final ColorScheme colorPreset) {
+    public ColorPresetComponent(final BoardService boardService, final Scene parentScene, final Refreshable parentCtrl, final ColorScheme colorPreset) {
         this.boardService = boardService;
         this.parentScene = parentScene;
         this.parentCtrl = parentCtrl;

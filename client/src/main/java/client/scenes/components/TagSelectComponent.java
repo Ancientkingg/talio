@@ -1,7 +1,7 @@
 package client.scenes.components;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.services.BoardService;
 import commons.Color;
 import commons.ColorScheme;
@@ -25,7 +25,7 @@ public class TagSelectComponent extends GridPane implements UIComponent {
 
     private final Scene parentScene;
 
-    private final LiveUIController parentCtrl;
+    private final Refreshable parentCtrl;
 
     @FXML
     private Text tagTitle;
@@ -45,7 +45,7 @@ public class TagSelectComponent extends GridPane implements UIComponent {
      * @param parentCtrl parent controller
      * @param tag tag to be displayed
      */
-    public TagSelectComponent(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl, final Tag tag) {
+    public TagSelectComponent(final BoardService boardService, final Scene parentScene, final Refreshable parentCtrl, final Tag tag) {
         this.boardService = boardService;
         this.parentScene = parentScene;
         this.parentCtrl = parentCtrl;

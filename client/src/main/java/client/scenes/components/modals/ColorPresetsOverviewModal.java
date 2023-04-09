@@ -1,7 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.scenes.components.ColorPresetComponent;
 import client.scenes.components.UIComponent;
 import client.services.BoardService;
@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public class ColorPresetsOverviewModal extends Modal implements UIComponent, LiveUIController {
+public class ColorPresetsOverviewModal extends Modal implements UIComponent, Refreshable {
 
 
     @FXML

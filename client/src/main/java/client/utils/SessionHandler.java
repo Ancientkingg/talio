@@ -82,6 +82,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         subscribeToCardExistenceUpdates(joinKey);
 
         subscribeToColorPresetUpdates(joinKey);
+        subscribeToDefaultColorPresetUpdates(joinKey);
 
         subscribeToTagCardUpdates(joinKey);
         subscribeToTagBoardUpdates(joinKey);
@@ -279,50 +280,6 @@ public class SessionHandler extends StompSessionHandlerAdapter {
     }
 
     private void subscribeToColorPresetUpdates(final String joinKey) {
-        final Subscription colorPresetRemovedFromBoard = session.subscribe(
-                "/topic/color-presets/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
-                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
-
-                    public void handleFrame(final StompHeaders headers, final Object payload) {
-                        Platform.runLater(() -> {
-                            try {
-                                boardService.updateRemoveColorPresetFromBoard((ColorScheme) payload);
-                                logger.info("Color preset removed from board");
-                            } catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        }); }
-                });
-        subscriptions.add(colorPresetRemovedFromBoard);
-
-        final Subscription colorPresetAddedToBoard = session.subscribe(
-                "/topic/color-presets/" + joinKey + "/add", new StompSessionHandlerAdapter() {
-                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
-
-                    public void handleFrame(final StompHeaders headers, final Object payload) {
-                        Platform.runLater(() -> {
-                            try {
-                                boardService.updateAddColorPresetToBoard((ColorScheme) payload);
-                                logger.info("Color preset added to board");
-                            }
-                            catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        }); }
-                });
-        subscriptions.add(colorPresetAddedToBoard);
-
-        final Subscription colorPresetEdited = session.subscribe(
-                "/topic/color-presets/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
-                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
-
-                    public void handleFrame(final StompHeaders headers, final Object payload) {
-                        Platform.runLater(() -> {
-                            try {
-                                boardService.updateEditColorPreset((ColorScheme) payload);
-                                logger.info("Color preset edited");
-                            }
-                            catch (BoardChangeException e) { throw new RuntimeException(e); }
-                        }); }
-                });
-        subscriptions.add(colorPresetEdited);
-
         final Subscription defaultColorPresetBoard = session.subscribe(
                 "/topic/color-presets/" + joinKey + "/set-board", new StompSessionHandlerAdapter() {
                     public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
@@ -367,6 +324,54 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                         }); }
                 });
         subscriptions.add(defaultColorPresetCard);
+    }
+
+    private void subscribeToDefaultColorPresetUpdates(final String joinKey) {
+        final Subscription colorPresetRemovedFromBoard = session.subscribe(
+                "/topic/color-presets/" + joinKey + "/remove", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            try {
+                                boardService.updateRemoveColorPresetFromBoard((ColorScheme) payload);
+                                logger.info("Color preset removed from board");
+                            } catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        }); }
+                });
+        subscriptions.add(colorPresetRemovedFromBoard);
+
+        final Subscription colorPresetAddedToBoard = session.subscribe(
+                "/topic/color-presets/" + joinKey + "/add", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            try {
+                                boardService.updateAddColorPresetToBoard((ColorScheme) payload);
+                                logger.info("Color preset added to board");
+                            }
+                            catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        }); }
+                });
+        subscriptions.add(colorPresetAddedToBoard);
+
+        final Subscription colorPresetEdited = session.subscribe(
+                "/topic/color-presets/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            try {
+                                boardService.updateEditColorPreset((ColorScheme) payload);
+                                logger.info("Color preset edited");
+                            }
+                            catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        }); }
+                });
+        subscriptions.add(colorPresetEdited);
+
+
     }
 
     private void subscribeToTagCardUpdates(final String joinKey) {

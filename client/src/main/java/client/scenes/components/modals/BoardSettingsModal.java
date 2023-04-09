@@ -1,7 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.scenes.OverviewCtrl;
 import client.scenes.components.UIComponent;
 import client.services.BoardService;
@@ -19,7 +19,7 @@ import javafx.util.Duration;
 
 import java.awt.datatransfer.StringSelection;
 
-public class BoardSettingsModal extends Modal implements UIComponent, LiveUIController {
+public class BoardSettingsModal extends Modal implements UIComponent, Refreshable {
 
 
     @FXML
