@@ -800,4 +800,13 @@ public class BoardService {
     public void updateMoveSubTask(final Card card, final SubTask subTask, final int index) {
         // TODO update boardModel
     }
+
+    public void editColorPreset(ColorScheme colorPreset) {
+    }
+
+    public void removeColorPresetFromBoard(ColorScheme colorPreset) {
+    }
+
+    public void addColorPresetToCurrentBoard(ColorScheme colorPreset) {
+    }
 }

@@ -24,9 +24,9 @@
           <children>
             <GridPane styleClass="toolbar" stylesheets="@Style.css">
                <columnConstraints>
-                  <ColumnConstraints hgrow="NEVER" minWidth="220.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="260.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="220.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="260.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="600.0" minHeight="-Infinity" prefHeight="64.0" valignment="CENTER" vgrow="NEVER" />
@@ -59,7 +59,7 @@
                   </Button>
                   <Button fx:id="tagsButton" alignment="BOTTOM_CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#onTagsButtonClick" styleClass="tags-button" stylesheets="@Style.css" text="TAGS" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                      <GridPane.margin>
-                        <Insets right="20.0" />
+                        <Insets left="40.0" />
                      </GridPane.margin>
                      <padding>
                         <Insets bottom="4.0" left="13.0" right="13.0" top="6.0" />
@@ -71,6 +71,14 @@
                      </graphic>
                      <GridPane.margin>
                         <Insets left="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="colorsButton" alignment="BOTTOM_CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#onColorsButtonClick" styleClass="tags-button" stylesheets="@Style.css" text="COLORS" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                     <padding>
+                        <Insets bottom="4.0" left="13.0" right="13.0" top="6.0" />
+                     </padding>
+                     <GridPane.margin>
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                </children>

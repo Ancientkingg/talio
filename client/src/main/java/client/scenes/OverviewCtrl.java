@@ -154,6 +154,11 @@ public class OverviewCtrl implements LiveUIController {
         modal.showModal();
     }
 
+    @FXML
+    public void onColorsButtonClick() {
+
+    }
+
 
     /**
      * Handles the link button click
