@@ -4,6 +4,7 @@ import commons.Board;
 import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
+import commons.Tag;
 import commons.exceptions.ColumnNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,10 +14,16 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
+
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 //@RequestMapping("/cards")
@@ -168,18 +175,25 @@ public class CardController {
         try {
             final String password = cardDTO.getPassword();
 
-            final Board board =  boardService.getBoardWithKeyAndPassword(joinKey, password);
+            final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
-            final Card card = cardDTO.getCard();
+            final Card clientCard = cardDTO.getCard();
             final Column column = board.getColumnById(columnId);
 
-            column.updateCard(card);
+            final Set<Tag> clientTags = clientCard.getTags();
+            final Set<Tag> dbTags = board.getTags();
+
+            final Set<Tag> tagsToBeAdded = dbTags.stream().filter(clientTags::contains).collect(Collectors.toCollection(HashSet::new));
+
+            clientCard.setTags(tagsToBeAdded);
+
+            column.updateCard(clientCard);
 
             boardService.saveBoard(board);
 
-            updateCardEdited(joinKey, columnId, card);
+            updateCardEdited(joinKey, columnId, clientCard);
 
-            return card;
+            return clientCard;
         }
         catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
@@ -209,7 +223,7 @@ public class CardController {
      */
     public void updateCardEdited(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card edited for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit/", new CardDTO(card, columnId));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit", new CardDTO(card, columnId));
     }
 
     /**

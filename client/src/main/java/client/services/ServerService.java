@@ -419,6 +419,24 @@ public class ServerService {
     }
 
     /**
+     * Renames board by posting a request to renameColumn endpoint on server
+     * @param board Board for join key
+     * @param newName New name of board
+     */
+    public void renameBoard(final Board board, final String newName) {
+        try {
+            session.send("/app/boards/rename/" +
+                            board.getJoinKey() + "/" +
+                            newName,
+                    board.getPassword());
+            logger.info("Renamed board sent to server");
+        }
+        catch (RuntimeException e) {
+            throw new ServerException("The Board couldn't be renamed on the Server: \n" + getServerIP());
+        }
+    }
+
+    /**
      * Verifies password provided by user for switching to admin mode
      * @param adminPassword Password provided by user
      * @return correct/incorrect

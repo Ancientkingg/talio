@@ -2,14 +2,16 @@ package commons;
 
 import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
+
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Board {
@@ -398,5 +400,22 @@ public class Board {
      */
     public boolean deleteColorPreset(final ColorScheme colorScheme) {
         return this.colorPresets.remove(colorScheme);
+    }
+
+    /**
+     * updates all the contents of a card
+     * @param card to be updated
+     * @throws CardNotFoundException if card is not found
+     */
+    public void updateCard(final Card card) throws CardNotFoundException {
+        final Card currentCard = getCard(card.getId());
+
+        currentCard.setPriority(card.getPriority());
+        currentCard.setDescription(card.getDescription());
+        currentCard.setTitle(card.getTitle());
+        currentCard.setColorScheme(card.getColorScheme());
+        currentCard.setTags(card.getTags());
+        currentCard.setIsDefaultThemed(card.getIsDefaultThemed());
+        currentCard.setSubtasks(card.getSubtasks());
     }
 }
