@@ -74,7 +74,7 @@ public class HomePageCtrl implements Refreshable {
 
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
-//        timeline.play();
+        timeline.play();
     }
 
     /**
