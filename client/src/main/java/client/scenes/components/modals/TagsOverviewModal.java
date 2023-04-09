@@ -22,9 +22,6 @@ public class TagsOverviewModal extends Modal implements UIComponent, Refreshable
     @FXML
     private VBox tagsContainer;
 
-    @FXML
-    private Button addTagButton;
-
     /**
      * Constructor for BoardSettingsModal
      * @param boardService boardService instance
@@ -43,8 +40,6 @@ public class TagsOverviewModal extends Modal implements UIComponent, Refreshable
     public void initialize() {
         super.initialize();
         this.renderTags();
-        addTagButton.setDisable(true);
-        addTagButton.setVisible(false);
     }
 
     @FXML

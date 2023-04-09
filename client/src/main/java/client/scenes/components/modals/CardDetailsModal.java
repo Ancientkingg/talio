@@ -1,7 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.scenes.components.CardComponent;
 import client.scenes.components.TagSelectComponent;
 import client.services.BoardService;
@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class CardDetailsModal extends Modal implements LiveUIController {
+public class CardDetailsModal extends Modal implements Refreshable {
 
     private final Card card;
 

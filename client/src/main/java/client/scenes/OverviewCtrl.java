@@ -142,7 +142,7 @@ public class OverviewCtrl implements Refreshable {
     }
 
     private void setTagForCardShortcut() {
-        final TagsShortcutModal tagsShortcutModal = new TagsShortcutModal(boardService, mainCtrl.getCurrentScene());
+        final TagsShortcutModal tagsShortcutModal = new TagsShortcutModal(boardService, mainCtrl.getCurrentScene(), this);
 
         tagsShortcutModal.showModal();
     }

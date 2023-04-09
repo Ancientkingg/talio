@@ -32,9 +32,6 @@ public class ColumnComponent extends GridPane implements UIComponent {
 
     private final Scene overviewScene;
 
-    @Getter
-    private final OverviewCtrl overviewCtrl;
-
     @FXML
     private TextField columnHeading;
 
@@ -44,7 +41,6 @@ public class ColumnComponent extends GridPane implements UIComponent {
     @FXML
     private ScrollPane scrollPane;
 
-    @Getter
     @FXML
     @Getter
     private VBox innerCardList;
@@ -66,7 +62,6 @@ public class ColumnComponent extends GridPane implements UIComponent {
         this.column = column;
 
         this.overviewScene = overviewScene;
-        this.overviewCtrl = overviewCtrl;
 
         loadSource(Main.class.getResource("/components/Column.fxml"));
 
