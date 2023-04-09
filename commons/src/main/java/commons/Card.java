@@ -95,7 +95,7 @@ public class Card implements Comparable<Card> {
         this.tags = tags == null ? new HashSet<>(0) : tags;
 
         this.isDefaultThemed = true;
-        this.colorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // set default here
+        this.colorScheme = null;
     }
 
     /**
@@ -168,6 +168,21 @@ public class Card implements Comparable<Card> {
      */
     public boolean removeSubTask(final SubTask subtask) {
         return subtasks.remove(subtask);
+    }
+
+
+    /**
+     * Counts the number of completed subtasks
+     * @return number of completed subtasks
+     */
+    public int countFinishedSubtasks() {
+        int i = 0;
+        for (final SubTask task : this.getSubtasks()) {
+            if (task.isDone()) {
+                i++;
+            }
+        }
+        return i;
     }
 
     /**

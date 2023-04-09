@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="340.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="340.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="35.0" prefWidth="51.62375259399414" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="30.0" prefWidth="81.87624740600586" />
@@ -27,7 +27,7 @@
          <GridPane.margin>
             <Insets bottom="16.0" right="22.0" />
          </GridPane.margin></Button>
-      <TextField fx:id="titleTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" promptText="tag title" styleClass="join-board-modal-text-field" stylesheets="@../Style.css" GridPane.rowIndex="2">
+      <TextField fx:id="titleTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" promptText="color preset name" styleClass="join-board-modal-text-field" stylesheets="@../Style.css" GridPane.rowIndex="2">
          <padding>
             <Insets bottom="5.0" left="12.0" right="5.0" top="5.0" />
          </padding>
@@ -35,7 +35,7 @@
             <Insets left="70.0" top="25.0" />
          </GridPane.margin>
       </TextField>
-        <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Tag settings" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Color preset settings" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets top="21.0" />
          </GridPane.margin>
@@ -53,24 +53,24 @@
             <Insets bottom="16.0" right="22.0" />
          </GridPane.margin>
       </Button>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Tag title" GridPane.rowIndex="2">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Color preset name" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="80.0" top="3.0" />
          </GridPane.margin>
       </Text>
-      <ColorPicker fx:id="primaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="95.0" GridPane.rowIndex="2" />
+      <ColorPicker fx:id="primaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="95.0" GridPane.rowIndex="2" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Primary color" translateX="79.0" translateY="74.0" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Text>
-      <ColorPicker fx:id="secondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="165.0" GridPane.rowIndex="2" />
+      <ColorPicker fx:id="secondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="165.0" GridPane.rowIndex="2" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Secondary color" translateX="79.0" translateY="145.0" GridPane.rowIndex="2" />
       <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onDelete" prefHeight="28.0" prefWidth="75.0" style="-fx-font-size: 15px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Delete" textFill="WHITE" translateX="-39.0" translateY="4.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="75.0" right="22.0" />
          </GridPane.margin>
       </Button>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12px; -fx-fill: #3c3c3c;" styleClass="modalDescriptionText" text="Deletes the tag from the entire board" translateX="-44.0" translateY="-73.0" wrappingWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12px; -fx-fill: #3c3c3c;" styleClass="modalDescriptionText" text="Deletes the color preset from the board" translateX="-44.0" translateY="-73.0" wrappingWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     </children>
 </fx:root>

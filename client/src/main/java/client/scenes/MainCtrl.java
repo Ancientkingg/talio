@@ -1,5 +1,8 @@
 package client.scenes;
 
+import client.scenes.components.modals.BoardSettingsModal;
+import client.scenes.components.modals.ColorPresetsOverviewModal;
+import client.scenes.components.modals.CardDetailsModal;
 import client.scenes.components.modals.TagsOverviewModal;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,6 +33,18 @@ public class MainCtrl {
     @Getter
     @Setter
     private TagsOverviewModal tagsOverviewModal;
+
+    @Getter
+    @Setter
+    private CardDetailsModal cardDetailsModal;
+
+    @Getter
+    @Setter
+    private ColorPresetsOverviewModal colorPresetsOverviewModal;
+
+    @Getter
+    @Setter
+    private BoardSettingsModal boardSettingsModal;
 
 
 
@@ -172,5 +187,21 @@ public class MainCtrl {
      */
     public void refreshColumnHeading (final long columnId) {
         overviewCtrl.refreshColumnHeading(columnId);
+    }
+
+    /**
+     * Gets the color presets overview modal
+     * @return the color presets overview modal
+     */
+    public Refreshable getColorPresetsOverviewModal() {
+        return colorPresetsOverviewModal;
+    }
+
+    /**
+     * Gets the board settings modal
+     * @return the board settings modal
+     */
+    public Refreshable getBoardSettingsModal() {
+        return boardSettingsModal;
     }
 }

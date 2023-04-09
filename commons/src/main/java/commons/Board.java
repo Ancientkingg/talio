@@ -31,11 +31,17 @@ public class Board {
     @Getter @Setter
     private SortedSet<Column> columns;
 
+    @Getter @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private ColorScheme columnTheme;
+    private ColorScheme columnColorScheme;
 
+    @Getter @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ColorScheme boardColorScheme;
+
+    @Getter @Setter
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private ColorScheme cardColorScheme;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Getter
@@ -66,7 +72,7 @@ public class Board {
         this.title = title;
         this.password = password;
         this.columns = columns;
-        this.columnTheme = columnTheme;
+        this.columnColorScheme = columnTheme;
         this.boardColorScheme = boardColorScheme;
         this.tags = tags;
         this.colorPresets = new ArrayList<>();
@@ -94,8 +100,9 @@ public class Board {
         this.created = timestamp;
         this.tags = (tags == null) ? new HashSet<>(0) : tags;
 
-        columnTheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // change these to whatever default is picked
-        boardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255));
+        boardColorScheme = new ColorScheme(new Color(243,243,243,255), new Color(235,235,235,255));
+        columnColorScheme = new ColorScheme(new Color(24,24,24,255), new Color(242,242,242,255)); // change these to whatever default is picked
+        cardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(248,248,248,255));
         this.colorPresets = new ArrayList<>();
     }
 
@@ -361,6 +368,38 @@ public class Board {
             }
             indexCount++;
         }
+    }
+
+    /**
+     * Updates the color scheme of a color preset
+     * @param colorScheme The color scheme to update
+     */
+    public void updateColorScheme(final ColorScheme colorScheme) {
+        for (final ColorScheme c : this.colorPresets) {
+            if (c.getId() == colorScheme.getId()) {
+                c.setName(colorScheme.getName());
+                c.setTextColor(colorScheme.getTextColor());
+                c.setBackgroundColor(colorScheme.getBackgroundColor());
+            }
+        }
+    }
+
+    /**
+     * Adds a color preset to the board
+     * @param colorScheme The color scheme to add
+     * @return success/failure
+     */
+    public boolean addColorPreset(final ColorScheme colorScheme) {
+        return this.colorPresets.add(colorScheme);
+    }
+
+    /**
+     * Deletes a color preset from the board by id
+     * @param colorScheme The color scheme to delete
+     * @return success/failure
+     */
+    public boolean deleteColorPreset(final ColorScheme colorScheme) {
+        return this.colorPresets.remove(colorScheme);
     }
 
     /**

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="340.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="42.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="256.0" />
+        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="42.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="61.99999999999999" valignment="TOP" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="310.0" valignment="TOP" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Color presets" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets top="16.0" />
+         </GridPane.margin>
+      </Text>
+      <Button fx:id="crossButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeModal" prefHeight="24.0" prefWidth="24.0" styleClass="modalCrossButton" stylesheets="@../Style.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="11.0" top="9.0" />
+         </GridPane.margin>
+         <graphic>
+            <SVGPath content="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" scaleX="0.025" scaleY="0.025" styleClass="modalCrossButtonIcon" />
+         </graphic>
+      </Button>
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: #181818; -fx-border-radius: 10px; -fx-background-color: transparent; -fx-background-radius: 10px; -fx-border-insets: -3px;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <content>
+            <FlowPane alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
+               <children>
+                  <VBox fx:id="colorPresetsContainer" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="4.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </FlowPane>
+        </content>
+      </ScrollPane>
+      <Button fx:id="addColorPresetsButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddColorPresetButtonClick" prefHeight="32.0" prefWidth="239.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD COLOR PRESET" textAlignment="CENTER" translateY="-10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font>
+         <graphic>
+            <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-67.0" translateY="1.0" />
+         </graphic>
+      </Button>
+    </children>
+</fx:root>

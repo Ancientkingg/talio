@@ -2,9 +2,11 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
+import client.scenes.MainCtrl;
 import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
+import commons.ColorScheme;
 import commons.Tag;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import lombok.Getter;
 
@@ -32,6 +35,8 @@ public class CardComponent extends Draggable implements UIComponent {
     private final ColumnComponent columnParent;
     private final Scene overviewScene;
 
+    private MainCtrl mainCtrl;
+
     @FXML
     private TextArea cardText;
 
@@ -40,6 +45,12 @@ public class CardComponent extends Draggable implements UIComponent {
 
     @FXML
     private HBox tagContainer;
+
+    @FXML
+    private Text descriptionIndicator;
+
+    @FXML
+    private Text subtaskCounter;
 
     private Node oldIntersectedComponent;
 
@@ -50,12 +61,15 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param card         Card instance
      * @param columnParent ColumnComponent instance
      * @param overviewScene overview scene
+     * @param mainCtrl     MainCtrl instance
      */
-    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent, final Scene overviewScene) {
+    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent,
+                         final MainCtrl mainCtrl, final Scene overviewScene) {
         super(columnParent.getOverviewCtrl(), columnParent);
         this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
+        this.mainCtrl = mainCtrl;
 
         this.overviewScene = overviewScene;
 
@@ -75,6 +89,7 @@ public class CardComponent extends Draggable implements UIComponent {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
                     final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
+                    mainCtrl.setCardDetailsModal(modal);
                     modal.showModal();
                 }
             }
@@ -123,6 +138,20 @@ public class CardComponent extends Draggable implements UIComponent {
         loadSource(Main.class.getResource("/components/Card.fxml"));
     }
 
+    private void refreshStyle() {
+        if (card.getColorScheme() == null) {
+            final ColorScheme defaultColorScheme = boardService.getCurrentBoard().getCardColorScheme();
+
+            this.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";");
+            this.cardText.setStyle("-fx-text-fill: " + defaultColorScheme.getTextColor() + ";");
+        } else {
+            final ColorScheme colorScheme = card.getColorScheme();
+
+            this.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor() + ";");
+            this.cardText.setStyle("-fx-text-fill: " + colorScheme.getTextColor() + ";");
+        }
+    }
+
     /**
      * Sets up dynamically resizing of the card component
      */
@@ -158,33 +187,6 @@ public class CardComponent extends Draggable implements UIComponent {
         });
     }
 
-
-    private void setUpDragAndDrop() {
-        setOnDragDetected(event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                // Start drag-and-drop gesture
-                startFullDrag();
-                final Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
-                final ClipboardContent content = new ClipboardContent();
-                content.putString(
-                        String.format("%s:%s", card.getId(), columnParent.getColumn().getIndex()));
-                dragboard.setContent(content);
-                event.consume();
-            }
-        });
-
-        setOnDragEntered(event -> {
-            // Check if the dragged element is being dragged over the top half of the target element
-            if (event.getY() < this.getHeight()) {
-                this.setStyle("-fx-border-color: transparent; -fx-border-width: 25px 0 0 0;");
-            }
-        });
-
-        setOnDragExited(event -> {
-            // Remove the top margin from the target element
-            this.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
-        });
-    }
 
     /**
      * Deletes the card
@@ -282,6 +284,22 @@ public class CardComponent extends Draggable implements UIComponent {
             moreTags.setStyle("-fx-text-fill: #4f4f4f;-fx-padding: 0 0 15px 0;");
             tagContainer.getChildren().add(moreTags);
         }
+
+        if (card.getDescription().equals("") || card.getDescription() == null) {
+            descriptionIndicator.setVisible(false);
+        } else {
+            descriptionIndicator.setVisible(true);
+        }
+
+        if (card.getSubtasks().size() != 0) {
+            subtaskCounter.setText(card.countFinishedSubtasks() + "/" + card.getSubtasks().size());
+            subtaskCounter.setVisible(true);
+        } else {
+            subtaskCounter.setVisible(false);
+        }
+
+        refreshStyle();
+
     }
 
     /**
@@ -289,6 +307,6 @@ public class CardComponent extends Draggable implements UIComponent {
      * @return The cloned card
      */
     public Draggable clone() {
-        return new CardComponent(boardService, card, columnParent, overviewScene);
+        return new CardComponent(boardService, card, columnParent, overviewScene, mainCtrl);
     }
 }

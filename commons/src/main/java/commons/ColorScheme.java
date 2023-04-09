@@ -12,6 +12,9 @@ public class ColorScheme {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
+    private long serializationId;
+
+    @Getter
     private long id;
 
     @Getter @Setter
@@ -31,6 +34,19 @@ public class ColorScheme {
      * @param backgroundColor color for background
      */
     public ColorScheme(final Color textColor, final Color backgroundColor) {
+        this.id = (long) (Math.random() * 1000000000);
+        this.textColor = textColor;
+        this.backgroundColor = backgroundColor;
+    }
+
+    /**
+     * Constructor for ColorScheme
+     * @param id the id of the color scheme
+     * @param textColor color for text (called font color in backlog)
+     * @param backgroundColor color for background
+     */
+    public ColorScheme(final long id, final Color textColor, final Color backgroundColor) {
+        this.id = id;
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
     }
@@ -42,6 +58,7 @@ public class ColorScheme {
      * @param backgroundColor color for background
      */
     public ColorScheme(final String name, final Color textColor, final Color backgroundColor) {
+        this.id = (long) (Math.random() * 1000000000);
         this.name = name;
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
@@ -51,6 +68,7 @@ public class ColorScheme {
      * for checkstyle
      */
     public ColorScheme() {
+        this.id = (long) (Math.random() * 1000000000);
         this.textColor = new Color(0,0,0,255);
         this.backgroundColor = new Color(0,0,0,255);
     }
@@ -68,6 +86,7 @@ public class ColorScheme {
         final ColorScheme that = (ColorScheme) o;
 
         if (id != that.id) return false;
+        if (!Objects.equals(name, that.name)) return false;
         if (!Objects.equals(textColor, that.textColor)) return false;
         return Objects.equals(backgroundColor, that.backgroundColor);
     }
