@@ -60,7 +60,9 @@ public class ColumnComponent extends GridPane implements UIComponent {
      * @param overviewScene overview scene
      * @param mainCtrl     MainCtrl instance
      */
-    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl, final Scene overviewScene, final MainCtrl mainCtrl) {
+    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl,
+                           final Scene overviewScene, final MainCtrl mainCtrl)
+    {
         this.boardService = boardService;
         this.overviewCtrl = overviewCtrl;
         this.mainCtrl = mainCtrl;
@@ -163,7 +165,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
     public void refresh() {
         innerCardList.getChildren().clear();
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardService, card, this, overviewScene, mainCtrl);
+            final CardComponent cc = new CardComponent(boardService, card, this, mainCtrl, overviewScene);
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());

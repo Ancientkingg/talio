@@ -64,7 +64,8 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param mainCtrl     MainCtrl instance
      */
     public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent,
-                         final MainCtrl mainCtrl, final Scene overviewScene) {
+                         final MainCtrl mainCtrl, final Scene overviewScene)
+    {
         super(columnParent.getOverviewCtrl(), columnParent);
         this.boardService = boardService;
         this.card = card;
@@ -108,7 +109,6 @@ public class CardComponent extends Draggable implements UIComponent {
 
         cardText.setDisable(true); // Disable editing of card text by default
 
-        setUpDragAndDrop();
         setHover();
         refresh();
     }
@@ -307,6 +307,6 @@ public class CardComponent extends Draggable implements UIComponent {
      * @return The cloned card
      */
     public Draggable clone() {
-        return new CardComponent(boardService, card, columnParent, overviewScene, mainCtrl);
+        return new CardComponent(boardService, card, columnParent, mainCtrl, overviewScene);
     }
 }
