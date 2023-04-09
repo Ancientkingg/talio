@@ -368,6 +368,10 @@ public class Board {
         }
     }
 
+    /**
+     * Updates the color scheme of a color preset
+     * @param colorScheme The color scheme to update
+     */
     public void updateColorScheme(final ColorScheme colorScheme) {
         for (final ColorScheme c : this.colorPresets) {
             if (c.getId() == colorScheme.getId()) {
@@ -378,10 +382,20 @@ public class Board {
         }
     }
 
+    /**
+     * Adds a color preset to the board
+     * @param colorScheme The color scheme to add
+     * @return success/failure
+     */
     public boolean addColorPreset(final ColorScheme colorScheme) {
         return this.colorPresets.add(colorScheme);
     }
 
+    /**
+     * Deletes a color preset from the board by id
+     * @param colorScheme The color scheme to delete
+     * @return success/failure
+     */
     public boolean deleteColorPreset(final ColorScheme colorScheme) {
         return this.colorPresets.remove(colorScheme);
     }

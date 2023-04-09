@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.scenes.components.CardComponent;
 import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.modals.ColorPresetsOverviewModal;
 import client.scenes.components.modals.TagsOverviewModal;
@@ -184,10 +183,18 @@ public class MainCtrl {
         overviewCtrl.refreshColumnHeading(columnId);
     }
 
+    /**
+     * Gets the color presets overview modal
+     * @return the color presets overview modal
+     */
     public LiveUIController getColorPresetsOverviewModal() {
         return colorPresetsOverviewModal;
     }
 
+    /**
+     * Gets the board settings modal
+     * @return the board settings modal
+     */
     public LiveUIController getBoardSettingsModal() {
         return boardSettingsModal;
     }

@@ -155,6 +155,9 @@ public class OverviewCtrl implements LiveUIController {
         modal.showModal();
     }
 
+    /**
+     * Handles the colors button click
+     */
     @FXML
     public void onColorsButtonClick() {
         final ColorPresetsOverviewModal modal = new ColorPresetsOverviewModal(boardService, this.mainCtrl.getCurrentScene());

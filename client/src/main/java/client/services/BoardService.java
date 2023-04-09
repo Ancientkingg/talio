@@ -803,92 +803,146 @@ public class BoardService {
         // TODO update boardModel
     }
 
-    public void editColorPreset(ColorScheme colorPreset) {
+    /**
+     * Edits a color preset and sends it to the server
+     * @param colorPreset Color preset to edit
+     */
+    public void editColorPreset(final ColorScheme colorPreset) {
         try {
             serverService.editColorPreset(getCurrentBoard(), colorPreset);
         } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be edited on the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The color preset couldn't be edited on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
 
-    public void removeColorPresetFromBoard(ColorScheme colorPreset) {
+    /**
+     * Removes a color preset from the current board
+     * @param colorPreset Color preset to remove
+     */
+    public void removeColorPresetFromBoard(final ColorScheme colorPreset) {
         try {
             serverService.removeColorPresetFromBoard(getCurrentBoard(), colorPreset);
         } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be removed from the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The color preset couldn't be removed from the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
 
-    public void addColorPresetToCurrentBoard(ColorScheme colorPreset) {
+    /**
+     * Adds a color preset to the current board
+     * @param colorPreset Color preset to add
+     */
+    public void addColorPresetToCurrentBoard(final ColorScheme colorPreset) {
         try {
             serverService.addColorPresetToBoard(getCurrentBoard(), colorPreset);
         } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The tag couldn't be added to the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
 
-    public void updateEditColorPreset(ColorScheme payload) {
+    /**
+     * Edits one of the existing color presets
+     * @param payload Color preset
+     */
+    public void updateEditColorPreset(final ColorScheme payload) {
         boardModel.getCurrentBoard().updateColorScheme(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
     }
 
-    public void updateAddColorPresetToBoard(ColorScheme payload) {
+    /**
+     * Adds a color preset to the current board
+     * @param payload Color preset
+     */
+    public void updateAddColorPresetToBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().addColorPreset(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
     }
 
-    public void updateRemoveColorPresetFromBoard(ColorScheme payload) {
+    /**
+     * Removes a color preset from the current board
+     * @param payload Color preset
+     */
+    public void updateRemoveColorPresetFromBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().deleteColorPreset(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
     }
 
-    public void setDefaultColorPresetColumn(ColorScheme colorPreset) {
+    /**
+     * Sets the default column color preset for the current board
+     * @param colorPreset Color preset to set as default
+     */
+    public void setDefaultColorPresetColumn(final ColorScheme colorPreset) {
         try {
             serverService.setDefaultColorPresetColumn(getCurrentBoard(), colorPreset);
         } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
 
-    public void setDefaultColorPresetBoard(ColorScheme colorPreset) {
+    /**
+     * Sets the default board color preset for the current board
+     * @param colorPreset Color preset to set as default
+     */
+    public void setDefaultColorPresetBoard(final ColorScheme colorPreset) {
         try {
             serverService.setDefaultColorPresetBoard(getCurrentBoard(), colorPreset);
         } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
 
-    public void setDefaultColorPresetCard(ColorScheme colorPreset) {
+    /**
+     * Sets the default card color preset for the current board
+     * @param colorPreset Color preset to set as default
+     */
+    public void setDefaultColorPresetCard(final ColorScheme colorPreset) {
         try {
             serverService.setDefaultColorPresetCard(getCurrentBoard(), colorPreset);
         } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }
     }
 
-    public void updateDefaultColorPresetColumn(ColorScheme payload) {
+    /**
+     * Updates the default column color preset for the current board
+     * @param payload Color preset
+     */
+    public void updateDefaultColorPresetColumn(final ColorScheme payload) {
         boardModel.getCurrentBoard().setColumnColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
     }
 
-    public void updateDefaultColorPresetBoard(ColorScheme payload) {
+    /**
+     * Updates the default board color preset for the current board
+     * @param payload Color preset
+     */
+    public void updateDefaultColorPresetBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().setBoardColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
     }
 
-    public void updateDefaultColorPresetCard(ColorScheme payload) {
+    /**
+     * Updates the default card color preset for the current board
+     * @param payload Color preset
+     */
+    public void updateDefaultColorPresetCard(final ColorScheme payload) {
         boardModel.getCurrentBoard().setCardColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
     }

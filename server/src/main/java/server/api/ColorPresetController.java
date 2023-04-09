@@ -3,12 +3,8 @@ package server.api;
 import commons.Board;
 import commons.ColorScheme;
 import commons.DTOs.ColorSchemeDTO;
-import commons.DTOs.TagDTO;
-import commons.Tag;
-import commons.exceptions.CardNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 
 import javax.validation.Valid;
@@ -41,6 +36,12 @@ public class ColorPresetController {
         this.messagingTemplate = messagingTemplate;
     }
 
+    /**
+     * Sets the default color preset for the card
+     * @param colorSchemeDTO The color scheme to set
+     * @param joinKey The join key of the board
+     * @return The color scheme that was set
+     */
     @MessageMapping("/color-presets/set-card/{joinKey}")
     public ResponseEntity<ColorScheme> setCardColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO,
                                                           @DestinationVariable final String joinKey)
@@ -61,6 +62,12 @@ public class ColorPresetController {
         return ResponseEntity.ok(colorScheme);
     }
 
+    /**
+     * Sets the default color preset for the column
+     * @param colorSchemeDTO The color scheme to set
+     * @param joinKey The join key of the board
+     * @return The color scheme that was set
+     */
     @MessageMapping("/color-presets/set-column/{joinKey}")
     public ResponseEntity<ColorScheme> setColumnColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO,
                                                             @DestinationVariable final String joinKey)
@@ -81,6 +88,12 @@ public class ColorPresetController {
         return ResponseEntity.ok(colorScheme);
     }
 
+    /**
+     * Sets the default color preset for the board
+     * @param colorSchemeDTO The color scheme to set
+     * @param joinKey The join key of the board
+     * @return The color scheme that was set
+     */
     @MessageMapping("/color-presets/set-board/{joinKey}")
     public ResponseEntity<ColorScheme> setBoardColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO,
                                                            @DestinationVariable final String joinKey)
@@ -184,18 +197,18 @@ public class ColorPresetController {
         messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/add", colorScheme);
     }
 
-    private void updateColorPresetBoard(ColorScheme colorScheme, Board board) {
+    private void updateColorPresetBoard(final ColorScheme colorScheme, final Board board) {
         logger.info("Default ColorPreset set to board, propagating: " + board.getJoinKey());
         messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/set-board", colorScheme);
 
     }
 
-    private void updateColorPresetColumn(ColorScheme colorScheme, Board board) {
+    private void updateColorPresetColumn(final ColorScheme colorScheme, final Board board) {
         logger.info("Default ColorPreset set to column of board, propagating: " + board.getJoinKey());
         messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/set-column", colorScheme);
     }
 
-    private void updateColorPresetCard(ColorScheme colorScheme, Board board) {
+    private void updateColorPresetCard(final ColorScheme colorScheme, final Board board) {
         logger.info("Default ColorPreset set to card of board, propagating: " + board.getJoinKey());
         messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/set-card", colorScheme);
     }

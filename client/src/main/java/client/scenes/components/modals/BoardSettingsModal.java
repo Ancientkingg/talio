@@ -59,6 +59,9 @@ public class BoardSettingsModal extends Modal implements UIComponent, LiveUICont
         loadSource(Main.class.getResource("/components/BoardSettingsModal.fxml"));
     }
 
+    /**
+     * Refreshes the modal
+     */
     public void refresh() {
         this.titleTextField.setText(boardService.getCurrentBoard().getTitle());
         this.passwordTextField.setText(boardService.getCurrentBoard().getPassword());
@@ -79,26 +82,38 @@ public class BoardSettingsModal extends Modal implements UIComponent, LiveUICont
     }
 
     private void refreshColors() {
-        ColorScheme boardColorScheme = boardService.getCurrentBoard().getBoardColorScheme();
-        ColorScheme columnColorScheme = boardService.getCurrentBoard().getColumnColorScheme();
-        ColorScheme cardColorScheme = boardService.getCurrentBoard().getCardColorScheme();
+        final ColorScheme boardColorScheme = boardService.getCurrentBoard().getBoardColorScheme();
+        final ColorScheme columnColorScheme = boardService.getCurrentBoard().getColumnColorScheme();
+        final ColorScheme cardColorScheme = boardService.getCurrentBoard().getCardColorScheme();
 
-        Color boardPrimary = Color.rgb(boardColorScheme.getBackgroundColor().getRed(), boardColorScheme.getBackgroundColor().getGreen(), boardColorScheme.getBackgroundColor().getBlue(),
+        final Color boardPrimary = Color.rgb(boardColorScheme.getBackgroundColor().getRed(),
+                boardColorScheme.getBackgroundColor().getGreen(),
+                boardColorScheme.getBackgroundColor().getBlue(),
                 boardColorScheme.getBackgroundColor().getAlpha() / 255.0);
 
-        Color boardSecondary = Color.rgb(boardColorScheme.getTextColor().getRed(), boardColorScheme.getTextColor().getGreen(), boardColorScheme.getTextColor().getBlue(),
+        final Color boardSecondary = Color.rgb(boardColorScheme.getTextColor().getRed(),
+                boardColorScheme.getTextColor().getGreen(),
+                boardColorScheme.getTextColor().getBlue(),
                 boardColorScheme.getTextColor().getAlpha() / 255.0);
 
-        Color columnPrimary = Color.rgb(columnColorScheme.getBackgroundColor().getRed(), columnColorScheme.getBackgroundColor().getGreen(), columnColorScheme.getBackgroundColor().getBlue(),
+        final Color columnPrimary = Color.rgb(columnColorScheme.getBackgroundColor().getRed(),
+                columnColorScheme.getBackgroundColor().getGreen(),
+                columnColorScheme.getBackgroundColor().getBlue(),
                 columnColorScheme.getBackgroundColor().getAlpha() / 255.0);
 
-        Color columnSecondary = Color.rgb(columnColorScheme.getTextColor().getRed(), columnColorScheme.getTextColor().getGreen(), columnColorScheme.getTextColor().getBlue(),
+        final Color columnSecondary = Color.rgb(columnColorScheme.getTextColor().getRed(),
+                columnColorScheme.getTextColor().getGreen(),
+                columnColorScheme.getTextColor().getBlue(),
                 columnColorScheme.getTextColor().getAlpha() / 255.0);
 
-        Color cardPrimary = Color.rgb(cardColorScheme.getBackgroundColor().getRed(), cardColorScheme.getBackgroundColor().getGreen(), cardColorScheme.getBackgroundColor().getBlue(),
+        final Color cardPrimary = Color.rgb(cardColorScheme.getBackgroundColor().getRed(),
+                cardColorScheme.getBackgroundColor().getGreen(),
+                cardColorScheme.getBackgroundColor().getBlue(),
                 cardColorScheme.getBackgroundColor().getAlpha() / 255.0);
 
-        Color cardSecondary = Color.rgb(cardColorScheme.getTextColor().getRed(), cardColorScheme.getTextColor().getGreen(), cardColorScheme.getTextColor().getBlue(),
+        final Color cardSecondary = Color.rgb(cardColorScheme.getTextColor().getRed(),
+                cardColorScheme.getTextColor().getGreen(),
+                cardColorScheme.getTextColor().getBlue(),
                 cardColorScheme.getTextColor().getAlpha() / 255.0);
 
         this.boardPrimaryColor.setValue(boardPrimary);
@@ -114,9 +129,9 @@ public class BoardSettingsModal extends Modal implements UIComponent, LiveUICont
     private void submitBoard() {
         boardService.renameBoard(titleTextField.getText());
 
-        ColorScheme boardColorScheme = convertToColorScheme(boardPrimaryColor, boardSecondaryColor);
-        ColorScheme columnColorScheme = convertToColorScheme(columnPrimaryColor, columnSecondaryColor);
-        ColorScheme cardColorScheme = convertToColorScheme(cardPrimaryColor, cardSecondaryColor);
+        final ColorScheme boardColorScheme = convertToColorScheme(boardPrimaryColor, boardSecondaryColor);
+        final ColorScheme columnColorScheme = convertToColorScheme(columnPrimaryColor, columnSecondaryColor);
+        final ColorScheme cardColorScheme = convertToColorScheme(cardPrimaryColor, cardSecondaryColor);
 
         boardService.setDefaultColorPresetBoard(boardColorScheme);
         boardService.setDefaultColorPresetColumn(columnColorScheme);
@@ -126,11 +141,15 @@ public class BoardSettingsModal extends Modal implements UIComponent, LiveUICont
         parentCtrl.refresh();
     }
 
-    private ColorScheme convertToColorScheme(ColorPicker primaryColor, ColorPicker secondaryColor) {
+    private ColorScheme convertToColorScheme(final ColorPicker primaryColor, final ColorPicker secondaryColor) {
         return new ColorScheme(
-                new commons.Color((int) (secondaryColor.getValue().getRed() * 255), (int) (secondaryColor.getValue().getGreen() * 255), (int) (secondaryColor.getValue().getBlue() * 255),
+                new commons.Color((int) (secondaryColor.getValue().getRed() * 255),
+                        (int) (secondaryColor.getValue().getGreen() * 255),
+                        (int) (secondaryColor.getValue().getBlue() * 255),
                         (int) (secondaryColor.getValue().getOpacity() * 255)),
-                new commons.Color((int) (primaryColor.getValue().getRed() * 255), (int) (primaryColor.getValue().getGreen() * 255), (int) (primaryColor.getValue().getBlue() * 255),
+                new commons.Color((int) (primaryColor.getValue().getRed() * 255),
+                        (int) (primaryColor.getValue().getGreen() * 255),
+                        (int) (primaryColor.getValue().getBlue() * 255),
                         (int) (primaryColor.getValue().getOpacity() * 255))
         );
     }

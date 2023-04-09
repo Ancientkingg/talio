@@ -8,7 +8,6 @@ import client.services.BoardService;
 import commons.Board;
 import commons.Color;
 import commons.ColorScheme;
-import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;

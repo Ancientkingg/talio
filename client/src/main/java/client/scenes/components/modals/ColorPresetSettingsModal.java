@@ -33,7 +33,9 @@ public class ColorPresetSettingsModal extends Modal implements UIComponent {
      * @param parentCtrl parent controller
      * @param colorPreset color preset to edit
      */
-    public ColorPresetSettingsModal(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl, final ColorScheme colorPreset) {
+    public ColorPresetSettingsModal(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl,
+                                    final ColorScheme colorPreset)
+    {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
         this.colorPreset = colorPreset;
@@ -68,7 +70,7 @@ public class ColorPresetSettingsModal extends Modal implements UIComponent {
         final Color primaryColor = this.primaryColor.getValue();
         final Color secondaryColor = this.secondaryColor.getValue();
 
-        ColorScheme newColorPreset = new ColorScheme(
+        final ColorScheme newColorPreset = new ColorScheme(
             new commons.Color((int) (secondaryColor.getRed() * 255), (int) (secondaryColor.getGreen() * 255), (int) (secondaryColor.getBlue() * 255),
                     (int) (secondaryColor.getOpacity() * 255)),
             new commons.Color((int) (primaryColor.getRed() * 255), (int) (primaryColor.getGreen() * 255), (int) (primaryColor.getBlue() * 255),

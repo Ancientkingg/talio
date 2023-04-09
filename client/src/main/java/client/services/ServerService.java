@@ -579,7 +579,13 @@ public class ServerService {
         }
     }
 
-    public ColorScheme removeColorPresetFromBoard(Board currentBoard, ColorScheme colorPreset) {
+    /**
+     * Removes color preset from board
+     * @param currentBoard board from which color preset is being removed
+     * @param colorPreset color preset being removed
+     * @return removed color preset
+     */
+    public ColorScheme removeColorPresetFromBoard(final Board currentBoard, final ColorScheme colorPreset) {
         try (Client client = ClientBuilder.newClient()) {
             final ColorScheme addedColorScheme = client.target(serverIP)
                     .path("/color-presets")
@@ -592,7 +598,13 @@ public class ServerService {
         }
     }
 
-    public ColorScheme addColorPresetToBoard(Board currentBoard, ColorScheme colorPreset) {
+    /**
+     * Adds color preset to board
+     * @param currentBoard board to which color preset is being added
+     * @param colorPreset color preset being added
+     * @return added color preset
+     */
+    public ColorScheme addColorPresetToBoard(final Board currentBoard, final ColorScheme colorPreset) {
         try (Client client = ClientBuilder.newClient()) {
             final ColorScheme addedColorScheme = client.target(serverIP)
                     .path("/color-presets")
@@ -605,28 +617,48 @@ public class ServerService {
         }
     }
 
-    public void editColorPreset(Board currentBoard, ColorScheme colorPreset) {
+    /**
+     * Edits color preset
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being edited
+     */
+    public void editColorPreset(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/edit/" +
                         currentBoard.getJoinKey(),
                 new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
         logger.info("Edited color preset sent to server");
     }
 
-    public void setDefaultColorPresetCard(Board currentBoard, ColorScheme colorPreset) {
+    /**
+     * Sets default color preset for cards
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being set as default
+     */
+    public void setDefaultColorPresetCard(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/set-card/" +
                         currentBoard.getJoinKey(),
                 new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
         logger.info("Default color preset for cards sent to server");
     }
 
-    public void setDefaultColorPresetColumn(Board currentBoard, ColorScheme colorPreset) {
+    /**
+     * Sets default color preset for columns
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being set as default
+     */
+    public void setDefaultColorPresetColumn(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/set-column/" +
                         currentBoard.getJoinKey(),
                 new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
         logger.info("Default color preset for columns sent to server");
     }
 
-    public void setDefaultColorPresetBoard(Board currentBoard, ColorScheme colorPreset) {
+    /**
+     * Sets default color preset for board
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being set as default
+     */
+    public void setDefaultColorPresetBoard(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/set-board/" +
                         currentBoard.getJoinKey(),
                 new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
