@@ -227,6 +227,9 @@ Card
     -fx-background-color: transparent;
 }
 
+.cardSubtaskCounter {
+    -fx-text-fill: #ababab;
+}
 
 
 /*
