@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -94,9 +95,12 @@ public class CardDetailsModal extends Modal implements LiveUIController {
             }
         }
 
-        for (final Tag tag : this.card.getTags()) {
+        Iterator it = this.card.getTags().iterator();
+
+        while (it.hasNext()) {
+            Tag tag = (Tag) it.next();
             if (!selectedTags.contains(tag)) {
-                this.card.removeTag(tag);
+                it.remove();
                 boardService.removeTagFromCard(this.card, tag);
             }
         }

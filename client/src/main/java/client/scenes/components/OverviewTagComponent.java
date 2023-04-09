@@ -59,7 +59,10 @@ public class OverviewTagComponent extends GridPane implements UIComponent {
         if (colorScheme.getBackgroundColor().equals(new Color(0, 0, 0, 0)))
             colorScheme.setBackgroundColor(new Color(colorGenerator()));
 
-        tagBackground.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor());
+        tagBackground.setStyle(
+                "-fx-background-color: " + colorScheme.getBackgroundColor() + ";"
+                        + "-fx-border-color: " + colorScheme.getTextColor() + ";"
+                        + "-fx-border-width: 1px;");
     }
 
     /**
