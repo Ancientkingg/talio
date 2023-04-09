@@ -579,8 +579,11 @@ public class ServerService {
         }
     }
 
+    /**
+     * Boolean returning whether the session is connected
+     * @return session.isConnected()
+     */
     public boolean isConnected() {
-        if (session.isConnected()) return true;
-        return false;
+        return session.isConnected();
     }
 }

@@ -61,6 +61,10 @@ public class BoardService {
         this.startSocket();
     }
 
+    /**
+     * Boolean returning whether the session is connected
+     * @return isConnected
+     */
     public boolean isConnected() {
         return serverService.isConnected();
     }

@@ -6,9 +6,7 @@ import client.scenes.components.modals.AppSettingsModal;
 import client.scenes.components.modals.JoinBoardModal;
 import client.services.BoardService;
 import commons.Board;
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -254,6 +252,9 @@ public class HomePageCtrl implements Refreshable {
         return boardService.verifyAdminPassword(adminPassword);
     }
 
+    /**
+     * Starts thread that periodically checks if boards are valid
+     */
     public void checkBoards() {
         checkBoardThread = new Thread(new Runnable() {
             @Override
@@ -272,6 +273,9 @@ public class HomePageCtrl implements Refreshable {
         checkBoardThread.start();
     }
 
+    /**
+     * Stops the thread checking if boards are valid upon disconnecting
+     */
     private void stopCheckBoards() {
         checkBoardThread.stop();
     }
