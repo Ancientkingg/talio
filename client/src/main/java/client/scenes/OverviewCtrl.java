@@ -5,8 +5,10 @@ import client.scenes.components.Draggable;
 import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
+import client.scenes.components.modals.ColorPresetsOverviewModal;
 import client.scenes.components.modals.TagsOverviewModal;
 import client.services.BoardService;
+import commons.ColorScheme;
 import commons.Column;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -75,6 +77,7 @@ public class OverviewCtrl implements Refreshable {
         ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren()
             .removeIf(c -> c instanceof Draggable);
         this.refreshColumn();
+        this.refreshStyle();
     }
 
     /**
@@ -85,12 +88,20 @@ public class OverviewCtrl implements Refreshable {
         columnBox.getChildren().removeAll(columnBox.getChildren().stream().filter(c -> c instanceof ColumnComponent).toList());
 
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
-            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
+            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this, mainCtrl);
 
             columnComponent.setHeading(col.getHeading());
 
             columnBox.getChildren().add(columnBox.getChildren().size() - 1,columnComponent);
         }
+    }
+
+    private void refreshStyle() {
+        final ColorScheme defaultColorScheme = boardService.getCurrentBoard().getBoardColorScheme();
+
+        columnBox.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";");
+
+        this.boardNameButton.setStyle("-fx-text-fill: " + defaultColorScheme.getTextColor() + ";");
     }
 
     /**
@@ -127,8 +138,9 @@ public class OverviewCtrl implements Refreshable {
      */
     public void refreshCard(final long cardId) {
         for (final Node n : columnBox.getChildren()) {
+            if (!(n instanceof ColumnComponent)) continue;
             final ColumnComponent cc = (ColumnComponent) n;
-            for (final Node c : cc.getChildren()) {
+            for (final Node c : cc.getInnerCardList().getChildren()) {
                 final CardComponent cac = (CardComponent) c;
                 if (cac.getCard().getId() == cardId) {
                     cac.refresh();
@@ -158,6 +170,16 @@ public class OverviewCtrl implements Refreshable {
         modal.showModal();
     }
 
+    /**
+     * Handles the colors button click
+     */
+    @FXML
+    public void onColorsButtonClick() {
+        final ColorPresetsOverviewModal modal = new ColorPresetsOverviewModal(boardService, this.mainCtrl.getCurrentScene());
+        mainCtrl.setColorPresetsOverviewModal(modal);
+        modal.showModal();
+    }
+
 
     /**
      * Handles the link button click
@@ -183,6 +205,7 @@ public class OverviewCtrl implements Refreshable {
     @FXML
     private void onBoardEditButtonClick() {
         final BoardSettingsModal modal = new BoardSettingsModal(boardService, this.mainCtrl.getCurrentScene(), this);
+        mainCtrl.setBoardSettingsModal(modal);
         modal.showModal();
     }
 

@@ -5,6 +5,7 @@ import client.utils.SessionHandler;
 import client.utils.SocketThread;
 import commons.*;
 import commons.DTOs.CardDTO;
+import commons.DTOs.ColorSchemeDTO;
 import commons.DTOs.SubTaskDTO;
 import commons.DTOs.TagDTO;
 import jakarta.ws.rs.client.Client;
@@ -55,6 +56,14 @@ public class ServerService {
     public void stopSocket() {
         session.disconnect();
         this.socketThread.stop();
+    }
+
+    /**
+     * Boolean returning whether the session is connected
+     * @return session.isConnected()
+     */
+    public boolean isConnected() {
+        return session.isConnected();
     }
 
     /**
@@ -363,7 +372,7 @@ public class ServerService {
         try {
             session.send("/app/cards/edit/" +
                             board.getJoinKey() + "/" +
-                            column.getId() + "/",
+                            column.getId(),
                     new CardDTO(card, board.getPassword()));
             logger.info("Edited card sent to server");
         }
@@ -415,6 +424,24 @@ public class ServerService {
                 .delete();
             logger.info("Requested to delete board with join-key: " + board.getJoinKey());
             return response.getStatus() == 200;
+        }
+    }
+
+    /**
+     * Renames board by posting a request to renameColumn endpoint on server
+     * @param board Board for join key
+     * @param newName New name of board
+     */
+    public void renameBoard(final Board board, final String newName) {
+        try {
+            session.send("/app/boards/rename/" +
+                            board.getJoinKey() + "/" +
+                            newName,
+                    board.getPassword());
+            logger.info("Renamed board sent to server");
+        }
+        catch (RuntimeException e) {
+            throw new ServerException("The Board couldn't be renamed on the Server: \n" + getServerIP());
         }
     }
 
@@ -578,12 +605,89 @@ public class ServerService {
             return resultSubTask;
         }
     }
+    
+     * Removes color preset from board
+     * @param currentBoard board from which color preset is being removed
+     * @param colorPreset color preset being removed
+     * @return removed color preset
+     */
+    public ColorScheme removeColorPresetFromBoard(final Board currentBoard, final ColorScheme colorPreset) {
+        try (Client client = ClientBuilder.newClient()) {
+            final ColorScheme addedColorScheme = client.target(serverIP)
+                    .path("/color-presets")
+                    .path("/remove")
+                    .path(currentBoard.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new ColorSchemeDTO(colorPreset, currentBoard.getPassword()), APPLICATION_JSON), ColorScheme.class);
+            logger.info("Removed color preset from board sent to server");
+            return addedColorScheme;
+        }
+    }
 
     /**
-     * Boolean returning whether the session is connected
-     * @return session.isConnected()
+     * Adds color preset to board
+     * @param currentBoard board to which color preset is being added
+     * @param colorPreset color preset being added
+     * @return added color preset
      */
-    public boolean isConnected() {
-        return session.isConnected();
+    public ColorScheme addColorPresetToBoard(final Board currentBoard, final ColorScheme colorPreset) {
+        try (Client client = ClientBuilder.newClient()) {
+            final ColorScheme addedColorScheme = client.target(serverIP)
+                    .path("/color-presets")
+                    .path("/add")
+                    .path(currentBoard.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new ColorSchemeDTO(colorPreset, currentBoard.getPassword()), APPLICATION_JSON), ColorScheme.class);
+            logger.info("Added color preset to board sent to server");
+            return addedColorScheme;
+        }
+    }
+
+    /**
+     * Edits color preset
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being edited
+     */
+    public void editColorPreset(final Board currentBoard, final ColorScheme colorPreset) {
+        session.send("/app/color-presets/edit/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Edited color preset sent to server");
+    }
+
+    /**
+     * Sets default color preset for cards
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being set as default
+     */
+    public void setDefaultColorPresetCard(final Board currentBoard, final ColorScheme colorPreset) {
+        session.send("/app/color-presets/set-card/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Default color preset for cards sent to server");
+    }
+
+    /**
+     * Sets default color preset for columns
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being set as default
+     */
+    public void setDefaultColorPresetColumn(final Board currentBoard, final ColorScheme colorPreset) {
+        session.send("/app/color-presets/set-column/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Default color preset for columns sent to server");
+    }
+
+    /**
+     * Sets default color preset for board
+     * @param currentBoard board containing color preset
+     * @param colorPreset color preset being set as default
+     */
+    public void setDefaultColorPresetBoard(final Board currentBoard, final ColorScheme colorPreset) {
+        session.send("/app/color-presets/set-board/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Default color preset for board sent to server");
     }
 }

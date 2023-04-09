@@ -2,10 +2,11 @@ package server.services;
 
 import commons.Board;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.database.BoardRepository;
 import server.api.exceptions.ResourceNotFoundException;
 import server.api.exceptions.UnauthorizedResourceException;
+import server.database.BoardRepository;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -15,10 +16,13 @@ public class BoardService {
     private final BoardRepository br;
 
 
+
+
     /**
      * Constructor for the Board Service
      * @param br Dependency Injection for the board repository
      */
+    @Autowired
     public BoardService(final BoardRepository br) {
         this.br = br;
     }

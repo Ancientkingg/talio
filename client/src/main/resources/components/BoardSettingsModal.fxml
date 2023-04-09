@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="35.0" prefWidth="51.62375259399414" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="30.0" prefWidth="81.87624740600586" />
@@ -28,7 +33,7 @@
             <Insets left="70.0" top="100.0" />
          </GridPane.margin>
       </TextField>
-      <Button fx:id="submitButton" mnemonicParsing="false" onAction="#closeModal" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Cancel" textFill="WHITE" translateX="-124.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeModal" prefHeight="28.0" prefWidth="108.0" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Cancel" textFill="WHITE" translateX="-124.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="16.0" right="22.0" />
          </GridPane.margin></Button>
@@ -68,7 +73,7 @@
             <Insets left="80.0" top="78.0" />
          </GridPane.margin>
       </Text>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onJoinKeyClick" prefHeight="36.0" prefWidth="200.0" stylesheets="@../Style.css" GridPane.rowIndex="3">
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onJoinKeyClick" prefHeight="36.0" prefWidth="200.0" style="-fx-border-insets: -1px;" stylesheets="@../Style.css" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="29.0" left="70.0" />
          </GridPane.margin>
@@ -82,5 +87,57 @@
       </Button>
       <Text fx:id="boardJoinKey" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" styleClass="modalDescriptionText" text="JOIN-KEY" translateX="90.0" translateY="-36.0" GridPane.rowIndex="3" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Board join-key" translateX="84.0" translateY="-71.0" GridPane.rowIndex="3" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Default board color preset" translateX="-68.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets top="3.0" />
+         </GridPane.margin>
+      </Text>
+      <ColorPicker fx:id="boardPrimaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="-160.0" translateY="25.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <value>
+            <Color red="0.9215686321258545" green="0.9215686321258545" blue="0.9215686321258545" />
+         </value>
+      </ColorPicker>
+      <ColorPicker fx:id="boardSecondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="-31.0" translateY="24.5" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <value>
+            <Color red="0.9529411792755127" green="0.9529411792755127" blue="0.9529411792755127" />
+         </value>
+      </ColorPicker>
+      <ColorPicker fx:id="columnSecondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="-31.0" translateY="95.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <value>
+            <Color red="0.0941176488995552" green="0.0941176488995552" blue="0.0941176488995552" />
+         </value>
+      </ColorPicker>
+      <ColorPicker fx:id="columnPrimaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="-160.0" translateY="95.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <value>
+            <Color red="0.9490196108818054" green="0.9490196108818054" blue="0.9490196108818054" />
+         </value>
+      </ColorPicker>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Default column color preset" translateX="-63.0" translateY="73.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <ColorPicker fx:id="cardPrimaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="-160.0" translateY="165.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <value>
+            <Color red="0.9725490212440491" green="0.9725490212440491" blue="0.9725490212440491" />
+         </value>
+      </ColorPicker>
+      <ColorPicker fx:id="cardSecondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="-31.0" translateY="165.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <value>
+            <Color opacity="0.30000001192092896" />
+         </value>
+      </ColorPicker>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Default card color preset" translateX="-75.0" translateY="143.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBoardColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="28.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <graphic>
+            <SVGPath content="M451 934q-123-10-207-101t-84-216q0-77 35.5-145T295 361l43 43q-56 33-87 90.5T220 617q0 100 66 173t165 84v60Zm60 0v-60q100-12 165-84.5T741 617q0-109-75.5-184.5T481 357h-20l60 60-43 43-133-133 133-133 43 43-60 60h20q134 0 227 93.5T801 617q0 125-83.5 216T511 934Z" scaleX="0.02" scaleY="0.02" />
+         </graphic>
+      </Button>
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onColumnColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="98.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <graphic>
+            <SVGPath content="M451 934q-123-10-207-101t-84-216q0-77 35.5-145T295 361l43 43q-56 33-87 90.5T220 617q0 100 66 173t165 84v60Zm60 0v-60q100-12 165-84.5T741 617q0-109-75.5-184.5T481 357h-20l60 60-43 43-133-133 133-133 43 43-60 60h20q134 0 227 93.5T801 617q0 125-83.5 216T511 934Z" scaleX="0.02" scaleY="0.02" />
+         </graphic>
+      </Button>
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onCardColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="168.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <graphic>
+            <SVGPath content="M451 934q-123-10-207-101t-84-216q0-77 35.5-145T295 361l43 43q-56 33-87 90.5T220 617q0 100 66 173t165 84v60Zm60 0v-60q100-12 165-84.5T741 617q0-109-75.5-184.5T481 357h-20l60 60-43 43-133-133 133-133 43 43-60 60h20q134 0 227 93.5T801 617q0 125-83.5 216T511 934Z" scaleX="0.02" scaleY="0.02" />
+         </graphic>
+      </Button>
     </children>
 </fx:root>
