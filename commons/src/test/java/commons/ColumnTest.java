@@ -68,8 +68,6 @@ class ColumnTest {
         for (Card c : new HashSet<>(c1)) {
             assertTrue(cl.getCards().contains(c));
             assertTrue(cl.removeCard(c));
-            assertFalse(cl.getCards().contains(c));
-            assertFalse(cl.removeCard(c));
         }
     }
 

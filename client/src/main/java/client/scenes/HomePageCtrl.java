@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
 
-public class HomePageCtrl implements LiveUIController {
+public class HomePageCtrl implements Refreshable {
 
     @Getter
     private final MainCtrl mainCtrl;

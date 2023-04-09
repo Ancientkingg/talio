@@ -1,7 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
-import client.scenes.LiveUIController;
+import client.scenes.Refreshable;
 import client.scenes.components.UIComponent;
 import client.services.BoardService;
 import commons.ColorScheme;
@@ -23,7 +23,7 @@ public class TagSettingsModal extends Modal implements UIComponent {
     @FXML
     private ColorPicker secondaryColor;
 
-    private final LiveUIController parentCtrl;
+    private final Refreshable parentCtrl;
 
     private final Tag tag;
 
@@ -34,7 +34,7 @@ public class TagSettingsModal extends Modal implements UIComponent {
      * @param parentCtrl parent controller
      * @param tag tag to be displayed
      */
-    public TagSettingsModal(final BoardService boardService, final Scene parentScene, final LiveUIController parentCtrl, final Tag tag) {
+    public TagSettingsModal(final BoardService boardService, final Scene parentScene, final Refreshable parentCtrl, final Tag tag) {
         super(boardService, parentScene);
         this.parentCtrl = parentCtrl;
         this.tag = tag;
