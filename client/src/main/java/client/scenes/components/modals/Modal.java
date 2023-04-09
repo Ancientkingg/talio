@@ -69,6 +69,7 @@ public class Modal extends GridPane {
      * Shows modal in the parentScene
      */
     public void showModal() {
+        ((StackPane) parentScene.getRoot()).getChildren().add(background);
         ((StackPane) parentScene.getRoot()).getChildren().add(this);
     }
 
@@ -78,8 +79,6 @@ public class Modal extends GridPane {
         this.background.setPrefSize(10000, 10000);
         this.background.setMinSize(10000, 10000);
         this.background.setMaxSize(10000, 10000);
-
-        ((StackPane) parentScene.getRoot()).getChildren().add(background);
     }
 }
 

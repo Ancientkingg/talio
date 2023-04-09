@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class OverviewTagComponent extends GridPane implements UIComponent {
 
@@ -53,6 +54,7 @@ public class OverviewTagComponent extends GridPane implements UIComponent {
         final Tooltip tt = new Tooltip(title);
         tt.setAutoHide(false);
         tt.setFont(javafx.scene.text.Font.font("System", 12));
+        tt.setShowDelay(Duration.millis(100));
         Tooltip.install(this, tt);
 
         // Set background color to a random color if it's not set yet

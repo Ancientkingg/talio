@@ -16,7 +16,7 @@ public class ShortcutsHelpModal extends Modal implements UIComponent {
     public ShortcutsHelpModal(final BoardService boardService, final Scene parentScene) {
         super(boardService, parentScene);
 
-        loadSource(Main.class.getResource("/components/modals/ShortcutsHelpModal.fxml"));
+        loadSource(Main.class.getResource("/components/ShortcutsHelpModal.fxml"));
     }
 
 

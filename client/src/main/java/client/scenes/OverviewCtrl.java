@@ -150,7 +150,13 @@ public class OverviewCtrl implements Refreshable {
     private void setHelpModalShortcut(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
         final KeyCombination helpMenu = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_DOWN);
         final Runnable showHelpModal = () -> {
-            final ShortcutsHelpModal shortcutsHelpModal = new ShortcutsHelpModal(boardService, mainCtrl.getCurrentScene());
+            try {
+                final ShortcutsHelpModal shortcutsHelpModal = new ShortcutsHelpModal(boardService, mainCtrl.getCurrentScene());
+                shortcutsHelpModal.showModal();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         };
         keyboardShortcuts.put(helpMenu, showHelpModal);
     }
