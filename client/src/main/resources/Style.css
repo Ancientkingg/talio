@@ -19,6 +19,40 @@ Talio text color: #F3F3F3
 }
 
 /*
+Subtasks
+ */
+
+.subtaskTextField {
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.subtaskTextField:hover {
+    -fx-background-color: light #afafaf;
+}
+
+.subtaskCheckbox .box{
+    -fx-border-color: black;
+    -fx-border-radius: 2px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 2px;
+}
+
+.subtaskDeleteButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.subtaskDeleteButton:hover {
+    -fx-background-color: #ff4848;
+}
+
+
+
+
+/*
 Tags
  */
 
