@@ -17,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -37,6 +38,12 @@ public class CardComponent extends GridPane implements UIComponent {
 
     @FXML
     private HBox tagContainer;
+
+    @FXML
+    private Text descriptionIndicator;
+
+    @FXML
+    private Text subtaskCounter;
 
     /**
      * Constructor for CardComponent
@@ -188,5 +195,19 @@ public class CardComponent extends GridPane implements UIComponent {
             moreTags.setStyle("-fx-text-fill: #4f4f4f;-fx-padding: 0 0 15px 0;");
             tagContainer.getChildren().add(moreTags);
         }
+
+        if (card.getDescription().equals("") || card.getDescription() == null) {
+            descriptionIndicator.setVisible(false);
+        } else {
+            descriptionIndicator.setVisible(true);
+        }
+
+        if (card.getSubtasks().size() != 0) {
+            subtaskCounter.setText(card.countFinishedSubtasks() + "/" + card.getSubtasks().size());
+            subtaskCounter.setVisible(true);
+        } else {
+            subtaskCounter.setVisible(false);
+        }
+
     }
 }

@@ -170,6 +170,21 @@ public class Card implements Comparable<Card> {
         return subtasks.remove(subtask);
     }
 
+
+    /**
+     * Counts the number of completed subtasks
+     * @return number of completed subtasks
+     */
+    public int countFinishedSubtasks() {
+        int i = 0;
+        for (final SubTask task : this.getSubtasks()) {
+            if (task.isDone()) {
+                i++;
+            }
+        }
+        return i;
+    }
+
     /**
      * Generates a unique id for the card
      * @return generated id
