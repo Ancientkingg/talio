@@ -10,9 +10,9 @@ class TagTest {
 
     @Test
     void testConstructor() {
-        Tag t = new Tag("Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t = new Tag("Important", new ColorScheme(1, new Color(0,0,0,255), new Color(255,255,255,255)));
         assertEquals("Important", t.getTitle());
-        assertEquals(new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)), t.getColorScheme());
+        assertEquals(new ColorScheme(1, new Color(0,0,0,255), new Color(255,255,255,255)), t.getColorScheme());
     }
 
     @Test
@@ -25,10 +25,11 @@ class TagTest {
 
     @Test
     void setHexColor() {
-        Tag t = new Tag("Important", new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)));
+        Tag t = new Tag("Important", new ColorScheme(1, new Color(0,0,0,255), new Color(255,255,255,255)));
         assertEquals("Important", t.getTitle());
-        t.setColorScheme(new ColorScheme(new Color(0,0,0,255), new Color(255,0,0,255)));
-        assertEquals(new ColorScheme(new Color(0,0,0,255), new Color(255,0,0,255)), t.getColorScheme());
+        t.setColorScheme(new ColorScheme(1, new Color(0,0,0,255), new Color(255,0,0,255)));
+        ColorScheme expected = new ColorScheme(1, new Color(0,0,0,255), new Color(255,0,0,255));
+        assertEquals(expected, t.getColorScheme());
     }
 
     @Test
