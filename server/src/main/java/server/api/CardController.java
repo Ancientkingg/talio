@@ -164,6 +164,7 @@ public class CardController {
     public Card editCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                          @DestinationVariable final long columnId)
     {
+        logger.info("Received edit card request for board: " + joinKey);
         try {
             final String password = cardDTO.getPassword();
 
@@ -208,7 +209,7 @@ public class CardController {
      */
     public void updateCardEdited(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card edited for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit/", new CardDTO(card, columnId));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit", new CardDTO(card, columnId));
     }
 
     /**

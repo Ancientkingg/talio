@@ -617,14 +617,13 @@ public class BoardService {
     }
 
     /**
-     * Currently not functional, but connects to socket.
      * Changes card title, description, and tags (server initiated)
      *
      * @param card   Card to edit
-     * @param column Column that card is in
      */
-    public void updateEditCard(final Card card, final Column column) {
-//        boardModel.editCard(card, column);
+    public void updateEditCard(final Card card) throws CardNotFoundException {
+        boardModel.editCard(card);
+        mainCtrl.getOverviewCtrl().refreshCard(card.getId());
     }
 
     /**

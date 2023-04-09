@@ -130,7 +130,7 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                     final Column column;
                     try {
                         column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
-                        boardService.updateEditCard(cardDTO.getCard(), column);
+                        boardService.updateEditCard(cardDTO.getCard());
                         logger.info("Card edited: " + cardDTO.getCard().getTitle());
                     }
                     catch (Exception e) { logger.info("Couldn't edit card"); }

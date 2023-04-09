@@ -1,31 +1,47 @@
 package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.LiveUIController;
 import client.scenes.components.CardComponent;
+import client.scenes.components.TagSelectComponent;
 import client.services.BoardService;
+import commons.Board;
 import commons.Card;
+import commons.ColorScheme;
+import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-public class CardDetailsModal extends Modal {
+public class CardDetailsModal extends Modal implements LiveUIController {
 
     private final Card card;
 
     private final CardComponent cardComponent;
 
     @FXML
-    private TextArea cardTitle;
+    private TextField cardTitle;
 
     @FXML
     private TextArea cardDescription;
 
     @FXML
-    private VBox tagBox;
+    private VBox tagsContainer;
+
+    @FXML
+    private VBox subTasksContainer;
+
+    @FXML
+    private ComboBox<ColorScheme> colorSchemeComboBox;
 
     /**
      * Constructor for card details modal
@@ -49,7 +65,8 @@ public class CardDetailsModal extends Modal {
             throw new RuntimeException(e);
         }
 
-        refreshTags();
+        refresh();
+
     }
 
     /**
@@ -69,16 +86,66 @@ public class CardDetailsModal extends Modal {
     private void submitDetails() {
         this.card.setTitle(cardTitle.getText());
         this.card.setDescription(cardDescription.getText());
+        final List<Tag> selectedTags = this.getSelectedTags();
+
+        for (final Tag tag : selectedTags) {
+            if (!this.card.getTags().contains(tag)) {
+                this.card.addTag(tag);
+                boardService.addTagToCard(this.card, tag);
+            }
+        }
+
+        final Iterator it = this.card.getTags().iterator();
+        while (it.hasNext()) {
+            final Tag tag = (Tag) it.next();
+            if (!selectedTags.contains(tag)) {
+                it.remove();
+                boardService.removeTagFromCard(this.card, tag);
+            }
+        }
+
+        this.card.setColorScheme(this.colorSchemeComboBox.getValue());
+
+        boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
+
         this.closeModal();
         this.cardComponent.refresh();
     }
 
+    /**
+     * Deletes the card
+     */
     @FXML
     private void deleteCard() {
         this.cardComponent.getColumnParent().deleteCard(this.cardComponent);
         this.cardComponent.getColumnParent().getColumn().removeCard(this.card);
+        boardService.removeCardFromColumn(this.card, this.cardComponent.getColumnParent().getColumn());
         this.closeModal();
         this.cardComponent.getColumnParent().refresh();
+    }
+
+    @FXML
+    private void onAddSubtaskButtonClick() {
+        // TODO
+    }
+
+    private List<Tag> getSelectedTags() {
+        return this.tagsContainer.getChildren().stream()
+                .filter( child -> child instanceof TagSelectComponent)
+                .map( child -> (TagSelectComponent) child)
+                .filter( tagComponent -> tagComponent.isSelected())
+                .map( tagComponent -> tagComponent.getTag()).toList();
+    }
+
+    /**
+     * Refreshes the modal
+     */
+    public void refresh() {
+        this.refreshDescription();
+        this.refreshTitle();
+        this.refreshTags();
+        this.refreshSubtasks();
+        this.refreshColorSchemes();
     }
 
 
@@ -98,7 +165,34 @@ public class CardDetailsModal extends Modal {
      * Refreshes tags in the scroll pane and displays them in their component form
      */
     public void refreshTags() {
+        tagsContainer.getChildren().clear();
+
+        final Board currentBoard = boardService.getCurrentBoard();
+        final Set<Tag> tags = currentBoard.getTags();
+
+        for (final Tag tag : tags) {
+            final TagSelectComponent tagComponent = new TagSelectComponent(boardService, parentScene, this, tag);
+            if (card.getTags().contains(tag)) {
+                tagComponent.setSelected(true);
+            }
+            tagsContainer.getChildren().add(tagComponent);
+        }
+    }
+
+    /**
+     * Refreshes subtasks in the scroll pane and displays them in their component form
+     */
+    public void refreshSubtasks() {
         // TODO
+    }
+
+    /**
+     * Refreshes color schemes in the color scheme combo box
+     */
+    public void refreshColorSchemes() {
+        this.colorSchemeComboBox.getItems().clear();
+        final List<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
+        this.colorSchemeComboBox.getItems().addAll(colorSchemes);
     }
 
 }
