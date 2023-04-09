@@ -847,4 +847,49 @@ public class BoardService {
         boardModel.getCurrentBoard().deleteColorPreset(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
     }
+
+    public void setDefaultColorPresetColumn(ColorScheme colorPreset) {
+        try {
+            serverService.setDefaultColorPresetColumn(getCurrentBoard(), colorPreset);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setDefaultColorPresetBoard(ColorScheme colorPreset) {
+        try {
+            serverService.setDefaultColorPresetBoard(getCurrentBoard(), colorPreset);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setDefaultColorPresetCard(ColorScheme colorPreset) {
+        try {
+            serverService.setDefaultColorPresetCard(getCurrentBoard(), colorPreset);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be set as default on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateDefaultColorPresetColumn(ColorScheme payload) {
+        boardModel.getCurrentBoard().setColumnColorScheme(payload);
+        if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
+    }
+
+    public void updateDefaultColorPresetBoard(ColorScheme payload) {
+        boardModel.getCurrentBoard().setBoardColorScheme(payload);
+        if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
+    }
+
+    public void updateDefaultColorPresetCard(ColorScheme payload) {
+        boardModel.getCurrentBoard().setCardColorScheme(payload);
+        if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
+    }
 }

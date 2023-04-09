@@ -611,4 +611,25 @@ public class ServerService {
                 new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
         logger.info("Edited color preset sent to server");
     }
+
+    public void setDefaultColorPresetCard(Board currentBoard, ColorScheme colorPreset) {
+        session.send("/app/color-presets/set-card/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Default color preset for cards sent to server");
+    }
+
+    public void setDefaultColorPresetColumn(Board currentBoard, ColorScheme colorPreset) {
+        session.send("/app/color-presets/set-column/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Default color preset for columns sent to server");
+    }
+
+    public void setDefaultColorPresetBoard(Board currentBoard, ColorScheme colorPreset) {
+        session.send("/app/color-presets/set-board/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Default color preset for board sent to server");
+    }
 }

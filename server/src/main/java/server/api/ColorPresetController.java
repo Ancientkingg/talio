@@ -41,6 +41,66 @@ public class ColorPresetController {
         this.messagingTemplate = messagingTemplate;
     }
 
+    @MessageMapping("/color-presets/set-card/{joinKey}")
+    public ResponseEntity<ColorScheme> setCardColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO,
+                                                          @DestinationVariable final String joinKey)
+    {
+        final String password = colorSchemeDTO.getPassword();
+        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+        final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
+
+        final ColorScheme existingColorScheme = board.getCardColorScheme();
+
+        existingColorScheme.setBackgroundColor(colorScheme.getBackgroundColor());
+        existingColorScheme.setTextColor(colorScheme.getTextColor());
+        existingColorScheme.setName(colorScheme.getName());
+
+        boardService.saveBoard(board);
+
+        updateColorPresetCard(colorScheme, board);
+        return ResponseEntity.ok(colorScheme);
+    }
+
+    @MessageMapping("/color-presets/set-column/{joinKey}")
+    public ResponseEntity<ColorScheme> setColumnColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO,
+                                                            @DestinationVariable final String joinKey)
+    {
+        final String password = colorSchemeDTO.getPassword();
+        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+        final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
+
+        final ColorScheme existingColorScheme = board.getColumnColorScheme();
+
+        existingColorScheme.setBackgroundColor(colorScheme.getBackgroundColor());
+        existingColorScheme.setTextColor(colorScheme.getTextColor());
+        existingColorScheme.setName(colorScheme.getName());
+
+        boardService.saveBoard(board);
+
+        updateColorPresetColumn(colorScheme, board);
+        return ResponseEntity.ok(colorScheme);
+    }
+
+    @MessageMapping("/color-presets/set-board/{joinKey}")
+    public ResponseEntity<ColorScheme> setBoardColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO,
+                                                           @DestinationVariable final String joinKey)
+    {
+        final String password = colorSchemeDTO.getPassword();
+        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+        final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
+
+        final ColorScheme existingColorScheme = board.getBoardColorScheme();
+
+        existingColorScheme.setBackgroundColor(colorScheme.getBackgroundColor());
+        existingColorScheme.setTextColor(colorScheme.getTextColor());
+        existingColorScheme.setName(colorScheme.getName());
+
+        boardService.saveBoard(board);
+
+        updateColorPresetBoard(colorScheme, board);
+        return ResponseEntity.ok(colorScheme);
+    }
+
     /**
      * Adds a color scheme to a board
      * @param colorSchemeDTO Tag to be added
@@ -49,12 +109,16 @@ public class ColorPresetController {
      * @return The tag added to board
      */
     @PostMapping("/color-presets/add/{joinKey}")
-    public ResponseEntity<ColorScheme> addTag(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
+    public ResponseEntity<ColorScheme> addColorPreset(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
                                        @PathVariable final String joinKey)
     {
         final String password = colorSchemeDTO.getPassword();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
+
+        board.addColorPreset(null);
+        boardService.saveBoard(board);
+
         board.addColorPreset(colorScheme);
         boardService.saveBoard(board);
 
@@ -70,7 +134,7 @@ public class ColorPresetController {
      * @return The tag removed from board
      */
     @PostMapping("/color-presets/remove/{joinKey}")
-    public ResponseEntity<ColorScheme> removeTag(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
+    public ResponseEntity<ColorScheme> removeColorPreset(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
                                          @PathVariable final String joinKey)
     {
         final String password = colorSchemeDTO.getPassword();
@@ -118,5 +182,21 @@ public class ColorPresetController {
     private void updateColorPresetAdded(final ColorScheme colorScheme, final Board board) {
         logger.info("ColorPreset added to board, propagating: " + board.getJoinKey() + " with name: " + colorScheme.getName());
         messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/add", colorScheme);
+    }
+
+    private void updateColorPresetBoard(ColorScheme colorScheme, Board board) {
+        logger.info("Default ColorPreset set to board, propagating: " + board.getJoinKey());
+        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/set-board", colorScheme);
+
+    }
+
+    private void updateColorPresetColumn(ColorScheme colorScheme, Board board) {
+        logger.info("Default ColorPreset set to column of board, propagating: " + board.getJoinKey());
+        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/set-column", colorScheme);
+    }
+
+    private void updateColorPresetCard(ColorScheme colorScheme, Board board) {
+        logger.info("Default ColorPreset set to card of board, propagating: " + board.getJoinKey());
+        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/set-card", colorScheme);
     }
 }

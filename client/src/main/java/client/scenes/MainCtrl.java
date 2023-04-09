@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.scenes.components.CardComponent;
+import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.modals.ColorPresetsOverviewModal;
 import client.scenes.components.modals.TagsOverviewModal;
 import javafx.scene.Parent;
@@ -35,6 +37,10 @@ public class MainCtrl {
     @Getter
     @Setter
     private ColorPresetsOverviewModal colorPresetsOverviewModal;
+
+    @Getter
+    @Setter
+    private BoardSettingsModal boardSettingsModal;
 
 
 
@@ -180,5 +186,9 @@ public class MainCtrl {
 
     public LiveUIController getColorPresetsOverviewModal() {
         return colorPresetsOverviewModal;
+    }
+
+    public LiveUIController getBoardSettingsModal() {
+        return boardSettingsModal;
     }
 }

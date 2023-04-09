@@ -11,6 +11,7 @@ public class ColorScheme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private long serializationId;
 
     @Getter

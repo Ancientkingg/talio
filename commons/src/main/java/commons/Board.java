@@ -2,16 +2,14 @@ package commons;
 
 import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
-
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import java.sql.Timestamp;
-import java.util.*;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Entity
 public class Board {
@@ -31,11 +29,17 @@ public class Board {
     @Getter @Setter
     private SortedSet<Column> columns;
 
+    @Getter @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private ColorScheme columnTheme;
+    private ColorScheme columnColorScheme;
 
+    @Getter @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ColorScheme boardColorScheme;
+
+    @Getter @Setter
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private ColorScheme cardColorScheme;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Getter
@@ -66,7 +70,7 @@ public class Board {
         this.title = title;
         this.password = password;
         this.columns = columns;
-        this.columnTheme = columnTheme;
+        this.columnColorScheme = columnTheme;
         this.boardColorScheme = boardColorScheme;
         this.tags = tags;
         this.colorPresets = new ArrayList<>();
@@ -94,8 +98,9 @@ public class Board {
         this.created = timestamp;
         this.tags = (tags == null) ? new HashSet<>(0) : tags;
 
-        columnTheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // change these to whatever default is picked
-        boardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255));
+        boardColorScheme = new ColorScheme(new Color(243,243,243,255), new Color(235,235,235,255));
+        columnColorScheme = new ColorScheme(new Color(24,24,24,255), new Color(242,242,242,255)); // change these to whatever default is picked
+        cardColorScheme = new ColorScheme(new Color(0,0,0,77), new Color(248,248,248,255));
         this.colorPresets = new ArrayList<>();
     }
 

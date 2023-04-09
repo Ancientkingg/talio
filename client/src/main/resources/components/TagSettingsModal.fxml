@@ -58,13 +58,13 @@
             <Insets left="80.0" top="3.0" />
          </GridPane.margin>
       </Text>
-      <ColorPicker fx:id="primaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="95.0" GridPane.rowIndex="2" />
+      <ColorPicker fx:id="primaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="95.0" GridPane.rowIndex="2" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Primary color" translateX="79.0" translateY="74.0" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Text>
-      <ColorPicker fx:id="secondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="165.0" GridPane.rowIndex="2" />
+      <ColorPicker fx:id="secondaryColor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: ffffff; -fx-border-insets: -1px;" styleClass="join-board-modal-text-field" translateX="70.0" translateY="165.0" GridPane.rowIndex="2" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Secondary color" translateX="79.0" translateY="145.0" GridPane.rowIndex="2" />
       <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onDelete" prefHeight="28.0" prefWidth="75.0" style="-fx-font-size: 15px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" text="Delete" textFill="WHITE" translateX="-39.0" translateY="4.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <GridPane.margin>

@@ -187,6 +187,7 @@ public class OverviewCtrl implements LiveUIController {
     @FXML
     private void onBoardEditButtonClick() {
         final BoardSettingsModal modal = new BoardSettingsModal(boardService, this.mainCtrl.getCurrentScene(), this);
+        mainCtrl.setBoardSettingsModal(modal);
         modal.showModal();
     }
 

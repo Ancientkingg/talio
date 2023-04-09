@@ -1,11 +1,17 @@
 package server.services;
 
 import commons.Board;
+import commons.ColorScheme;
+import commons.Tag;
+import lombok.Getter;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.api.exceptions.ResourceNotFoundException;
 import server.api.exceptions.UnauthorizedResourceException;
+import server.database.ColorSchemeRepository;
+import server.database.TagRepository;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -14,13 +20,22 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository br;
 
+    @Getter
+    private final ColorSchemeRepository csr;
+
+    private final TagRepository tr;
+
+
 
     /**
      * Constructor for the Board Service
      * @param br Dependency Injection for the board repository
      */
-    public BoardService(final BoardRepository br) {
+    @Autowired
+    public BoardService(final BoardRepository br, final ColorSchemeRepository csr, final TagRepository tr) {
         this.br = br;
+        this.csr = csr;
+        this.tr = tr;
     }
 
     /**
@@ -89,5 +104,13 @@ public class BoardService {
      */
     public void deleteBoard(final Board board) {
         this.br.delete(board);
+    }
+
+    public ColorScheme saveColorScheme(ColorScheme colorScheme) {
+        return csr.save(colorScheme);
+    }
+
+    public Tag saveTag(Tag tag) {
+        return tr.save(tag);
     }
 }

@@ -322,6 +322,51 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                         }); }
                 });
         subscriptions.add(colorPresetEdited);
+
+        final Subscription defaultColorPresetBoard = session.subscribe(
+                "/topic/color-presets/" + joinKey + "/set-board", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            try {
+                                boardService.updateDefaultColorPresetBoard((ColorScheme) payload);
+                                logger.info("Edited default color preset of board");
+                            }
+                            catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        }); }
+                });
+        subscriptions.add(defaultColorPresetBoard);
+
+        final Subscription defaultColorPresetColumn = session.subscribe(
+                "/topic/color-presets/" + joinKey + "/set-column", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            try {
+                                boardService.updateDefaultColorPresetColumn((ColorScheme) payload);
+                                logger.info("Edited default color preset of board");
+                            }
+                            catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        }); }
+                });
+        subscriptions.add(defaultColorPresetColumn);
+
+        final Subscription defaultColorPresetCard = session.subscribe(
+                "/topic/color-presets/" + joinKey + "/set-card", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) { return ColorScheme.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            try {
+                                boardService.updateDefaultColorPresetCard((ColorScheme) payload);
+                                logger.info("Edited default color preset of card");
+                            }
+                            catch (BoardChangeException e) { throw new RuntimeException(e); }
+                        }); }
+                });
+        subscriptions.add(defaultColorPresetCard);
     }
 
     private void subscribeToTagCardUpdates(final String joinKey) {
