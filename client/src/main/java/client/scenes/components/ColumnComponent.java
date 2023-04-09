@@ -25,6 +25,9 @@ public class ColumnComponent extends GridPane implements UIComponent {
 
     @Getter
     private final BoardService boardService;
+
+    @Getter
+    private final OverviewCtrl overviewCtrl;
     private final Column column;
 
     private final Scene overviewScene;
@@ -41,6 +44,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
     @FXML
     private ScrollPane scrollPane;
 
+    @Getter
     @FXML
     @Getter
     private VBox innerCardList;
@@ -58,6 +62,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
      */
     public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl, final Scene overviewScene) {
         this.boardService = boardService;
+        this.overviewCtrl = overviewCtrl;
         this.column = column;
 
         this.overviewScene = overviewScene;

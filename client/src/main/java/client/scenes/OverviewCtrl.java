@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.scenes.components.Draggable;
+import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.scenes.components.modals.*;
@@ -20,6 +22,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -28,7 +31,7 @@ import javax.inject.Inject;
 import java.awt.datatransfer.StringSelection;
 import java.util.TreeSet;
 
-public class OverviewCtrl implements LiveUIController {
+public class OverviewCtrl implements Refreshable {
     private final MainCtrl mainCtrl;
     private final BoardService boardService;
 
@@ -249,6 +252,8 @@ public class OverviewCtrl implements LiveUIController {
      */
     public void refresh() {
         this.boardNameButton.setText(boardService.getCurrentBoard().getTitle());
+        ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren()
+            .removeIf(c -> c instanceof Draggable);
         this.refreshColumn();
     }
 

@@ -51,7 +51,7 @@ public class Main {
      * @return A randomly generated String of length 30
      */
     private static String generateRandomPassword() {
-        return RandomStringUtils.randomAscii(30);
+        return RandomStringUtils.randomAlphanumeric(25, 35);
     }
 
     /**
