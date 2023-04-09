@@ -116,10 +116,10 @@ public class Column implements Comparable<Column> {
         if (card == null) return false;
         if (!this.cards.remove(card)) return false;
 
-        int idx = 0;
-        for (final Card c : this.cards) {
-            c.setPriority(idx++);
-        }
+//        int idx = 0;
+//        for (final Card c : this.cards) {
+//            c.setPriority(idx++);
+//        }
 
         return true;
     }

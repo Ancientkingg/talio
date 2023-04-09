@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
+import client.scenes.components.Draggable;
 import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
@@ -14,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 
@@ -70,6 +72,8 @@ public class OverviewCtrl implements Refreshable {
      */
     public void refresh() {
         this.boardNameButton.setText(boardService.getCurrentBoard().getTitle());
+        ((StackPane) mainCtrl.getCurrentScene().getRoot()).getChildren()
+            .removeIf(c -> c instanceof Draggable);
         this.refreshColumn();
     }
 

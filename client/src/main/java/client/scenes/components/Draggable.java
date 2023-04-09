@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import lombok.Getter;
 
@@ -17,17 +18,19 @@ import java.util.List;
 public abstract class Draggable extends GridPane {
 
     @Getter
-    private boolean draggable;
+    private boolean draggable = false;
 
     private boolean dragState;
 
     private Refreshable parentController = null;
 
-    private Parent parentContainer;
+    private final Parent parentContainer;
 
-    private Node intersectedComponent;
+    protected Node intersectedComponent;
 
     private boolean isBelow;
+
+    private Draggable clone;
 
 
     private final EventHandler<MouseEvent> onPress = e -> {
@@ -37,46 +40,48 @@ public abstract class Draggable extends GridPane {
         final Scene rootScene = this.getScene();
         final StackPane root = (StackPane) rootScene.getRoot();
 
-        this.setMaxWidth(this.getWidth());
-        this.setPrefWidth(this.getWidth());
-        this.setMinWidth(this.getWidth());
-        this.setPickOnBounds(false);
-        this.setMouseTransparent(true);
+        this.clone = this.clone();
+
+        clone.setMaxWidth(this.getWidth());
+        clone.setPrefWidth(this.getWidth());
+        clone.setMinWidth(this.getWidth());
+        clone.setPickOnBounds(false);
+        clone.setMouseTransparent(true);
 
 
         final Point2D p = this.localToScene(this.getWidth() / 2.0,this.getHeight() / 2.0);
 
-        this.setTranslateX(p.getX() - rootScene.getWidth() / 2.0);
-        this.setTranslateY(p.getY() - rootScene.getHeight() / 2.0);
+        clone.setTranslateX(p.getX() - rootScene.getWidth() / 2.0);
+        clone.setTranslateY(p.getY() - rootScene.getHeight() / 2.0);
 
-        root.getChildren().add(this);
+        root.getChildren().add(clone);
     };
 
     private final EventHandler<MouseEvent> onDrag = e -> {
         if (!dragState) return;
-        this.setRotate(7.5);
+        clone.setRotate(7.5);
         final Scene rootScene = this.getScene();
+        this.setVisible(false);
 
-        this.setTranslateX(e.getSceneX() - rootScene.getWidth() / 2.0);
-        this.setTranslateY(e.getSceneY() - rootScene.getHeight() / 2.0);
+        clone.setTranslateX(e.getSceneX() - rootScene.getWidth() / 2.0);
+        clone.setTranslateY(e.getSceneY() - rootScene.getHeight() / 2.0);
 
-        final Node intersectedNode = pick(rootScene.getRoot(), e.getSceneX(), e.getSceneY());
-        final Node intersectedComponent = toComponent(intersectedNode);
+        final Node intersectedNode = clone.pick(rootScene.getRoot(), e.getSceneX(), e.getSceneY());
+        final Node intersectedComponent = clone.toComponent(intersectedNode);
         if (intersectedComponent == null) return;
         this.intersectedComponent = intersectedComponent;
 
         final Bounds b = intersectedNode.localToScene(intersectedNode.getBoundsInLocal());
 
         this.isBelow = e.getSceneY() > b.getCenterY();
+        this.duringDrag(intersectedComponent, isBelow);
     };
 
     private final EventHandler<MouseEvent> onRelease = e -> {
         if (!dragState) return;
         dragState = false;
         if (this.getParent() instanceof StackPane)
-            ((StackPane) this.getParent()).getChildren().remove(this);
-
-        System.out.println(intersectedComponent instanceof ColumnComponent);
+            ((StackPane) clone.getParent()).getChildren().remove(clone);
 
         this.onDrop(intersectedComponent, isBelow);
         parentController.refresh();
@@ -114,10 +119,18 @@ public abstract class Draggable extends GridPane {
 
     /**
      * Called when the component is dropped
-     * @param intersectedComponent Component that was intersected
+     * @param intersectedComponent Component that was intersected: either a Draggable or of the same class as the parent container
      * @param isBelow True if the component was dropped below the intersected component, false otherwise
      */
-    public abstract void onDrop(Node intersectedComponent, boolean isBelow);
+    protected abstract void onDrop(Node intersectedComponent, boolean isBelow);
+
+    protected abstract void duringDrag(Node intersectedComponent, boolean isBelow);
+
+    /**
+     * Clones the component
+     * @return Cloned component
+     */
+    public abstract Draggable clone();
 
     private Node toComponent(final Node node) {
         if (node == null) return null;

@@ -6,19 +6,27 @@ import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
 import commons.Tag;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 public class CardComponent extends Draggable implements UIComponent {
     private final BoardService boardService;
@@ -35,6 +43,8 @@ public class CardComponent extends Draggable implements UIComponent {
 
     @FXML
     private HBox tagContainer;
+
+    private Node oldIntersectedComponent;
 
     /**
      * Constructor for CardComponent
@@ -85,6 +95,14 @@ public class CardComponent extends Draggable implements UIComponent {
 
 //        setUpDragAndDrop();
         refresh();
+    }
+
+    protected CardComponent(final Card card, final ColumnComponent columnParent) {
+        super(null, null);
+        this.boardService = null;
+        this.card = card;
+        this.columnParent = columnParent;
+        loadSource(Main.class.getResource("/components/Card.fxml"));
     }
 
     /**
@@ -169,7 +187,7 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param intersectedComponent The component the card was dropped on
      * @param isBelow Whether the card was dropped below the component
      */
-    public void onDrop(final Node intersectedComponent, final boolean isBelow) {
+    protected void onDrop(final Node intersectedComponent, final boolean isBelow) {
         if (!(intersectedComponent instanceof CardComponent) && !(intersectedComponent instanceof ColumnComponent))
             throw new RuntimeException("Trying to drop a card on a non-card component");
 
@@ -189,6 +207,52 @@ public class CardComponent extends Draggable implements UIComponent {
 
             boardService.repositionCard(card.getId(), columnParent.getColumn().getIndex(),
                     intersectedCardComponent.getColumnParent().getColumn().getIndex(), priority);
+        }
+    }
+
+    protected void duringDrag(final Node intersectedComponent, final boolean isBelow) {
+        if (!(intersectedComponent instanceof CardComponent) && !(intersectedComponent instanceof ColumnComponent))
+            throw new RuntimeException("Trying to drop a card on a non-card component");
+
+        if (!intersectedComponent.isVisible() || oldIntersectedComponent == intersectedComponent) return;
+        oldIntersectedComponent = intersectedComponent;
+
+        if (intersectedComponent instanceof final ColumnComponent intersectedColumn &&
+                intersectedColumn.getColumn().getCards().size() == 0) {
+            // Empty column list
+//            if (!intersectedColumn.getInnerCardList().getChildren().contains(cardDropIndicator))
+//                intersectedColumn.getInnerCardList().getChildren().add(cardDropIndicator);
+//
+//            CompletableFuture.runAsync(() -> {
+//               intersectedColumn.getInnerCardList().getChildren().clear();
+//            });
+
+        } else if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
+
+            CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent());
+
+            cardDropIndicator.setVisible(false);
+
+            // Selecting a card
+            ColumnComponent intersectedColumn = intersectedCardComponent.getColumnParent();
+            int index = intersectedColumn.getInnerCardList().getChildren().indexOf(intersectedCardComponent);
+            if (isBelow) index++;
+            if (!intersectedColumn.getInnerCardList().getChildren().contains(cardDropIndicator))
+                intersectedColumn.getInnerCardList().getChildren().add(index, cardDropIndicator);
+
+            final Timeline timeline = new Timeline();
+            final KeyFrame k1 = new KeyFrame(Duration.millis(100), e -> {
+                if (oldIntersectedComponent != intersectedComponent) {
+                    intersectedColumn.getInnerCardList().getChildren()
+                        .removeIf(c ->
+                            c instanceof CardComponent &&
+                                ((CardComponent) c).boardService == null);
+                } else {
+                    timeline.playFromStart();
+                }
+            });
+            timeline.getKeyFrames().add(k1);
+            Platform.runLater(timeline::play);
         }
     }
 
@@ -215,5 +279,9 @@ public class CardComponent extends Draggable implements UIComponent {
             moreTags.setStyle("-fx-text-fill: #4f4f4f;-fx-padding: 0 0 15px 0;");
             tagContainer.getChildren().add(moreTags);
         }
+    }
+
+    public Draggable clone() {
+        return new CardComponent(boardService, card, columnParent);
     }
 }
