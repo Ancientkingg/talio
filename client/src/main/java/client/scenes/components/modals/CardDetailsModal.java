@@ -96,7 +96,6 @@ public class CardDetailsModal extends Modal implements LiveUIController {
         }
 
         final Iterator it = this.card.getTags().iterator();
-
         while (it.hasNext()) {
             final Tag tag = (Tag) it.next();
             if (!selectedTags.contains(tag)) {
@@ -104,6 +103,8 @@ public class CardDetailsModal extends Modal implements LiveUIController {
                 boardService.removeTagFromCard(this.card, tag);
             }
         }
+
+        this.card.setColorScheme(this.colorSchemeComboBox.getValue());
 
         boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
 
