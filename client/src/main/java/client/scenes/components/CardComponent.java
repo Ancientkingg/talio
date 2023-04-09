@@ -11,22 +11,17 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 
 public class CardComponent extends Draggable implements UIComponent {
     private final BoardService boardService;
@@ -211,32 +206,21 @@ public class CardComponent extends Draggable implements UIComponent {
     }
 
     protected void duringDrag(final Node intersectedComponent, final boolean isBelow) {
-        if (!(intersectedComponent instanceof CardComponent) && !(intersectedComponent instanceof ColumnComponent))
-            throw new RuntimeException("Trying to drop a card on a non-card component");
 
         if (!intersectedComponent.isVisible() || oldIntersectedComponent == intersectedComponent) return;
         oldIntersectedComponent = intersectedComponent;
 
-        if (intersectedComponent instanceof final ColumnComponent intersectedColumn &&
-                intersectedColumn.getColumn().getCards().size() == 0) {
-            // Empty column list
-//            if (!intersectedColumn.getInnerCardList().getChildren().contains(cardDropIndicator))
-//                intersectedColumn.getInnerCardList().getChildren().add(cardDropIndicator);
-//
-//            CompletableFuture.runAsync(() -> {
-//               intersectedColumn.getInnerCardList().getChildren().clear();
-//            });
+        if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
 
-        } else if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
-
-            CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent());
+            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent());
 
             cardDropIndicator.setVisible(false);
 
             // Selecting a card
-            ColumnComponent intersectedColumn = intersectedCardComponent.getColumnParent();
+            final ColumnComponent intersectedColumn = intersectedCardComponent.getColumnParent();
             int index = intersectedColumn.getInnerCardList().getChildren().indexOf(intersectedCardComponent);
             if (isBelow) index++;
+
             if (!intersectedColumn.getInnerCardList().getChildren().contains(cardDropIndicator))
                 intersectedColumn.getInnerCardList().getChildren().add(index, cardDropIndicator);
 
@@ -281,6 +265,10 @@ public class CardComponent extends Draggable implements UIComponent {
         }
     }
 
+    /**
+     * Clones the card
+     * @return The cloned card
+     */
     public Draggable clone() {
         return new CardComponent(boardService, card, columnParent);
     }
