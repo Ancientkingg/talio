@@ -11,6 +11,7 @@ import commons.ColorScheme;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.util.Set;
@@ -20,6 +21,9 @@ public class TagsOverviewModal extends Modal implements UIComponent, Refreshable
 
     @FXML
     private VBox tagsContainer;
+
+    @FXML
+    private Button addTagButton;
 
     /**
      * Constructor for BoardSettingsModal
@@ -39,6 +43,8 @@ public class TagsOverviewModal extends Modal implements UIComponent, Refreshable
     public void initialize() {
         super.initialize();
         this.renderTags();
+        addTagButton.setDisable(true);
+        addTagButton.setVisible(false);
     }
 
     @FXML
@@ -56,7 +62,7 @@ public class TagsOverviewModal extends Modal implements UIComponent, Refreshable
         this.renderTags();
     }
 
-    private void renderTags() {
+    protected void renderTags() {
         tagsContainer.getChildren().clear();
 
         final Board currentBoard = boardService.getCurrentBoard();

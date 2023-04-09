@@ -132,13 +132,19 @@ public class OverviewCtrl implements Refreshable {
 
                     case RIGHT -> setSelectCardOnRightShortcut();
 
-                    case T -> { /*TODO*/ }
+                    case T -> setTagForCardShortcut();
 
                     case C -> { /*TODO*/ }
                 }
             }
         });
 
+    }
+
+    private void setTagForCardShortcut() {
+        final TagsShortcutModal tagsShortcutModal = new TagsShortcutModal(boardService, mainCtrl.getCurrentScene());
+
+        tagsShortcutModal.showModal();
     }
 
     private void setHelpModalShortcut(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
