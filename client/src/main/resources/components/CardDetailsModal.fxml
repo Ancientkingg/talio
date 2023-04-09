@@ -12,7 +12,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -20,6 +22,8 @@
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="35.0" prefWidth="51.62375259399414" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="30.0" prefWidth="81.87624740600586" />
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="118.52321243286133" minWidth="0.0" percentWidth="35.0" prefWidth="47.483970642089844" />
+      <ColumnConstraints />
+      <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="11.0" minHeight="0.0" prefHeight="0.0" />
@@ -93,7 +97,7 @@
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Card description" translateX="-228.0" translateY="-32.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="285.0" style="-fx-border-color: rgba(24, 24, 24, 0.8); -fx-border-radius: 10px; -fx-background-color: transparent; -fx-background-radius: 10px; -fx-border-insets: -3px;" translateX="-2.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <content>
-            <FlowPane alignment="TOP_CENTER" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
+            <FlowPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="254.0" prefWidth="283.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
                <children>
                   <VBox fx:id="subTasksContainer" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="4.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
                      <FlowPane.margin>
@@ -125,5 +129,14 @@
             <Insets top="-1.0" />
          </padding>
       </ComboBox>
+      <Button fx:id="addSubtaskButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddSubtaskButtonClick" prefHeight="32.0" prefWidth="260.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD SUBTASK" textAlignment="CENTER" translateX="103.0" translateY="-69.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font>
+         <graphic>
+            <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-49.0" translateY="1.0" />
+         </graphic>
+      </Button>
+      <Line endX="100.0" fill="#828282b6" startX="-160.0" stroke="#696969" translateX="103.0" translateY="-107.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </children>
 </fx:root>

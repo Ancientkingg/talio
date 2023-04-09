@@ -99,6 +99,11 @@ public class CardDetailsModal extends Modal implements LiveUIController {
         this.cardComponent.getColumnParent().refresh();
     }
 
+    @FXML
+    private void onAddSubtaskButtonClick() {
+        // TODO
+    }
+
     /**
      * Refreshes the modal
      */
