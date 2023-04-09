@@ -37,7 +37,7 @@
             <GridPane.margin>
                 <Insets top="10.0" />
             </GridPane.margin></Text>
-        <Button fx:id="crossButton1" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeModal" prefHeight="24.0" prefWidth="24.0" styleClass="modalCrossButton" stylesheets="@../../../../../../Style.css" GridPane.columnIndex="2">
+        <Button fx:id="crossButton1" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeModal" prefHeight="24.0" prefWidth="24.0" styleClass="modalCrossButton" stylesheets="@../Style.css" GridPane.columnIndex="2">
             <graphic>
                 <SVGPath content="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" scaleX="0.025" scaleY="0.025" styleClass="modalCrossButtonIcon" />
             </graphic>
