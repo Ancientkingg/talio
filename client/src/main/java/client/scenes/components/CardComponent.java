@@ -114,11 +114,12 @@ public class CardComponent extends Draggable implements UIComponent {
         editCardButton.setDisable(setDisable);
     }
 
-    protected CardComponent(final Card card, final ColumnComponent columnParent) {
+    protected CardComponent(final Card card, final ColumnComponent columnParent, final Scene overviewScene) {
         super(null, null);
         this.boardService = null;
         this.card = card;
         this.columnParent = columnParent;
+        this.overviewScene = overviewScene;
         loadSource(Main.class.getResource("/components/Card.fxml"));
     }
 
@@ -234,7 +235,7 @@ public class CardComponent extends Draggable implements UIComponent {
 
         if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
 
-            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent());
+            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent(), overviewScene);
 
             cardDropIndicator.setVisible(false);
 
@@ -292,6 +293,6 @@ public class CardComponent extends Draggable implements UIComponent {
      * @return The cloned card
      */
     public Draggable clone() {
-        return new CardComponent(boardService, card, columnParent);
+        return new CardComponent(boardService, card, columnParent, overviewScene);
     }
 }
