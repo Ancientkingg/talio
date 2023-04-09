@@ -4,6 +4,8 @@ import client.services.BoardService;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -36,6 +38,13 @@ public class Modal extends GridPane {
         setBackgroundPane();
 
         this.eventFilter = event -> closeModal();
+
+        parentScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode().equals(KeyCode.ESCAPE)) {
+                closeModal();
+                event.consume();
+            }
+        });
     }
 
     /**
