@@ -86,6 +86,9 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         });
     }
 
+    /*
+     * Deletes subtask from card
+     */
     public void onDelete() {
         this.card.removeSubTask(this.subTask); //Implement refresh when card details are done
     }
