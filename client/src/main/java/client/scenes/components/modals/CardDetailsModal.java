@@ -94,6 +94,7 @@ public class CardDetailsModal extends Modal implements LiveUIController {
     private void deleteCard() {
         this.cardComponent.getColumnParent().deleteCard(this.cardComponent);
         this.cardComponent.getColumnParent().getColumn().removeCard(this.card);
+        boardService.removeCardFromColumn(this.card, this.cardComponent.getColumnParent().getColumn());
         this.closeModal();
         this.cardComponent.getColumnParent().refresh();
     }
