@@ -126,14 +126,18 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                 public Type getPayloadType(final StompHeaders headers) { return CardDTO.class; }
 
                 public void handleFrame(final StompHeaders headers, final Object payload) {
-                    final CardDTO cardDTO = (CardDTO) payload;
-                    final Column column;
-                    try {
-                        column = boardService.getCurrentBoard().getColumnById(cardDTO.getColumnFromId());
-                        boardService.updateEditCard(cardDTO.getCard());
-                        logger.info("Card edited: " + cardDTO.getCard().getTitle());
-                    }
-                    catch (Exception e) { logger.info("Couldn't edit card"); }
+                    Platform.runLater(() -> {
+                        final CardDTO cardDTO = (CardDTO) payload;
+                        try {
+                            boardService.updateEditCard(cardDTO.getCard());
+                            logger.info("Card edited: " + cardDTO.getCard().getTitle());
+                        }
+                        catch (Exception e) {
+                            logger.info("Couldn't edit card");
+                            e.printStackTrace();
+                        }
+                    });
+
                 }
             });
         subscriptions.add(cardEditedSub);
