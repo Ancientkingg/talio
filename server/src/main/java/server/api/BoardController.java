@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -134,7 +135,7 @@ public class BoardController {
      * @return Board the renamed board
      */
     @MessageMapping("/boards/rename/{joinKey}/{newHeading}")
-    public Board renameBoard(final String password, @DestinationVariable final String joinKey,
+    public Board renameBoard(@Payload(required = false) final String password, @DestinationVariable final String joinKey,
                              @DestinationVariable final String newHeading)
     {
         try {
