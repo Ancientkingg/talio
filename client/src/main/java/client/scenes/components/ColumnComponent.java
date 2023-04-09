@@ -5,14 +5,13 @@ import client.exceptions.BoardChangeException;
 import client.scenes.OverviewCtrl;
 import client.services.BoardService;
 import commons.Card;
+import commons.ColorScheme;
 import commons.Column;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -84,9 +83,16 @@ public class ColumnComponent extends GridPane implements UIComponent {
 
         });
 
-        setUpDragAndDrop(overviewCtrl);
-
         refresh();
+    }
+
+    private void refreshStyle() {
+        final ColorScheme defaultColorScheme = boardService.getCurrentBoard().getColumnColorScheme();
+
+        this.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";");
+
+        this.innerCardList.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";");
+        this.columnHeading.setStyle("-fx-text-fill: " + defaultColorScheme.getTextColor() + ";");
     }
 
     private void addHeadingChangeListener(final BoardService boardService, final Column column) {
@@ -98,40 +104,6 @@ public class ColumnComponent extends GridPane implements UIComponent {
             if (Objects.equals(KeyCode.ENTER, (keyEvent.getCode()))) {
                 boardService.renameColumn(column, columnHeading.getText());
                 scrollPane.requestFocus();
-            }
-        });
-    }
-
-    private void setUpDragAndDrop(final OverviewCtrl overviewCtrl) {
-        setOnDragOver(event -> {
-            if (event.getGestureSource() != this && event.getDragboard().hasString()) {
-                // Allow dropping of cards
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-
-        setOnDragDropped(event -> {
-            final Dragboard db = event.getDragboard();
-            if (db.hasString()) {
-                final String[] split = db.getString().split(":");
-
-                if (split.length == 2) {
-                    final long cardId = Long.parseLong(split[0]);
-                    final long columnIdx = Long.parseLong(split[1]);
-
-                    final int priority = event.getPickResult().getIntersectedNode().getClass() == CardComponent.class ?
-                            ((CardComponent) event.getPickResult().
-                                    getIntersectedNode()).getCard().getPriority() : column.getCards().size() + 1;
-
-
-
-
-                    boardService.repositionCard(cardId, columnIdx, column.getIndex(), priority);
-
-                    overviewCtrl.refreshColumn(column.getIndex());
-                    overviewCtrl.refreshColumn(columnIdx);
-                }
             }
         });
     }
@@ -183,5 +155,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
         }
         columnHeading.setText(column.getHeading());
 //        innerCardList.getChildren().add(this.addCardButton);
+
+        refreshStyle();
     }
 }

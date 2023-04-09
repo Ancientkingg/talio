@@ -30,7 +30,7 @@ class TagTest {
         t.setColorScheme(new ColorScheme(1, new Color(0,0,0,255), new Color(255,0,0,255)));
         ColorScheme expected = new ColorScheme(1, new Color(0,0,0,255), new Color(255,0,0,255));
         assertEquals(expected, t.getColorScheme());
-    }
+}
 
     @Test
     void testEquals() {

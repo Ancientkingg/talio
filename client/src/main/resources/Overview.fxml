@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OverviewCtrl">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OverviewCtrl">
    <children>
       <GridPane>
           <columnConstraints>
@@ -22,7 +22,7 @@
               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="493.33334732055664" vgrow="ALWAYS" />
           </rowConstraints>
           <children>
-            <GridPane styleClass="toolbar" stylesheets="@Style.css">
+            <GridPane style="-fx-border-radius: 0; -fx-background-radius: 0;" styleClass="toolbar" stylesheets="@Style.css">
                <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" minWidth="310.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

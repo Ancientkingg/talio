@@ -855,6 +855,7 @@ public class BoardService {
     public void updateEditColorPreset(final ColorScheme payload) {
         boardModel.getCurrentBoard().updateColorScheme(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
+        mainCtrl.refreshOverview();
     }
 
     /**
@@ -864,6 +865,7 @@ public class BoardService {
     public void updateAddColorPresetToBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().addColorPreset(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
+        mainCtrl.refreshOverview();
     }
 
     /**
@@ -873,6 +875,7 @@ public class BoardService {
     public void updateRemoveColorPresetFromBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().deleteColorPreset(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
+        mainCtrl.refreshOverview();
     }
 
     /**
@@ -927,6 +930,7 @@ public class BoardService {
     public void updateDefaultColorPresetColumn(final ColorScheme payload) {
         boardModel.getCurrentBoard().setColumnColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
+        mainCtrl.refreshOverview();
     }
 
     /**
@@ -936,6 +940,7 @@ public class BoardService {
     public void updateDefaultColorPresetBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().setBoardColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
+        mainCtrl.refreshOverview();
     }
 
     /**
@@ -945,5 +950,6 @@ public class BoardService {
     public void updateDefaultColorPresetCard(final ColorScheme payload) {
         boardModel.getCurrentBoard().setCardColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
+        mainCtrl.refreshOverview();
     }
 }

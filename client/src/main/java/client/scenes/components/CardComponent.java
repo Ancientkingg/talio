@@ -5,6 +5,7 @@ import client.exceptions.BoardChangeException;
 import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
+import commons.ColorScheme;
 import commons.Tag;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -95,7 +96,6 @@ public class CardComponent extends Draggable implements UIComponent {
 
         cardText.setDisable(true); // Disable editing of card text by default
 
-//        setUpDragAndDrop();
         refresh();
     }
 
@@ -105,6 +105,20 @@ public class CardComponent extends Draggable implements UIComponent {
         this.card = card;
         this.columnParent = columnParent;
         loadSource(Main.class.getResource("/components/Card.fxml"));
+    }
+
+    private void refreshStyle() {
+        if (card.getColorScheme() == null) {
+            final ColorScheme defaultColorScheme = boardService.getCurrentBoard().getCardColorScheme();
+
+            this.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";" +
+                    "-fx-border-color: " + defaultColorScheme.getTextColor() + ";");
+        } else {
+            final ColorScheme colorScheme = card.getColorScheme();
+
+            this.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor() + ";" +
+                    "-fx-border-color: " + colorScheme.getTextColor() + ";");
+        }
     }
 
     /**
@@ -147,33 +161,6 @@ public class CardComponent extends Draggable implements UIComponent {
         });
     }
 
-
-    private void setUpDragAndDrop() {
-        setOnDragDetected(event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                // Start drag-and-drop gesture
-                startFullDrag();
-                final Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
-                final ClipboardContent content = new ClipboardContent();
-                content.putString(
-                        String.format("%s:%s", card.getId(), columnParent.getColumn().getIndex()));
-                dragboard.setContent(content);
-                event.consume();
-            }
-        });
-
-        setOnDragEntered(event -> {
-            // Check if the dragged element is being dragged over the top half of the target element
-            if (event.getY() < this.getHeight()) {
-                this.setStyle("-fx-border-color: transparent; -fx-border-width: 25px 0 0 0;");
-            }
-        });
-
-        setOnDragExited(event -> {
-            // Remove the top margin from the target element
-            this.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
-        });
-    }
 
     /**
      * Deletes the card
@@ -283,6 +270,8 @@ public class CardComponent extends Draggable implements UIComponent {
         } else {
             subtaskCounter.setVisible(false);
         }
+
+        refreshStyle();
 
     }
 

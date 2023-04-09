@@ -92,6 +92,6 @@ public class Color {
      */
     @Override
     public String toString() {
-        return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";
+        return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha / 255.0 + ")";
     }
 }
