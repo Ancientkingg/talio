@@ -135,9 +135,10 @@ public class CardController {
                 sourceColumn.updateCardPosition(card, newPosition);
             }
             else {
-                if (!sourceColumn.getCards().remove(clientCard))
+                if (!sourceColumn.removeCard(clientCard))
                     throw new RuntimeException("Could not remove card when trying to reposition");
-                destinationColumn.addCard(card);
+                if (!destinationColumn.insertCard(card))
+                    throw new RuntimeException("Could not insert card when trying to reposition");
             }
 
             boardService.saveBoard(board);

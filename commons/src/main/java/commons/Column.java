@@ -83,6 +83,29 @@ public class Column implements Comparable<Column> {
     }
 
     /**
+     * Inserts a card into the column with the given priority
+     * @param card Card to be inserted
+     * @return success/failure
+     */
+    public boolean insertCard(final Card card) {
+        if (card == null) return false;
+
+        final int idx = card.getPriority();
+        for (final Card c : this.cards) {
+            if (c.getPriority() >= idx)
+                c.setPriority(c.getPriority() + 1);
+        }
+        if (!this.cards.add(card)) return false;
+
+        int priority = 0;
+        for (final Card c : this.cards) {
+            c.setPriority(priority++);
+        }
+
+        return true;
+    }
+
+    /**
      * Remove one card from the column
      * Returns directly if card to be removed is null as TreeSet does not support storing null elements and throws NullPointerException
      * @param card card to remove
@@ -90,7 +113,15 @@ public class Column implements Comparable<Column> {
      * @return success/failure
      */
     public boolean removeCard(final Card card) {
-        return card != null && this.cards.remove(card);
+        if (card == null) return false;
+        if (!this.cards.remove(card)) return false;
+
+//        int idx = 0;
+//        for (final Card c : this.cards) {
+//            c.setPriority(idx++);
+//        }
+
+        return true;
     }
 
     /**
@@ -134,17 +165,15 @@ public class Column implements Comparable<Column> {
     /**
      * Updates the position of the card in the column according to the new position.
      * @param card card to be updated
-     * @param newPosition new position of the card
+     * @param newPriority new position of the card
      */
-    public void updateCardPosition(final Card card, final int newPosition) {
+    public void updateCardPosition(final Card card, final int newPriority) {
         this.cards.remove(card);
-        card.setPriority(newPosition);
+        card.setPriority(newPriority);
         final List<Card> newOrder = new ArrayList<>();
 
-        for (final Card c:
-             this.cards)
-        {
-            if (c.getPriority() == newPosition)
+        for (final Card c : this.cards) {
+            if (c.getPriority() == newPriority)
                 newOrder.add(card);
             newOrder.add(c);
         }

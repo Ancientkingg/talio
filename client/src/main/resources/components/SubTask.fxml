@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="332.0" styleClass="tagBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="458.32647705078125" minWidth="10.0" prefWidth="59.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="490.6386032104492" minWidth="10.0" prefWidth="271.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <Button fx:id="deleteButton" contentDisplay="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onDelete" prefHeight="32.0" prefWidth="32.0" styleClass="subtaskDeleteButton" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+        <graphic>
+            <SVGPath content="M45.123,0H6C2.691,0,0,2.691,0,6v39.123c0,3.309,2.691,6,6,6h39.123c3.309,0,6-2.691,6-6V6C51.123,2.691,48.431,0,45.123,0z   M49.123,45.123c0,2.206-1.794,4-4,4H6c-2.206,0-4-1.794-4-4V6c0-2.206,1.794-4,4-4h39.123c2.206,0,4,1.794,4,4V45.123z   M36.791,15.746l-9.815,9.815l9.815,9.815c0.391,0.391,0.391,1.023,0,1.414c-0.195,0.195-0.451,0.293-0.707,0.293  s-0.512-0.098-0.707-0.293l-9.815-9.815l-9.815,9.815c-0.195,0.195-0.451,0.293-0.707,0.293s-0.512-0.098-0.707-0.293  c-0.391-0.391-0.391-1.023,0-1.414l9.815-9.815l-9.815-9.815c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0l9.815,9.815  l9.815-9.815c0.391-0.391,1.023-0.391,1.414,0S37.181,15.355,36.791,15.746z" scaleX="0.4" scaleY="0.4" />
+        </graphic>
+        <GridPane.margin>
+            <Insets right="5.0" />
+        </GridPane.margin>
+    </Button>
+   <CheckBox fx:id="checkBox" mnemonicParsing="false" styleClass="subtaskCheckbox" stylesheets="@../Style.css" />
+   <TextField fx:id="descriptionField" promptText="Subtask description" styleClass="subtaskTextField" stylesheets="@../Style.css" GridPane.columnIndex="1">
+      <GridPane.margin>
+         <Insets right="50.0" />
+      </GridPane.margin>
+   </TextField>
+   <Button fx:id="editButton" contentDisplay="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+      <graphic>
+         <SVGPath content="M794 390 666 262l42-42q17-17 42.5-16.5T793 221l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Z" scaleX="0.02" scaleY="0.02" />
+      </graphic>
+      <GridPane.margin>
+         <Insets right="40.0" />
+      </GridPane.margin>
+   </Button>
+</fx:root>
