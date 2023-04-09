@@ -86,7 +86,7 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         });
     }
 
-    /*
+    /**
      * Deletes subtask from card
      */
     public void onDelete() {
