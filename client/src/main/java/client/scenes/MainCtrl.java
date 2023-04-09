@@ -103,6 +103,7 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Home Page");
         primaryStage.setScene(homePageScene);
         homePageCtrl.loadBoards();
+        homePageCtrl.checkBoards();
         primaryStage.show();
         primaryStage.sizeToScene();
     }

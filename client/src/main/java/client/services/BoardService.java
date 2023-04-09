@@ -61,6 +61,10 @@ public class BoardService {
         this.startSocket();
     }
 
+    public boolean isConnected() {
+        return serverService.isConnected();
+    }
+
     /**
      * Disconnects from the server
      */

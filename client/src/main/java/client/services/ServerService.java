@@ -53,6 +53,7 @@ public class ServerService {
      * Stops the client socket
      */
     public void stopSocket() {
+        session.disconnect();
         this.socketThread.stop();
     }
 
@@ -576,5 +577,10 @@ public class ServerService {
             logger.info("Move SubTask sent to server");
             return resultSubTask;
         }
+    }
+
+    public boolean isConnected() {
+        if (session.isConnected()) return true;
+        return false;
     }
 }
