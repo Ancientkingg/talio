@@ -585,8 +585,7 @@ public class BoardService {
      * @param newName String new board name
      */
     public void renameBoard(final String newName) {
-        boardModel.renameBoard(newName);
-        // needs to call server service to forward change to server
+        serverService.renameBoard(getCurrentBoard(), newName);
     }
 
     /**
