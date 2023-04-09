@@ -605,7 +605,8 @@ public class ServerService {
             return resultSubTask;
         }
     }
-    
+
+    /**
      * Removes color preset from board
      * @param currentBoard board from which color preset is being removed
      * @param colorPreset color preset being removed
