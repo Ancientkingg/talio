@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="223.0" styleClass="tagBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="458.32647705078125" minWidth="10.0" prefWidth="45.98091125488281" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="490.6386032104492" minWidth="10.0" prefWidth="172.5190887451172" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+   <Pane fx:id="colorBubble" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="24.0" styleClass="tagColorBubble">
+      <GridPane.margin>
+         <Insets left="1.0" />
+      </GridPane.margin>
+   </Pane>
+    <Text fx:id="tagTitle" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="tagTitleText" text="Placeholder Tag Title" GridPane.columnIndex="1">
+        <GridPane.margin>
+            <Insets />
+        </GridPane.margin>
+        <font>
+            <Font size="33.0" />
+        </font>
+    </Text>
+   <Button fx:id="editButton" contentDisplay="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onEdit" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+      <graphic>
+         <SVGPath content="M794 390 666 262l42-42q17-17 42.5-16.5T793 221l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Z" scaleX="0.02" scaleY="0.02" />
+      </graphic>
+      <GridPane.margin>
+         <Insets right="5.0" />
+      </GridPane.margin>
+   </Button>
+</fx:root>

@@ -517,6 +517,10 @@ Overview
     -fx-text-fill: #f8f8f8;
 }
 
+.join-board-modal-button:hover SVGPath {
+    -fx-fill: #f8f8f8;
+}
+
 .join-board-modal-text-field {
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
