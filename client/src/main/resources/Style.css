@@ -40,6 +40,15 @@ Subtasks
     -fx-background-radius: 2px;
 }
 
+.subtaskDeleteButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.subtaskDeleteButton:hover {
+    -fx-background-color: #ff4848;
+}
+
 
 
 

@@ -1,6 +1,7 @@
 package client.scenes.components;
 
 import client.Main;
+import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +14,8 @@ public class SubTaskComponent extends GridPane implements UIComponent {
 
     private final SubTask subTask;
 
+    private final Card card;
+
     @FXML
     private CheckBox checkBox;
 
@@ -24,10 +27,13 @@ public class SubTaskComponent extends GridPane implements UIComponent {
 
     /**
      * Loads new subtask component
+     *
      * @param subTask subTask object
+     * @param card parent card entity
      */
-    public SubTaskComponent(final SubTask subTask) {
+    public SubTaskComponent(final SubTask subTask, final Card card) {
         this.subTask = subTask;
+        this.card = card;
 
         loadSource(Main.class.getResource("/components/SubTask.fxml"));
 
@@ -80,7 +86,8 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         });
     }
 
-
-
+    public void onDelete() {
+        this.card.removeSubTask(this.subTask); //Implement refresh when card details are done
+    }
 
 }
