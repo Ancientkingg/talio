@@ -11,7 +11,6 @@ import commons.ColorScheme;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.util.Set;

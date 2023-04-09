@@ -230,7 +230,8 @@ public class CardComponent extends Draggable implements UIComponent {
 
         if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
 
-            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent(), overviewScene);
+            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(),
+                    intersectedCardComponent.getColumnParent(), overviewScene);
 
             cardDropIndicator.setVisible(false);
 

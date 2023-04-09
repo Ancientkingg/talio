@@ -2,7 +2,6 @@ package client.scenes.components.modals;
 
 import client.Main;
 import client.scenes.Refreshable;
-import client.scenes.components.TagComponent;
 import client.scenes.components.TagSelectComponent;
 import client.scenes.components.UIComponent;
 import client.services.BoardService;
@@ -23,7 +22,7 @@ public class TagsShortcutModal extends TagsOverviewModal implements UIComponent 
     @FXML
     private Button addTagButton;
 
-    final Refreshable parentCtrl;
+    private final Refreshable parentCtrl;
 
     /**
      * Constructor for TagsShortcutModal
