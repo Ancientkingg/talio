@@ -95,10 +95,10 @@ public class CardDetailsModal extends Modal implements LiveUIController {
             }
         }
 
-        Iterator it = this.card.getTags().iterator();
+        final Iterator it = this.card.getTags().iterator();
 
         while (it.hasNext()) {
-            Tag tag = (Tag) it.next();
+            final Tag tag = (Tag) it.next();
             if (!selectedTags.contains(tag)) {
                 it.remove();
                 boardService.removeTagFromCard(this.card, tag);
