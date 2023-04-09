@@ -36,6 +36,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
     private ScrollPane scrollPane;
 
     @FXML
+    @Getter
     private VBox innerCardList;
 
     @FXML

@@ -362,4 +362,21 @@ public class Board {
             indexCount++;
         }
     }
+
+    /**
+     * updates all the contents of a card
+     * @param card to be updated
+     * @throws CardNotFoundException if card is not found
+     */
+    public void updateCard(final Card card) throws CardNotFoundException {
+        final Card currentCard = getCard(card.getId());
+
+        currentCard.setPriority(card.getPriority());
+        currentCard.setDescription(card.getDescription());
+        currentCard.setTitle(card.getTitle());
+        currentCard.setColorScheme(card.getColorScheme());
+        currentCard.setTags(card.getTags());
+        currentCard.setIsDefaultThemed(card.getIsDefaultThemed());
+        currentCard.setSubtasks(card.getSubtasks());
+    }
 }

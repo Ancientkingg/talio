@@ -208,7 +208,7 @@ public class CardController {
      */
     public void updateCardEdited(final String joinKey, final long columnId, final Card card) {
         logger.info("Propagating card edited for: " + joinKey);
-        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit/", new CardDTO(card, columnId));
+        messagingTemplate.convertAndSend("/topic/cards/" + joinKey + "/edit", new CardDTO(card, columnId));
     }
 
     /**

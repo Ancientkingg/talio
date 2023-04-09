@@ -124,7 +124,7 @@ public class OverviewCtrl implements LiveUIController {
     public void refreshCard(final long cardId) {
         for (final Node n : columnBox.getChildren()) {
             final ColumnComponent cc = (ColumnComponent) n;
-            for (final Node c : cc.getChildren()) {
+            for (final Node c : cc.getInnerCardList().getChildren()) {
                 final CardComponent cac = (CardComponent) c;
                 if (cac.getCard().getId() == cardId) {
                     cac.refresh();

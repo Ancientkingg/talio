@@ -117,14 +117,9 @@ public class CardComponent extends GridPane implements UIComponent {
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 card.setTitle(cardText.getText());
-                refresh();
+                boardService.editCard(card, columnParent.getColumn());
                 cardText.setDisable(true);
             }
-        });
-
-        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
-            card.setTitle(cardText.getText());
-            refresh();
         });
     }
 

@@ -226,5 +226,7 @@ public class Card implements Comparable<Card> {
         this.description = card.description;
         this.subtasks = card.subtasks;
         this.tags = card.tags;
+        this.isDefaultThemed = card.isDefaultThemed;
+        this.colorScheme = card.colorScheme;
     }
 }
