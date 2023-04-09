@@ -188,6 +188,6 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
     @FXML
     private void onCardColorReset() {
         this.cardPrimaryColor.setValue(Color.web("#f8f8f8"));
-        this.cardSecondaryColor.setValue(Color.web("#0000004d"));
+        this.cardSecondaryColor.setValue(Color.web("#000000"));
     }
 }

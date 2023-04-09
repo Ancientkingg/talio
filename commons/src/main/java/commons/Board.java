@@ -100,7 +100,7 @@ public class Board {
 
         boardColorScheme = new ColorScheme(new Color(243,243,243,255), new Color(235,235,235,255));
         columnColorScheme = new ColorScheme(new Color(24,24,24,255), new Color(242,242,242,255)); // change these to whatever default is picked
-        cardColorScheme = new ColorScheme(new Color(0,0,0,77), new Color(248,248,248,255));
+        cardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(248,248,248,255));
         this.colorPresets = new ArrayList<>();
     }
 

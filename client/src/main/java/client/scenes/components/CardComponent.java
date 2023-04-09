@@ -111,13 +111,13 @@ public class CardComponent extends Draggable implements UIComponent {
         if (card.getColorScheme() == null) {
             final ColorScheme defaultColorScheme = boardService.getCurrentBoard().getCardColorScheme();
 
-            this.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";" +
-                    "-fx-border-color: " + defaultColorScheme.getTextColor() + ";");
+            this.setStyle("-fx-background-color: " + defaultColorScheme.getBackgroundColor() + ";");
+            this.cardText.setStyle("-fx-text-fill: " + defaultColorScheme.getTextColor() + ";");
         } else {
             final ColorScheme colorScheme = card.getColorScheme();
 
-            this.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor() + ";" +
-                    "-fx-border-color: " + colorScheme.getTextColor() + ";");
+            this.setStyle("-fx-background-color: " + colorScheme.getBackgroundColor() + ";");
+            this.cardText.setStyle("-fx-text-fill: " + colorScheme.getTextColor() + ";");
         }
     }
 
