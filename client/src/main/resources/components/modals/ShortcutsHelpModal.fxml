@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="527.0" styleClass="modalBackground" stylesheets="@../../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="51.62375259399414" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="50.0" prefWidth="81.87624740600586" />
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="118.52321243286133" minWidth="0.0" percentWidth="25.0" prefWidth="47.483970642089844" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="41.5" valignment="TOP" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="60.0" valignment="TOP" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="37.0" valignment="TOP" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="37.0" valignment="TOP" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Show this page: " translateX="-50.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets top="10.0" />
+            </GridPane.margin>
+            <font>
+                <Font size="15.0" />
+            </font></Text>
+        <Button fx:id="okButton" mnemonicParsing="false" prefHeight="28.0" prefWidth="88.0" styleClass="modalOkButton" stylesheets="@../Style.css" text="Ok" textFill="WHITE" translateY="75.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets top="10.0" />
+            </GridPane.margin></Button>
+        <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalTitleText" text="Keyboard Shortcuts" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets top="10.0" />
+            </GridPane.margin></Text>
+        <Button fx:id="crossButton1" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeModal" prefHeight="24.0" prefWidth="24.0" styleClass="modalCrossButton" stylesheets="@../../../../../../Style.css" GridPane.columnIndex="2">
+            <graphic>
+                <SVGPath content="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" scaleX="0.025" scaleY="0.025" styleClass="modalCrossButtonIcon" />
+            </graphic>
+            <GridPane.margin>
+                <Insets right="10.0" top="10.0" />
+            </GridPane.margin>
+        </Button>
+        <Text fx:id="descriptionText1" layoutX="174.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Change card color scheme:" translateX="-50.0" translateY="330.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText2" layoutX="174.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Move selected card:" translateX="-50.0" translateY="170.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText3" layoutX="174.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="?" translateX="150.0" translateY="9.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText4" layoutX="174.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Open card description:" translateX="-50.0" translateY="50.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText31" layoutX="174.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="ENTER" translateX="150.0" translateY="49.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText41" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Change card tags:" translateX="-50.0" translateY="290.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText42" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Delete card from overview:" translateX="-50.0" translateY="250.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText43" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Edit card in overview:" translateX="-50.0" translateY="210.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText44" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Select other cards:" translateX="-50.0" translateY="130.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText45" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Close card description:" translateX="-50.0" translateY="90.0" wrappingWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText311" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="C" translateX="150.0" translateY="329.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText312" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="T" translateX="150.0" translateY="289.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText313" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Del / Backspace" translateX="150.0" translateY="249.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText314" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="E" translateX="150.0" translateY="209.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText315" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="SHIFT + Up / Down" translateX="150.0" translateY="169.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText316" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Arrow keys" translateX="150.0" translateY="129.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+        <Text fx:id="descriptionText317" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="ESC" translateX="150.0" translateY="89.0" wrappingWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Text>
+    </children>
+</fx:root>
