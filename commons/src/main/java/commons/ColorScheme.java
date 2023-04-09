@@ -11,6 +11,8 @@ public class ColorScheme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long serializationId;
+
     @Getter
     private long id;
 
@@ -31,6 +33,7 @@ public class ColorScheme {
      * @param backgroundColor color for background
      */
     public ColorScheme(final Color textColor, final Color backgroundColor) {
+        this.id = (long) (Math.random() * 1000000000);
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
     }
@@ -42,6 +45,7 @@ public class ColorScheme {
      * @param backgroundColor color for background
      */
     public ColorScheme(final String name, final Color textColor, final Color backgroundColor) {
+        this.id = (long) (Math.random() * 1000000000);
         this.name = name;
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
@@ -51,6 +55,7 @@ public class ColorScheme {
      * for checkstyle
      */
     public ColorScheme() {
+        this.id = (long) (Math.random() * 1000000000);
         this.textColor = new Color(0,0,0,255);
         this.backgroundColor = new Color(0,0,0,255);
     }

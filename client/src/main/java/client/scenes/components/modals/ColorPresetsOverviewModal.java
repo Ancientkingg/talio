@@ -43,7 +43,7 @@ public class ColorPresetsOverviewModal extends Modal implements UIComponent, Liv
 
     @FXML
     private void onAddColorPresetButtonClick() {
-        final ColorScheme colorPreset = new ColorScheme(new Color(colorGenerator()), new Color(colorGenerator()));
+        final ColorScheme colorPreset = new ColorScheme("New Color Preset", new Color(colorGenerator()), new Color(colorGenerator()));
         boardService.addColorPresetToCurrentBoard(colorPreset);
 
         refresh();

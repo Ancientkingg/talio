@@ -362,4 +362,22 @@ public class Board {
             indexCount++;
         }
     }
+
+    public void updateColorScheme(final ColorScheme colorScheme) {
+        for (final ColorScheme c : this.colorPresets) {
+            if (c.getId() == colorScheme.getId()) {
+                c.setName(colorScheme.getName());
+                c.setTextColor(colorScheme.getTextColor());
+                c.setBackgroundColor(colorScheme.getBackgroundColor());
+            }
+        }
+    }
+
+    public boolean addColorPreset(final ColorScheme colorScheme) {
+        return this.colorPresets.add(colorScheme);
+    }
+
+    public boolean deleteColorPreset(final ColorScheme colorScheme) {
+        return this.colorPresets.remove(colorScheme);
+    }
 }

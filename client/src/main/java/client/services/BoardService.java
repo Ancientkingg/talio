@@ -16,6 +16,8 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static javassist.bytecode.SyntheticAttribute.tag;
+
 @Singleton
 public class BoardService {
     private BoardModel boardModel;
@@ -802,11 +804,47 @@ public class BoardService {
     }
 
     public void editColorPreset(ColorScheme colorPreset) {
+        try {
+            serverService.editColorPreset(getCurrentBoard(), colorPreset);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be edited on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
     }
 
     public void removeColorPresetFromBoard(ColorScheme colorPreset) {
+        try {
+            serverService.removeColorPresetFromBoard(getCurrentBoard(), colorPreset);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The color preset couldn't be removed from the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
     }
 
     public void addColorPresetToCurrentBoard(ColorScheme colorPreset) {
+        try {
+            serverService.addColorPresetToBoard(getCurrentBoard(), colorPreset);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be added to the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateEditColorPreset(ColorScheme payload) {
+        boardModel.getCurrentBoard().updateColorScheme(payload);
+        if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
+    }
+
+    public void updateAddColorPresetToBoard(ColorScheme payload) {
+        boardModel.getCurrentBoard().addColorPreset(payload);
+        if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
+    }
+
+    public void updateRemoveColorPresetFromBoard(ColorScheme payload) {
+        boardModel.getCurrentBoard().deleteColorPreset(payload);
+        if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
     }
 }

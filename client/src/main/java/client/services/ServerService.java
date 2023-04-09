@@ -5,6 +5,7 @@ import client.utils.SessionHandler;
 import client.utils.SocketThread;
 import commons.*;
 import commons.DTOs.CardDTO;
+import commons.DTOs.ColorSchemeDTO;
 import commons.DTOs.SubTaskDTO;
 import commons.DTOs.TagDTO;
 import jakarta.ws.rs.client.Client;
@@ -576,5 +577,38 @@ public class ServerService {
             logger.info("Move SubTask sent to server");
             return resultSubTask;
         }
+    }
+
+    public ColorScheme removeColorPresetFromBoard(Board currentBoard, ColorScheme colorPreset) {
+        try (Client client = ClientBuilder.newClient()) {
+            final ColorScheme addedColorScheme = client.target(serverIP)
+                    .path("/color-presets")
+                    .path("/remove")
+                    .path(currentBoard.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new ColorSchemeDTO(colorPreset, currentBoard.getPassword()), APPLICATION_JSON), ColorScheme.class);
+            logger.info("Removed color preset from board sent to server");
+            return addedColorScheme;
+        }
+    }
+
+    public ColorScheme addColorPresetToBoard(Board currentBoard, ColorScheme colorPreset) {
+        try (Client client = ClientBuilder.newClient()) {
+            final ColorScheme addedColorScheme = client.target(serverIP)
+                    .path("/color-presets")
+                    .path("/add")
+                    .path(currentBoard.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new ColorSchemeDTO(colorPreset, currentBoard.getPassword()), APPLICATION_JSON), ColorScheme.class);
+            logger.info("Added color preset to board sent to server");
+            return addedColorScheme;
+        }
+    }
+
+    public void editColorPreset(Board currentBoard, ColorScheme colorPreset) {
+        session.send("/app/color-presets/edit/" +
+                        currentBoard.getJoinKey(),
+                new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
+        logger.info("Edited color preset sent to server");
     }
 }

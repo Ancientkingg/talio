@@ -42,147 +42,81 @@ public class ColorPresetController {
     }
 
     /**
-     * Adds a tag to a board
-     * @param tagDTO Tag to be added
+     * Adds a color scheme to a board
+     * @param colorSchemeDTO Tag to be added
      * @param joinKey Key used to identify board to which tag is to be added
      *
      * @return The tag added to board
      */
     @PostMapping("/color-presets/add/{joinKey}")
-    public ResponseEntity<Tag> addTag(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
+    public ResponseEntity<ColorScheme> addTag(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
                                        @PathVariable final String joinKey)
     {
         final String password = colorSchemeDTO.getPassword();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
-        board.addTag(tag);
+        board.addColorPreset(colorScheme);
         boardService.saveBoard(board);
 
-        updateTagAdded(tag, board);
-        return ResponseEntity.ok(tag);
+        updateColorPresetAdded(colorScheme, board);
+        return ResponseEntity.ok(colorScheme);
     }
 
     /**
-     * Removes a tag from a board
-     * @param tagDTO Tag to be removed
+     * Removes a color scheme from a board
+     * @param colorSchemeDTO Tag to be removed
      * @param joinKey Key used to identify board from which tag is to be removed
      *
      * @return The tag removed from board
      */
     @PostMapping("/color-presets/remove/{joinKey}")
-    public ResponseEntity<Tag> removeTag(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
+    public ResponseEntity<ColorScheme> removeTag(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
                                          @PathVariable final String joinKey)
-    {
-        final String password = tagDTO.password();
-        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
-        final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
-
-        board.deleteTag(tag);
-        boardService.saveBoard(board);
-
-        updateTagRemoved(tag, board);
-        return ResponseEntity.ok(tag);
-    }
-
-    /**
-     * Adds a tag to a card
-     * @param tagDTO Tag to be added
-     * @param joinKey Key used to identify board to which tag is to be added
-     * @param cardId Id of card to which tag is to be added
-     *
-     * @return The tag added to card
-     */
-    @PostMapping("/color-presets/addToCard/{joinKey}/{cardId}")
-    public ResponseEntity<Tag> addTagToCard(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
-                                            @PathVariable final String joinKey,
-                                            @PathVariable final long cardId)
     {
         final String password = colorSchemeDTO.getPassword();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
 
-        try {
-            board.addTagToCard(cardId, tag);
-        } catch (CardNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id" + cardId + " was not found in the board with join key " + joinKey);
-        }
+        board.deleteColorPreset(colorScheme);
         boardService.saveBoard(board);
 
-        updateTagAddedToCard(tag, cardId, board);
-        return ResponseEntity.ok(tag);
+        updateColorPresetRemoved(colorScheme, board);
+        return ResponseEntity.ok(colorScheme);
     }
 
     /**
-     * Removes a tag from a card
-     * @param tagDTO Tag to be removed
-     * @param joinKey Key used to identify board from which tag is to be removed
-     * @param cardId Id of card from which tag is to be removed
-     *
-     * @return The tag removed from card
-     */
-    @PostMapping("/color-presets/removeFromCard/{joinKey}/{cardId}")
-    public ResponseEntity<Tag> removeTagFromCard(@Valid @RequestBody final ColorSchemeDTO colorSchemeDTO,
-                                                 @PathVariable final String joinKey,
-                                                 @PathVariable final long cardId)
-    {
-        final String password = colorSchemeDTO.getPassword()
-        final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
-        final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
-
-        try {
-            board.removeTagFromCard(cardId, tag);
-        } catch (CardNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id" + cardId + " was not found in the board with join key " + joinKey);
-        }
-        boardService.saveBoard(board);
-
-        updateTagRemovedFromCard(tag, cardId, board);
-        return ResponseEntity.ok(tag);
-    }
-
-    /**
-     * Updates a tag on a board
-     * @param tagDTO Tag to be updated
+     * Updates a color scheme on a board
+     * @param colorSchemeDTO Tag to be updated
      * @param joinKey Key used to identify board on which tag is to be updated
      *
      * @return The tag updated on board
      */
     @MessageMapping("/color-presets/edit/{joinKey}")
-    public Tag editTag(@Valid final ColorSchemeDTO colorSchemeDTO, @DestinationVariable final String joinKey) {
+    public ColorScheme editColorPreset(@Valid final ColorSchemeDTO colorSchemeDTO, @DestinationVariable final String joinKey) {
         final String password = colorSchemeDTO.getPassword();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
 
-        board.updateTag(tag);
+        board.updateColorScheme(colorScheme);
 
         boardService.saveBoard(board);
 
-        editTagUpdated(tag, board);
-        return tag;
+        editColorPresetUpdated(colorScheme, board);
+        return colorScheme;
     }
 
-    private void updateTagRemovedFromCard(final Tag tag, final long cardId, final Board board) {
-        logger.info("Tag removed from card, propagating: " + board.getJoinKey() + " with name: " + tag.getTitle());
-        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/removeFromCard", new TagDTO(tag, cardId));
+    private void editColorPresetUpdated(final ColorScheme colorScheme, final Board board) {
+        logger.info("ColorPreset updated in board, propagating: " + board.getJoinKey() + " with name: " + colorScheme.getName());
+        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/edit", colorScheme);
     }
 
-    private void updateTagAddedToCard(final Tag tag, final long cardId, final Board board) {
-        logger.info("Tag added to card, propagating: " + board.getJoinKey() + " with name: " + tag.getTitle());
-        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/addToCard", new TagDTO(tag, cardId));
+    private void updateColorPresetRemoved(final ColorScheme colorScheme, final Board board) {
+        logger.info("ColorPreset removed from board, propagating: " + board.getJoinKey() + " with name: " + colorScheme.getName());
+        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/remove", colorScheme);
     }
 
-    private void editTagUpdated(final Tag tag, final Board board) {
-        logger.info("Tag updated in board, propagating: " + board.getJoinKey() + " with name: " + tag.getTitle());
-        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/edit", tag);
-    }
-
-    private void updateTagRemoved(final Tag tag, final Board board) {
-        logger.info("Tag removed from board, propagating: " + board.getJoinKey() + " with name: " + tag.getTitle());
-        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/remove", tag);
-    }
-
-    private void updateTagAdded(final Tag tag, final Board board) {
-        logger.info("Tag added to board, propagating: " + board.getJoinKey() + " with name: " + tag.getTitle());
-        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/add", tag);
+    private void updateColorPresetAdded(final ColorScheme colorScheme, final Board board) {
+        logger.info("ColorPreset added to board, propagating: " + board.getJoinKey() + " with name: " + colorScheme.getName());
+        messagingTemplate.convertAndSend("/topic/color-presets/" + board.getJoinKey() + "/add", colorScheme);
     }
 }

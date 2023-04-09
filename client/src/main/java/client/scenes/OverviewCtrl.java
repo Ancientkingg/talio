@@ -4,6 +4,7 @@ import client.exceptions.BoardChangeException;
 import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
+import client.scenes.components.modals.ColorPresetsOverviewModal;
 import client.scenes.components.modals.TagsOverviewModal;
 import client.services.BoardService;
 import commons.Column;
@@ -156,7 +157,9 @@ public class OverviewCtrl implements LiveUIController {
 
     @FXML
     public void onColorsButtonClick() {
-
+        final ColorPresetsOverviewModal modal = new ColorPresetsOverviewModal(boardService, this.mainCtrl.getCurrentScene());
+        mainCtrl.setColorPresetsOverviewModal(modal);
+        modal.showModal();
     }
 
 

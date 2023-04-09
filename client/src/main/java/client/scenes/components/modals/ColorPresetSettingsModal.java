@@ -38,7 +38,7 @@ public class ColorPresetSettingsModal extends Modal implements UIComponent {
         this.parentCtrl = parentCtrl;
         this.colorPreset = colorPreset;
 
-        loadSource(Main.class.getResource("/components/TagSettingsModal.fxml"));
+        loadSource(Main.class.getResource("/components/ColorPresetSettingsModal.fxml"));
 
         this.titleTextField.setText(colorPreset.getName());
 
