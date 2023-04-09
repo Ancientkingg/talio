@@ -405,8 +405,27 @@ Overview
 .list-cell:hover {
     -fx-text-fill: #f8f8f8;
     -fx-background-color: #181818;
+}
+
+.check-box .box {
+
+    -fx-background-color: white;
+    -fx-border-color:grey;
+    -fx-border-radius:3px;
 
 }
+
+.check-box:selected .mark {
+
+    -fx-background-color: white;
+
+}
+
+.check-box:selected .box {
+
+    -fx-background-color: #696969;
+}
+
 
 .list-cell {
     -fx-background-color: transparent;

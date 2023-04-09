@@ -172,10 +172,7 @@ public class CardController {
             final Card card = cardDTO.getCard();
             final Column column = board.getColumnById(columnId);
 
-//            column.updateCard(card);
-            Card toBeRemoved = board.getCard(card.getId());
-            column.removeCard(toBeRemoved);
-            column.addCard(card);
+            column.updateCard(card);
 
             boardService.saveBoard(board);
 

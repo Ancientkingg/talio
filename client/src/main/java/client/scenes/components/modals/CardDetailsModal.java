@@ -3,7 +3,7 @@ package client.scenes.components.modals;
 import client.Main;
 import client.scenes.LiveUIController;
 import client.scenes.components.CardComponent;
-import client.scenes.components.TagComponent;
+import client.scenes.components.TagSelectComponent;
 import client.services.BoardService;
 import commons.Board;
 import commons.Card;
@@ -85,11 +85,31 @@ public class CardDetailsModal extends Modal implements LiveUIController {
     private void submitDetails() {
         this.card.setTitle(cardTitle.getText());
         this.card.setDescription(cardDescription.getText());
+        final List<Tag> selectedTags = this.getSelectedTags();
+
+        for (final Tag tag : selectedTags) {
+            if (!this.card.getTags().contains(tag)) {
+                this.card.addTag(tag);
+                boardService.addTagToCard(this.card, tag);
+            }
+        }
+
+        for (final Tag tag : this.card.getTags()) {
+            if (!selectedTags.contains(tag)) {
+                this.card.removeTag(tag);
+                boardService.removeTagFromCard(this.card, tag);
+            }
+        }
+
+        boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
+
         this.closeModal();
         this.cardComponent.refresh();
-        boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
     }
 
+    /**
+     * Deletes the card
+     */
     @FXML
     private void deleteCard() {
         this.cardComponent.getColumnParent().deleteCard(this.cardComponent);
@@ -102,6 +122,14 @@ public class CardDetailsModal extends Modal implements LiveUIController {
     @FXML
     private void onAddSubtaskButtonClick() {
         // TODO
+    }
+
+    private List<Tag> getSelectedTags() {
+        return this.tagsContainer.getChildren().stream()
+                .filter( child -> child instanceof TagSelectComponent)
+                .map( child -> (TagSelectComponent) child)
+                .filter( tagComponent -> tagComponent.isSelected())
+                .map( tagComponent -> tagComponent.getTag()).toList();
     }
 
     /**
@@ -138,7 +166,10 @@ public class CardDetailsModal extends Modal implements LiveUIController {
         final Set<Tag> tags = currentBoard.getTags();
 
         for (final Tag tag : tags) {
-            final TagComponent tagComponent = new TagComponent(boardService, parentScene, this, tag);
+            final TagSelectComponent tagComponent = new TagSelectComponent(boardService, parentScene, this, tag);
+            if (card.getTags().contains(tag)) {
+                tagComponent.setSelected(true);
+            }
             tagsContainer.getChildren().add(tagComponent);
         }
     }
