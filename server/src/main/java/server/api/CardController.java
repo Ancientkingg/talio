@@ -163,6 +163,7 @@ public class CardController {
     public Card editCard(@RequestBody final CardDTO cardDTO, @DestinationVariable final String joinKey,
                                          @DestinationVariable final long columnId)
     {
+        logger.info("Received edit card request for board: " + joinKey);
         try {
             final String password = cardDTO.getPassword();
 
@@ -171,7 +172,10 @@ public class CardController {
             final Card card = cardDTO.getCard();
             final Column column = board.getColumnById(columnId);
 
-            column.updateCard(card);
+//            column.updateCard(card);
+            Card toBeRemoved = board.getCard(card.getId());
+            column.removeCard(toBeRemoved);
+            column.addCard(card);
 
             boardService.saveBoard(board);
 

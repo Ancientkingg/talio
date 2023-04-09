@@ -74,7 +74,7 @@ public class HomePageCtrl implements LiveUIController {
 
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+//        timeline.play();
     }
 
     /**

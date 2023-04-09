@@ -87,6 +87,7 @@ public class CardDetailsModal extends Modal implements LiveUIController {
         this.card.setDescription(cardDescription.getText());
         this.closeModal();
         this.cardComponent.refresh();
+        boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
     }
 
     @FXML
