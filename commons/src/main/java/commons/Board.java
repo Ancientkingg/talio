@@ -42,6 +42,10 @@ public class Board {
     @Setter
     private Set<Tag> tags;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Getter
+    private List<ColorScheme> colorPresets;
+
     /**
      * Constructor for a board object with password
      *
@@ -65,6 +69,7 @@ public class Board {
         this.columnTheme = columnTheme;
         this.boardColorScheme = boardColorScheme;
         this.tags = tags;
+        this.colorPresets = new ArrayList<>();
     }
 
     /**
@@ -91,6 +96,7 @@ public class Board {
 
         columnTheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255)); // change these to whatever default is picked
         boardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(255,255,255,255));
+        this.colorPresets = new ArrayList<>();
     }
 
     /**
@@ -355,5 +361,22 @@ public class Board {
             }
             indexCount++;
         }
+    }
+
+    /**
+     * updates all the contents of a card
+     * @param card to be updated
+     * @throws CardNotFoundException if card is not found
+     */
+    public void updateCard(final Card card) throws CardNotFoundException {
+        final Card currentCard = getCard(card.getId());
+
+        currentCard.setPriority(card.getPriority());
+        currentCard.setDescription(card.getDescription());
+        currentCard.setTitle(card.getTitle());
+        currentCard.setColorScheme(card.getColorScheme());
+        currentCard.setTags(card.getTags());
+        currentCard.setIsDefaultThemed(card.getIsDefaultThemed());
+        currentCard.setSubtasks(card.getSubtasks());
     }
 }

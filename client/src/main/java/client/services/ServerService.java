@@ -362,7 +362,7 @@ public class ServerService {
         try {
             session.send("/app/cards/edit/" +
                             board.getJoinKey() + "/" +
-                            column.getId() + "/",
+                            column.getId(),
                     new CardDTO(card, board.getPassword()));
             logger.info("Edited card sent to server");
         }

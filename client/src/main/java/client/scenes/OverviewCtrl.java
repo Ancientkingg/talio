@@ -85,7 +85,7 @@ public class OverviewCtrl implements Refreshable {
         columnBox.getChildren().removeAll(columnBox.getChildren().stream().filter(c -> c instanceof ColumnComponent).toList());
 
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
-            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this);
+            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this, mainCtrl);
 
             columnComponent.setHeading(col.getHeading());
 
@@ -127,8 +127,9 @@ public class OverviewCtrl implements Refreshable {
      */
     public void refreshCard(final long cardId) {
         for (final Node n : columnBox.getChildren()) {
+            if (!(n instanceof ColumnComponent)) continue;
             final ColumnComponent cc = (ColumnComponent) n;
-            for (final Node c : cc.getChildren()) {
+            for (final Node c : cc.getInnerCardList().getChildren()) {
                 final CardComponent cac = (CardComponent) c;
                 if (cac.getCard().getId() == cardId) {
                     cac.refresh();

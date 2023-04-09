@@ -2,6 +2,7 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
+import client.scenes.MainCtrl;
 import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
@@ -31,6 +32,8 @@ public class CardComponent extends Draggable implements UIComponent {
     @Getter
     private final ColumnComponent columnParent;
 
+    private MainCtrl mainCtrl;
+
     @FXML
     private TextArea cardText;
 
@@ -54,12 +57,14 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param boardService   BoardService instance
      * @param card         Card instance
      * @param columnParent ColumnComponent instance
+     * @param mainCtrl     MainCtrl instance
      */
-    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent) {
+    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent, final MainCtrl mainCtrl) {
         super(columnParent.getOverviewCtrl(), columnParent);
         this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
+        this.mainCtrl = mainCtrl;
 
         loadSource(Main.class.getResource("/components/Card.fxml"));
 
@@ -77,6 +82,7 @@ public class CardComponent extends Draggable implements UIComponent {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
                     final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
+                    mainCtrl.setCardDetailsModal(modal);
                     modal.showModal();
                 }
             }
@@ -136,14 +142,9 @@ public class CardComponent extends Draggable implements UIComponent {
         focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 card.setTitle(cardText.getText());
-                refresh();
+                boardService.editCard(card, columnParent.getColumn());
                 cardText.setDisable(true);
             }
-        });
-
-        cardText.textProperty().addListener((observable, oldValue, newValue) -> {
-            card.setTitle(cardText.getText());
-            refresh();
         });
     }
 
@@ -291,6 +292,6 @@ public class CardComponent extends Draggable implements UIComponent {
      * @return The cloned card
      */
     public Draggable clone() {
-        return new CardComponent(boardService, card, columnParent);
+        return new CardComponent(boardService, card, columnParent, mainCtrl);
     }
 }

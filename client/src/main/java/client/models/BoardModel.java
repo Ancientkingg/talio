@@ -166,4 +166,13 @@ public class BoardModel {
             column.setHeading(newName);
         }
     }
+
+    /**
+     * changes the contents of a card and then refreshes the overview of the card / any open card details modal
+     * @param card
+     * @throws CardNotFoundException
+     */
+    public void editCard(final Card card) throws CardNotFoundException {
+        getCurrentBoard().updateCard(card);
+    }
 }

@@ -2,6 +2,7 @@ package client.scenes.components;
 
 import client.Main;
 import client.exceptions.BoardChangeException;
+import client.scenes.MainCtrl;
 import client.scenes.OverviewCtrl;
 import client.services.BoardService;
 import commons.Card;
@@ -27,6 +28,9 @@ public class ColumnComponent extends GridPane implements UIComponent {
 
     @Getter
     private final OverviewCtrl overviewCtrl;
+
+    private final MainCtrl mainCtrl;
+
     private final Column column;
 
     @FXML
@@ -51,10 +55,12 @@ public class ColumnComponent extends GridPane implements UIComponent {
      * @param boardService   BoardService instance
      * @param column       Column instance
      * @param overviewCtrl OverviewCtrl instance
+     * @param mainCtrl     MainCtrl instance
      */
-    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl) {
+    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl, final MainCtrl mainCtrl) {
         this.boardService = boardService;
         this.overviewCtrl = overviewCtrl;
+        this.mainCtrl = mainCtrl;
         this.column = column;
         loadSource(Main.class.getResource("/components/Column.fxml"));
 
@@ -178,7 +184,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
     public void refresh() {
         innerCardList.getChildren().clear();
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardService, card, this);
+            final CardComponent cc = new CardComponent(boardService, card, this, mainCtrl);
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());

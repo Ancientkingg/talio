@@ -313,6 +313,9 @@ public class BoardService {
     public void updateRemoveCardFromColumn(final Card card, final Column column) throws BoardChangeException {
         boardModel.removeCard(card, column);
         mainCtrl.refreshOverview();
+        if (mainCtrl.getCardDetailsModal() != null) {
+            mainCtrl.getCardDetailsModal().closeModal();
+        }
     }
 
     /**
@@ -436,6 +439,10 @@ public class BoardService {
      */
     public void updateRemoveTagFromBoard(final Tag tag) {
         boardModel.removeTag(tag, getCurrentBoard());
+
+        boardModel.getCurrentBoard().getColumns().forEach(column -> column.getCards().forEach(card -> card.removeTag(tag)));
+
+        mainCtrl.refreshOverview();
         if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
     }
 
@@ -461,6 +468,7 @@ public class BoardService {
      */
     public void updateEditTag(final Tag tag) {
         boardModel.getCurrentBoard().updateTag(tag);
+        System.out.println("EDITED CARD!!!");
         if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
     }
 
@@ -616,14 +624,14 @@ public class BoardService {
     }
 
     /**
-     * Currently not functional, but connects to socket.
      * Changes card title, description, and tags (server initiated)
      *
      * @param card   Card to edit
-     * @param column Column that card is in
      */
-    public void updateEditCard(final Card card, final Column column) {
-//        boardModel.editCard(card, column);
+    public void updateEditCard(final Card card) throws CardNotFoundException {
+        boardModel.editCard(card);
+        mainCtrl.getOverviewCtrl().refreshCard(card.getId());
+        if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**

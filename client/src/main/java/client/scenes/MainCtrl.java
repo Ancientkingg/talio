@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.scenes.components.modals.CardDetailsModal;
 import client.scenes.components.modals.TagsOverviewModal;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,6 +31,10 @@ public class MainCtrl {
     @Getter
     @Setter
     private TagsOverviewModal tagsOverviewModal;
+
+    @Getter
+    @Setter
+    private CardDetailsModal cardDetailsModal;
 
 
 
