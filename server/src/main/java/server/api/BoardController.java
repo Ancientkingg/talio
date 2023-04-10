@@ -116,6 +116,28 @@ public class BoardController {
     }
 
     /**
+     * Updates the password of a board
+     * @param password String password for board
+     * @param joinKey String join key for board
+     * @return 200 OK if the board has been updated
+     */
+    @PostMapping("/boards/set-password/{joinKey}")
+    public ResponseEntity<Board> setBoardPassword(@Valid @RequestBody final String password, @PathVariable final String joinKey) {
+        try {
+            final Board board = boardService.getBoardWithKey(joinKey);
+            board.setPassword(password);
+            boardService.saveBoard(board);
+
+            updateBoardPassword(joinKey, password);
+
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
+        }
+    }
+
+    /**
      * Deletes a board
      * @param joinKey join key of a board
      * @return 200 OK if the board has been deleted
@@ -162,6 +184,11 @@ public class BoardController {
     public void updateBoardRenamed(final String joinKey, final String newHeading) {
         logger.info("Propagating column renamed for: " + joinKey);
         messagingTemplate.convertAndSend("/topic/boards/" + joinKey + "/rename", newHeading);
+    }
+
+    private void updateBoardPassword(final String joinKey, final String password) {
+        logger.info("Propagating password update for: " + joinKey);
+        messagingTemplate.convertAndSend("/topic/boards/" + joinKey + "/set-password", password);
     }
 
 }

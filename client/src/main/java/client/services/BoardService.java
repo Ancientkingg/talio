@@ -137,6 +137,21 @@ public class BoardService {
     }
 
     /**
+     * Sets the password for the current board
+     * @param password the password to set
+     */
+    public void setPasswordForCurrentBoard(final String password) {
+        try {
+            serverService.setPasswordForCurrentBoard(getCurrentBoard(), password);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The password couldn't be set on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Returns all boards on the client
      *
      * @return the boards present on the client
@@ -1012,5 +1027,14 @@ public class BoardService {
             throw new RuntimeException(e);
         }
         if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
+    }
+
+    /**
+     * Updates the board password
+     * @param payload Password
+     */
+    public void updateBoardPassword(final String payload) {
+        boardModel.getCurrentBoard().setPassword(payload);
+        if (mainCtrl.getBoardPasswordModal() != null) mainCtrl.getBoardPasswordModal().closeModal();
     }
 }

@@ -104,6 +104,18 @@ public class SessionHandler extends StompSessionHandlerAdapter {
                     }); }
             });
         subscriptions.add(boardRenameSub);
+
+        final Subscription boardPasswordSub = session.subscribe(
+                "/topic/boards/" + joinKey + "/set-password", new StompSessionHandlerAdapter() {
+                    public Type getPayloadType(final StompHeaders headers) {  return String.class; }
+
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater( () -> {
+                            boardService.updateBoardPassword((String) payload);
+                            logger.info("Board password updated: " + payload.toString());
+                        }); }
+                });
+        subscriptions.add(boardPasswordSub);
     }
 
     private void subscribeToCardChangeUpdates(final String joinKey) {
