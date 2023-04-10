@@ -86,8 +86,7 @@ public class SubTaskComponent extends Draggable implements UIComponent {
             if (e.getCode() == KeyCode.ENTER) {
                 descriptionField.setDisable(true);
                 subTask.setDescription(descriptionField.getText());
-                boardService.updateSubTask(card, subTask);
-
+                boardService.editSubTask(card, subTask);
             }
         });
 
@@ -137,7 +136,7 @@ public class SubTaskComponent extends Draggable implements UIComponent {
         if (!(intersectedComponent instanceof SubTaskComponent)) {
             return;
         }
-        boardService.moveSubCard(card, subTask,
+        boardService.moveSubTask(card, subTask,
                 ((SubTaskComponent) intersectedComponent).getSubTask().getPriority());
         refresh.accept(null);
     }

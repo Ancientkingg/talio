@@ -639,52 +639,34 @@ public class ServerService {
      * @param card         containing the subtask
      * @param subTask      to be moved
      * @param index        new index of subtask
-     *
-     * @return moved subtask
      */
-    public SubTask moveSubTask(final Board currentBoard, final Card card, final SubTask subTask, final int index) {
-        try (Client client = ClientBuilder.newClient()) {
-            final SubTask resultSubTask = client.target(serverIP)
-                    .path("/subtasks")
-                    .path("/move")
-                    .path(currentBoard.getJoinKey())
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(
-                            new SubTaskDTO(
-                                    subTask,
-                                    card.getId(),
-                                    index,
-                                    currentBoard.getPassword()
-                            ), APPLICATION_JSON), SubTask.class);
+    public void moveSubTask(final Board currentBoard, final Card card, final SubTask subTask, final int index) {
+        try {
+            session.send("/app/subtasks/move/" +
+                            currentBoard.getJoinKey(),
+                    new SubTaskDTO(
+                            subTask,
+                            card.getId(),
+                            index,
+                            currentBoard.getPassword()
+                    ));
             logger.info("Move SubTask sent to server");
-            return resultSubTask;
+        } catch (RuntimeException e) {
+            throw new ServerException("The sub task couldn't be repositioned on the Server: \n" + getServerIP());
         }
     }
 
     /**
-     * Updates subtask
+     * Edits subtask
      * @param currentBoard current board
      * @param card        containing the subtask
-     * @param subTask    to be updated
-     *
-     * @return updated subtask
+     * @param subTask    to be edited
      */
-    public SubTask updateSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
-        try (Client client = ClientBuilder.newClient()) {
-            final SubTask resultSubTask = client.target(serverIP)
-                    .path("/subtasks")
-                    .path("/update")
-                    .path(currentBoard.getJoinKey())
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(
-                            new SubTaskDTO(
-                                    subTask,
-                                    card.getId(),
-                                    currentBoard.getPassword()
-                            ), APPLICATION_JSON), SubTask.class);
-            logger.info("Update SubTask sent to server");
-            return resultSubTask;
-        }
+    public void editSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
+        session.send("/app/subtasks/edit/" +
+                        currentBoard.getJoinKey(),
+                new SubTaskDTO(subTask, card.getId(), currentBoard.getPassword()));
+        logger.info("Edited sub task sent to server");
     }
 
     /**

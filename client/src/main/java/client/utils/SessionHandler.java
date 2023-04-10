@@ -432,10 +432,40 @@ public class SessionHandler extends StompSessionHandlerAdapter {
         final Subscription subtaskRemovedSub = addSubscriptionForSubTaskRemoval(joinKey);
         final Subscription subtaskToggledSub = addSubscriptionForSubTaskToggleSub(joinKey);
         final Subscription subtaskMovedSub = addSubscriptionForSubTaskMoving(joinKey);
+        final Subscription subtaskEditedSub = addSubscriptionForSubTaskEdit(joinKey);
 
         subscriptions.add(subtaskAddedSub);
         subscriptions.add(subtaskRemovedSub);
         subscriptions.add(subtaskToggledSub);
+        subscriptions.add(subtaskMovedSub);
+        subscriptions.add(subtaskEditedSub);
+    }
+
+    private Subscription addSubscriptionForSubTaskEdit(final String joinKey) {
+        return session.subscribe(
+                "/topic/subtasks/" + joinKey + "/edit", new StompSessionHandlerAdapter() {
+                    @Override
+                    public Type getPayloadType(final StompHeaders headers) {
+                        return SubTaskDTO.class;
+                    }
+
+                    @Override
+                    public void handleFrame(final StompHeaders headers, final Object payload) {
+                        Platform.runLater(() -> {
+                            final SubTaskDTO subTaskDTO = (SubTaskDTO) payload;
+                            final Card card;
+                            try {
+                                card = boardService.getCurrentBoard().getCard(subTaskDTO.cardId());
+                            } catch (CardNotFoundException e) {
+                                logger.info("Could not edit subtask because card was not found");
+                                throw new RuntimeException(e);
+                            }
+                            boardService.updateEditSubTask(card, subTaskDTO.subTask());
+                            logger.info("Subtask edited");
+                        });
+                    }
+                }
+        );
     }
 
     private Subscription addSubscriptionForSubTaskMoving(final String joinKey) {

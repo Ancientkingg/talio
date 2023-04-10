@@ -264,12 +264,31 @@ public class Card implements Comparable<Card> {
      * @param index New index of the subtask
      */
     public void moveSubTask(final SubTask subTask, final int index) {
-        final List<SubTask> subTasks = new ArrayList<>(this.subtasks);
-        subTasks.remove(subTask);
-        subTasks.add(index, subTask);
+        this.subtasks.stream().filter(s -> s.getId() == subTask.getId()).findFirst()
+                .ifPresentOrElse(subtasks::remove, () -> {
+                    throw new IllegalArgumentException("Subtask not found");
+                });
 
         int i = 0;
-        for (final SubTask task : subTasks) {
+        for (final SubTask task : this.subtasks) {
+            task.setPriority(i++);
+        }
+
+        if (index >= this.subtasks.size()) {
+            this.subtasks.add(subTask);
+            return;
+        }
+
+        for (final SubTask task : this.subtasks) {
+            if (task.getPriority() >= index) {
+                task.setPriority(task.getPriority() + 1);
+            }
+        }
+
+        this.subtasks.add(subTask);
+
+        i = 0;
+        for (final SubTask task : this.subtasks) {
             task.setPriority(i++);
         }
     }

@@ -782,7 +782,7 @@ public class BoardService {
      * @param subTask to be moved
      * @param index new index of subtask
      */
-    public void moveSubCard(final Card card, final SubTask subTask, final int index) {
+    public void moveSubTask(final Card card, final SubTask subTask, final int index) {
         serverService.moveSubTask(this.boardModel.getCurrentBoard(), card, subTask, index);
     }
 
@@ -798,6 +798,7 @@ public class BoardService {
         } catch (CardNotFoundException e) {
             throw new RuntimeException(e);
         }
+        mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -807,6 +808,7 @@ public class BoardService {
      */
     public void updateToggleSubTask(final Card card, final SubTask subTask) {
         card.toggleSubtask(subTask);
+        mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -817,6 +819,7 @@ public class BoardService {
      */
     public void updateMoveSubTask(final Card card, final SubTask subTask, final int index) {
         card.moveSubTask(subTask, index);
+        mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -970,12 +973,12 @@ public class BoardService {
     }
 
     /**
-     * Adds a tag to the current board
-     * @param card Card to add the tag to
-     * @param subTask Subtask to add the tag to
+     * Edits the subtask
+     * @param card Card of the subtask
+     * @param subTask Subtask to edit
      */
-    public void updateSubTask(final Card card, final SubTask subTask) {
-        serverService.updateSubTask(boardModel.getCurrentBoard(), card, subTask);
+    public void editSubTask(final Card card, final SubTask subTask) {
+        serverService.editSubTask(boardModel.getCurrentBoard(), card, subTask);
         try {
             boardModel.getCurrentBoard().getCard(card.getId()).updateSubTask(subTask);
         } catch (CardNotFoundException e) {
@@ -994,5 +997,20 @@ public class BoardService {
         } catch (CardNotFoundException e) {
             throw new RuntimeException(e);
         }
+        mainCtrl.getCardDetailsModal().refresh();
+    }
+
+    /**
+     * Edits a subtask
+     * @param card to edit the subtask from
+     * @param subTask to edit
+     */
+    public void updateEditSubTask(final Card card, final SubTask subTask) {
+        try {
+            boardModel.getCurrentBoard().getCard(card.getId()).updateSubTask(subTask);
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        mainCtrl.getCardDetailsModal().refresh();
     }
 }

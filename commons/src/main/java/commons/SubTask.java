@@ -82,7 +82,7 @@ public class SubTask implements Comparable<SubTask> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final SubTask subTask = (SubTask) o;
-        return serializationId == subTask.serializationId && id == subTask.id
+        return id == subTask.id
                 && isDone == subTask.isDone && priority == subTask.priority
                 && Objects.equals(description, subTask.description);
     }
@@ -92,7 +92,7 @@ public class SubTask implements Comparable<SubTask> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(serializationId, id, description, isDone, priority);
+        return Objects.hash(id, description, isDone, priority);
     }
 
     /**

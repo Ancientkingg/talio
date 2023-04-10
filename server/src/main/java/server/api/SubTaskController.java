@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +64,13 @@ public class SubTaskController {
                     + " was not found in the board with join key " + joinKey);
         }
 
-        card.addSubTask(subTask);
+        subTask.setPriority(card.getSubtasks().size());
+
+        if (!card.addSubTask(subTask)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The subtask with id "
+                    + subTask.getId()
+                    + " already exists in the card with id " + subTaskDTO.cardId());
+        }
 
         boardService.saveBoard(board);
 
@@ -78,8 +86,8 @@ public class SubTaskController {
                 + joinKey + "/add", new SubTaskDTO(subTask, cardId));
     }
 
-    @PostMapping("/subtasks/update/{joinKey}")
-    private void updateSubTask(final @PathVariable String joinKey, final @RequestBody SubTaskDTO subTaskDTO) {
+    @MessageMapping("/subtasks/edit/{joinKey}")
+    private void editSubTask(final SubTaskDTO subTaskDTO, final @DestinationVariable String joinKey) {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, subTaskDTO.password());
         final Card card;
         try {
@@ -89,13 +97,13 @@ public class SubTaskController {
         }
         card.updateSubTask(subTaskDTO.subTask());
         boardService.saveBoard(board);
-        updateSubTaskUpdated(subTaskDTO.subTask(), subTaskDTO.cardId(), joinKey);
+        updateSubTaskEdited(subTaskDTO.subTask(), subTaskDTO.cardId(), joinKey);
     }
 
-    private void updateSubTaskUpdated(final SubTask subTask, final long cardId, final String joinKey) {
+    private void updateSubTaskEdited(final SubTask subTask, final long cardId, final String joinKey) {
         logger.info("Subtask updated, propagating - board join key: " + joinKey + ", cardId: " + cardId +
                 ", subTask description: " + subTask.getDescription());
-        messagingTemplate.convertAndSend("/topic/subtasks/" + joinKey + "/update", new SubTaskDTO(subTask, cardId));
+        messagingTemplate.convertAndSend("/topic/subtasks/" + joinKey + "/edit", new SubTaskDTO(subTask, cardId));
     }
 
     /**
@@ -184,12 +192,10 @@ public class SubTaskController {
      *
      * @param joinkey    joinkey for board
      * @param subTaskDTO DTO containing subtask and id of card containing it
-     *
-     * @return Response entity built around moved subtask
      */
-    @PostMapping("/subtasks/move/{joinkey}")
-    public ResponseEntity<SubTask> moveSubTask(@PathVariable final String joinkey,
-                                               @RequestBody final SubTaskDTO subTaskDTO)
+    @MessageMapping("/subtasks/move/{joinkey}")
+    public void moveSubTask(final SubTaskDTO subTaskDTO,
+                                               @DestinationVariable final String joinkey)
     {
         final Board board = boardService.getBoardWithKeyAndPassword(joinkey, subTaskDTO.password());
         final SubTask subTask;
@@ -221,8 +227,6 @@ public class SubTaskController {
         boardService.saveBoard(board);
 
         updateMoveSubTask(subTask, card.getId(), joinkey, newIndex);
-
-        return ResponseEntity.ok(subTask);
     }
 
     private void updateMoveSubTask(final SubTask subTask, final long cardId, final String joinkey, final int index) {
