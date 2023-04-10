@@ -112,18 +112,6 @@ public class HomePageCtrl implements Refreshable {
      * @param board The board to remove
      */
     public void removeBoard(final Board board) {
-        final Point2D p = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
-
-        final Tooltip customTooltip = new Tooltip("Left board!");
-        customTooltip.setAutoHide(false);
-        customTooltip.show(mainCtrl.getCurrentScene().getRoot(), p.getX(), p.getY());
-
-        final PauseTransition pt = new PauseTransition(Duration.millis(750));
-        pt.setOnFinished(e -> {
-            customTooltip.hide();
-        });
-        pt.play();
-
         boardService.removeBoard(board);
         boardService.saveBoardsLocal();
         this.renderBoards();
