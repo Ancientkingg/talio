@@ -137,11 +137,17 @@ public class OverviewCtrl implements Refreshable {
 
                     case T -> setTagForCardShortcut();
 
-                    case C -> { /*TODO*/ }
+                    case C -> setColorForCardShortcut();
                 }
             }
         });
 
+    }
+
+    private void setColorForCardShortcut() {
+        final ColorShortcutModal colorShortcutModal = new ColorShortcutModal(boardService, mainCtrl.getCurrentScene(), this, focussedCard);
+
+        colorShortcutModal.showModal();
     }
 
     private void setTagForCardShortcut() {

@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class TagsShortcutModal extends Modal implements UIComponent {
+public class TagsShortcutModal extends Modal implements UIComponent, Refreshable {
 
     @FXML
     private VBox tagsContainer;
@@ -99,5 +99,13 @@ public class TagsShortcutModal extends Modal implements UIComponent {
                 .map( child -> (TagSelectComponent) child)
                 .filter(TagSelectComponent::isSelected)
                 .map(TagSelectComponent::getTag).toList();
+    }
+
+    /**
+     *  refresh the modal
+     */
+    @Override
+    public void refresh() {
+        renderTags();
     }
 }
