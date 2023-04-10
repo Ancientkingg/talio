@@ -26,9 +26,6 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
     private TextField titleTextField;
 
     @FXML
-    private TextField passwordTextField;
-
-    @FXML
     private Text boardJoinKey;
 
     @FXML
@@ -64,7 +61,6 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
      */
     public void refresh() {
         this.titleTextField.setText(boardService.getCurrentBoard().getTitle());
-        this.passwordTextField.setText(boardService.getCurrentBoard().getPassword());
         this.boardJoinKey.setText(boardService.getCurrentBoard().getJoinKey());
         this.refreshColors();
     }
@@ -76,7 +72,6 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
     public void initialize() {
         super.initialize();
         this.titleTextField.setText(boardService.getCurrentBoard().getTitle());
-        this.passwordTextField.setText(boardService.getCurrentBoard().getPassword());
         this.boardJoinKey.setText(boardService.getCurrentBoard().getJoinKey());
         this.refreshColors();
     }

@@ -247,7 +247,7 @@ public class HomePageCtrl implements Refreshable {
         checkBoardThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (boardService.isConnected()) {
+                do {
                     boardService.checkBoardsValidity();
                     Platform.runLater(() -> { renderBoards(); });
 
@@ -255,6 +255,8 @@ public class HomePageCtrl implements Refreshable {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) { }
                 }
+                while (boardService.isConnected());
+
                 stopCheckBoards();
             }
         });

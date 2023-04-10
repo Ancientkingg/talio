@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.JoinServerCtrl">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.JoinServerCtrl">
    <children>
       <GridPane styleClass="background" stylesheets="@Style.css">
          <columnConstraints>
@@ -30,8 +30,13 @@
                         <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets />
                      </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="137.0" prefWidth="508.0" style="-fx-font-family: Cabin; -fx-font-size: 20;" stylesheets="@Style.css" text="Please enter the address of the server you would like to use. Should you not have been provided with one, you can host a server yourself." textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
                   <TextField fx:id="serverURL" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="363.0" promptText="127.0.0.1" styleClass="serverText-field" stylesheets="@Style.css">
                      <VBox.margin>

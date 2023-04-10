@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Main;
 import client.exceptions.BoardChangeException;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
@@ -26,6 +27,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.inject.Inject;
 import java.awt.datatransfer.StringSelection;
@@ -42,6 +44,13 @@ public class OverviewCtrl implements Refreshable {
     private HBox columnBox;
     @FXML
     private Button linkButton;
+
+    @FXML
+    private SVGPath lockIcon;
+
+    @Setter
+    @Getter
+    private boolean isLocked;
     
     @FXML
     private Button boardNameButton;
@@ -78,6 +87,7 @@ public class OverviewCtrl implements Refreshable {
         }
 
         focussedCard = cardComponent;
+        this.isLocked = true;
     }
 
     /**
@@ -283,6 +293,7 @@ public class OverviewCtrl implements Refreshable {
             .removeIf(c -> c instanceof Draggable);
         this.refreshColumn();
         this.refreshStyle();
+        this.refreshLock();
     }
 
     /**
@@ -384,6 +395,58 @@ public class OverviewCtrl implements Refreshable {
         final ColorPresetsOverviewModal modal = new ColorPresetsOverviewModal(boardService, this.mainCtrl.getCurrentScene());
         mainCtrl.setColorPresetsOverviewModal(modal);
         modal.showModal();
+    }
+
+    /**
+     * Handles the lock button click
+     */
+    @FXML
+    public void onLockButtonClick() {
+        final BoardPasswordModal modal = new BoardPasswordModal(boardService, this.mainCtrl.getCurrentScene(), this);
+        mainCtrl.setBoardPasswordModal(modal);
+        modal.showModal();
+    }
+
+    /**
+     * Checks the lock status of the current board
+     */
+    public void checkLock() {
+        final String password = boardService.getCurrentBoard().getPassword();
+        if (password == null || password.isEmpty()) {
+            this.isLocked = false;
+        } else {
+            this.isLocked = true;
+        }
+
+        if (Main.isAdmin()) this.isLocked = false;
+    }
+
+    private void refreshLock() {
+        this.setLockIcon(this.isLocked);
+    }
+
+    private void setLockIcon(final boolean lock) {
+        if (lock) {
+            // Closed
+            this.lockIcon.setContent(
+                    "M220 976q-24.75 0-42.375-17.625T160 916V482q0-24.75 17.625-42.375T220 " +
+                            "422h70v-96q0-78.85 55.606-134.425Q401.212 136 480.106 136T614.5 191.575Q670 247.15 670" +
+                            " 326v96h70q24.75 0 42.375 17.625T800 482v434q0 24.75-17.625 42.375T740 " +
+                            "976H220Zm0-60h520V482H220v434Zm260.168-140Q512 776 534.5 753.969T557 701q0-30-22.668-54.5t-54.5-24.5Q448 " +
+                            "622 425.5 646.5t-22.5 55q0 30.5 22.668 52.5t54.5 22ZM350 " +
+                            "422h260v-96q0-54.167-37.882-92.083-37.883-37.917-92-37.917Q426 196 388 233.917 350 271.833 350 326v96ZM220 916V482v434Z"
+            );
+        } else {
+            // Open
+            this.lockIcon.setContent(
+                    "M220 422h390v-96q0-54.167-37.882-92.083-37.883-37.917-92-37.917Q426" +
+                            " 196 388 233.917 350 271.833 350 326h-60q0-79 55.606-134.5t134.5-55.5Q559 136 614.5" +
+                            " 191.575T670 326v96h70q24.75 0 42.375 17.625T800 482v434q0 24.75-17.625 " +
+                            "42.375T740 976H220q-24.75 0-42.375-17.625T160 916V482q0-24.75 17.625-42.375T220 422Zm0 " +
+                            "494h520V482H220v434Zm260.168-140Q512 776 534.5 753.969T557 701q0-30-22.668-54.5t-54.5-24.5Q448 622 425.5 " +
+                            "646.5t-22.5 55q0 30.5 22.668 52.5t54.5 22ZM220 916V482v434Z"
+            );
+        }
     }
 
 

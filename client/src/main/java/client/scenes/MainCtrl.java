@@ -52,6 +52,11 @@ public class MainCtrl {
     @Getter
     private ColorShortcutModal colorShortcutModal;
 
+    @Getter
+    @Setter
+    private BoardPasswordModal boardPasswordModal;
+
+
 
     /**
      * Sets the primary stage upon launch and initializes each controller
@@ -139,6 +144,7 @@ public class MainCtrl {
         primaryStage.show();
         primaryStage.sizeToScene();
         overviewCtrl.setKeyboardShortcuts();
+        overviewCtrl.checkLock();
     }
 
 
