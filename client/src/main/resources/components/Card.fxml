@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -15,7 +13,7 @@
 <fx:root maxHeight="-Infinity" minWidth="-Infinity" styleClass="card" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" prefWidth="30.0" />
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="0.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="1.7976931348623157E308" valignment="TOP" vgrow="SOMETIMES" />
@@ -29,25 +27,16 @@
             <Insets right="7.0" top="10.0" />
          </GridPane.margin>
       </Text>
-      <Button fx:id="editCardButton" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" styleClass="delete-column-button" stylesheets="@../Style.css" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1">
-         <graphic>
-            <SVGPath content="M794 390 666 262l42-42q17-17 42.5-16.5T793 221l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Z" scaleX="0.02" scaleY="0.02" />
-         </graphic>
-      </Button>
-      <VBox maxWidth="-Infinity" prefWidth="200.0">
-         <children>
-      
-            <TextArea fx:id="cardText" maxWidth="195.0" prefHeight="57.0" styleClass="cardTextArea" stylesheets="@../Style.css" text="Test&#10;" wrapText="true">
-               <padding>
-                  <Insets left="6.0" right="6.0" top="6.0" />
-               </padding>
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextArea>
-            <HBox fx:id="tagContainer" fillHeight="false" minHeight="-Infinity" prefHeight="8.0" prefWidth="199.0" />
-         </children>
-      </VBox>
+
+                  <TextArea fx:id="cardText" maxWidth="195.0" prefHeight="57.0" styleClass="cardTextArea" stylesheets="@../Style.css" text="Test&#10;" wrapText="true">
+         <padding>
+            <Insets left="6.0" right="6.0" top="6.0" />
+         </padding>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <HBox fx:id="tagContainer" alignment="BOTTOM_LEFT" fillHeight="false" minHeight="-Infinity" prefHeight="8.0" prefWidth="199.0" />
       <Text fx:id="descriptionIndicator" fill="#afafaf" strokeType="OUTSIDE" strokeWidth="0.0" text="." GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
          <font>
             <Font size="35.0" />
@@ -56,6 +45,7 @@
             <Insets right="10.0" />
          </GridPane.margin>
       </Text>
+      <SVGPath fx:id="editIcon" content="M 7.94 3.9 L 6.66 2.62 l 0.42 -0.42 q 0.17 -0.17 0.425 -0.165 T 7.93 2.21 l 0.43 0.43 q 0.17 0.17 0.17 0.42 t -0.17 0.42 l -0.42 0.42 Z m -0.42 0.42 L 2.48 9.36 H 1.2 V 8.08 l 5.04 -5.04 l 1.28 1.28 Z" scaleX="1.5" scaleY="1.5" translateX="-5.0" translateY="5.0" visible="false" GridPane.columnIndex="1" />
 
    </children>
 </fx:root>

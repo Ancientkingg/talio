@@ -18,8 +18,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -41,7 +43,7 @@ public class CardComponent extends Draggable implements UIComponent {
     private TextArea cardText;
 
     @FXML
-    private Button editCardButton;
+    private SVGPath editIcon;
 
     @FXML
     private HBox tagContainer;
@@ -84,22 +86,26 @@ public class CardComponent extends Draggable implements UIComponent {
 
         setDraggable(true);
 
-        editCardButton.setOnAction(e -> cardText.setDisable(false)); // Temporarily enable editing of card text
+        setHover();
 
-        setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                if (mouseEvent.getClickCount() == 2) {
-                    final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
-                    mainCtrl.setCardDetailsModal(modal);
-                    modal.showModal();
-                }
+        setDoubleClick();
+
+        cardText.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) {
+                cardText.setDisable(true);
+                card.setTitle(cardText.getText());
+                refresh();
             }
         });
 
         cardText.setOnKeyReleased(e -> { // Disable editing of card text when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
                 cardText.setDisable(true);
+
+                final int caretPosition = cardText.getCaretPosition();
+                cardText.setText(cardText.getText().substring(0, caretPosition - 1) + cardText.getText().substring(caretPosition));
                 card.setTitle(cardText.getText());
+                this.requestFocus();
                 refresh();
             }
         });
@@ -136,6 +142,36 @@ public class CardComponent extends Draggable implements UIComponent {
         this.columnParent = columnParent;
         this.overviewScene = overviewScene;
         loadSource(Main.class.getResource("/components/Card.fxml"));
+    }
+
+    private void setDoubleClick() {
+        // Double click for card details modal
+        setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    final CardDetailsModal modal = new CardDetailsModal(boardService, getColumnParent().getScene(), getCard(), CardComponent.this);
+                    mainCtrl.setCardDetailsModal(modal);
+                    modal.showModal();
+                } else if (mouseEvent.getClickCount() == 1) {
+                    cardText.setDisable(false);
+                    cardText.requestFocus();
+                    cardText.end();
+                }
+            }
+        });
+    }
+
+    /**
+     * Sets the hover effect for the component
+     */
+    private void setHover() {
+        this.hoverProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                this.editIcon.setVisible(true);
+            } else {
+                this.editIcon.setVisible(false);
+            }
+        });
     }
 
     private void refreshStyle() {
