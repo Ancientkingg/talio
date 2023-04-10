@@ -136,10 +136,10 @@ public class CardController {
             final Column sourceColumn = board.getColumnById(sourceColumnId);
             final Column destinationColumn = board.getColumnById(destinationColumnId);
 
-
+            final Card serverCard = board.getCard(clientCard.getId());
 
             if (sourceColumnId == destinationColumnId && newPosition != clientCard.getPriority()) {
-                sourceColumn.updateCardPosition(card, newPosition);
+                sourceColumn.updateCardPosition(serverCard, newPosition);
             }
             else {
                 if (!sourceColumn.removeCard(clientCard))
