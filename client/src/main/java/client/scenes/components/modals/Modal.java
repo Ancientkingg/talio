@@ -3,6 +3,7 @@ package client.scenes.components.modals;
 import client.services.BoardService;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,6 +21,8 @@ public class Modal extends GridPane {
     protected final BoardService boardService;
 
     protected final Scene parentScene;
+
+    private Node previousFocussedElement;
 
     private Pane background;
 
@@ -54,6 +57,7 @@ public class Modal extends GridPane {
     public void initialize() {
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.schedule(() -> this.background.addEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter), 150, TimeUnit.MILLISECONDS);
+
     }
 
     /**
@@ -63,6 +67,7 @@ public class Modal extends GridPane {
         ((StackPane) parentScene.getRoot()).getChildren().remove(this);
         ((StackPane) parentScene.getRoot()).getChildren().remove(background);
         parentScene.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter);
+        previousFocussedElement.requestFocus();
     }
 
     /**
@@ -71,6 +76,7 @@ public class Modal extends GridPane {
     public void showModal() {
         ((StackPane) parentScene.getRoot()).getChildren().add(background);
         ((StackPane) parentScene.getRoot()).getChildren().add(this);
+        previousFocussedElement = parentScene.getFocusOwner();
     }
 
     private void setBackgroundPane() {

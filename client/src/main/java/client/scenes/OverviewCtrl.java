@@ -1,12 +1,9 @@
 package client.scenes;
 
 import client.exceptions.BoardChangeException;
-import client.scenes.components.Draggable;
-import client.scenes.components.modals.BoardSettingsModal;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
-import client.scenes.components.modals.ColorPresetsOverviewModal;
-import client.scenes.components.modals.TagsOverviewModal;
+import client.scenes.components.Draggable;
 import client.scenes.components.modals.*;
 import client.services.BoardService;
 import commons.Card;
@@ -28,7 +25,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
-import jdk.jfr.Event;
 import lombok.Getter;
 
 import javax.inject.Inject;
@@ -221,7 +217,7 @@ public class OverviewCtrl implements Refreshable {
         int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
         ObservableList<Node> rightColumn;
 
-        while (columnIndex ++ < columnBox.getChildren().size() - 1) { // not last, meaning there is a column to the right
+        while (columnIndex ++ < columnBox.getChildren().size() - 2) { // not last, meaning there is a column to the right, also last element is button
             rightColumn = ((ColumnComponent) columnBox.getChildren().get(columnIndex))
                     .getInnerCardList().getChildren(); // column to the right
 
