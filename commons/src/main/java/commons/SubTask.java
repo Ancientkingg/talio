@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class SubTask {
+public class SubTask implements Comparable<SubTask>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +26,9 @@ public class SubTask {
 
     @Getter @Setter
     private boolean isDone;
+
+    @Getter @Setter
+    private int priority;
 
 
     /**
@@ -70,32 +73,43 @@ public class SubTask {
     }
 
     /**
-     * equals method for subtask
-     * @param o SubTask to compare this with
-     * @return this == o ?
+     * @param o object to compare to
+     *
+     * @return true if the objects are equal, false otherwise
      */
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         final SubTask subTask = (SubTask) o;
-
-        if (id != subTask.id) return false;
-        if (isDone != subTask.isDone) return false;
-        return Objects.equals(description, subTask.description);
+        return serializationId == subTask.serializationId && id == subTask.id
+                && isDone == subTask.isDone && priority == subTask.priority
+                && Objects.equals(description, subTask.description);
     }
 
-
     /**
-     * hashcode for SubTask
-     * @return hashcode
+     * @return hashcode of the object
      */
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (isDone ? 1 : 0);
-        return result;
+        return Objects.hash(serializationId, id, description, isDone, priority);
+    }
+
+    /**
+     * @param o the object to be compared.
+     *
+     * @return 0 if the objects are equal,
+     * -1 if this object is less than the other object,
+     * 1 if this object is greater than the other object
+     */
+    @Override
+    public int compareTo(final SubTask o) {
+        if (this.isDone && !o.isDone) {
+            return 1;
+        } else if (!this.isDone && o.isDone) {
+            return -1;
+        } else {
+            return Integer.compare(this.priority, o.priority);
+        }
     }
 }

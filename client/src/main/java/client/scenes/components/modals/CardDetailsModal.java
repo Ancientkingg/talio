@@ -3,6 +3,7 @@ package client.scenes.components.modals;
 import client.Main;
 import client.scenes.Refreshable;
 import client.scenes.components.CardComponent;
+import client.scenes.components.Draggable;
 import client.scenes.components.SubTaskComponent;
 import client.scenes.components.TagSelectComponent;
 import client.services.BoardService;
@@ -11,13 +12,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CardDetailsModal extends Modal implements Refreshable {
 
@@ -197,7 +198,7 @@ public class CardDetailsModal extends Modal implements Refreshable {
     public void refreshSubtasks() {
         subTasksContainer.getChildren().clear();
 
-        final List<SubTask> subtasks = card.getSubtasks();
+        final SortedSet<SubTask> subtasks = card.getSubtasks();
 
         if (subtasks.isEmpty()) {
             subTasksContainer.getChildren().add(addSubtasksText);
@@ -210,6 +211,9 @@ public class CardDetailsModal extends Modal implements Refreshable {
                     (e) -> refreshSubtasks(), this);
             subTasksContainer.getChildren().add(subTaskComponent);
         }
+
+        ((StackPane) parentScene.getRoot()).getChildren()
+                .removeIf(c -> c instanceof Draggable);
 
         subTasksContainer.getChildren().add(addSubtaskButton);
     }

@@ -27,7 +27,8 @@ public class SubTaskController {
 
     /**
      * Constructor for SubTaskController
-     * @param boardService dependency injection for boardService
+     *
+     * @param boardService      dependency injection for boardService
      * @param messagingTemplate Template to send updates over socket
      */
     public SubTaskController(final BoardService boardService, final SimpMessageSendingOperations messagingTemplate) {
@@ -37,7 +38,8 @@ public class SubTaskController {
 
     /**
      * Adds a subtask to a card
-     * @param joinKey join key of board
+     *
+     * @param joinKey    join key of board
      * @param subTaskDTO subtask to be added
      *
      * @return subtask added
@@ -98,13 +100,15 @@ public class SubTaskController {
 
     /**
      * Remove subtask from card
-     * @param joinkey joinkey for board
+     *
+     * @param joinkey    joinkey for board
      * @param subTaskDTO DTO containing subtask and id of card containing it and password
+     *
      * @return Response entity built around subtask removed from card
      */
     @PostMapping("/subtasks/remove/{joinkey}")
     public ResponseEntity<SubTask> removeSubTask(@PathVariable final String joinkey,
-                                              @RequestBody final SubTaskDTO subTaskDTO)
+                                                 @RequestBody final SubTaskDTO subTaskDTO)
     {
 
         final Board board = boardService.getBoardWithKeyAndPassword(joinkey, subTaskDTO.password());
@@ -136,15 +140,16 @@ public class SubTaskController {
 
     /**
      * Toggle state of subtask (done/not done)
-     * @param joinkey joinkey for board
+     *
+     * @param joinkey    joinkey for board
      * @param subTaskDTO DTO containing subtask and id of card containing it
+     *
      * @return Response entity built around subtask whose state is toggled
      */
     @PostMapping("/subtasks/toggle/{joinkey}")
     public ResponseEntity<SubTask> toggleSubTask(@PathVariable final String joinkey,
-                                              @RequestBody final SubTaskDTO subTaskDTO)
+                                                 @RequestBody final SubTaskDTO subTaskDTO)
     {
-
         final Board board = boardService.getBoardWithKeyAndPassword(joinkey, subTaskDTO.password());
         final SubTask subTask = subTaskDTO.subTask();
 
@@ -176,18 +181,24 @@ public class SubTaskController {
 
     /**
      * moves subtask within the card
-     * @param joinkey joinkey for board
+     *
+     * @param joinkey    joinkey for board
      * @param subTaskDTO DTO containing subtask and id of card containing it
-     * @param index index to which subtask is to be moved
+     *
      * @return Response entity built around moved subtask
      */
-    @PostMapping("/subtasks/move/{joinkey}/{index}")
-    public ResponseEntity<SubTask> moveSubTask(@PathVariable final String joinkey, @PathVariable final int index,
-                                                 @RequestBody final SubTaskDTO subTaskDTO)
+    @PostMapping("/subtasks/move/{joinkey}")
+    public ResponseEntity<SubTask> moveSubTask(@PathVariable final String joinkey,
+                                               @RequestBody final SubTaskDTO subTaskDTO)
     {
-
         final Board board = boardService.getBoardWithKeyAndPassword(joinkey, subTaskDTO.password());
-        final SubTask subTask = subTaskDTO.subTask();
+        final SubTask subTask;
+        try {
+            subTask = board.getCard(subTaskDTO.cardId()).getSubtasks()
+                    .stream().filter(x -> x.getId() == subTaskDTO.subTask().getId()).toList().get(0);
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         final Card card;
         try {
@@ -200,13 +211,12 @@ public class SubTaskController {
         if (!card.getSubtasks().contains(subTask))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id " + card.getId() + " does not contain the subtask being moved");
 
-        if (index < 0) // this should also be dealt with on client side
+        if (subTaskDTO.index() < 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "subtask cannot be moved to negative index");
 
-        final int newIndex = Math.min(card.getSubtasks().size() - 1, index);
+        final int newIndex = Math.min(card.getSubtasks().size() - 1, subTaskDTO.index());
 
-        card.getSubtasks().remove(subTask);
-        card.getSubtasks().add(newIndex, subTask);
+        card.moveSubTask(subTask, newIndex);
 
         boardService.saveBoard(board);
 

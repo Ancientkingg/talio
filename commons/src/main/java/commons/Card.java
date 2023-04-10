@@ -2,6 +2,7 @@ package commons;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.annotation.Order;
 
 import javax.persistence.*;
 import java.util.*;
@@ -27,8 +28,9 @@ public class Card implements Comparable<Card> {
 
     @OrderColumn
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("priority")
     @Getter @Setter
-    private List<SubTask> subtasks;
+    private SortedSet<SubTask> subtasks;
 
     @Getter @Setter
     private Boolean isDefaultThemed;
@@ -58,11 +60,11 @@ public class Card implements Comparable<Card> {
      * @param subTasks List of subtasks for the card
      * @param tags Tags assigned to the card
      */
-    public Card(final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+    public Card(final String title, final int priority, final String description, final SortedSet<SubTask> subTasks, final Set<Tag> tags) {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.subtasks = subTasks == null ? new ArrayList<>(0) : subTasks;
+        this.subtasks = subTasks == null ? new TreeSet<>() : subTasks;
         this.tags = tags == null ? new HashSet<>(0) : tags;
     }
 
@@ -75,7 +77,7 @@ public class Card implements Comparable<Card> {
      * @param subTasks List of subtasks for the card
      * @param tags Tags assigned to the card
      */
-    public Card(final long id, final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+    public Card(final long id, final String title, final int priority, final String description, final SortedSet<SubTask> subTasks, final Set<Tag> tags) {
         this(title, priority, description, subTasks, tags);
         this.id = id;
     }
@@ -91,7 +93,7 @@ public class Card implements Comparable<Card> {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.subtasks = new ArrayList<>(0);
+        this.subtasks = new TreeSet<>();
         this.tags = tags == null ? new HashSet<>(0) : tags;
 
         this.isDefaultThemed = true;
@@ -263,8 +265,14 @@ public class Card implements Comparable<Card> {
      * @param index New index of the subtask
      */
     public void moveSubTask(final SubTask subTask, final int index) {
-        this.subtasks.remove(subTask);
-        this.subtasks.add(index, subTask);
+        final List<SubTask> subTasks = new ArrayList<>(this.subtasks);
+        subTasks.remove(subTask);
+        subTasks.add(index, subTask);
+
+        int i = 0;
+        for (final SubTask task : subTasks) {
+            task.setPriority(i++);
+        }
     }
 
     /**

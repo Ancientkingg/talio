@@ -134,9 +134,11 @@ public class SubTaskComponent extends Draggable implements UIComponent {
 
     @Override
     protected void onDrop(final Node intersectedComponent, final boolean isBelow) {
-        boardService.moveSubCard(card, subTask, card.getSubtasks().indexOf(
-                ((SubTaskComponent) intersectedComponent).getSubTask()
-        ));
+        if (!(intersectedComponent instanceof SubTaskComponent)) {
+            return;
+        }
+        boardService.moveSubCard(card, subTask,
+                ((SubTaskComponent) intersectedComponent).getSubTask().getPriority());
         refresh.accept(null);
     }
 
@@ -145,6 +147,10 @@ public class SubTaskComponent extends Draggable implements UIComponent {
 
     }
 
+    /**
+     * Clones subtask component
+     * @return cloned subtask component
+     */
     @Override
     public Draggable clone() {
         return new SubTaskComponent(subTask, card, boardService, refresh, this.parentModal);
