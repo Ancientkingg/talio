@@ -54,7 +54,16 @@ public class ServerService {
      * Stops the client socket
      */
     public void stopSocket() {
+        session.disconnect();
         this.socketThread.stop();
+    }
+
+    /**
+     * Boolean returning whether the session is connected
+     * @return session.isConnected()
+     */
+    public boolean isConnected() {
+        return session.isConnected();
     }
 
     /**

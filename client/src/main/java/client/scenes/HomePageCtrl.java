@@ -6,9 +6,8 @@ import client.scenes.components.modals.AppSettingsModal;
 import client.scenes.components.modals.JoinBoardModal;
 import client.services.BoardService;
 import commons.Board;
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -45,6 +44,8 @@ public class HomePageCtrl implements Refreshable {
 
     private int lastRowSize;
 
+    private Thread checkBoardThread;
+
 
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
@@ -64,17 +65,6 @@ public class HomePageCtrl implements Refreshable {
     @FXML
     public void initialize() {
         this.addResizeListener();
-
-        final Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(5)),
-                new KeyFrame(Duration.seconds(5), event -> {
-                    boardService.checkBoardsValidity();
-                    renderBoards();
-                })
-
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
     }
 
     /**
@@ -260,5 +250,33 @@ public class HomePageCtrl implements Refreshable {
      */
     public boolean verifyAdminPassword(final String adminPassword) {
         return boardService.verifyAdminPassword(adminPassword);
+    }
+
+    /**
+     * Starts thread that periodically checks if boards are valid
+     */
+    public void checkBoards() {
+        checkBoardThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (boardService.isConnected()) {
+                    boardService.checkBoardsValidity();
+                    Platform.runLater(() -> { renderBoards(); });
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) { }
+                }
+                stopCheckBoards();
+            }
+        });
+        checkBoardThread.start();
+    }
+
+    /**
+     * Stops the thread checking if boards are valid upon disconnecting
+     */
+    private void stopCheckBoards() {
+        checkBoardThread.stop();
     }
 }

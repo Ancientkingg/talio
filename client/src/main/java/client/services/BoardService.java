@@ -64,6 +64,14 @@ public class BoardService {
     }
 
     /**
+     * Boolean returning whether the session is connected
+     * @return isConnected
+     */
+    public boolean isConnected() {
+        return serverService.isConnected();
+    }
+
+    /**
      * Disconnects from the server
      */
     public void disconnect() {
