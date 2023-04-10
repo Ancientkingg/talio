@@ -15,7 +15,6 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -112,14 +111,13 @@ public class CardComponent extends Draggable implements UIComponent {
 
 //        this.listenForTitleChanges();
 
-
         cardText.setDisable(true); // Disable editing of card text by default
 
-        setHover();
+        setHoverFocus();
         refresh();
     }
 
-    private void setHover() {
+    private void setHoverFocus() {
         this.hoverProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 columnParent.getOverviewCtrl().setFocussedCard(this);
@@ -132,7 +130,7 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param setDisable value to be passed to method setDisable
      */
     public void toggleCardEditing (final boolean setDisable) {
-        editCardButton.setDisable(setDisable);
+        editIcon.setDisable(setDisable);
     }
 
     protected CardComponent(final Card card, final ColumnComponent columnParent, final Scene overviewScene) {
