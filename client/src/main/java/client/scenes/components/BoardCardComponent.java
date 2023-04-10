@@ -12,6 +12,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.awt.*;
+
 public class BoardCardComponent extends Pane implements UIComponent {
 
     private final Board board;
@@ -86,7 +88,7 @@ public class BoardCardComponent extends Pane implements UIComponent {
 
     @FXML
     private void onLeave() {
-        final Point2D p = leaveButton.localToScreen(-110, 32);
+        final Point2D p = new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
 
         parentCtrl.removeBoard(this.board);
 

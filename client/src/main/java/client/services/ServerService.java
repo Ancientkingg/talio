@@ -122,20 +122,17 @@ public class ServerService {
 
     /**
      * Gets multiple boards by join-keys
-     *
-     * @param joinKeys the join-keys used to identify the boards
-     *
+     * @param localBoards the join-keys used to identify the boards
      * @return the boards that were retrieved
      */
-    public List<Board> getAllBoards(final List<String> joinKeys) throws ServerException {
+    public List<Board> getAllBoards(final HashMap<String, String> localBoards) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
             final List<Board> boards = client.target(serverIP)
                     .path("/boards")
                     .path("/getAll")
                     .request(APPLICATION_JSON)
-                    .post(Entity.entity(joinKeys, APPLICATION_JSON), new GenericType<>() {
-                    });
-            logger.info("Board request sent to server: " + joinKeys);
+                    .post(Entity.entity(localBoards, APPLICATION_JSON), new GenericType<>() { });
+            logger.info("Board request sent to server: " + localBoards);
             return boards;
         } catch (ResponseStatusException e) {
             throw new ServerException("The Boards couldn't be retrieved from the Server: \n" + getServerIP());

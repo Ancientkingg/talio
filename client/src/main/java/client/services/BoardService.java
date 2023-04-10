@@ -16,8 +16,6 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static javassist.bytecode.SyntheticAttribute.tag;
-
 @Singleton
 public class BoardService {
     private BoardModel boardModel;
@@ -169,13 +167,13 @@ public class BoardService {
     /**
      * Fetches all boards
      *
-     * @param joinKeys the join-keys used to identify the boards
+     * @param boards the join-keys used to identify the boards
      *
      * @return the boards that were retrieved
      */
-    public List<Board> fetchAllBoards(final List<String> joinKeys) {
+    public List<Board> fetchAllBoards(final HashMap<String, String> boards) {
         try {
-            return serverService.getAllBoards(joinKeys);
+            return serverService.getAllBoards(boards);
         } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this,
                     "Server Exception", "The Boards couldn't be retrieved from the Server: " + serverService.getServerIP()
@@ -526,14 +524,14 @@ public class BoardService {
      * Saves joined or created boards to local storage
      */
     public void saveBoardsLocal() {
-        final ArrayList<String> joinKeys = new ArrayList<>();
+        final HashMap<String, String> boards = new HashMap<>();
 
         for (final Board board : boardModel.getBoardList()) {
-            joinKeys.add(board.getJoinKey());
+            boards.put(board.getJoinKey(), board.getPassword());
         }
 
-        final Map<URI, List<String>> allBoardJoinKeys = loadAllJoinKeysLocal();
-        allBoardJoinKeys.put(serverService.getServerIP(), joinKeys);
+        final Map<URI, HashMap<String, String>> allBoardJoinKeys = loadAllBoardsLocal();
+        allBoardJoinKeys.put(serverService.getServerIP(), boards);
 
         try {
             final FileOutputStream fileOutputStream = new FileOutputStream("saved-boards");
@@ -555,13 +553,13 @@ public class BoardService {
      */
     public List<Board> loadBoardsForCurrentServer() {
 
-        final Map<URI, List<String>> allBoardJoinKeys = loadAllJoinKeysLocal();
+        final Map<URI, HashMap<String, String>> allBoardJoinKeys = loadAllBoardsLocal();
 
         if (allBoardJoinKeys.size() == 0) {
             return new ArrayList<>();
         }
 
-        final List<String> joinKeys = allBoardJoinKeys.get(serverService.getServerIP());
+        final HashMap<String, String> joinKeys = allBoardJoinKeys.get(serverService.getServerIP());
 
 
         final List<Board> boards = this.fetchAllBoards(joinKeys);
@@ -577,18 +575,19 @@ public class BoardService {
      *
      * @return a map of server URIs to lists of join keys
      */
-    public Map<URI, List<String>> loadAllJoinKeysLocal() {
+    public Map<URI, HashMap<String, String>> loadAllBoardsLocal() {
         try {
             final FileInputStream fileInputStream = new FileInputStream("saved-boards");
             final ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-            final Map<URI, List<String>> allBoardJoinKeys = (Map<URI, List<String>>) objectInputStream.readObject();
+            final Map<URI, HashMap<String, String>> allBoards =
+                    (Map<URI, HashMap<String, String>>) objectInputStream.readObject();
 
             objectInputStream.close();
             fileInputStream.close();
 
 
-            return allBoardJoinKeys;
+            return allBoards;
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
             return new HashMap<>();
