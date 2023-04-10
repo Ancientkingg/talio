@@ -28,6 +28,8 @@ public class SubTaskComponent extends Draggable implements UIComponent {
 
     private final Consumer<Void> refresh;
 
+    private final CardDetailsModal parentModal;
+
     @FXML
     private CheckBox checkBox;
 
@@ -54,10 +56,13 @@ public class SubTaskComponent extends Draggable implements UIComponent {
         this.boardService = boardService;
         this.card = card;
         this.refresh = refresh;
+        this.parentModal = cardDetailsModal;
 
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/SubTask.fxml"));
         loader.setRoot(this);
         loader.setController(this);
+
+        setDraggable(true);
 
         try {
             loader.load();
@@ -142,6 +147,6 @@ public class SubTaskComponent extends Draggable implements UIComponent {
 
     @Override
     public Draggable clone() {
-        return new SubTaskComponent(subTask, card, boardService, refresh, (CardDetailsModal) this.getParent());
+        return new SubTaskComponent(subTask, card, boardService, refresh, this.parentModal);
     }
 }
