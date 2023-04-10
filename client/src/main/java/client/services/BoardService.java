@@ -784,11 +784,7 @@ public class BoardService {
      * @param index new index of subtask
      */
     public void moveSubCard(final Card card, final SubTask subTask, final int index) {
-        try {
-            boardModel.getCurrentBoard().getCard(card.getId()).moveSubTask(subTask, index);
-        } catch (CardNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        serverService.moveSubTask(this.boardModel.getCurrentBoard(), card, subTask, index);
     }
 
 
@@ -817,7 +813,7 @@ public class BoardService {
      * @param index new index of subtask
      */
     public void updateMoveSubTask(final Card card, final SubTask subTask, final int index) {
-        // TODO update boardModel
+        card.moveSubTask(subTask, index);
     }
 
     /**

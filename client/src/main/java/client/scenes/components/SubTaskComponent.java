@@ -1,27 +1,30 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.function.Consumer;
 
-public class SubTaskComponent extends GridPane implements UIComponent {
+public class SubTaskComponent extends Draggable implements UIComponent {
 
+    @Getter
     private final SubTask subTask;
 
-    private BoardService boardService;
+    private final BoardService boardService;
 
-    private Card card;
+    private final Card card;
 
     private final Consumer<Void> refresh;
 
@@ -37,14 +40,16 @@ public class SubTaskComponent extends GridPane implements UIComponent {
     /**
      * Loads new subtask component
      *
-     * @param subTask subTask object
-     * @param boardService shared boardService instance
-     * @param card parent card
-     * @param refresh refresh callback
+     * @param subTask          subTask object
+     * @param boardService     shared boardService instance
+     * @param card             parent card
+     * @param refresh          refresh callback
+     * @param cardDetailsModal parent card details modal
      */
     public SubTaskComponent(final SubTask subTask, final Card card, final BoardService boardService,
-                            final Consumer<Void> refresh)
+                            final Consumer<Void> refresh, final CardDetailsModal cardDetailsModal)
     {
+        super(cardDetailsModal, cardDetailsModal.getSubTasksContainer());
         this.subTask = subTask;
         this.boardService = boardService;
         this.card = card;
@@ -65,7 +70,8 @@ public class SubTaskComponent extends GridPane implements UIComponent {
 
             if (subTask.isDone()) {
                 checkBox.selectedProperty();
-            };
+            }
+            ;
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -93,7 +99,7 @@ public class SubTaskComponent extends GridPane implements UIComponent {
     /**
      * Listens for changes in subtask content
      */
-    public void listenForChanges () {
+    public void listenForChanges() {
         descriptionField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 subTask.setDescription(descriptionField.getText());
@@ -119,5 +125,23 @@ public class SubTaskComponent extends GridPane implements UIComponent {
     public void onDelete() {
         this.boardService.removeSubTask(this.card, this.subTask);
         this.refresh.accept(null);
+    }
+
+    @Override
+    protected void onDrop(final Node intersectedComponent, final boolean isBelow) {
+        boardService.moveSubCard(card, subTask, card.getSubtasks().indexOf(
+                ((SubTaskComponent) intersectedComponent).getSubTask()
+        ));
+        refresh.accept(null);
+    }
+
+    @Override
+    protected void duringDrag(final Node intersectedComponent, final boolean isBelow) {
+
+    }
+
+    @Override
+    public Draggable clone() {
+        return new SubTaskComponent(subTask, card, boardService, refresh, (CardDetailsModal) this.getParent());
     }
 }

@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -33,7 +34,7 @@ public class CardDetailsModal extends Modal implements Refreshable {
     @FXML
     private VBox tagsContainer;
 
-    @FXML
+    @FXML @Getter
     private VBox subTasksContainer;
 
     @FXML
@@ -205,7 +206,8 @@ public class CardDetailsModal extends Modal implements Refreshable {
         }
 
         for (final SubTask subtask : subtasks) {
-            final SubTaskComponent subTaskComponent = new SubTaskComponent(subtask, card, boardService, (e) -> refreshSubtasks());
+            final SubTaskComponent subTaskComponent = new SubTaskComponent(subtask, card, boardService,
+                    (e) -> refreshSubtasks(), this);
             subTasksContainer.getChildren().add(subTaskComponent);
         }
 
@@ -220,5 +222,4 @@ public class CardDetailsModal extends Modal implements Refreshable {
         final List<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
         this.colorSchemeComboBox.getItems().addAll(colorSchemes);
     }
-
 }
