@@ -803,7 +803,7 @@ public class BoardService {
      * @param subTask subtask to toggle
      */
     public void updateToggleSubTask(final Card card, final SubTask subTask) {
-        // TODO update boardModel to show changes
+        card.toggleSubtask(subTask);
     }
 
     /**
