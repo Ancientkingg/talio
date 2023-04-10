@@ -28,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
+import jdk.jfr.Event;
 import lombok.Getter;
 
 import javax.inject.Inject;
@@ -123,7 +124,7 @@ public class OverviewCtrl implements Refreshable {
 
                     case ENTER -> setOpenCardDetailsShortcut();
 
-                    case E -> focussedCard.toggleCardEditing(false);
+                    case E -> setEditCardShortcut();
 
                     case DELETE, BACK_SPACE -> setDeleteCardShortcut();
 
@@ -142,6 +143,10 @@ public class OverviewCtrl implements Refreshable {
             }
         });
 
+    }
+
+    private void setEditCardShortcut() {
+        focussedCard.toggleCardEditing(false);
     }
 
     private void setColorForCardShortcut() {

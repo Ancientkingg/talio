@@ -130,7 +130,11 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param setDisable value to be passed to method setDisable
      */
     public void toggleCardEditing (final boolean setDisable) {
-        editIcon.setDisable(setDisable);
+        cardText.setDisable(setDisable);
+        if (!setDisable) {
+            cardText.requestFocus();
+            cardText.end();
+        }
     }
 
     protected CardComponent(final Card card, final ColumnComponent columnParent, final Scene overviewScene) {
@@ -207,25 +211,6 @@ public class CardComponent extends Draggable implements UIComponent {
             }
         });
     }
-
-    /*
-    * commented this out because it's breaking things. Cards will keep gaining and losing focus if arrow keys are used to focus on other cards
-    * sending a request for editing to server each time a card loses focus seems to also be interfering with drag and drop
-    *
-    */
-
-//    /**
-//     * Listens for changes in title
-//     */
-//    public void listenForTitleChanges () {
-//        focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue) {
-//                card.setTitle(cardText.getText());
-//                boardService.editCard(card, columnParent.getColumn());
-//                cardText.setDisable(true);
-//            }
-//        });
-//    }
 
 
     /**
