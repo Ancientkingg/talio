@@ -117,7 +117,7 @@ public class OverviewCtrl implements Refreshable {
         // single key shortcuts
         mainCtrl.getCurrentScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 
-            if (focussedCard != null) {
+            if (focussedCard != null  && mainCtrl.getOverviewScene().getFocusOwner() instanceof CardComponent) {
 
                 switch (event.getCode()) {
 

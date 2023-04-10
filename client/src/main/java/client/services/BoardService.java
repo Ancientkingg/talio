@@ -464,6 +464,7 @@ public class BoardService {
     public void editTag(final Tag tag) {
         try {
             serverService.editTag(getCurrentBoard(), tag);
+            mainCtrl.refreshOverview(); // update tags of card components as well
         } catch (ServerException e) {
             final InfoModal errorModal = new InfoModal(this, "Server Exception", "The tag couldn't be edited on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
@@ -478,7 +479,7 @@ public class BoardService {
      */
     public void updateEditTag(final Tag tag) {
         boardModel.getCurrentBoard().updateTag(tag);
-        System.out.println("EDITED CARD!!!");
+        mainCtrl.refreshOverview();
         if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
         if (mainCtrl.getTagsShortcutModal() != null) mainCtrl.getTagsShortcutModal().refresh();
     }
@@ -838,6 +839,7 @@ public class BoardService {
             errorModal.showModal();
             throw new RuntimeException(e);
         }
+        mainCtrl.refreshOverview();
     }
 
     /**

@@ -22,6 +22,7 @@ public class MainCtrl {
 
     @Getter
     private OverviewCtrl overviewCtrl;
+    @Getter
     private Scene overviewScene;
 
     private HomePageCtrl homePageCtrl;
