@@ -129,9 +129,6 @@ public class ColorPresetController {
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
 
-        board.addColorPreset(null);
-        boardService.saveBoard(board);
-
         board.addColorPreset(colorScheme);
         boardService.saveBoard(board);
 
