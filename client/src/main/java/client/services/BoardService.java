@@ -340,14 +340,14 @@ public class BoardService {
         try {
             final Board board = this.boardModel.getCurrentBoard();
             serverService.repositionCard(board, board.getColumn(columnFromIdx), board.getColumn(columnToIdx), board.getCard(cardIdx), priority);
-        } catch (ServerException e) {
-            final InfoModal errorModal = new InfoModal(this, "Server Exception",
-                    "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
-            errorModal.showModal();
-            throw new RuntimeException(e);
         } catch (CardNotFoundException e) {
             final InfoModal errorModal = new InfoModal(this, "Card Not Found",
                     "The card you are trying to reposition could not be found on the Server.", mainCtrl.getCurrentScene());
+            errorModal.showModal();
+            throw new RuntimeException(e);
+        } catch (ServerException e) {
+            final InfoModal errorModal = new InfoModal(this, "Server Exception",
+                    "The card couldn't be repositioned on the Server.", mainCtrl.getCurrentScene());
             errorModal.showModal();
             throw new RuntimeException(e);
         }

@@ -128,9 +128,13 @@ public class OverviewCtrl implements Refreshable {
 
                     case DELETE, BACK_SPACE -> setDeleteCardShortcut();
 
-                    case DOWN -> setSelectCardBelowShortcut();
+                    case DOWN -> {
+                        if (!event.isShiftDown()) setSelectCardBelowShortcut();
+                    }
 
-                    case UP -> setSelectCardAboveShortcut();
+                    case UP -> {
+                        if (!event.isShiftDown()) setSelectCardAboveShortcut();
+                    }
 
                     case LEFT -> setSelectCardOnLeftShortcut();
 
@@ -142,7 +146,6 @@ public class OverviewCtrl implements Refreshable {
                 }
             }
         });
-
     }
 
     private void setEditCardShortcut() {
@@ -258,7 +261,7 @@ public class OverviewCtrl implements Refreshable {
         final Runnable moveCardUp = () -> {
             if (focussedCard != null) {
                 boardService.repositionCard(focussedCard.getCard().getId(),
-                        focussedCard.getColumnParent().getColumn().getId(), focussedCard.getColumnParent().getColumn().getId(),
+                        focussedCard.getColumnParent().getColumn().getIndex(), focussedCard.getColumnParent().getColumn().getIndex(),
                         Math.max(0, focussedCard.getCard().getPriority() - 1)); // non-negative priority
             }
         };
@@ -268,7 +271,7 @@ public class OverviewCtrl implements Refreshable {
         final Runnable moveCardDown = () -> {
             if (focussedCard != null) {
                 boardService.repositionCard(focussedCard.getCard().getId(),
-                        focussedCard.getColumnParent().getColumn().getId(), focussedCard.getColumnParent().getColumn().getId(),
+                        focussedCard.getColumnParent().getColumn().getIndex(), focussedCard.getColumnParent().getColumn().getIndex(),
                         focussedCard.getCard().getPriority() + 1);
             }
         };
