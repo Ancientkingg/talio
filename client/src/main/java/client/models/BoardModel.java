@@ -1,10 +1,7 @@
 package client.models;
 
 import client.exceptions.BoardChangeException;
-import commons.Board;
-import commons.Card;
-import commons.Column;
-import commons.Tag;
+import commons.*;
 import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 import lombok.Getter;
@@ -174,5 +171,22 @@ public class BoardModel {
      */
     public void editCard(final Card card) throws CardNotFoundException {
         getCurrentBoard().updateCard(card);
+    }
+
+    /**
+     * Adds a tag to a card
+     * @param card Card to add subtask to
+     * @param st Subtask to add
+     */
+    public void addSubTask(final Card card, final SubTask st) {
+        card.addSubTask(st);
+    }
+
+    /**
+     * @param card Card to remove subtask from
+     * @param subTask Subtask to remove
+     */
+    public void removeSubTask(final Card card, final SubTask subTask) {
+        card.removeSubTask(subTask);
     }
 }

@@ -1,20 +1,31 @@
 package client.scenes.components;
 
 import client.Main;
+import client.services.BoardService;
 import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
+
 public class SubTaskComponent extends GridPane implements UIComponent {
 
     private final SubTask subTask;
 
-    private final Card card;
+    private BoardService boardService;
+
+    private Card card;
+
+    private final Consumer<Void> refresh;
 
     @FXML
     private CheckBox checkBox;
@@ -29,13 +40,27 @@ public class SubTaskComponent extends GridPane implements UIComponent {
      * Loads new subtask component
      *
      * @param subTask subTask object
-     * @param card parent card entity
+     * @param boardService shared boardService instance
+     * @param card parent card
+     * @param refresh refresh callback
      */
-    public SubTaskComponent(final SubTask subTask, final Card card) {
+    public SubTaskComponent(final SubTask subTask, final Card card, final BoardService boardService,
+                            final Consumer<Void> refresh)
+    {
         this.subTask = subTask;
+        this.boardService = boardService;
         this.card = card;
+        this.refresh = refresh;
 
-        loadSource(Main.class.getResource("/components/SubTask.fxml"));
+        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("/components/SubTask.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             descriptionField.setText(subTask.getDescription());
@@ -48,10 +73,12 @@ public class SubTaskComponent extends GridPane implements UIComponent {
             e.printStackTrace();
         }
 
-
         descriptionField.setOnKeyReleased(e -> { // Disable editing of description when enter is pressed
             if (e.getCode() == KeyCode.ENTER) {
                 descriptionField.setDisable(true);
+                subTask.setDescription(descriptionField.getText());
+                boardService.updateSubTask(card, subTask);
+
             }
         });
 
@@ -61,6 +88,7 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         });
 
         descriptionField.setDisable(true); //Disables editing by default
+        checkBox.setSelected(subTask.isDone());
         this.listenForChanges();
     }
 
@@ -80,9 +108,10 @@ public class SubTaskComponent extends GridPane implements UIComponent {
         });
 
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                subTask.setDone(true);
-            }
+            subTask.setDone(newValue);
+            boardService.toggleSubTask(card, subTask);
+            refresh.accept(null);
+            System.out.println("Test");
         });
     }
 
@@ -90,7 +119,7 @@ public class SubTaskComponent extends GridPane implements UIComponent {
      * Deletes subtask from card
      */
     public void onDelete() {
-        this.card.removeSubTask(this.subTask); //Implement refresh when card details are done
+        this.boardService.removeSubTask(this.card, this.subTask);
+        this.refresh.accept(null);
     }
-
 }

@@ -26,7 +26,7 @@ public class Card implements Comparable<Card> {
     private String description;
 
     @OrderColumn
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Getter @Setter
     private List<SubTask> subtasks;
 
@@ -243,5 +243,27 @@ public class Card implements Comparable<Card> {
         this.tags = card.tags;
         this.isDefaultThemed = card.isDefaultThemed;
         this.colorScheme = card.colorScheme;
+    }
+
+    /**
+     * Updates the subtask with the values from another subtask
+     * @param subTask Subtask to copy from
+     */
+    public void updateSubTask(final SubTask subTask) {
+        for (final SubTask task : this.subtasks) {
+            if (task.getId() == subTask.getId()) {
+                task.setDescription(subTask.getDescription());
+            }
+        }
+    }
+
+    /**
+     * Moves a subtask to a new index
+     * @param subTask Subtask to be moved
+     * @param index New index of the subtask
+     */
+    public void moveSubTask(final SubTask subTask, final int index) {
+        this.subtasks.remove(subTask);
+        this.subtasks.add(index, subTask);
     }
 }

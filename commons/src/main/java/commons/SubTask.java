@@ -27,6 +27,7 @@ public class SubTask {
     @Getter @Setter
     private boolean isDone;
 
+
     /**
      * Constructor for SubTask
      * @param description description of the SubTask

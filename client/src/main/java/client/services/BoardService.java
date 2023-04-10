@@ -742,11 +742,11 @@ public class BoardService {
     /**
      * adds subtask to card (client initiated)
      * @param card card to which subtask is to be added
-     * @param description description of subtask to be added
+     * @param description description of subtask
      */
     public void addSubTask(final Card card, final String description) {
-        // TODO update boardModel to show changes
-        serverService.addSubTask(this.boardModel.getCurrentBoard(), card, description);
+        final SubTask st = serverService.addSubTask(this.boardModel.getCurrentBoard(), card, description);
+        boardModel.addSubTask(card, st);
     }
 
     /**
@@ -755,8 +755,8 @@ public class BoardService {
      * @param subTask subtask to remove
      */
     public void removeSubTask(final Card card, final SubTask subTask) {
-        // TODO update boardModel to show changes
         serverService.removeSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+        boardModel.removeSubTask(card, subTask);
     }
 
     /**
@@ -765,8 +765,16 @@ public class BoardService {
      * @param subTask subtask to toggle
      */
     public void toggleSubTask(final Card card, final SubTask subTask) {
-        // TODO update boardModel to show changes
         serverService.toggleSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+        try {
+            for (final SubTask st : boardModel.getCurrentBoard().getCard(card.getId()).getSubtasks()) {
+                if (st.getId() == subTask.getId()) {
+                    st.setDone(subTask.isDone());
+                }
+            }
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -776,8 +784,11 @@ public class BoardService {
      * @param index new index of subtask
      */
     public void moveSubCard(final Card card, final SubTask subTask, final int index) {
-        // TODO update boardModel
-        serverService.moveSubTask(this.boardModel.getCurrentBoard(), card, subTask, index);
+        try {
+            boardModel.getCurrentBoard().getCard(card.getId()).moveSubTask(subTask, index);
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -787,16 +798,7 @@ public class BoardService {
      * @param subTask subtask to add
      */
     public void updateAddSubTask(final Card card, final SubTask subTask) {
-        // TODO update boardModel to show changes
-    }
-
-    /**
-     * removes subtask from card (server initiated)
-     * @param card card from which subtask is to be removed
-     * @param subTask subtask to remove
-     */
-    public void updateRemoveSubTask(final Card card, final SubTask subTask) {
-        // TODO update boardModel to show changes
+        serverService.updateSubTask(this.boardModel.getCurrentBoard(), card, subTask);
     }
 
     /**
@@ -966,5 +968,32 @@ public class BoardService {
         boardModel.getCurrentBoard().setCardColorScheme(payload);
         if (mainCtrl.getBoardSettingsModal() != null) mainCtrl.getBoardSettingsModal().refresh();
         mainCtrl.refreshOverview();
+    }
+
+    /**
+     * Adds a tag to the current board
+     * @param card Card to add the tag to
+     * @param subTask Subtask to add the tag to
+     */
+    public void updateSubTask(final Card card, final SubTask subTask) {
+        serverService.updateSubTask(boardModel.getCurrentBoard(), card, subTask);
+        try {
+            boardModel.getCurrentBoard().getCard(card.getId()).updateSubTask(subTask);
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Removes a subtask from a card
+     * @param card to remove the subtask from
+     * @param subTask to remove
+     */
+    public void updateRemoveSubTask(final Card card, final SubTask subTask) {
+        try {
+            boardModel.getCurrentBoard().getCard(card.getId()).removeSubTask(subTask);
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

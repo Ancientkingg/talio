@@ -10,10 +10,7 @@ import commons.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -47,6 +44,9 @@ public class CardDetailsModal extends Modal implements Refreshable {
 
     @FXML
     private ComboBox<ColorScheme> colorSchemeComboBox;
+
+    @FXML
+    private Button addSubtaskButton;
 
     /**
      * Constructor for card details modal
@@ -131,8 +131,7 @@ public class CardDetailsModal extends Modal implements Refreshable {
 
     @FXML
     private void onAddSubtaskButtonClick() {
-        final SubTask subTask = boardService.addSubTask(this.card, "Edit me!");;
-        this.card.addSubTask(subTask);
+        boardService.addSubTask(this.card, "Edit me!");
         this.refreshSubtasks();
     }
 
@@ -201,13 +200,16 @@ public class CardDetailsModal extends Modal implements Refreshable {
 
         if (subtasks.isEmpty()) {
             subTasksContainer.getChildren().add(addSubtasksText);
+            subTasksContainer.getChildren().add(addSubtaskButton);
             return;
         }
 
         for (final SubTask subtask : subtasks) {
-            final SubTaskComponent subTaskComponent = new SubTaskComponent(subtask, card);
+            final SubTaskComponent subTaskComponent = new SubTaskComponent(subtask, card, boardService, (e) -> refreshSubtasks());
             subTasksContainer.getChildren().add(subTaskComponent);
         }
+
+        subTasksContainer.getChildren().add(addSubtaskButton);
     }
 
     /**

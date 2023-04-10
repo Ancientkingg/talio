@@ -109,6 +109,14 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
+                        <Button fx:id="addSubtaskButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddSubtaskButtonClick" prefHeight="32.0" prefWidth="260.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD SUBTASK" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI" size="14.0" />
+                           </font>
+                           <graphic>
+                              <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-49.0" translateY="1.0" />
+                           </graphic>
+                        </Button>
                      </children>
                   </VBox>
                </children>
@@ -133,14 +141,5 @@
             <Insets top="-1.0" />
          </padding>
       </ComboBox>
-      <Button fx:id="addSubtaskButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddSubtaskButtonClick" prefHeight="32.0" prefWidth="260.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD SUBTASK" textAlignment="CENTER" translateX="103.0" translateY="-69.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <font>
-            <Font name="Segoe UI" size="14.0" />
-         </font>
-         <graphic>
-            <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-49.0" translateY="1.0" />
-         </graphic>
-      </Button>
-      <Line endX="100.0" fill="#828282b6" startX="-160.0" stroke="#696969" translateX="103.0" translateY="-107.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </children>
 </fx:root>
