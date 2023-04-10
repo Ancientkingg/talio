@@ -691,4 +691,23 @@ public class ServerService {
                 new ColorSchemeDTO(colorPreset, currentBoard.getPassword()));
         logger.info("Default color preset for board sent to server");
     }
+
+    /**
+     * Sets password for current board
+     * @param currentBoard board whose password is being set
+     * @param password password being set
+     * @return true if password was set successfully
+     */
+    public boolean setPasswordForCurrentBoard(final Board currentBoard, final String password) {
+        try (Client client = ClientBuilder.newClient()) {
+            final Response resp = client.target(serverIP)
+                    .path("/boards")
+                    .path("/set-password")
+                    .path(currentBoard.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(password, APPLICATION_JSON));
+            logger.info("Set password for board sent to server");
+            return resp.getStatus() == 200;
+        }
+    }
 }

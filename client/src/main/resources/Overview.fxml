@@ -24,9 +24,9 @@
           <children>
             <GridPane style="-fx-border-radius: 0; -fx-background-radius: 0;" styleClass="toolbar" stylesheets="@Style.css">
                <columnConstraints>
-                  <ColumnConstraints hgrow="NEVER" minWidth="310.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="260.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="310.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="260.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="600.0" minHeight="-Infinity" prefHeight="64.0" valignment="CENTER" vgrow="NEVER" />
@@ -34,10 +34,21 @@
                <children>
                   <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="64.0" GridPane.columnIndex="1">
                      <children>
+                        <Button fx:id="lockButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLockButtonClick" prefHeight="32.0" prefWidth="32.0" style="-fx-border-radius: 8px; -fx-background-radius: 8px;" styleClass="settings-button" stylesheets="@Style.css">
+                           <graphic>
+                              <SVGPath fx:id="lockIcon" content="M220 976q-24.75 0-42.375-17.625T160 916V482q0-24.75 17.625-42.375T220 422h70v-96q0-78.85 55.606-134.425Q401.212 136 480.106 136T614.5 191.575Q670 247.15 670 326v96h70q24.75 0 42.375 17.625T800 482v434q0 24.75-17.625 42.375T740 976H220Zm0-60h520V482H220v434Zm260.168-140Q512 776 534.5 753.969T557 701q0-30-22.668-54.5t-54.5-24.5Q448 622 425.5 646.5t-22.5 55q0 30.5 22.668 52.5t54.5 22ZM350 422h260v-96q0-54.167-37.882-92.083-37.883-37.917-92-37.917Q426 196 388 233.917 350 271.833 350 326v96ZM220 916V482v434Z" scaleX="0.03" scaleY="0.03" scaleZ="0.0" styleClass="settings-icon" />
+                           </graphic>
+                           <HBox.margin>
+                              <Insets left="-5.0" right="-15.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="boardNameButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBoardEditButtonClick" styleClass="board-name-button" text="Board name">
                            <font>
                               <Font size="36.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
                         </Button>
                         <SVGPath fx:id="boardEditIcon" content="M31.76 15.6 26.64 10.48l1.68-1.68q.68-.68 1.7-.66T31.72 8.84l1.72 1.72q.68.68 .68 1.68t-.68 1.68l-1.68 1.68Zm-1.68 1.68L9.92 37.44H4.8V32.32l20.16-20.16 5.12 5.12Z" scaleX="0.85" scaleY="0.85" style="-fx-fill: transparent;" translateY="1.0">
                            <HBox.margin>
@@ -45,21 +56,10 @@
                            </HBox.margin>
                         </SVGPath>
                      </children>
-                     <padding>
-                        <Insets left="29.0" />
-                     </padding>
                   </HBox>
-                  <Button fx:id="settingsButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSettingsButtonClick" prefHeight="48.0" prefWidth="48.0" styleClass="settings-button" stylesheets="@Style.css" GridPane.columnIndex="2">
-                     <graphic>
-                        <SVGPath content="m388 976-20-126q-19-7-40-19t-37-25l-118 54-93-164 108-79q-2-9-2.5-20.5T185 576q0-9 .5-20.5T188 535L80 456l93-164 118 54q16-13 37-25t40-18l20-127h184l20 126q19 7 40.5 18.5T669 346l118-54 93 164-108 77q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l108 78-93 164-118-54q-16 13-36.5 25.5T592 850l-20 126H388Zm92-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z" scaleX="0.045" scaleY="0.045" scaleZ="0.0" styleClass="settings-icon" />
-                     </graphic>
+                  <Button fx:id="tagsButton" alignment="BOTTOM_CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#onTagsButtonClick" styleClass="tags-button" stylesheets="@Style.css" text="TAGS" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                      <GridPane.margin>
-                        <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Button fx:id="tagsButton" alignment="BOTTOM_CENTER" blendMode="SRC_ATOP" mnemonicParsing="false" onAction="#onTagsButtonClick" styleClass="tags-button" stylesheets="@Style.css" text="TAGS" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
-                     <GridPane.margin>
-                        <Insets left="90.0" />
+                        <Insets left="90.0" right="18.0" />
                      </GridPane.margin>
                      <padding>
                         <Insets bottom="4.0" left="13.0" right="13.0" top="6.0" />
