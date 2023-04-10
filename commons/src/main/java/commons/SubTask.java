@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class SubTask implements Comparable<SubTask>{
+public class SubTask implements Comparable<SubTask> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
