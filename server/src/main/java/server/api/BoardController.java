@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -75,16 +76,16 @@ public class BoardController {
 
     /**
      * Returns a list of boards with the given join keys
-     * @param joinKeys List of join keys
+     * @param localBoards List of join keys
      * @return List of boards
      */
     @PostMapping("/boards/getAll")
-    public ResponseEntity<List<Board>> getAllBoards(@RequestBody final List<String> joinKeys) {
+    public ResponseEntity<List<Board>> getAllBoards(@RequestBody final HashMap<String, String> localBoards) {
         try {
             final List<Board> boards = new ArrayList<>();
 
-            for (final String joinKey : joinKeys) {
-                boards.add(boardService.getBoardWithKeyUnsafe(joinKey));
+            for (final String joinKey : localBoards.keySet()) {
+                boards.add(boardService.getBoardWithKeyAndPassword(joinKey, localBoards.get(joinKey)));
             }
 
             return ResponseEntity.ok(boards);
