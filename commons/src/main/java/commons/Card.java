@@ -268,6 +268,7 @@ public class Card implements Comparable<Card> {
                 .ifPresentOrElse(subtasks::remove, () -> {
                     throw new IllegalArgumentException("Subtask not found");
                 });
+        subTask.setPriority(index);
 
         int i = 0;
         for (final SubTask task : this.subtasks) {
@@ -275,6 +276,7 @@ public class Card implements Comparable<Card> {
         }
 
         if (index >= this.subtasks.size()) {
+
             this.subtasks.add(subTask);
             return;
         }

@@ -798,7 +798,7 @@ public class BoardService {
         } catch (CardNotFoundException e) {
             throw new RuntimeException(e);
         }
-        mainCtrl.getCardDetailsModal().refresh();
+        if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -808,7 +808,7 @@ public class BoardService {
      */
     public void updateToggleSubTask(final Card card, final SubTask subTask) {
         card.toggleSubtask(subTask);
-        mainCtrl.getCardDetailsModal().refresh();
+        if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -819,7 +819,7 @@ public class BoardService {
      */
     public void updateMoveSubTask(final Card card, final SubTask subTask, final int index) {
         card.moveSubTask(subTask, index);
-        mainCtrl.getCardDetailsModal().refresh();
+        if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -997,7 +997,7 @@ public class BoardService {
         } catch (CardNotFoundException e) {
             throw new RuntimeException(e);
         }
-        mainCtrl.getCardDetailsModal().refresh();
+        if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
     }
 
     /**
@@ -1011,6 +1011,6 @@ public class BoardService {
         } catch (CardNotFoundException e) {
             throw new RuntimeException(e);
         }
-        mainCtrl.getCardDetailsModal().refresh();
+        if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
     }
 }
