@@ -324,6 +324,8 @@ public class BoardService {
         if (mainCtrl.getCardDetailsModal() != null) {
             mainCtrl.getCardDetailsModal().closeModal();
         }
+        if (mainCtrl.getColorShortcutModal() != null) mainCtrl.getColorShortcutModal().closeModal();
+        if (mainCtrl.getTagsShortcutModal() != null) mainCtrl.getTagsShortcutModal().closeModal();
     }
 
     /**
@@ -478,6 +480,7 @@ public class BoardService {
         boardModel.getCurrentBoard().updateTag(tag);
         System.out.println("EDITED CARD!!!");
         if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh();
+        if (mainCtrl.getTagsShortcutModal() != null) mainCtrl.getTagsShortcutModal().refresh();
     }
 
     /**
@@ -641,6 +644,11 @@ public class BoardService {
         boardModel.editCard(card);
         mainCtrl.getOverviewCtrl().refreshCard(card.getId());
         if (mainCtrl.getCardDetailsModal() != null) mainCtrl.getCardDetailsModal().refresh();
+        if (mainCtrl.getTagsOverviewModal() != null) mainCtrl.getTagsOverviewModal().refresh(); // update tag overview modal if its open
+        if (mainCtrl.getTagsShortcutModal() != null) mainCtrl.getTagsShortcutModal().refresh(); // same
+
+        if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh(); // for color preset modals
+        if (mainCtrl.getColorShortcutModal() != null) mainCtrl.getColorShortcutModal().refresh();
     }
 
     /**
@@ -869,6 +877,7 @@ public class BoardService {
     public void updateEditColorPreset(final ColorScheme payload) {
         boardModel.getCurrentBoard().updateColorScheme(payload);
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
+        if (mainCtrl.getColorShortcutModal() != null) mainCtrl.getColorShortcutModal().refresh();
         mainCtrl.refreshOverview();
     }
 

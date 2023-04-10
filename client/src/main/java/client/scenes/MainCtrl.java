@@ -1,9 +1,6 @@
 package client.scenes;
 
-import client.scenes.components.modals.BoardSettingsModal;
-import client.scenes.components.modals.ColorPresetsOverviewModal;
-import client.scenes.components.modals.CardDetailsModal;
-import client.scenes.components.modals.TagsOverviewModal;
+import client.scenes.components.modals.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -46,6 +43,13 @@ public class MainCtrl {
     @Setter
     private BoardSettingsModal boardSettingsModal;
 
+    @Setter
+    @Getter
+    private TagsShortcutModal tagsShortcutModal;
+
+    @Setter
+    @Getter
+    private ColorShortcutModal colorShortcutModal;
 
 
     /**
