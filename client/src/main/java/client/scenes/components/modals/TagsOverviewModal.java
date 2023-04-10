@@ -56,7 +56,7 @@ public class TagsOverviewModal extends Modal implements UIComponent, Refreshable
         this.renderTags();
     }
 
-    private void renderTags() {
+    protected void renderTags() {
         tagsContainer.getChildren().clear();
 
         final Board currentBoard = boardService.getCurrentBoard();

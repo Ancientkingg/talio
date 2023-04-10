@@ -5,19 +5,23 @@ import client.exceptions.BoardChangeException;
 import client.scenes.components.CardComponent;
 import client.scenes.components.ColumnComponent;
 import client.scenes.components.Draggable;
-import client.scenes.components.modals.BoardPasswordModal;
-import client.scenes.components.modals.BoardSettingsModal;
-import client.scenes.components.modals.ColorPresetsOverviewModal;
-import client.scenes.components.modals.TagsOverviewModal;
+import client.scenes.components.modals.*;
 import client.services.BoardService;
+import commons.Card;
 import commons.ColorScheme;
 import commons.Column;
 import javafx.animation.PauseTransition;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.SVGPath;
@@ -32,6 +36,9 @@ import java.util.TreeSet;
 public class OverviewCtrl implements Refreshable {
     private final MainCtrl mainCtrl;
     private final BoardService boardService;
+
+    @Getter
+    private CardComponent focussedCard;
 
     @FXML
     private HBox columnBox;
@@ -60,6 +67,26 @@ public class OverviewCtrl implements Refreshable {
     public OverviewCtrl(final MainCtrl mainCtrl, final BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
+        focussedCard = null;
+    }
+
+    /**
+     * Setter for focussedCard
+     * @param cardComponent cardComponent to be focussed on next
+     */
+    public void setFocussedCard (final CardComponent cardComponent) {
+
+        if (focussedCard != null) {
+            focussedCard.getStyleClass().remove("selectedCard"); // remove focus from currently focussed card component
+            focussedCard.toggleCardEditing(true); // disable card editing
+        }
+
+        if (cardComponent != null) { // null is passed if the last card in a column has focus and is deleted
+            cardComponent.getStyleClass().add("selectedCard");
+            cardComponent.requestFocus();
+        }
+
+        focussedCard = cardComponent;
         this.isLocked = true;
     }
 
@@ -82,6 +109,182 @@ public class OverviewCtrl implements Refreshable {
     }
 
     /**
+     * Set up keyboard shortcuts for overview
+     *
+     * cannot be called from initialize() because it requires overviewScene to have been initialized which is not the case when initialize is called.
+      */
+    public void setKeyboardShortcuts() {
+
+        // for shortcuts which are a combination of keys
+        final ObservableMap<KeyCombination, Runnable> keyboardShortcuts = mainCtrl.getCurrentScene().getAccelerators();
+
+        setHelpModalShortcut(keyboardShortcuts);
+        setShiftingCardsKeyboardShortcuts(keyboardShortcuts);
+
+        // single key shortcuts
+        mainCtrl.getCurrentScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
+            if (focussedCard != null  && mainCtrl.getOverviewScene().getFocusOwner() instanceof CardComponent) {
+
+                switch (event.getCode()) {
+
+                    case ENTER -> setOpenCardDetailsShortcut();
+
+                    case E -> setEditCardShortcut();
+
+                    case DELETE, BACK_SPACE -> setDeleteCardShortcut();
+
+                    case DOWN -> {
+                        if (!event.isShiftDown()) setSelectCardBelowShortcut();
+                    }
+
+                    case UP -> {
+                        if (!event.isShiftDown()) setSelectCardAboveShortcut();
+                    }
+
+                    case LEFT -> setSelectCardOnLeftShortcut();
+
+                    case RIGHT -> setSelectCardOnRightShortcut();
+
+                    case T -> setTagForCardShortcut();
+
+                    case C -> setColorForCardShortcut();
+                }
+            }
+        });
+    }
+
+    private void setEditCardShortcut() {
+        focussedCard.toggleCardEditing(false);
+    }
+
+    private void setColorForCardShortcut() {
+        final ColorShortcutModal colorShortcutModal = new ColorShortcutModal(boardService, mainCtrl.getCurrentScene(), this, focussedCard);
+        mainCtrl.setColorShortcutModal(colorShortcutModal);
+
+        colorShortcutModal.showModal();
+    }
+
+    private void setTagForCardShortcut() {
+        final TagsShortcutModal tagsShortcutModal = new TagsShortcutModal(boardService, mainCtrl.getCurrentScene(), this, focussedCard);
+        mainCtrl.setTagsShortcutModal(tagsShortcutModal);
+
+        tagsShortcutModal.showModal();
+    }
+
+    private void setHelpModalShortcut(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
+        final KeyCombination helpMenu = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_DOWN);
+        final Runnable showHelpModal = () -> {
+            try {
+                final ShortcutsHelpModal shortcutsHelpModal = new ShortcutsHelpModal(boardService, mainCtrl.getCurrentScene());
+                shortcutsHelpModal.showModal();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+        keyboardShortcuts.put(helpMenu, showHelpModal);
+    }
+
+    private void setOpenCardDetailsShortcut() {
+        final CardDetailsModal modal = new CardDetailsModal(boardService, focussedCard.getColumnParent().getScene(),
+                focussedCard.getCard(), focussedCard);
+        modal.showModal();
+    }
+
+    private void setSelectCardBelowShortcut() {
+        final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
+        final int index = children.indexOf(focussedCard);
+        if (index < children.size() - 1) // not last
+            setFocussedCard(((CardComponent) children.get(index + 1)));
+    }
+
+    private void setSelectCardAboveShortcut() {
+        final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
+        final int index = children.indexOf(focussedCard);
+        if (index > 0) // not last
+            setFocussedCard(((CardComponent) children.get(index - 1)));
+    }
+
+    private void setDeleteCardShortcut() {
+        final ObservableList<Node> children = focussedCard.getColumnParent().getInnerCardList().getChildren();
+        final int index = children.indexOf(focussedCard);
+
+        final Card cardToBeRemoved = focussedCard.getCard();
+        final Column column = focussedCard.getColumnParent().getColumn();
+
+        // if empty, set focussedCard to null, else (if last card was deleted, then set focussedCard to card just before it else next card)
+        setFocussedCard((children.size() == 1) ? null : (CardComponent) children.get(Math.max(0, Math.min(children.size() - 1, index))));
+
+        boardService.removeCardFromColumn(cardToBeRemoved, column);
+
+        refreshColumn(column.getId());
+    }
+
+    private void setSelectCardOnRightShortcut() {
+        final ObservableList<Node> currentColumn = focussedCard.getColumnParent().getInnerCardList().getChildren();
+        int columnIndex = columnBox.getChildren().indexOf(focussedCard.getColumnParent()); // index of column containing the focussed card
+        int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
+        ObservableList<Node> rightColumn;
+
+        while (columnIndex ++ < columnBox.getChildren().size() - 2) { // not last, meaning there is a column to the right, also last element is button
+            rightColumn = ((ColumnComponent) columnBox.getChildren().get(columnIndex))
+                    .getInnerCardList().getChildren(); // column to the right
+
+            if (rightColumn == null || rightColumn.size() == 0) // if right column has no cards, check next column (more to the right)
+                continue;
+            else rowIndex = Math.min(rightColumn.size() - 1, rowIndex); // last card if column to right doesn't have enough cards
+
+            setFocussedCard(((CardComponent) rightColumn.get(rowIndex))); // set the focus
+            break;
+        }
+    }
+
+    private void setSelectCardOnLeftShortcut() {
+        // column containing current card with focus
+        final ObservableList<Node> currentColumn = focussedCard.getColumnParent().getInnerCardList().getChildren();
+        int columnIndex = columnBox.getChildren().indexOf(focussedCard.getColumnParent()); // index of column containing the focussed card
+        int rowIndex = currentColumn.indexOf(focussedCard); // index of focussed card
+        ObservableList<Node> leftColumn;
+
+        while (columnIndex -- > 0) { // not first, meaning there is a column to the left
+            leftColumn = ((ColumnComponent) columnBox.getChildren().get(columnIndex))
+                    .getInnerCardList().getChildren(); // column to the left
+
+            if (leftColumn == null || leftColumn.size() == 0) // if left column has no cards, try to check for columns further to the left
+                continue;
+            else // if column to the left has cards, move focus to a card in it
+                rowIndex = Math.min(leftColumn.size() - 1, rowIndex); // last card if column to left does not have enough cards,
+            // else card at same index
+            setFocussedCard(((CardComponent) leftColumn.get(rowIndex))); // set the focus
+            break;
+        }
+    }
+
+    private void setShiftingCardsKeyboardShortcuts(final ObservableMap<KeyCombination, Runnable> keyboardShortcuts) {
+
+        final KeyCombination shiftCardUp = new KeyCodeCombination(KeyCode.UP, KeyCombination.SHIFT_DOWN);
+        final Runnable moveCardUp = () -> {
+            if (focussedCard != null) {
+                boardService.repositionCard(focussedCard.getCard().getId(),
+                        focussedCard.getColumnParent().getColumn().getIndex(), focussedCard.getColumnParent().getColumn().getIndex(),
+                        Math.max(0, focussedCard.getCard().getPriority() - 1)); // non-negative priority
+            }
+        };
+        keyboardShortcuts.put(shiftCardUp, moveCardUp);
+
+        final KeyCombination shiftCardDown = new KeyCodeCombination(KeyCode.DOWN, KeyCombination.SHIFT_DOWN);
+        final Runnable moveCardDown = () -> {
+            if (focussedCard != null) {
+                boardService.repositionCard(focussedCard.getCard().getId(),
+                        focussedCard.getColumnParent().getColumn().getIndex(), focussedCard.getColumnParent().getColumn().getIndex(),
+                        focussedCard.getCard().getPriority() + 1);
+            }
+        };
+        keyboardShortcuts.put(shiftCardDown, moveCardDown);
+    }
+
+    /**
      * Refreshes the overview
      */
     public void refresh() {
@@ -101,7 +304,7 @@ public class OverviewCtrl implements Refreshable {
         columnBox.getChildren().removeAll(columnBox.getChildren().stream().filter(c -> c instanceof ColumnComponent).toList());
 
         for (final Column col : boardService.getCurrentBoard().getColumns()) {
-            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this, mainCtrl);
+            final ColumnComponent columnComponent = new ColumnComponent(boardService, col, this, this.mainCtrl.getCurrentScene(), mainCtrl);
 
             columnComponent.setHeading(col.getHeading());
 
@@ -129,6 +332,7 @@ public class OverviewCtrl implements Refreshable {
                 break;
             }
         }
+        setFocussedCard(focussedCard);
     }
 
     /**
@@ -258,9 +462,7 @@ public class OverviewCtrl implements Refreshable {
         customTooltip.show(linkButton,p.getX(),p.getY());
 
         final PauseTransition pt = new PauseTransition(Duration.millis(1250));
-        pt.setOnFinished(e -> {
-            customTooltip.hide();
-        });
+        pt.setOnFinished(e -> customTooltip.hide());
         pt.play();
 
         final StringSelection joinKeySelection = new StringSelection(boardService.getCurrentBoard().getJoinKey());

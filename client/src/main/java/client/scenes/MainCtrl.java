@@ -22,6 +22,7 @@ public class MainCtrl {
 
     @Getter
     private OverviewCtrl overviewCtrl;
+    @Getter
     private Scene overviewScene;
 
     private HomePageCtrl homePageCtrl;
@@ -42,6 +43,14 @@ public class MainCtrl {
     @Getter
     @Setter
     private BoardSettingsModal boardSettingsModal;
+
+    @Setter
+    @Getter
+    private TagsShortcutModal tagsShortcutModal;
+
+    @Setter
+    @Getter
+    private ColorShortcutModal colorShortcutModal;
 
     @Getter
     @Setter
@@ -134,7 +143,7 @@ public class MainCtrl {
         primaryStage.setScene(overviewScene);
         primaryStage.show();
         primaryStage.sizeToScene();
-
+        overviewCtrl.setKeyboardShortcuts();
         overviewCtrl.checkLock();
     }
 

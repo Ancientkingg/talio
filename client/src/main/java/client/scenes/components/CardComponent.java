@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -33,6 +34,7 @@ public class CardComponent extends Draggable implements UIComponent {
     private final Card card;
     @Getter
     private final ColumnComponent columnParent;
+    private final Scene overviewScene;
 
     private MainCtrl mainCtrl;
 
@@ -59,14 +61,19 @@ public class CardComponent extends Draggable implements UIComponent {
      * @param boardService   BoardService instance
      * @param card         Card instance
      * @param columnParent ColumnComponent instance
+     * @param overviewScene overview scene
      * @param mainCtrl     MainCtrl instance
      */
-    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent, final MainCtrl mainCtrl) {
+    public CardComponent(final BoardService boardService, final Card card, final ColumnComponent columnParent,
+                         final MainCtrl mainCtrl, final Scene overviewScene)
+    {
         super(columnParent.getOverviewCtrl(), columnParent);
         this.boardService = boardService;
         this.card = card;
         this.columnParent = columnParent;
         this.mainCtrl = mainCtrl;
+
+        this.overviewScene = overviewScene;
 
         loadSource(Main.class.getResource("/components/Card.fxml"));
 
@@ -102,19 +109,40 @@ public class CardComponent extends Draggable implements UIComponent {
             }
         });
 
-        this.listenForTitleChanges();
-
+//        this.listenForTitleChanges();
 
         cardText.setDisable(true); // Disable editing of card text by default
 
+        setHoverFocus();
         refresh();
     }
 
-    protected CardComponent(final Card card, final ColumnComponent columnParent) {
+    private void setHoverFocus() {
+        this.hoverProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                columnParent.getOverviewCtrl().setFocussedCard(this);
+            }
+        });
+    }
+
+    /**
+     * Change editability of card
+     * @param setDisable value to be passed to method setDisable
+     */
+    public void toggleCardEditing (final boolean setDisable) {
+        cardText.setDisable(setDisable);
+        if (!setDisable) {
+            cardText.requestFocus();
+            cardText.end();
+        }
+    }
+
+    protected CardComponent(final Card card, final ColumnComponent columnParent, final Scene overviewScene) {
         super(null, null);
         this.boardService = null;
         this.card = card;
         this.columnParent = columnParent;
+        this.overviewScene = overviewScene;
         loadSource(Main.class.getResource("/components/Card.fxml"));
     }
 
@@ -184,19 +212,6 @@ public class CardComponent extends Draggable implements UIComponent {
         });
     }
 
-    /**
-     * Listens for changes in title
-     */
-    public void listenForTitleChanges () {
-        focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                card.setTitle(cardText.getText());
-                boardService.editCard(card, columnParent.getColumn());
-                cardText.setDisable(true);
-            }
-        });
-    }
-
 
     /**
      * Deletes the card
@@ -242,7 +257,8 @@ public class CardComponent extends Draggable implements UIComponent {
 
         if (intersectedComponent instanceof final CardComponent intersectedCardComponent) {
 
-            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(), intersectedCardComponent.getColumnParent());
+            final CardComponent cardDropIndicator = new CardComponent(intersectedCardComponent.getCard(),
+                    intersectedCardComponent.getColumnParent(), overviewScene);
 
             cardDropIndicator.setVisible(false);
 
@@ -316,6 +332,6 @@ public class CardComponent extends Draggable implements UIComponent {
      * @return The cloned card
      */
     public Draggable clone() {
-        return new CardComponent(boardService, card, columnParent, mainCtrl);
+        return new CardComponent(boardService, card, columnParent, mainCtrl, overviewScene);
     }
 }

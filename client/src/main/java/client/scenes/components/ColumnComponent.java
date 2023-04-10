@@ -9,6 +9,7 @@ import commons.Card;
 import commons.ColorScheme;
 import commons.Column;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -32,6 +33,8 @@ public class ColumnComponent extends GridPane implements UIComponent {
 
     private final Column column;
 
+    private final Scene overviewScene;
+
     @FXML
     private TextField columnHeading;
 
@@ -41,8 +44,8 @@ public class ColumnComponent extends GridPane implements UIComponent {
     @FXML
     private ScrollPane scrollPane;
 
-    @Getter
     @FXML
+    @Getter
     private VBox innerCardList;
 
     @FXML
@@ -54,13 +57,19 @@ public class ColumnComponent extends GridPane implements UIComponent {
      * @param boardService   BoardService instance
      * @param column       Column instance
      * @param overviewCtrl OverviewCtrl instance
+     * @param overviewScene overview scene
      * @param mainCtrl     MainCtrl instance
      */
-    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl, final MainCtrl mainCtrl) {
+    public ColumnComponent(final BoardService boardService, final Column column, final OverviewCtrl overviewCtrl,
+                           final Scene overviewScene, final MainCtrl mainCtrl)
+    {
         this.boardService = boardService;
         this.overviewCtrl = overviewCtrl;
         this.mainCtrl = mainCtrl;
         this.column = column;
+
+        this.overviewScene = overviewScene;
+
         loadSource(Main.class.getResource("/components/Column.fxml"));
 
         // Set the delete action for the delete column button
@@ -156,7 +165,7 @@ public class ColumnComponent extends GridPane implements UIComponent {
     public void refresh() {
         innerCardList.getChildren().clear();
         for (final Card card : column.getCards()) {
-            final CardComponent cc = new CardComponent(boardService, card, this, mainCtrl);
+            final CardComponent cc = new CardComponent(boardService, card, this, mainCtrl, overviewScene);
             innerCardList.getChildren().add(cc);
         }
         columnHeading.setText(column.getHeading());

@@ -227,6 +227,11 @@ Card
     -fx-background-color: transparent;
 }
 
+.selectedCard {
+    -fx-border-width: 2px;
+    -fx-border-color: rgba(0,0,0,0.8);
+    -fx-background-color: #d8d8d8;
+}
 .cardSubtaskCounter {
     -fx-text-fill: #ababab;
 }

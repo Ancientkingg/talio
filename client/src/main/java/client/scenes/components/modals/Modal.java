@@ -3,7 +3,10 @@ package client.scenes.components.modals;
 import client.services.BoardService;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -18,6 +21,8 @@ public class Modal extends GridPane {
     protected final BoardService boardService;
 
     protected final Scene parentScene;
+
+    private Node previousFocussedElement;
 
     private Pane background;
 
@@ -36,6 +41,13 @@ public class Modal extends GridPane {
         setBackgroundPane();
 
         this.eventFilter = event -> closeModal();
+
+        parentScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode().equals(KeyCode.ESCAPE)) {
+                closeModal();
+                event.consume();
+            }
+        });
     }
 
     /**
@@ -45,6 +57,7 @@ public class Modal extends GridPane {
     public void initialize() {
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.schedule(() -> this.background.addEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter), 150, TimeUnit.MILLISECONDS);
+
     }
 
     /**
@@ -54,13 +67,16 @@ public class Modal extends GridPane {
         ((StackPane) parentScene.getRoot()).getChildren().remove(this);
         ((StackPane) parentScene.getRoot()).getChildren().remove(background);
         parentScene.removeEventFilter(MouseEvent.MOUSE_CLICKED, eventFilter);
+        previousFocussedElement.requestFocus();
     }
 
     /**
      * Shows modal in the parentScene
      */
     public void showModal() {
+        ((StackPane) parentScene.getRoot()).getChildren().add(background);
         ((StackPane) parentScene.getRoot()).getChildren().add(this);
+        previousFocussedElement = parentScene.getFocusOwner();
     }
 
     private void setBackgroundPane() {
@@ -69,8 +85,6 @@ public class Modal extends GridPane {
         this.background.setPrefSize(10000, 10000);
         this.background.setMinSize(10000, 10000);
         this.background.setMaxSize(10000, 10000);
-
-        ((StackPane) parentScene.getRoot()).getChildren().add(background);
     }
 }
 

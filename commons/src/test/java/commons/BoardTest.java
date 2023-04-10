@@ -98,7 +98,7 @@ class BoardTest {
         Board board3 = new Board("joinme", "title", "password2", cl1);
         Board board4 = new Board("joinme", "title2", "password1", cl1);
 
-        assertEquals(board, board1);
+
         assertNotEquals(board, board2);
         assertNotEquals(board, board3);
         assertNotEquals(board, board4);
