@@ -26,9 +26,10 @@ public class Card implements Comparable<Card> {
     private String description;
 
     @OrderColumn
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("priority")
     @Getter @Setter
-    private List<SubTask> subtasks;
+    private SortedSet<SubTask> subtasks;
 
     @Getter @Setter
     private Boolean isDefaultThemed;
@@ -58,11 +59,11 @@ public class Card implements Comparable<Card> {
      * @param subTasks List of subtasks for the card
      * @param tags Tags assigned to the card
      */
-    public Card(final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+    public Card(final String title, final int priority, final String description, final SortedSet<SubTask> subTasks, final Set<Tag> tags) {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.subtasks = subTasks == null ? new ArrayList<>(0) : subTasks;
+        this.subtasks = subTasks == null ? new TreeSet<>() : subTasks;
         this.tags = tags == null ? new HashSet<>(0) : tags;
     }
 
@@ -75,7 +76,7 @@ public class Card implements Comparable<Card> {
      * @param subTasks List of subtasks for the card
      * @param tags Tags assigned to the card
      */
-    public Card(final long id, final String title, final int priority, final String description, final List<SubTask> subTasks, final Set<Tag> tags) {
+    public Card(final long id, final String title, final int priority, final String description, final SortedSet<SubTask> subTasks, final Set<Tag> tags) {
         this(title, priority, description, subTasks, tags);
         this.id = id;
     }
@@ -91,7 +92,7 @@ public class Card implements Comparable<Card> {
         this.title = title;
         this.priority = priority;
         this.description = description;
-        this.subtasks = new ArrayList<>(0);
+        this.subtasks = new TreeSet<>();
         this.tags = tags == null ? new HashSet<>(0) : tags;
 
         this.isDefaultThemed = true;
@@ -243,5 +244,66 @@ public class Card implements Comparable<Card> {
         this.tags = card.tags;
         this.isDefaultThemed = card.isDefaultThemed;
         this.colorScheme = card.colorScheme;
+    }
+
+    /**
+     * Updates the subtask with the values from another subtask
+     * @param subTask Subtask to copy from
+     */
+    public void updateSubTask(final SubTask subTask) {
+        for (final SubTask task : this.subtasks) {
+            if (task.getId() == subTask.getId()) {
+                task.setDescription(subTask.getDescription());
+            }
+        }
+    }
+
+    /**
+     * Moves a subtask to a new index
+     * @param subTask Subtask to be moved
+     * @param index New index of the subtask
+     */
+    public void moveSubTask(final SubTask subTask, final int index) {
+        this.subtasks.stream().filter(s -> s.getId() == subTask.getId()).findFirst()
+                .ifPresentOrElse(subtasks::remove, () -> {
+                    throw new IllegalArgumentException("Subtask not found");
+                });
+        subTask.setPriority(index);
+
+        int i = 0;
+        for (final SubTask task : this.subtasks) {
+            task.setPriority(i++);
+        }
+
+        if (index >= this.subtasks.size()) {
+
+            this.subtasks.add(subTask);
+            return;
+        }
+
+        for (final SubTask task : this.subtasks) {
+            if (task.getPriority() >= index) {
+                task.setPriority(task.getPriority() + 1);
+            }
+        }
+
+        this.subtasks.add(subTask);
+
+        i = 0;
+        for (final SubTask task : this.subtasks) {
+            task.setPriority(i++);
+        }
+    }
+
+    /**
+     * Toggles the done status of a subtask
+     * @param subTask Subtask to be toggled
+     */
+    public void toggleSubtask(final SubTask subTask) {
+        for (final SubTask task : this.subtasks) {
+            if (task.getId() == subTask.getId()) {
+                task.setDone(!task.isDone());
+            }
+        }
     }
 }

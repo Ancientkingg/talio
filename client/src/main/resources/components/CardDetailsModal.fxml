@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="modalBackground" stylesheets="@../Style.css" type="GridPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="35.0" prefWidth="51.62375259399414" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" percentWidth="30.0" prefWidth="81.87624740600586" />
@@ -81,6 +71,13 @@
                      <padding>
                         <Insets top="10.0" />
                      </padding>
+                     <children>
+                        <Label fx:id="noTagsText" text="No tags could be found" textAlignment="CENTER" textFill="#a4a4a4">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
                   </VBox>
                </children>
             </FlowPane>
@@ -106,6 +103,21 @@
                      <padding>
                         <Insets top="10.0" />
                      </padding>
+                     <children>
+                        <Label fx:id="addSubtasksText" text="Add some subtasks..." textAlignment="CENTER" textFill="#a4a4a4">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="addSubtaskButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddSubtaskButtonClick" prefHeight="32.0" prefWidth="260.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD SUBTASK" textAlignment="CENTER">
+                           <font>
+                              <Font name="Segoe UI" size="14.0" />
+                           </font>
+                           <graphic>
+                              <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-49.0" translateY="1.0" />
+                           </graphic>
+                        </Button>
+                     </children>
                   </VBox>
                </children>
             </FlowPane>
@@ -129,14 +141,5 @@
             <Insets top="-1.0" />
          </padding>
       </ComboBox>
-      <Button fx:id="addSubtaskButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddSubtaskButtonClick" prefHeight="32.0" prefWidth="260.0" styleClass="add-card-button" stylesheets="@../Style.css" text="        ADD SUBTASK" textAlignment="CENTER" translateX="103.0" translateY="-69.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <font>
-            <Font name="Segoe UI" size="14.0" />
-         </font>
-         <graphic>
-            <SVGPath content="M450 776h60V606h170v-60H510V376h-60v170H280v60h170v170ZM180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Z" scaleX="0.02" scaleY="0.02" styleClass="add-card-button-icon" translateX="-49.0" translateY="1.0" />
-         </graphic>
-      </Button>
-      <Line endX="100.0" fill="#828282b6" startX="-160.0" stroke="#696969" translateX="103.0" translateY="-107.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </children>
 </fx:root>

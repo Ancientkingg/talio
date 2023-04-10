@@ -23,6 +23,7 @@ public abstract class Draggable extends GridPane {
 
     private Refreshable parentController = null;
 
+    @Getter
     private final Parent parentContainer;
 
     protected Node intersectedComponent;

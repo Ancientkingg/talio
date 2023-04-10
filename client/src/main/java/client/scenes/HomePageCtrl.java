@@ -260,7 +260,7 @@ public class HomePageCtrl implements Refreshable {
                 stopCheckBoards();
             }
         });
-        checkBoardThread.start();
+//        checkBoardThread.start();
     }
 
     /**

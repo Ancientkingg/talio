@@ -3,24 +3,21 @@ package client.scenes.components.modals;
 import client.Main;
 import client.scenes.Refreshable;
 import client.scenes.components.CardComponent;
+import client.scenes.components.Draggable;
+import client.scenes.components.SubTaskComponent;
 import client.scenes.components.TagSelectComponent;
 import client.services.BoardService;
-import commons.Board;
-import commons.Card;
-import commons.ColorScheme;
-import commons.Tag;
+import commons.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CardDetailsModal extends Modal implements Refreshable {
 
@@ -37,11 +34,20 @@ public class CardDetailsModal extends Modal implements Refreshable {
     @FXML
     private VBox tagsContainer;
 
-    @FXML
+    @FXML @Getter
     private VBox subTasksContainer;
 
     @FXML
+    private Label noTagsText;
+
+    @FXML
+    private Label addSubtasksText;
+
+    @FXML
     private ComboBox<ColorScheme> colorSchemeComboBox;
+
+    @FXML
+    private Button addSubtaskButton;
 
     /**
      * Constructor for card details modal
@@ -126,7 +132,8 @@ public class CardDetailsModal extends Modal implements Refreshable {
 
     @FXML
     private void onAddSubtaskButtonClick() {
-        // TODO
+        boardService.addSubTask(this.card, "Edit me!");
+        this.refreshSubtasks();
     }
 
     private List<Tag> getSelectedTags() {
@@ -170,6 +177,11 @@ public class CardDetailsModal extends Modal implements Refreshable {
         final Board currentBoard = boardService.getCurrentBoard();
         final Set<Tag> tags = currentBoard.getTags();
 
+        if (tags.isEmpty()) {
+            tagsContainer.getChildren().add(noTagsText);
+            return;
+        }
+
         for (final Tag tag : tags) {
             final TagSelectComponent tagComponent = new TagSelectComponent(boardService, parentScene, this, tag);
             if (card.getTags().contains(tag)) {
@@ -183,7 +195,26 @@ public class CardDetailsModal extends Modal implements Refreshable {
      * Refreshes subtasks in the scroll pane and displays them in their component form
      */
     public void refreshSubtasks() {
-        // TODO
+        subTasksContainer.getChildren().clear();
+
+        final SortedSet<SubTask> subtasks = card.getSubtasks();
+
+        if (subtasks.isEmpty()) {
+            subTasksContainer.getChildren().add(addSubtasksText);
+            subTasksContainer.getChildren().add(addSubtaskButton);
+            return;
+        }
+
+        for (final SubTask subtask : subtasks) {
+            final SubTaskComponent subTaskComponent = new SubTaskComponent(subtask, card, boardService,
+                    (e) -> refreshSubtasks(), this);
+            subTasksContainer.getChildren().add(subTaskComponent);
+        }
+
+        ((StackPane) parentScene.getRoot()).getChildren()
+                .removeIf(c -> c instanceof Draggable);
+
+        subTasksContainer.getChildren().add(addSubtaskButton);
     }
 
     /**
@@ -194,5 +225,4 @@ public class CardDetailsModal extends Modal implements Refreshable {
         final List<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
         this.colorSchemeComboBox.getItems().addAll(colorSchemes);
     }
-
 }

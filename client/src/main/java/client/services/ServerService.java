@@ -42,6 +42,7 @@ public class ServerService {
 
     /**
      * Initializes client socket in a thread at the given serverIP
+     *
      * @param boardService BoardService that is passed on to SessionHandler through Socket
      */
     public void startSocket(final BoardService boardService) {
@@ -60,6 +61,7 @@ public class ServerService {
 
     /**
      * Boolean returning whether the session is connected
+     *
      * @return session.isConnected()
      */
     public boolean isConnected() {
@@ -69,17 +71,26 @@ public class ServerService {
     /**
      * The handler passes itself to the serverService in order to subscribe client socket to boards
      * upon getBoard() and addBoard()
+     *
      * @param sessionHandler SessionHandler access to session
      */
     public void setHandler(final SessionHandler sessionHandler) {
         this.sessionHandler = sessionHandler;
     }
 
-    public void setSession(final StompSession session) { this.session = session; }
+    /**
+     * Sets the session of the serverService
+     * @param session the session to set
+     */
+    public void setSession(final StompSession session) {
+        this.session = session;
+    }
 
     /**
      * Sets the IP of the server to interact with
+     *
      * @param ip the ip of the server
+     *
      * @throws IllegalArgumentException if the ip is not a valid URI
      */
     public void setServerIP(final String ip) throws IllegalArgumentException {
@@ -89,7 +100,9 @@ public class ServerService {
 
     /**
      * Gets a board by join-key
+     *
      * @param joinKey the join-key used to identify the board
+     *
      * @return the board that was retrieved
      */
     public Board getBoard(final String joinKey) throws ServerException {
@@ -102,8 +115,7 @@ public class ServerService {
                     .get(Board.class);
             logger.info("Board request sent to server: " + joinKey);
             return board;
-        }
-        catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
             throw new ServerException("The Board couldn't be retrieved from the Server: \n" + getServerIP());
         }
     }
@@ -122,36 +134,38 @@ public class ServerService {
                     .post(Entity.entity(localBoards, APPLICATION_JSON), new GenericType<>() { });
             logger.info("Board request sent to server: " + localBoards);
             return boards;
-        }
-        catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
             throw new ServerException("The Boards couldn't be retrieved from the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Creates a board on the server
+     *
      * @param board the board to be added/created
+     *
      * @return the board that was created by the server (with id)
      */
     public Board addBoard(final Board board) throws ServerException {
         try (Client client = ClientBuilder.newClient()) {
-            final Board addedBoard =  client.target(serverIP)
+            final Board addedBoard = client.target(serverIP)
                     .path("/boards")
                     .path("/create")
                     .request(APPLICATION_JSON)
                     .post(Entity.entity(board, APPLICATION_JSON), Board.class);
             logger.info("Created board sent to server: " + board.getJoinKey());
             return addedBoard;
-        }
-        catch (ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
             throw new ServerException("The Board couldn't be added to the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Creates a column on the server
-     * @param board the board to add the column to
+     *
+     * @param board  the board to add the column to
      * @param column the column to be added/created
+     *
      * @return the column that was created by the server (with id)
      */
     public Column addColumn(final Board board, final Column column) throws ServerException {
@@ -167,16 +181,17 @@ public class ServerService {
                     .post(Entity.entity(board.getPassword(), APPLICATION_JSON), Column.class);
             logger.info("Added column sent to server: " + column.getHeading());
             return addedColumn;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The column couldn't be added to the server.");
         }
     }
 
     /**
      * Removes a column from the server
-     * @param board the board to remove the column from
+     *
+     * @param board  the board to remove the column from
      * @param column the column to be removed
+     *
      * @return the column that was removed by the server
      */
     public Column removeColumn(final Board board, final Column column) throws ServerException {
@@ -190,17 +205,18 @@ public class ServerService {
                     .post(Entity.entity(board.getPassword(), APPLICATION_JSON), Column.class);
             logger.info("Removed column sent to server: " + column.getHeading());
             return removedColumn;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Column couldn't be removed from the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Creates a card on the server
-     * @param board the board to add the card to
+     *
+     * @param board  the board to add the card to
      * @param column the column to add the card to
-     * @param card the column to be added/created
+     * @param card   the column to be added/created
+     *
      * @return the card that was created by the server (with id)
      */
     public Card addCard(final Board board, final Column column, final Card card) throws ServerException {
@@ -214,17 +230,18 @@ public class ServerService {
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
             logger.info("Added card sent to server");
             return addedCard;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be added to the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Removes a card from the server
-     * @param board the board to remove the card from
+     *
+     * @param board  the board to remove the card from
      * @param column the column to remove the card from
-     * @param card the card to be removed
+     * @param card   the card to be removed
+     *
      * @return The card that was removed by the server
      */
     public Card removeCard(final Board board, final Column column, final Card card) throws ServerException {
@@ -238,26 +255,27 @@ public class ServerService {
                     .post(Entity.entity(new CardDTO(card, board.getPassword()), APPLICATION_JSON), Card.class);
             logger.info("Removed card sent to server");
             return removedCard;
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be removed from the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Adds tag to board
+     *
      * @param board Board for joinKey
-     * @param tag Tag to add
+     * @param tag   Tag to add
+     *
      * @return Tag from server
      */
     public Tag addTagToBoard(final Board board, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
-                .path("/tags")
-                .path("/add")
-                .path(board.getJoinKey())
-                .request(APPLICATION_JSON)
-                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+                    .path("/tags")
+                    .path("/add")
+                    .path(board.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
             logger.info("Added tag to board sent to server");
             return addedTag;
         }
@@ -265,18 +283,20 @@ public class ServerService {
 
     /**
      * Removes tag from board
+     *
      * @param board Board for joinKey
-     * @param tag Tag to remove
+     * @param tag   Tag to remove
+     *
      * @return Tag from server
      */
     public Tag removeTagFromBoard(final Board board, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
-                .path("/tags")
-                .path("/remove")
-                .path(board.getJoinKey())
-                .request(APPLICATION_JSON)
-                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+                    .path("/tags")
+                    .path("/remove")
+                    .path(board.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
             logger.info("Removed tag from board sent to server");
             return addedTag;
         }
@@ -284,32 +304,35 @@ public class ServerService {
 
     /**
      * Edits tag
+     *
      * @param board Board for joinKey
-     * @param tag Tag to edit
+     * @param tag   Tag to edit
      */
     public void editTag(final Board board, final Tag tag) {
         session.send("/app/tags/edit/" +
-                board.getJoinKey(),
+                        board.getJoinKey(),
                 new TagDTO(tag, board.getPassword()));
         logger.info("Edited tag sent to server");
     }
 
     /**
      * Adds tag to card
+     *
      * @param board Board for joinKey
-     * @param tag Tag to add
-     * @param card Card added to
+     * @param tag   Tag to add
+     * @param card  Card added to
+     *
      * @return Tag from server
      */
     public Tag addTagToCard(final Board board, final Card card, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
-                .path("/tags")
-                .path("/addToCard")
-                .path(board.getJoinKey())
-                .path(Long.toString(card.getId()))
-                .request(APPLICATION_JSON)
-                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+                    .path("/tags")
+                    .path("/addToCard")
+                    .path(board.getJoinKey())
+                    .path(Long.toString(card.getId()))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
             logger.info("Added tag to card sent to server");
             return addedTag;
         }
@@ -317,20 +340,22 @@ public class ServerService {
 
     /**
      * Removed tag from card
+     *
      * @param board Board for joinKey
-     * @param tag Tag to remove
-     * @param card Card removed from
+     * @param tag   Tag to remove
+     * @param card  Card removed from
+     *
      * @return Tag from server
      */
     public Tag removeTagFromCard(final Board board, final Card card, final Tag tag) {
         try (Client client = ClientBuilder.newClient()) {
             final Tag addedTag = client.target(serverIP)
-                .path("/tags")
-                .path("/removeFromCard")
-                .path(board.getJoinKey())
-                .path(Long.toString(card.getId()))
-                .request(APPLICATION_JSON)
-                .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
+                    .path("/tags")
+                    .path("/removeFromCard")
+                    .path(board.getJoinKey())
+                    .path(Long.toString(card.getId()))
+                    .request(APPLICATION_JSON)
+                    .post(Entity.entity(new TagDTO(tag, board.getPassword()), APPLICATION_JSON), Tag.class);
             logger.info("Removed tag from card sent to server");
             return addedTag;
         }
@@ -356,16 +381,16 @@ public class ServerService {
                             newPosition,
                     new CardDTO(card, board.getPassword()));
             logger.info("Repositioned card sent to server");
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be repositioned on the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Edits the contents of a card by posting a request to editCard endpoint on server
-     * @param board Board for joinKey
-     * @param card Card to edit
+     *
+     * @param board  Board for joinKey
+     * @param card   Card to edit
      * @param column Column card is in
      */
     public void editCard(final Board board, final Card card, final Column column) throws ServerException {
@@ -375,16 +400,16 @@ public class ServerService {
                             column.getId(),
                     new CardDTO(card, board.getPassword()));
             logger.info("Edited card sent to server");
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Card couldn't be edited on the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Renames column by posting a request to renameColumn endpoint on server
-     * @param board Board for join key
-     * @param column Column to rename
+     *
+     * @param board   Board for join key
+     * @param column  Column to rename
      * @param newName New name of column
      */
     public void renameColumn(final Board board, final Column column, final String newName) {
@@ -395,14 +420,14 @@ public class ServerService {
                             newName,
                     board.getPassword());
             logger.info("Renamed column sent to server");
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Column couldn't be renamed on the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Subscribes to loaded board
+     *
      * @param joinKey String key to board
      */
     public void subscribeToBoard(final String joinKey) {
@@ -411,17 +436,19 @@ public class ServerService {
 
     /**
      * Deletes a board server-side
+     *
      * @param board Board to delete
+     *
      * @return True if successful
      */
     public boolean deleteBoard(final Board board) {
         try (Client client = ClientBuilder.newClient()) {
             final Response response = client.target(serverIP)
-                .path("/boards")
-                .path("/delete")
-                .path(board.getJoinKey())
-                .request(APPLICATION_JSON)
-                .delete();
+                    .path("/boards")
+                    .path("/delete")
+                    .path(board.getJoinKey())
+                    .request(APPLICATION_JSON)
+                    .delete();
             logger.info("Requested to delete board with join-key: " + board.getJoinKey());
             return response.getStatus() == 200;
         }
@@ -429,7 +456,8 @@ public class ServerService {
 
     /**
      * Renames board by posting a request to renameColumn endpoint on server
-     * @param board Board for join key
+     *
+     * @param board   Board for join key
      * @param newName New name of board
      */
     public void renameBoard(final Board board, final String newName) {
@@ -439,15 +467,16 @@ public class ServerService {
                             newName,
                     board.getPassword());
             logger.info("Renamed board sent to server");
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ServerException("The Board couldn't be renamed on the Server: \n" + getServerIP());
         }
     }
 
     /**
      * Verifies password provided by user for switching to admin mode
+     *
      * @param adminPassword Password provided by user
+     *
      * @return correct/incorrect
      */
     public boolean verifyAdminPassword(final String adminPassword) {
@@ -465,6 +494,7 @@ public class ServerService {
 
     /**
      * Gets all boards from the server
+     *
      * @return the boards that were retrieved
      */
     public List<Board> adminGetAllBoards() {
@@ -473,7 +503,8 @@ public class ServerService {
                     .path("/admin")
                     .path("/getAllBoards")
                     .request(APPLICATION_JSON)
-                    .get(new GenericType<>() { });
+                    .get(new GenericType<>() {
+                    });
             logger.info("(admin) Sending request to server to get all boards");
             return boards;
         }
@@ -497,6 +528,7 @@ public class ServerService {
 
     /**
      * Gets all users from the server using long polling
+     *
      * @param boards List of boards to check
      *
      * @return List of boards that are still active
@@ -507,7 +539,8 @@ public class ServerService {
                     .path("/home")
                     .path("/getBoardsStatus")
                     .request(APPLICATION_JSON)
-                    .post(Entity.entity(boards, APPLICATION_JSON), new GenericType<>() { });
+                    .post(Entity.entity(boards, APPLICATION_JSON), new GenericType<>() {
+                    });
             final List<String> activeBoards = new ArrayList<>();
             for (final String board : boards) {
                 if (existingBoards.get(board)) {
@@ -521,9 +554,11 @@ public class ServerService {
 
     /**
      * Adds subtask to card
+     *
      * @param currentBoard board containing card to which subtask is being added
-     * @param card card to which subtask is being added
-     * @param description description of subtask
+     * @param card         card to which subtask is being added
+     * @param description  description of subtask
+     *
      * @return added subtask
      */
     public SubTask addSubTask(final Board currentBoard, final Card card, final String description) {
@@ -532,10 +567,12 @@ public class ServerService {
                     .path("/subtasks")
                     .path("/add")
                     .path(currentBoard.getJoinKey())
-                    .queryParam("cardId", Long.toString(card.getId()))
-                    .queryParam("description", description)
                     .request(APPLICATION_JSON)
-                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+                    .post(Entity.entity(new SubTaskDTO(
+                            new SubTask(description, false),
+                            card.getId(),
+                            currentBoard.getPassword()
+                    ), APPLICATION_JSON), SubTask.class);
             logger.info("Add SubTask to card sent to server");
             return subTask;
         }
@@ -543,9 +580,11 @@ public class ServerService {
 
     /**
      * removes subtask from card
+     *
      * @param currentBoard board containing card from which subtask is being removed
-     * @param card card from which subtask is being removed
-     * @param subTask subtask being removed
+     * @param card         card from which subtask is being removed
+     * @param subTask      subtask being removed
+     *
      * @return removed subtask
      */
     public SubTask removeSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
@@ -554,9 +593,13 @@ public class ServerService {
                     .path("/subtasks")
                     .path("/remove")
                     .path(currentBoard.getJoinKey())
-                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
                     .request(APPLICATION_JSON)
-                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+                    .post(Entity.entity(
+                            new SubTaskDTO(
+                                    subTask,
+                                    card.getId(),
+                                    currentBoard.getPassword()
+                            ), APPLICATION_JSON), SubTask.class);
             logger.info("Remove SubTask from card sent to server");
             return returnedSubTask;
         }
@@ -564,9 +607,11 @@ public class ServerService {
 
     /**
      * Toggles state of subtask (done / not done)
+     *
      * @param currentBoard board containing card whose subtask is to be toggled
-     * @param card card whose subtask is being toggled
-     * @param subTask subtask being toggled
+     * @param card         card whose subtask is being toggled
+     * @param subTask      subtask being toggled
+     *
      * @return toggled subtask
      */
     public SubTask toggleSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
@@ -575,9 +620,13 @@ public class ServerService {
                     .path("/subtasks")
                     .path("/toggle")
                     .path(currentBoard.getJoinKey())
-                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
                     .request(APPLICATION_JSON)
-                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+                    .post(Entity.entity(
+                            new SubTaskDTO(
+                                    subTask,
+                                    card.getId(),
+                                    currentBoard.getPassword()
+                            ), APPLICATION_JSON), SubTask.class);
             logger.info("Toggle SubTask sent to server");
             return resultSubTask;
         }
@@ -585,31 +634,47 @@ public class ServerService {
 
     /**
      * Moves subtask within card
+     *
      * @param currentBoard current board
-     * @param card containing the subtask
-     * @param subTask to be moved
-     * @param index new index of subtask
-     * @return moved subtask
+     * @param card         containing the subtask
+     * @param subTask      to be moved
+     * @param index        new index of subtask
      */
-    public SubTask moveSubTask(final Board currentBoard, final Card card, final SubTask subTask, final int index) {
-        try (Client client = ClientBuilder.newClient()) {
-            final SubTask resultSubTask = client.target(serverIP)
-                    .path("/subtasks")
-                    .path("/move")
-                    .path(currentBoard.getJoinKey())
-                    .queryParam("index", index)
-                    .queryParam("subTaskDTO", new SubTaskDTO(subTask, card.getId()))
-                    .request(APPLICATION_JSON)
-                    .post(Entity.entity(currentBoard.getPassword(), APPLICATION_JSON), SubTask.class);
+    public void moveSubTask(final Board currentBoard, final Card card, final SubTask subTask, final int index) {
+        try {
+            session.send("/app/subtasks/move/" +
+                            currentBoard.getJoinKey(),
+                    new SubTaskDTO(
+                            subTask,
+                            card.getId(),
+                            index,
+                            currentBoard.getPassword()
+                    ));
             logger.info("Move SubTask sent to server");
-            return resultSubTask;
+        } catch (RuntimeException e) {
+            throw new ServerException("The sub task couldn't be repositioned on the Server: \n" + getServerIP());
         }
     }
 
     /**
+     * Edits subtask
+     * @param currentBoard current board
+     * @param card        containing the subtask
+     * @param subTask    to be edited
+     */
+    public void editSubTask(final Board currentBoard, final Card card, final SubTask subTask) {
+        session.send("/app/subtasks/edit/" +
+                        currentBoard.getJoinKey(),
+                new SubTaskDTO(subTask, card.getId(), currentBoard.getPassword()));
+        logger.info("Edited sub task sent to server");
+    }
+
+    /**
      * Removes color preset from board
+     *
      * @param currentBoard board from which color preset is being removed
-     * @param colorPreset color preset being removed
+     * @param colorPreset  color preset being removed
+     *
      * @return removed color preset
      */
     public ColorScheme removeColorPresetFromBoard(final Board currentBoard, final ColorScheme colorPreset) {
@@ -627,8 +692,10 @@ public class ServerService {
 
     /**
      * Adds color preset to board
+     *
      * @param currentBoard board to which color preset is being added
-     * @param colorPreset color preset being added
+     * @param colorPreset  color preset being added
+     *
      * @return added color preset
      */
     public ColorScheme addColorPresetToBoard(final Board currentBoard, final ColorScheme colorPreset) {
@@ -646,8 +713,9 @@ public class ServerService {
 
     /**
      * Edits color preset
+     *
      * @param currentBoard board containing color preset
-     * @param colorPreset color preset being edited
+     * @param colorPreset  color preset being edited
      */
     public void editColorPreset(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/edit/" +
@@ -658,8 +726,9 @@ public class ServerService {
 
     /**
      * Sets default color preset for cards
+     *
      * @param currentBoard board containing color preset
-     * @param colorPreset color preset being set as default
+     * @param colorPreset  color preset being set as default
      */
     public void setDefaultColorPresetCard(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/set-card/" +
@@ -670,8 +739,9 @@ public class ServerService {
 
     /**
      * Sets default color preset for columns
+     *
      * @param currentBoard board containing color preset
-     * @param colorPreset color preset being set as default
+     * @param colorPreset  color preset being set as default
      */
     public void setDefaultColorPresetColumn(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/set-column/" +
@@ -682,8 +752,9 @@ public class ServerService {
 
     /**
      * Sets default color preset for board
+     *
      * @param currentBoard board containing color preset
-     * @param colorPreset color preset being set as default
+     * @param colorPreset  color preset being set as default
      */
     public void setDefaultColorPresetBoard(final Board currentBoard, final ColorScheme colorPreset) {
         session.send("/app/color-presets/set-board/" +

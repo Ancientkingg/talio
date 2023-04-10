@@ -30,7 +30,7 @@ Subtasks
 }
 
 .subtaskTextField:hover {
-    -fx-background-color: light #afafaf;
+    -fx-background-color: #afafaf;
 }
 
 .subtaskCheckbox .box{
