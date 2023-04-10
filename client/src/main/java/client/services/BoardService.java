@@ -919,6 +919,13 @@ public class BoardService {
      */
     public void updateRemoveColorPresetFromBoard(final ColorScheme payload) {
         boardModel.getCurrentBoard().deleteColorPreset(payload);
+
+        boardModel.getCurrentBoard().getColumns().forEach(column -> column.getCards().forEach(card -> {
+            if (card.getColorScheme().equals(payload)) {
+                card.setColorScheme(null);
+            }
+        }));
+
         if (mainCtrl.getColorPresetsOverviewModal() != null) mainCtrl.getColorPresetsOverviewModal().refresh();
         mainCtrl.refreshOverview();
     }
