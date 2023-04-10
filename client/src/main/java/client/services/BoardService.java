@@ -793,7 +793,11 @@ public class BoardService {
      * @param subTask subtask to add
      */
     public void updateAddSubTask(final Card card, final SubTask subTask) {
-        serverService.updateSubTask(this.boardModel.getCurrentBoard(), card, subTask);
+        try {
+            boardModel.getCurrentBoard().getCard(card.getId()).addSubTask(subTask);
+        } catch (CardNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
