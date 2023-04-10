@@ -266,4 +266,16 @@ public class Card implements Comparable<Card> {
         this.subtasks.remove(subTask);
         this.subtasks.add(index, subTask);
     }
+
+    /**
+     * Toggles the done status of a subtask
+     * @param subTask Subtask to be toggled
+     */
+    public void toggleSubtask(final SubTask subTask) {
+        for (final SubTask task : this.subtasks) {
+            if (task.getId() == subTask.getId()) {
+                task.setDone(!task.isDone());
+            }
+        }
+    }
 }
