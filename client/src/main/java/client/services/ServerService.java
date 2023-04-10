@@ -78,6 +78,10 @@ public class ServerService {
         this.sessionHandler = sessionHandler;
     }
 
+    /**
+     * Sets the session of the serverService
+     * @param session the session to set
+     */
     public void setSession(final StompSession session) {
         this.session = session;
     }
@@ -370,7 +374,8 @@ public class ServerService {
      * @param newPosition       new index of the card
      */
     public void repositionCard(final Board board, final Column column, final Column destinationColumn,
-                               final Card card, final int newPosition) throws ServerException {
+                               final Card card, final int newPosition) throws ServerException
+    {
         try {
             session.send("/app/cards/reposition/" +
                             board.getJoinKey() + "/" +

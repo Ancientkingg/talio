@@ -6,7 +6,6 @@ import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -14,7 +13,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 public class SubTaskComponent extends GridPane implements UIComponent {

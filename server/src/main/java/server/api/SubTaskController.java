@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import server.services.BoardService;
 
@@ -56,7 +55,9 @@ public class SubTaskController {
         try {
             card = board.getCard(subTaskDTO.cardId());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id" + subTaskDTO.cardId() + " was not found in the board with join key " + joinKey);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The card with id"
+                    + subTaskDTO.cardId()
+                    + " was not found in the board with join key " + joinKey);
         }
 
         card.addSubTask(subTask);
@@ -68,10 +69,11 @@ public class SubTaskController {
         return ResponseEntity.ok(subTask);
     }
 
-    private void updateAddSubTask(final SubTask subTask, final long cardId, final String joinkey) {
-        logger.info("Subtask added to card, propogating - board joinkey: " + joinkey + ", cardId: " + cardId +
+    private void updateAddSubTask(final SubTask subTask, final long cardId, final String joinKey) {
+        logger.info("Subtask added to card, propagating - board joinKey: " + joinKey + ", cardId: " + cardId +
                 ", subTask description: " + subTask.getDescription());
-        messagingTemplate.convertAndSend("/topic/subtasks/" + joinkey + "/add", new SubTaskDTO(subTask, cardId)); // TODO: add second contructor to Sub Task DTO
+        messagingTemplate.convertAndSend("/topic/subtasks/"
+                + joinKey + "/add", new SubTaskDTO(subTask, cardId));
     }
 
     @PostMapping("/subtasks/update/{joinKey}")
@@ -82,14 +84,14 @@ public class SubTaskController {
             card = board.getCard(subTaskDTO.cardId());
         } catch (CardNotFoundException e) {
             throw new RuntimeException(e);
-        };
+        }
         card.updateSubTask(subTaskDTO.subTask());
         boardService.saveBoard(board);
         updateSubTaskUpdated(subTaskDTO.subTask(), subTaskDTO.cardId(), joinKey);
     }
 
     private void updateSubTaskUpdated(final SubTask subTask, final long cardId, final String joinKey) {
-        logger.info("Subtask updated, propogating - board joinkey: " + joinKey + ", cardId: " + cardId +
+        logger.info("Subtask updated, propagating - board join key: " + joinKey + ", cardId: " + cardId +
                 ", subTask description: " + subTask.getDescription());
         messagingTemplate.convertAndSend("/topic/subtasks/" + joinKey + "/update", new SubTaskDTO(subTask, cardId));
     }
