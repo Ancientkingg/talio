@@ -85,10 +85,7 @@ public class ColorScheme {
 
         final ColorScheme that = (ColorScheme) o;
 
-        if (id != that.id) return false;
-        if (!Objects.equals(name, that.name)) return false;
-        if (!Objects.equals(textColor, that.textColor)) return false;
-        return Objects.equals(backgroundColor, that.backgroundColor);
+        return id == that.id;
     }
 
     /**
@@ -97,10 +94,7 @@ public class ColorScheme {
      */
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (textColor != null ? textColor.hashCode() : 0);
-        result = 31 * result + (backgroundColor != null ? backgroundColor.hashCode() : 0);
-        return result;
+        return Objects.hash(id);
     }
 
     /**
