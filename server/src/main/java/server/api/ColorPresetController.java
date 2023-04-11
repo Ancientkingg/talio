@@ -128,12 +128,13 @@ public class ColorPresetController {
         final String password = colorSchemeDTO.getPassword();
         final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
         final ColorScheme colorScheme = colorSchemeDTO.getColorScheme();
+        final ColorScheme serverColorScheme = new ColorScheme(colorScheme.getName(), colorScheme.getBackgroundColor(), colorScheme.getTextColor());
 
-        board.addColorPreset(colorScheme);
+        board.addColorPreset(serverColorScheme);
         boardService.saveBoard(board);
 
-        updateColorPresetAdded(colorScheme, board);
-        return ResponseEntity.ok(colorScheme);
+        updateColorPresetAdded(serverColorScheme, board);
+        return ResponseEntity.ok(serverColorScheme);
     }
 
     /**

@@ -2,16 +2,14 @@ package commons;
 
 import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
-
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import java.sql.Timestamp;
-import java.util.*;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Entity
 public class Board {
@@ -50,7 +48,7 @@ public class Board {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Getter
-    private List<ColorScheme> colorPresets;
+    private Set<ColorScheme> colorPresets;
 
     /**
      * Constructor for a board object with password
@@ -75,7 +73,7 @@ public class Board {
         this.columnColorScheme = columnTheme;
         this.boardColorScheme = boardColorScheme;
         this.tags = tags;
-        this.colorPresets = new ArrayList<>();
+        this.colorPresets = new HashSet<>();
     }
 
     /**
@@ -103,7 +101,7 @@ public class Board {
         boardColorScheme = new ColorScheme(new Color(243,243,243,255), new Color(235,235,235,255));
         columnColorScheme = new ColorScheme(new Color(24,24,24,255), new Color(242,242,242,255)); // change these to whatever default is picked
         cardColorScheme = new ColorScheme(new Color(0,0,0,255), new Color(248,248,248,255));
-        this.colorPresets = new ArrayList<>();
+        this.colorPresets = new HashSet<>();
     }
 
     /**

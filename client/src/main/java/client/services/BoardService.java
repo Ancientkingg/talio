@@ -952,7 +952,7 @@ public class BoardService {
         boardModel.getCurrentBoard().deleteColorPreset(payload);
 
         boardModel.getCurrentBoard().getColumns().forEach(column -> column.getCards().forEach(card -> {
-            if (card.getColorScheme().equals(payload)) {
+            if (card.getColorScheme() != null && card.getColorScheme().equals(payload)) {
                 card.setColorScheme(null);
             }
         }));

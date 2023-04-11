@@ -282,7 +282,7 @@ public class CardDetailsModal extends Modal implements Refreshable {
      */
     public void refreshColorSchemes() {
         this.colorSchemeComboBox.getItems().clear();
-        final List<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
+        final Set<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
         this.colorSchemeComboBox.getItems().addAll(colorSchemes);
     }
 }

@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
-import java.util.List;
+import java.util.Set;
 
 public class ColorShortcutModal extends Modal implements Refreshable, UIComponent {
 
@@ -59,7 +59,7 @@ public class ColorShortcutModal extends Modal implements Refreshable, UIComponen
     @Override
     public void refresh() {
         this.colorSchemeComboBox.getItems().clear();
-        final List<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
+        final Set<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
         this.colorSchemeComboBox.getItems().addAll(colorSchemes);
 
         this.refreshLock();

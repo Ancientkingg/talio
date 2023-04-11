@@ -14,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-import java.util.List;
+import java.util.Set;
 
 public class ColorPresetsOverviewModal extends Modal implements UIComponent, Refreshable {
 
@@ -77,7 +77,7 @@ public class ColorPresetsOverviewModal extends Modal implements UIComponent, Ref
         colorPresetsContainer.getChildren().clear();
 
         final Board currentBoard = boardService.getCurrentBoard();
-        final List<ColorScheme> colorPresets = currentBoard.getColorPresets();
+        final Set<ColorScheme> colorPresets = currentBoard.getColorPresets();
 
         for (final ColorScheme colorPreset : colorPresets) {
             final ColorPresetComponent colorPresetComponent = new ColorPresetComponent(boardService, parentScene, this, colorPreset);
