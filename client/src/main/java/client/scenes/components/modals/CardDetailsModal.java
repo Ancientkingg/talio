@@ -17,9 +17,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-import javax.swing.event.ChangeListener;
 import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 public class CardDetailsModal extends Modal implements Refreshable {
 
@@ -95,7 +97,7 @@ public class CardDetailsModal extends Modal implements Refreshable {
         this.cardTitle.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (!newValue)
                 isCardTitleChanged = true;
-            });
+        });
         this.cardDescription.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (!newValue)
                 isCardDescriptionChanged = true;
