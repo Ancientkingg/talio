@@ -9,6 +9,7 @@ import client.scenes.components.SubTaskComponent;
 import client.scenes.components.TagSelectComponent;
 import client.services.BoardService;
 import commons.*;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,13 +20,18 @@ import javafx.scene.text.Text;
 import lombok.Getter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 public class CardDetailsModal extends Modal implements Refreshable {
 
     private final Card card;
 
     private final CardComponent cardComponent;
+
+    private boolean isCardTitleChanged, isCardDescriptionChanged;
 
     @FXML
     private TextField cardTitle;
@@ -92,8 +98,21 @@ public class CardDetailsModal extends Modal implements Refreshable {
     @FXML
     public void initialize() {
         super.initialize();
+
+        isCardTitleChanged = false;
+        isCardDescriptionChanged = false;
+
         this.cardTitle.setText(card.getTitle());
         this.cardDescription.setText(card.getDescription());
+
+        this.cardTitle.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue)
+                isCardTitleChanged = true;
+        });
+        this.cardDescription.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue)
+                isCardDescriptionChanged = true;
+        });
     }
 
     /**
@@ -201,13 +220,13 @@ public class CardDetailsModal extends Modal implements Refreshable {
      * Refresh description textArea
      */
     public void refreshDescription() {
-        cardDescription.setText(card.getDescription());
+        if (!isCardDescriptionChanged) cardDescription.setText(card.getDescription());
     }
 
     /**
      * Refresh title textArea
      */
-    public void refreshTitle() { cardTitle.setText(card.getTitle()); }
+    public void refreshTitle() { if (!isCardTitleChanged) cardTitle.setText(card.getTitle()); }
 
     /**
      * Refreshes tags in the scroll pane and displays them in their component form
