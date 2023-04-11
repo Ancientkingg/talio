@@ -1,6 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.UIComponent;
 import client.services.BoardService;
@@ -8,9 +9,11 @@ import commons.ColorScheme;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class TagSettingsModal extends Modal implements UIComponent {
 
@@ -22,6 +25,15 @@ public class TagSettingsModal extends Modal implements UIComponent {
 
     @FXML
     private ColorPicker secondaryColor;
+
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private Button submitButton;
+
+    @FXML
+    private Text  deleteText;
 
     private final Refreshable parentCtrl;
 
@@ -54,6 +66,8 @@ public class TagSettingsModal extends Modal implements UIComponent {
 
         this.primaryColor.setValue(primaryColor);
         this.secondaryColor.setValue(secondaryColor);
+
+        this.refreshLock();
     }
 
     /**
@@ -62,6 +76,28 @@ public class TagSettingsModal extends Modal implements UIComponent {
     @FXML
     public void initialize() {
         super.initialize();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            this.titleTextField.setDisable(true);
+            this.primaryColor.setDisable(true);
+            this.secondaryColor.setDisable(true);
+            this.deleteButton.setDisable(true);
+            this.submitButton.setDisable(true);
+
+            this.deleteButton.setVisible(false);
+            this.deleteText.setVisible(false);
+        } else {
+            this.titleTextField.setDisable(false);
+            this.primaryColor.setDisable(false);
+            this.secondaryColor.setDisable(false);
+            this.deleteButton.setDisable(false);
+            this.submitButton.setDisable(false);
+
+            this.deleteButton.setVisible(true);
+            this.deleteText.setVisible(true);
+        }
     }
 
 

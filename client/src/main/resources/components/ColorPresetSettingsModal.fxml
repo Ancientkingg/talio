@@ -71,6 +71,6 @@
             <Insets bottom="75.0" right="22.0" />
          </GridPane.margin>
       </Button>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12px; -fx-fill: #3c3c3c;" styleClass="modalDescriptionText" text="Deletes the color preset from the board" translateX="-44.0" translateY="-73.0" wrappingWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Text fx:id="deleteText" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12px; -fx-fill: #3c3c3c;" styleClass="modalDescriptionText" text="Deletes the color preset from the board" translateX="-44.0" translateY="-73.0" wrappingWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     </children>
 </fx:root>

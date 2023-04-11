@@ -50,13 +50,16 @@ public class OverviewCtrl implements Refreshable {
 
     @Setter
     @Getter
-    private boolean isLocked;
+    private static boolean isLocked;
     
     @FXML
     private Button boardNameButton;
 
     @FXML
     private SVGPath boardEditIcon;
+
+    @FXML
+    private Button createColumnButton;
 
     /**
      * Injects mainCtrl instance into controller to allow access to its methods
@@ -68,6 +71,7 @@ public class OverviewCtrl implements Refreshable {
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
         focussedCard = null;
+        isLocked = true;
     }
 
     /**
@@ -87,7 +91,6 @@ public class OverviewCtrl implements Refreshable {
         }
 
         focussedCard = cardComponent;
-        this.isLocked = true;
     }
 
     /**
@@ -130,9 +133,13 @@ public class OverviewCtrl implements Refreshable {
 
                     case ENTER -> setOpenCardDetailsShortcut();
 
-                    case E -> setEditCardShortcut();
+                    case E -> {
+                        if (!isLocked) setEditCardShortcut();
+                    }
 
-                    case DELETE, BACK_SPACE -> setDeleteCardShortcut();
+                    case DELETE, BACK_SPACE -> {
+                        if (!isLocked) setDeleteCardShortcut();
+                    }
 
                     case DOWN -> {
                         if (!event.isShiftDown()) setSelectCardBelowShortcut();
@@ -265,6 +272,7 @@ public class OverviewCtrl implements Refreshable {
 
         final KeyCombination shiftCardUp = new KeyCodeCombination(KeyCode.UP, KeyCombination.SHIFT_DOWN);
         final Runnable moveCardUp = () -> {
+            if (isLocked) return;
             if (focussedCard != null) {
                 boardService.repositionCard(focussedCard.getCard().getId(),
                         focussedCard.getColumnParent().getColumn().getIndex(), focussedCard.getColumnParent().getColumn().getIndex(),
@@ -275,6 +283,7 @@ public class OverviewCtrl implements Refreshable {
 
         final KeyCombination shiftCardDown = new KeyCodeCombination(KeyCode.DOWN, KeyCombination.SHIFT_DOWN);
         final Runnable moveCardDown = () -> {
+            if (isLocked) return;
             if (focussedCard != null) {
                 boardService.repositionCard(focussedCard.getCard().getId(),
                         focussedCard.getColumnParent().getColumn().getIndex(), focussedCard.getColumnParent().getColumn().getIndex(),
@@ -411,18 +420,23 @@ public class OverviewCtrl implements Refreshable {
      * Checks the lock status of the current board
      */
     public void checkLock() {
-        final String password = boardService.getCurrentBoard().getPassword();
-        if (password == null || password.isEmpty()) {
-            this.isLocked = false;
-        } else {
-            this.isLocked = true;
-        }
+        final String serverPassword = boardService.getCurrentBoard().getPassword();
+        final String localPassword = boardService.getLocalPasswordForCurrentBoard();
+        isLocked = serverPassword != null && !serverPassword.isEmpty() && !serverPassword.equals(localPassword);
 
-        if (Main.isAdmin()) this.isLocked = false;
+        if (Main.isAdmin()) isLocked = false;
     }
 
     private void refreshLock() {
-        this.setLockIcon(this.isLocked);
+        this.setLockIcon(isLocked);
+
+        if (isLocked) {
+            createColumnButton.setDisable(true);
+            createColumnButton.setVisible(false);
+        } else {
+            createColumnButton.setDisable(false);
+            createColumnButton.setVisible(true);
+        }
     }
 
     private void setLockIcon(final boolean lock) {

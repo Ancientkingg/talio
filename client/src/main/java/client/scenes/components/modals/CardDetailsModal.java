@@ -1,6 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.CardComponent;
 import client.scenes.components.Draggable;
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -34,6 +36,9 @@ public class CardDetailsModal extends Modal implements Refreshable {
     @FXML
     private VBox tagsContainer;
 
+    @FXML
+    private Button submitButton;
+
     @FXML @Getter
     private VBox subTasksContainer;
 
@@ -48,6 +53,12 @@ public class CardDetailsModal extends Modal implements Refreshable {
 
     @FXML
     private Button addSubtaskButton;
+
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private Text deleteText;
 
     /**
      * Constructor for card details modal
@@ -90,29 +101,31 @@ public class CardDetailsModal extends Modal implements Refreshable {
      */
     @FXML
     private void submitDetails() {
-        this.card.setTitle(cardTitle.getText());
-        this.card.setDescription(cardDescription.getText());
-        final List<Tag> selectedTags = this.getSelectedTags();
+        if (!OverviewCtrl.isLocked()) {
+            this.card.setTitle(cardTitle.getText());
+            this.card.setDescription(cardDescription.getText());
+            final List<Tag> selectedTags = this.getSelectedTags();
 
-        for (final Tag tag : selectedTags) {
-            if (!this.card.getTags().contains(tag)) {
-                this.card.addTag(tag);
-                boardService.addTagToCard(this.card, tag);
+            for (final Tag tag : selectedTags) {
+                if (!this.card.getTags().contains(tag)) {
+                    this.card.addTag(tag);
+                    boardService.addTagToCard(this.card, tag);
+                }
             }
-        }
 
-        final Iterator it = this.card.getTags().iterator();
-        while (it.hasNext()) {
-            final Tag tag = (Tag) it.next();
-            if (!selectedTags.contains(tag)) {
-                it.remove();
-                boardService.removeTagFromCard(this.card, tag);
+            final Iterator it = this.card.getTags().iterator();
+            while (it.hasNext()) {
+                final Tag tag = (Tag) it.next();
+                if (!selectedTags.contains(tag)) {
+                    it.remove();
+                    boardService.removeTagFromCard(this.card, tag);
+                }
             }
+
+            this.card.setColorScheme(this.colorSchemeComboBox.getValue());
+
+            boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
         }
-
-        this.card.setColorScheme(this.colorSchemeComboBox.getValue());
-
-        boardService.editCard(this.card, this.cardComponent.getColumnParent().getColumn());
 
         this.closeModal();
         this.cardComponent.refresh();
@@ -153,7 +166,35 @@ public class CardDetailsModal extends Modal implements Refreshable {
         this.refreshTags();
         this.refreshSubtasks();
         this.refreshColorSchemes();
+        this.refreshLock();
     }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            cardTitle.setDisable(true);
+            cardDescription.setDisable(true);
+            colorSchemeComboBox.setDisable(true);
+            addSubtaskButton.setDisable(true);
+            deleteButton.setDisable(true);
+            submitButton.setDisable(true);
+
+            deleteButton.setVisible(false);
+            deleteText.setVisible(false);
+            addSubtaskButton.setVisible(false);
+        } else {
+            cardTitle.setDisable(false);
+            cardDescription.setDisable(false);
+            colorSchemeComboBox.setDisable(false);
+            addSubtaskButton.setDisable(false);
+            deleteButton.setDisable(false);
+            submitButton.setDisable(false);
+
+            deleteButton.setVisible(true);
+            deleteText.setVisible(true);
+            addSubtaskButton.setVisible(true);
+        }
+    }
+
 
 
     /**

@@ -85,7 +85,7 @@ public class BoardController {
             final List<Board> boards = new ArrayList<>();
 
             for (final String joinKey : localBoards.keySet()) {
-                boards.add(boardService.getBoardWithKeyAndPassword(joinKey, localBoards.get(joinKey)));
+                boards.add(boardService.getBoardWithKeyUnsafe(joinKey));
             }
 
             return ResponseEntity.ok(boards);

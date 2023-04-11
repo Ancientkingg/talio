@@ -1,17 +1,19 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.modals.ColorPresetSettingsModal;
 import client.services.BoardService;
+import commons.Color;
 import commons.ColorScheme;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.util.Objects;
 
 public class ColorPresetComponent extends GridPane implements UIComponent {
@@ -29,6 +31,9 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
 
     @FXML
     private Pane colorBubble;
+
+    @FXML
+    private Button editButton;
 
 
     /**
@@ -50,7 +55,7 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
         try {
             tagTitle.textProperty().set(colorPreset.getName());
 
-            final commons.Color backgroundColor = colorPreset.getBackgroundColor();
+            final Color backgroundColor = colorPreset.getBackgroundColor();
 
             final String primaryStyle;
 
@@ -63,7 +68,7 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
 
             final String secondaryStyle;
 
-            final commons.Color textColor = colorPreset.getTextColor();
+            final Color textColor = colorPreset.getTextColor();
             if (textColor == null || Objects.equals(textColor, new Color(0,0,0,0))) {
                 secondaryStyle = "-fx-border-color: " + this.colorGenerator() + ";";
             } else {
@@ -75,7 +80,7 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
             throw new RuntimeException(e);
         }
 
-
+        this.refreshLock();
     }
 
     /**
@@ -93,5 +98,13 @@ public class ColorPresetComponent extends GridPane implements UIComponent {
     private void onEdit() {
         final ColorPresetSettingsModal colorPresetSettingsModal = new ColorPresetSettingsModal(boardService, parentScene, parentCtrl, colorPreset);
         colorPresetSettingsModal.showModal();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            editButton.setDisable(true);
+        } else {
+            editButton.setDisable(false);
+        }
     }
 }

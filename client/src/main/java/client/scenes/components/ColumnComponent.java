@@ -172,5 +172,27 @@ public class ColumnComponent extends GridPane implements UIComponent {
 //        innerCardList.getChildren().add(this.addCardButton);
 
         refreshStyle();
+
+        refreshLock();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            deleteColumnButton.setDisable(true);
+            addCardButton.setDisable(true);
+
+            deleteColumnButton.setVisible(false);
+            addCardButton.setVisible(false);
+
+            columnHeading.setEditable(false);
+        } else {
+            deleteColumnButton.setDisable(false);
+            addCardButton.setDisable(false);
+
+            deleteColumnButton.setVisible(true);
+            addCardButton.setVisible(true);
+
+            columnHeading.setEditable(true);
+        }
     }
 }

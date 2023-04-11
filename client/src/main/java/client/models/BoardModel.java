@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.inject.Singleton;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,10 @@ public class BoardModel {
     @Getter
     @Setter
     private List<Board> boardList;
+
+    @Getter
+    @Setter
+    private HashMap<String, String> savedBoardPasswords;
 
     @Getter
     @Setter

@@ -1,6 +1,7 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
@@ -32,6 +33,9 @@ public class SubTaskComponent extends Draggable implements UIComponent {
 
     @FXML
     private CheckBox checkBox;
+
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private TextField descriptionField;
@@ -76,7 +80,7 @@ public class SubTaskComponent extends Draggable implements UIComponent {
             if (subTask.isDone()) {
                 checkBox.selectedProperty();
             }
-            ;
+
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -98,6 +102,24 @@ public class SubTaskComponent extends Draggable implements UIComponent {
         descriptionField.setDisable(true); //Disables editing by default
         checkBox.setSelected(subTask.isDone());
         this.listenForChanges();
+        refreshLock();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            checkBox.setDisable(true);
+            editDescriptionButton.setDisable(true);
+            editDescriptionButton.setVisible(false);
+            deleteButton.setDisable(true);
+            deleteButton.setVisible(false);
+        } else {
+            checkBox.setDisable(false);
+            editDescriptionButton.setDisable(false);
+            editDescriptionButton.setVisible(true);
+            deleteButton.setDisable(false);
+            deleteButton.setVisible(true);
+        }
+
     }
 
     /**

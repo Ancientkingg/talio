@@ -1,6 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.ColorPresetComponent;
 import client.scenes.components.UIComponent;
@@ -10,6 +11,7 @@ import commons.Color;
 import commons.ColorScheme;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -20,6 +22,9 @@ public class ColorPresetsOverviewModal extends Modal implements UIComponent, Ref
     @FXML
     private VBox colorPresetsContainer;
 
+    @FXML
+    private Button addColorPresetsButton;
+
     /**
      * Constructor for BoardSettingsModal
      * @param boardService boardService instance
@@ -29,6 +34,8 @@ public class ColorPresetsOverviewModal extends Modal implements UIComponent, Ref
         super(boardService, parentScene);
 
         loadSource(Main.class.getResource("/components/ColorPresetsOverviewModal.fxml"));
+
+        this.refreshLock();
     }
 
     /**
@@ -53,6 +60,17 @@ public class ColorPresetsOverviewModal extends Modal implements UIComponent, Ref
      */
     public void refresh() {
         this.renderColorPresets();
+        this.refreshLock();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            addColorPresetsButton.setDisable(true);
+            addColorPresetsButton.setVisible(false);
+        } else {
+            addColorPresetsButton.setDisable(false);
+            addColorPresetsButton.setVisible(true);
+        }
     }
 
     private void renderColorPresets() {

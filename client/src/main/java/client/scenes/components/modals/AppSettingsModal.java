@@ -91,6 +91,7 @@ public class AppSettingsModal extends Modal implements UIComponent {
      */
     @FXML
     public void deleteSavedBoards () {
+        boardService.deleteLocalPasswords();
 
         String message = "Cache cleared!";
 

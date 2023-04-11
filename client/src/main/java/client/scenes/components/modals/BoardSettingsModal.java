@@ -10,6 +10,7 @@ import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -29,6 +30,15 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
     private Text boardJoinKey;
 
     @FXML
+    private Button boardColorResetButton;
+
+    @FXML
+    private Button columnColorResetButton;
+
+    @FXML
+    private Button cardColorResetButton;
+
+    @FXML
     private ColorPicker boardPrimaryColor;
     @FXML
     private ColorPicker boardSecondaryColor;
@@ -40,6 +50,9 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
     private ColorPicker cardPrimaryColor;
     @FXML
     private ColorPicker cardSecondaryColor;
+
+    @FXML
+    private Button submitButton;
 
     private final OverviewCtrl parentCtrl;
 
@@ -54,6 +67,7 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
         this.parentCtrl = parentCtrl;
 
         loadSource(Main.class.getResource("/components/BoardSettingsModal.fxml"));
+        this.refreshLock();
     }
 
     /**
@@ -63,6 +77,47 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
         this.titleTextField.setText(boardService.getCurrentBoard().getTitle());
         this.boardJoinKey.setText(boardService.getCurrentBoard().getJoinKey());
         this.refreshColors();
+        this.refreshLock();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            boardColorResetButton.setDisable(true);
+            columnColorResetButton.setDisable(true);
+            cardColorResetButton.setDisable(true);
+
+            boardColorResetButton.setVisible(false);
+            columnColorResetButton.setVisible(false);
+            cardColorResetButton.setVisible(false);
+
+            boardPrimaryColor.setDisable(true);
+            boardSecondaryColor.setDisable(true);
+            columnPrimaryColor.setDisable(true);
+            columnSecondaryColor.setDisable(true);
+            cardPrimaryColor.setDisable(true);
+            cardSecondaryColor.setDisable(true);
+            submitButton.setDisable(true);
+
+            titleTextField.setDisable(true);
+        } else {
+            boardColorResetButton.setDisable(false);
+            columnColorResetButton.setDisable(false);
+            cardColorResetButton.setDisable(false);
+
+            boardColorResetButton.setVisible(true);
+            columnColorResetButton.setVisible(true);
+            cardColorResetButton.setVisible(true);
+
+            boardPrimaryColor.setDisable(false);
+            boardSecondaryColor.setDisable(false);
+            columnPrimaryColor.setDisable(false);
+            columnSecondaryColor.setDisable(false);
+            cardPrimaryColor.setDisable(false);
+            cardSecondaryColor.setDisable(false);
+            submitButton.setDisable(false);
+
+            titleTextField.setDisable(false);
+        }
     }
 
     /**
@@ -122,15 +177,17 @@ public class BoardSettingsModal extends Modal implements UIComponent, Refreshabl
 
     @FXML
     private void submitBoard() {
-        boardService.renameBoard(titleTextField.getText());
+        if (!OverviewCtrl.isLocked()) {
+            boardService.renameBoard(titleTextField.getText());
 
-        final ColorScheme boardColorScheme = convertToColorScheme(boardPrimaryColor, boardSecondaryColor);
-        final ColorScheme columnColorScheme = convertToColorScheme(columnPrimaryColor, columnSecondaryColor);
-        final ColorScheme cardColorScheme = convertToColorScheme(cardPrimaryColor, cardSecondaryColor);
+            final ColorScheme boardColorScheme = convertToColorScheme(boardPrimaryColor, boardSecondaryColor);
+            final ColorScheme columnColorScheme = convertToColorScheme(columnPrimaryColor, columnSecondaryColor);
+            final ColorScheme cardColorScheme = convertToColorScheme(cardPrimaryColor, cardSecondaryColor);
 
-        boardService.setDefaultColorPresetBoard(boardColorScheme);
-        boardService.setDefaultColorPresetColumn(columnColorScheme);
-        boardService.setDefaultColorPresetCard(cardColorScheme);
+            boardService.setDefaultColorPresetBoard(boardColorScheme);
+            boardService.setDefaultColorPresetColumn(columnColorScheme);
+            boardService.setDefaultColorPresetCard(cardColorScheme);
+        }
 
         this.closeModal();
         parentCtrl.refresh();

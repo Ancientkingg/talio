@@ -111,17 +111,17 @@
          </value>
       </ColorPicker>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="modalDescriptionText" text="Default card color preset" translateX="-75.0" translateY="143.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBoardColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="28.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button fx:id="boardColorResetButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBoardColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="28.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <graphic>
             <SVGPath content="M451 934q-123-10-207-101t-84-216q0-77 35.5-145T295 361l43 43q-56 33-87 90.5T220 617q0 100 66 173t165 84v60Zm60 0v-60q100-12 165-84.5T741 617q0-109-75.5-184.5T481 357h-20l60 60-43 43-133-133 133-133 43 43-60 60h20q134 0 227 93.5T801 617q0 125-83.5 216T511 934Z" scaleX="0.02" scaleY="0.02" />
          </graphic>
       </Button>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onColumnColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="98.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button fx:id="columnColorResetButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onColumnColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="98.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <graphic>
             <SVGPath content="M451 934q-123-10-207-101t-84-216q0-77 35.5-145T295 361l43 43q-56 33-87 90.5T220 617q0 100 66 173t165 84v60Zm60 0v-60q100-12 165-84.5T741 617q0-109-75.5-184.5T481 357h-20l60 60-43 43-133-133 133-133 43 43-60 60h20q134 0 227 93.5T801 617q0 125-83.5 216T511 934Z" scaleX="0.02" scaleY="0.02" />
          </graphic>
       </Button>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onCardColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="168.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button fx:id="cardColorResetButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onCardColorReset" prefHeight="24.0" prefWidth="24.0" style="-fx-background-radius: 6px; -fx-border-radius: 6px;" styleClass="join-board-modal-button" stylesheets="@../Style.css" textFill="WHITE" translateY="168.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <graphic>
             <SVGPath content="M451 934q-123-10-207-101t-84-216q0-77 35.5-145T295 361l43 43q-56 33-87 90.5T220 617q0 100 66 173t165 84v60Zm60 0v-60q100-12 165-84.5T741 617q0-109-75.5-184.5T481 357h-20l60 60-43 43-133-133 133-133 43 43-60 60h20q134 0 227 93.5T801 617q0 125-83.5 216T511 934Z" scaleX="0.02" scaleY="0.02" />
          </graphic>

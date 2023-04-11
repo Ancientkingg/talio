@@ -114,6 +114,30 @@ public class BoardService {
     }
 
     /**
+     * Gets the locally saved password for the current board
+     * @return the password
+     */
+    public String getLocalPasswordForCurrentBoard() {
+        if (!boardModel.getSavedBoardPasswords().containsKey(getCurrentBoard().getJoinKey())) return null;
+        return boardModel.getSavedBoardPasswords().get(getCurrentBoard().getJoinKey());
+    }
+
+    /**
+     * Deletes the locally saved passwords for all boards
+     */
+    public void deleteLocalPasswords() {
+        this.boardModel.setSavedBoardPasswords(new HashMap<>());
+    }
+
+    /**
+     * Sets the locally saved password for the current board
+     * @param password the password to set
+     */
+    public void setLocalPasswordForCurrentBoard(final String password) {
+        boardModel.getSavedBoardPasswords().put(getCurrentBoard().getJoinKey(), password);
+    }
+
+    /**
      * Adds a new board
      *
      * @param board the board to add
@@ -543,14 +567,15 @@ public class BoardService {
      * Saves joined or created boards to local storage
      */
     public void saveBoardsLocal() {
-        final HashMap<String, String> boards = new HashMap<>();
+        final HashMap<String, String> currentBoardJoinKeys = boardModel.getSavedBoardPasswords();
 
         for (final Board board : boardModel.getBoardList()) {
-            boards.put(board.getJoinKey(), board.getPassword());
+            if (!currentBoardJoinKeys.containsKey(board.getJoinKey()))
+                currentBoardJoinKeys.put(board.getJoinKey(), null);
         }
 
         final Map<URI, HashMap<String, String>> allBoardJoinKeys = loadAllBoardsLocal();
-        allBoardJoinKeys.put(serverService.getServerIP(), boards);
+        allBoardJoinKeys.put(serverService.getServerIP(), currentBoardJoinKeys);
 
         try {
             final FileOutputStream fileOutputStream = new FileOutputStream("saved-boards");
@@ -571,20 +596,26 @@ public class BoardService {
      * @return the list of boards for the current server
      */
     public List<Board> loadBoardsForCurrentServer() {
+        saveBoardsLocal();
 
         final Map<URI, HashMap<String, String>> allBoardJoinKeys = loadAllBoardsLocal();
 
         if (allBoardJoinKeys.size() == 0) {
+            this.boardModel.setSavedBoardPasswords(new HashMap<>());
             return new ArrayList<>();
         }
 
         final HashMap<String, String> joinKeys = allBoardJoinKeys.get(serverService.getServerIP());
 
-
+        if (joinKeys == null) {
+            this.boardModel.setSavedBoardPasswords(new HashMap<>());
+            return new ArrayList<>();
+        }
         final List<Board> boards = this.fetchAllBoards(joinKeys);
 
         this.boardModel.setBoardList(boards.stream().filter(Objects::nonNull).collect(Collectors.toList()));
 
+        this.boardModel.setSavedBoardPasswords(joinKeys);
 
         return boards;
     }
@@ -1053,6 +1084,8 @@ public class BoardService {
      */
     public void updateBoardPassword(final String payload) {
         boardModel.getCurrentBoard().setPassword(payload);
+        mainCtrl.getOverviewCtrl().checkLock();
+        mainCtrl.refreshOverview();
         if (mainCtrl.getBoardPasswordModal() != null) mainCtrl.getBoardPasswordModal().closeModal();
     }
 }

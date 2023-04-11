@@ -1,6 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.CardComponent;
 import client.scenes.components.UIComponent;
@@ -8,6 +9,7 @@ import client.services.BoardService;
 import commons.ColorScheme;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class ColorShortcutModal extends Modal implements Refreshable, UIComponen
 
     @FXML
     private ComboBox<ColorScheme> colorSchemeComboBox;
+
+    @FXML
+    private Button submitButton;
 
     private final Refreshable parentCtrl;
 
@@ -35,6 +40,8 @@ public class ColorShortcutModal extends Modal implements Refreshable, UIComponen
         this.cardComponent = cardComponent;
 
         loadSource(Main.class.getResource("/components/ColorShortcutModal.fxml"));
+
+        this.refreshLock();
     }
 
     /**
@@ -54,6 +61,22 @@ public class ColorShortcutModal extends Modal implements Refreshable, UIComponen
         this.colorSchemeComboBox.getItems().clear();
         final List<ColorScheme> colorSchemes = boardService.getCurrentBoard().getColorPresets();
         this.colorSchemeComboBox.getItems().addAll(colorSchemes);
+
+        this.refreshLock();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            submitButton.setDisable(true);
+            submitButton.setVisible(false);
+
+            colorSchemeComboBox.setDisable(true);
+        } else {
+            submitButton.setDisable(false);
+            submitButton.setVisible(true);
+
+            colorSchemeComboBox.setDisable(false);
+        }
     }
 
     @FXML

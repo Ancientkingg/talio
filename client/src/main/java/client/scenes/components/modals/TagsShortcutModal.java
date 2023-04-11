@@ -1,6 +1,7 @@
 package client.scenes.components.modals;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.CardComponent;
 import client.scenes.components.TagSelectComponent;
@@ -11,6 +12,7 @@ import commons.Card;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.util.Iterator;
@@ -21,6 +23,9 @@ public class TagsShortcutModal extends Modal implements UIComponent, Refreshable
 
     @FXML
     private VBox tagsContainer;
+
+    @FXML
+    private Button submitButton;
 
     private final Refreshable parentCtrl;
 
@@ -39,6 +44,8 @@ public class TagsShortcutModal extends Modal implements UIComponent, Refreshable
         this.cardComponent = cardComponent;
 
         loadSource(Main.class.getResource("/components/TagsShortcutModal.fxml"));
+
+        this.refreshLock();
     }
 
     /**
@@ -64,6 +71,7 @@ public class TagsShortcutModal extends Modal implements UIComponent, Refreshable
             tagsContainer.getChildren().add(tagSelectComponent);
         }
     }
+
 
     @FXML
     private void submitDetails () {
@@ -107,5 +115,14 @@ public class TagsShortcutModal extends Modal implements UIComponent, Refreshable
     @Override
     public void refresh() {
         renderTags();
+        refreshLock();
+    }
+
+    private void refreshLock() {
+        if (!OverviewCtrl.isLocked()) {
+            submitButton.setDisable(false);
+        } else {
+            submitButton.setDisable(true);
+        }
     }
 }

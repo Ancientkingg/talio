@@ -1,6 +1,7 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.services.BoardService;
 import commons.Color;
@@ -83,6 +84,16 @@ public class TagSelectComponent extends GridPane implements UIComponent {
         }
 
         this.setOnMouseClicked(e -> this.onClick());
+
+        this.refreshLock();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            this.checkbox.setDisable(true);
+        } else {
+            this.checkbox.setDisable(false);
+        }
     }
 
     /**

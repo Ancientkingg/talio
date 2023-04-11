@@ -3,6 +3,7 @@ package client.scenes.components;
 import client.Main;
 import client.exceptions.BoardChangeException;
 import client.scenes.MainCtrl;
+import client.scenes.OverviewCtrl;
 import client.scenes.components.modals.CardDetailsModal;
 import client.services.BoardService;
 import commons.Card;
@@ -144,6 +145,8 @@ public class CardComponent extends Draggable implements UIComponent {
         this.columnParent = columnParent;
         this.overviewScene = overviewScene;
         loadSource(Main.class.getResource("/components/Card.fxml"));
+
+        refreshLock();
     }
 
     private void setDoubleClick() {
@@ -324,7 +327,15 @@ public class CardComponent extends Draggable implements UIComponent {
         }
 
         refreshStyle();
+        refreshLock();
+    }
 
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            cardText.setEditable(false);
+        } else {
+            cardText.setEditable(true);
+        }
     }
 
     /**

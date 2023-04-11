@@ -46,7 +46,7 @@ public class BoardPasswordModal extends Modal implements UIComponent {
         super.initialize();
         incorrectPasswordText.setVisible(false);
 
-        if (parentCtrl.isLocked()) {
+        if (OverviewCtrl.isLocked()) {
             titleText.setText("Unlock board");
         } else {
             titleText.setText("Lock board");
@@ -76,17 +76,18 @@ public class BoardPasswordModal extends Modal implements UIComponent {
             return;
         }
 
-        if (parentCtrl.isLocked()) {
+        if (OverviewCtrl.isLocked()) {
             if (boardService.getCurrentBoard().getPassword().equals(password)) {
-                parentCtrl.setLocked(false);
+                OverviewCtrl.setLocked(false);
+                boardService.setLocalPasswordForCurrentBoard(password);
                 closeModal();
             } else {
                 incorrectPasswordText.setText("Entered password is incorrect");
                 incorrectPasswordText.setVisible(true);
             }
         } else {
-            parentCtrl.setLocked(true);
-            // TODO: send password request to server
+            OverviewCtrl.setLocked(true);
+            boardService.setLocalPasswordForCurrentBoard(password);
             boardService.setPasswordForCurrentBoard(password);
             closeModal();
         }

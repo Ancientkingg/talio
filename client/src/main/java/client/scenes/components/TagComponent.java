@@ -1,18 +1,20 @@
 package client.scenes.components;
 
 import client.Main;
+import client.scenes.OverviewCtrl;
 import client.scenes.Refreshable;
 import client.scenes.components.modals.TagSettingsModal;
 import client.services.BoardService;
+import commons.Color;
 import commons.ColorScheme;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.util.Objects;
 
 public class TagComponent extends GridPane implements UIComponent {
@@ -30,6 +32,9 @@ public class TagComponent extends GridPane implements UIComponent {
 
     @FXML
     private Pane colorBubble;
+
+    @FXML
+    private Button editButton;
 
 
     /**
@@ -52,7 +57,7 @@ public class TagComponent extends GridPane implements UIComponent {
             tagTitle.textProperty().set(tag.getTitle());
 
             final ColorScheme colorScheme = tag.getColorScheme();
-            final commons.Color backgroundColor = colorScheme.getBackgroundColor();
+            final Color backgroundColor = colorScheme.getBackgroundColor();
 
             final String primaryStyle;
 
@@ -77,7 +82,7 @@ public class TagComponent extends GridPane implements UIComponent {
             throw new RuntimeException(e);
         }
 
-
+        this.refreshLock();
     }
 
     /**
@@ -95,5 +100,15 @@ public class TagComponent extends GridPane implements UIComponent {
     private void onEdit() {
         final TagSettingsModal tagSettingsModal = new TagSettingsModal(boardService, parentScene, parentCtrl, tag);
         tagSettingsModal.showModal();
+    }
+
+    private void refreshLock() {
+        if (OverviewCtrl.isLocked()) {
+            editButton.setVisible(false);
+            editButton.setDisable(true);
+        } else {
+            editButton.setVisible(true);
+            editButton.setDisable(false);
+        }
     }
 }
