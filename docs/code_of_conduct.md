@@ -33,7 +33,7 @@ merge requests rather than pushing.
 We will implement a 3 strike system based on absences and late submissions, the severity of a
 violation will be judged by the entire group in unison. Strikes are handed out by voting (a simple
 majority suffices) with the possibility of half-strikes for less severe things. We will enforce a
-minimum of 2 reviews on merge requests in order to ensure quality. We will meet in person to
+minimum of one review on merge requests in order to ensure quality. We will meet in person to
 submit the final product.
 
 ## Behaviour
