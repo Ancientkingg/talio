@@ -5,6 +5,7 @@ import commons.Card;
 import commons.Column;
 import commons.DTOs.CardDTO;
 import commons.Tag;
+import commons.exceptions.CardNotFoundException;
 import commons.exceptions.ColumnNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -128,13 +129,13 @@ public class CardController {
         try {
             final String password = cardDTO.password();
 
-            final Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+            Board board = boardService.getBoardWithKeyAndPassword(joinKey, password);
 
             final Card clientCard = cardDTO.getCard();
             final Card card = new Card(clientCard.getId(), clientCard.getTitle(),
                     newPosition, clientCard.getDescription(), clientCard.getSubtasks(), clientCard.getTags());
-            final Column sourceColumn = board.getColumnById(sourceColumnId);
-            final Column destinationColumn = board.getColumnById(destinationColumnId);
+            Column sourceColumn = board.getColumnById(sourceColumnId);
+            Column destinationColumn = board.getColumnById(destinationColumnId);
 
             final Card serverCard = board.getCard(clientCard.getId());
 
@@ -142,11 +143,19 @@ public class CardController {
                 sourceColumn.updateCardPosition(serverCard, newPosition);
             }
             else {
-                if (!sourceColumn.removeCard(clientCard))
+                if (!sourceColumn.removeCard(serverCard))
                     throw new RuntimeException("Could not remove card when trying to reposition");
+
+                boardService.saveBoard(board);
+                board = boardService.getBoardWithKeyAndPassword(joinKey, password);
+
+                sourceColumn = board.getColumnById(sourceColumnId);
+                destinationColumn = board.getColumnById(destinationColumnId);
+
                 if (!destinationColumn.insertCard(card))
                     throw new RuntimeException("Could not insert card when trying to reposition");
             }
+
 
             boardService.saveBoard(board);
 
@@ -154,7 +163,7 @@ public class CardController {
 
             return sourceColumn;
         }
-        catch (Exception e) {
+        catch (ColumnNotFoundException | CardNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.toString());
         }
     }
