@@ -6,26 +6,26 @@ env:
 jobs:
   buildServer:
     container: gradle:7.3.3-jdk17-alpine
-    runs-on: windows_latest
+    runs-on: windows-latest
     steps:
       - run: ./gradlew :server:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
 
   buildCommons:
     container: gradle:7.3.3-jdk17-alpine
-    runs-on: windows_latest
+    runs-on: windows-latest
     steps:
       - run: ./gradlew :commons:compileJava
 
   buildClient:
     container: gradle:7.3.3-jdk17-alpine
-    runs-on: windows_latest
+    runs-on: windows-latest
     steps:
       - run: ./gradlew :client:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
 
 
   testCheckStyleCommons:
     container: gradle:7.3.3-jdk17-alpine
-    runs-on: windows_latest
+    runs-on: windows-latest
     needs:
       - buildCommons
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   testCheckStyleServer:
     container: gradle:7.3.3-jdk17-alpine
-    runs-on: windows_latest
+    runs-on: windows-latest
     needs:
       - buildServer
     steps:
@@ -41,7 +41,7 @@ jobs:
 
   testCheckStyleClient:
     container: gradle:7.3.3-jdk17-alpine
-    runs-on: windows_latest
+    runs-on: windows-latest
     needs:
       - buildClient
     steps:
