@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: gradle/gradle-build-action@v2.7.1
+      - uses: actions/checkout@v3.5.3
       - run: ./gradlew :server:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
 
   buildCommons:
@@ -16,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: gradle/gradle-build-action@v2.7.1
+      - uses: actions/checkout@v3.5.3
       - run: ./gradlew :commons:compileJava
 
   buildClient:
@@ -23,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: gradle/gradle-build-action@v2.7.1
+      - uses: actions/checkout@v3.5.3
       - run: ./gradlew :client:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
 
 
@@ -33,6 +36,7 @@ jobs:
       - buildCommons
     steps:
       - uses: gradle/gradle-build-action@v2.7.1
+      - uses: actions/checkout@v3.5.3
       - run: ./gradlew :commons:checkStyleMain  -x compileJava -x classes -x processResources -x jar
 
   testCheckStyleServer:
@@ -42,6 +46,7 @@ jobs:
       - buildServer
     steps:
       - uses: gradle/gradle-build-action@v2.7.1
+      - uses: actions/checkout@v3.5.3
       - run: ./gradlew :server:checkStyleMain -x compileJava -x classes -x processResources -x jar
 
   testCheckStyleClient:
@@ -51,4 +56,5 @@ jobs:
       - buildClient
     steps:
       - uses: gradle/gradle-build-action@v2.7.1
+      - uses: actions/checkout@v3.5.3
       - run: ./gradlew :client:checkStyleMain -x compileJava -x classes -x processResources -x jar
