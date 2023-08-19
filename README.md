@@ -2,6 +2,7 @@
 
 Talio is a (WIP) planning application based on the Java platform. The program is built to let users create, classify and track goals within a simple GUI environment. The client side of the application is based on the JavaFX framework, and is developed and test on JavaFX release 17. While it can be run on later versions of JavaFX, we recommend the user to use the approporiate version to avoid warnings and in the worst case - crashes. The server side is built on the Spring framework. 
 
+![Board example picture](/docs/images/board_example.png)
 
 
 ## Group members
