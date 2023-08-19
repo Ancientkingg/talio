@@ -1,0 +1,48 @@
+on: push
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+jobs:
+  buildServer:
+    container: gradle:7.3.3-jdk17-alpine
+    runs-on: windows_latest
+    steps:
+      - run: ./gradlew :server:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
+
+  buildCommons:
+    container: gradle:7.3.3-jdk17-alpine
+    runs-on: windows_latest
+    steps:
+      - run: ./gradlew :commons:compileJava
+
+  buildClient:
+    container: gradle:7.3.3-jdk17-alpine
+    runs-on: windows_latest
+    steps:
+      - run: ./gradlew :client:build -x checkStyleMain -x compileTestJava -x processTestResources -x testClasses -x checkstyleTest -x check
+
+
+  testCheckStyleCommons:
+    container: gradle:7.3.3-jdk17-alpine
+    runs-on: windows_latest
+    needs:
+      - buildCommons
+    steps:
+      - run: ./gradlew :commons:checkStyleMain  -x compileJava -x classes -x processResources -x jar
+
+  testCheckStyleServer:
+    container: gradle:7.3.3-jdk17-alpine
+    runs-on: windows_latest
+    needs:
+      - buildServer
+    steps:
+      - run: ./gradlew :server:checkStyleMain -x compileJava -x classes -x processResources -x jar
+
+  testCheckStyleClient:
+    container: gradle:7.3.3-jdk17-alpine
+    runs-on: windows_latest
+    needs:
+      - buildClient
+    steps:
+      - run: ./gradlew :client:checkStyleMain -x compileJava -x classes -x processResources -x jar
