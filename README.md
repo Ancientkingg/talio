@@ -22,7 +22,8 @@ Talio is a (WIP) planning application based on the Java platform. The program is
 <!-- - (please make sure the photos have the same size (50x50 pixels)) --> 
 
 ## How to run it
+The application consists of 2 parts: the server and the client. The build script has two goals to start either one of them.
 
-## How to contribute to it
+To start the server, run `./gradlew bootRun`.
 
-## Copyright / License (opt.)
+To start the client, run `./gradlew run`
